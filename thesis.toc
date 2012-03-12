@@ -1,0 +1,2 @@
+\contentsline {chapter}{\numberline {1}Stein's method}{1}
+\contentsline {section}{\numberline {1.1}Approximate computation of expectations}{1}

@@ -1,0 +1,71 @@
+%\documentclass[12pt,openright]{report}
+\documentclass[12pt,twoside,openright]{report}
+\pdfoutput=1 % ensure that arXiv uses pdflatex
+% note that the documentclass can take other option such as
+% twoside - for double sided printing
+% openright - if double side  chapters always start on odd pages
+% openany - if double side chapters start on the next page even or odd
+% 12pt can be replaced by 11pt
+
+
+\usepackage{suthesis-2e}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{epsfig}
+\usepackage{perry-thesis-macros}
+
+\DeclareGraphicsExtensions{.png,.pdf}
+
+\newcommand{\dirsep}{/}
+\newcommand{\dirprefix}{}
+\newcommand{\thesischapter}[1]{\dirprefix #1\dirsep #1}
+\newcommand{\includechapter}[1]{
+    \graphicspath{{\dirprefix #1\dirsep plots\dirsep}}
+    \include{\thesischapter{#1}}
+}
+\renewcommand{\bibname}{References}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\numberwithin{equation}{chapter}
+\numberwithin{algorithm}{chapter}
+\numberwithin{theorem}{chapter}
+
+\title{Topics in Two-Sample Testing}
+\author{Nelson C. Ray}
+\submitdate{201?}
+\copyrightyear{201?}
+\dept{Statistics}
+\principaladviser{Susan P. Holmes}
+\firstreader{Persi W. Diaconis}
+\secondreader{Bradley Efron}
+\thirdreader{Jerome H. Friedman}
+
+\includeonly{
+    {\thesischapter{steins-method}}
+}
+
+
+\begin{document}
+
+\beforepreface
+
+%\prefacesection{Abstract}
+%\input{abstract}
+
+%\include{acknowledgment}
+
+\figurespagefalse
+\tablespagefalse
+\afterpreface
+
+\includechapter{steins-method}
+\end{document}

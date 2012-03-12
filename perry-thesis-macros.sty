@@ -1,0 +1,214 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{perry-thesis-macros}
+
+\RequirePackage{amsmath}
+\RequirePackage{accents} % underline
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{url}
+\RequirePackage{enumerate} % fancy enumerations
+
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+
+\RequirePackage{booktabs} % fancy tables
+
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}}
+\makeatother
+%% Now actually use the newly defined style.
+\urlstyle{leo}
+
+\newcommand{\captiontitle}[1]{\textsc{#1}.}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\define}{\equiv}
+
+
+\newcommand{\vectorsymbol}[1]{\underaccent{\bar}{#1}}
+%\newcommand{\vectorsymbol}{\underline}
+\newcommand{\matrixsymbol}{\boldsymbol}
+
+\newcommand{\hd}{\hat d}
+\newcommand{\tg}{\tilde g}
+\newcommand{\tlambda}{\tilde \lambda}
+\newcommand{\bmu}{\bar \mu}
+\newcommand{\hmu}{\hat \mu}
+\newcommand{\tmu}{\tilde \mu}
+\newcommand{\bsigma}{\bar \sigma}
+\newcommand{\hsigma}{\hat \sigma}
+\newcommand{\tsigma}{\tilde \sigma}
+\newcommand{\bW}{\bar W}
+
+\newcommand{\vzero}{\vectorsymbol{0}}
+\newcommand{\vone}{\vectorsymbol{1}}
+
+\newcommand{\va}{\vectorsymbol{a}}
+\newcommand{\vb}{\vectorsymbol{b}}
+\newcommand{\vd}{\vectorsymbol{d}}
+\newcommand{\ve}{\vectorsymbol{e}}
+\newcommand{\vr}{\vectorsymbol{r}}
+\newcommand{\vs}{\vectorsymbol{s}}
+\newcommand{\vu}{\vectorsymbol{u}}
+\newcommand{\vhu}{\vectorsymbol{\hat u}}
+\newcommand{\vtu}{\vectorsymbol{\tilde u}}
+\newcommand{\vv}{\vectorsymbol{v}}
+\newcommand{\vhv}{\vectorsymbol{\hat v}}
+\newcommand{\vtv}{\vectorsymbol{\tilde v}}
+\newcommand{\vx}{\vectorsymbol{x}}
+\newcommand{\vtx}{\vectorsymbol{\tilde x}}
+\newcommand{\vy}{\vectorsymbol{y}}
+\newcommand{\vty}{\vectorsymbol{\tilde y}}
+
+\newcommand{\valpha}{\vectorsymbol{\alpha}}
+\newcommand{\vbeta}{\vectorsymbol{\beta}}
+\newcommand{\vepsilon}{\vectorsymbol{\epsilon}}
+\newcommand{\vmu}{\vectorsymbol{\mu}}
+\newcommand{\vbmu}{\vectorsymbol{\bar \mu}}
+\newcommand{\vhmu}{\vectorsymbol{\hat \mu}}
+\newcommand{\vtmu}{\vectorsymbol{\tilde \mu}}
+\newcommand{\vpsi}{\vectorsymbol{\psi}}
+\newcommand{\vtheta}{\vectorsymbol{\theta}}
+
+\newcommand{\vA}{\vectorsymbol{A}}
+\newcommand{\vE}{\vectorsymbol{E}}
+\newcommand{\vS}{\vectorsymbol{S}}
+\newcommand{\vU}{\vectorsymbol{U}}
+\newcommand{\vhU}{\vectorsymbol{\hat U}}
+\newcommand{\vV}{\vectorsymbol{V}}
+\newcommand{\vhV}{\vectorsymbol{\hat V}}
+\newcommand{\vtV}{\vectorsymbol{\tilde V}}
+\newcommand{\vW}{\vectorsymbol{W}}
+\newcommand{\vX}{\vectorsymbol{X}}
+\newcommand{\vbX}{\vectorsymbol{\bar X}}
+\newcommand{\vtX}{\vectorsymbol{\tilde X}}
+\newcommand{\vY}{\vectorsymbol{Y}}
+\newcommand{\vtY}{\vectorsymbol{\tilde Y}}
+\newcommand{\vZ}{\vectorsymbol{Z}}
+
+\newcommand{\mZero}{\matrixsymbol{0}}
+\newcommand{\mA}{\matrixsymbol{A}}
+\newcommand{\mtA}{\matrixsymbol{\tilde A}}
+\newcommand{\mB}{\matrixsymbol{B}}
+\newcommand{\mhB}{\matrixsymbol{\hat B}}
+\newcommand{\mC}{\matrixsymbol{C}}
+\newcommand{\mD}{\matrixsymbol{D}}
+\newcommand{\mhD}{\matrixsymbol{\hat D}}
+\newcommand{\mtD}{\matrixsymbol{\tilde D}}
+\newcommand{\mE}{\matrixsymbol{E}}
+\newcommand{\mtE}{\matrixsymbol{\tilde E}}
+\newcommand{\mF}{\matrixsymbol{F}}
+\newcommand{\mG}{\matrixsymbol{G}}
+\newcommand{\mH}{\matrixsymbol{H}}
+\newcommand{\mI}{\matrixsymbol{I}}
+\newcommand{\mJ}{\matrixsymbol{J}}
+\newcommand{\mK}{\matrixsymbol{K}}
+\newcommand{\mL}{\matrixsymbol{L}}
+\newcommand{\mM}{\matrixsymbol{M}}
+\newcommand{\mN}{\matrixsymbol{N}}
+\newcommand{\mO}{\matrixsymbol{O}}
+\newcommand{\mP}{\matrixsymbol{P}}
+\newcommand{\mhP}{\matrixsymbol{\hat P}}
+\newcommand{\mQ}{\matrixsymbol{Q}}
+\newcommand{\mhQ}{\matrixsymbol{\hat Q}}
+\newcommand{\mR}{\matrixsymbol{R}}
+\newcommand{\mbR}{\matrixsymbol{\bar R}}
+\newcommand{\mtR}{\matrixsymbol{\tilde R}}
+\newcommand{\mS}{\matrixsymbol{S}}
+\newcommand{\mbS}{\matrixsymbol{\bar S}}
+\newcommand{\mtS}{\matrixsymbol{\tilde S}}
+\newcommand{\mT}{\matrixsymbol{T}}
+\newcommand{\mU}{\matrixsymbol{U}}
+\newcommand{\mbU}{\matrixsymbol{\bar U}}
+\newcommand{\mhU}{\matrixsymbol{\hat U}}
+\newcommand{\mtU}{\matrixsymbol{\tilde U}}
+\newcommand{\mV}{\matrixsymbol{V}}
+\newcommand{\mbV}{\matrixsymbol{\bar V}}
+\newcommand{\mhV}{\matrixsymbol{\hat V}}
+\newcommand{\mtV}{\matrixsymbol{\tilde V}}
+\newcommand{\mW}{\matrixsymbol{W}}
+\newcommand{\mX}{\matrixsymbol{X}}
+\newcommand{\mhX}{\matrixsymbol{\hat X}}
+\newcommand{\mtX}{\matrixsymbol{\tilde X}}
+\newcommand{\mY}{\matrixsymbol{Y}}
+\newcommand{\mZ}{\matrixsymbol{Z}}
+\newcommand{\mhZ}{\matrixsymbol{\hat Z}}
+
+\newcommand{\mDelta}{\matrixsymbol{\Delta}}
+\newcommand{\mGamma}{\matrixsymbol{\Gamma}}
+\newcommand{\mLambda}{\matrixsymbol{\Lambda}}
+\newcommand{\mhLambda}{\matrixsymbol{\hat \Lambda}}
+\newcommand{\mPhi}{\matrixsymbol{\Phi}}
+\newcommand{\mbPhi}{\matrixsymbol{\bar \Phi}}
+\newcommand{\mSigma}{\matrixsymbol{\Sigma}}
+\newcommand{\mbSigma}{\matrixsymbol{\bar \Sigma}}
+\newcommand{\mhSigma}{\matrixsymbol{\hat \Sigma}}
+\newcommand{\mtSigma}{\matrixsymbol{\tilde \Sigma}}
+\newcommand{\mTheta}{\matrixsymbol{\Theta}}
+\newcommand{\mbTheta}{\matrixsymbol{\bar \Theta}}
+\newcommand{\mXi}{\matrixsymbol{\Xi}}
+
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+\DeclareMathOperator*{\var}{Var}
+\DeclareMathOperator*{\cov}{Cov}
+
+\newcommand{\eqd}{\overset{d}{=}}     
+\newcommand{\toas}{\overset{\mathit{a.s.}}{\to}}
+\newcommand{\toP}{\overset{\mathit{P}}{\to}} 
+\newcommand{\tod}{\overset{\mathit{d}}{\to}} % convergence
+\newcommand{\Unif}{\mathrm{Unif}}
+\newcommand{\Dirichlet}{\mathrm{Dirichlet}}
+
+\newcommand{\Oh}{\mathcal{O}}
+\newcommand{\oh}{\mathit{o}}         
+\newcommand{\Ohas}{\Oh_\text{a.s.}}
+\newcommand{\ohas}{\oh_\text{a.s.}}
+\newcommand{\OhP}{\Oh_\text{P}}
+\newcommand{\ohP}{\oh_\text{P}}
+
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Wishart}{\mathcal{W}}
+\newcommand{\Haar}{\mathrm{Haar}}
+\newcommand{\FMP}{F^\text{MP}}
+\newcommand{\fMP}{f^\text{MP}}
+\newcommand{\FTW}{F^\text{TW}}
+\newcommand{\fTW}{f^\text{TW}}
+\newcommand{\GTW}{G^\text{TW}}
+\newcommand{\gTW}{g^\text{TW}}
+
+\DeclareMathOperator*{\Ai}{Ai}
+\DeclareMathOperator*{\sgn}{sgn}
+
+\newcommand{\trans}{\mathrm{T} }
+\newcommand{\herm}{\mathrm{H} }
+\DeclareMathOperator*{\tr}{tr}
+\DeclareMathOperator*{\vecm}{vec}
+\DeclareMathOperator*{\spanm}{span}
+\DeclareMathOperator*{\diag}{diag}
+\DeclareMathOperator*{\rank}{rank}
+\newcommand{\Frob}{\text{F}}
+\newcommand{\sphere}{\mathcal{S}}
+\newcommand{\stiefel}{\mathcal{V}}
+\newcommand{\grassmann}{\mathcal{G}}
+
+\newcommand{\one}{1}
+\newcommand{\half}{1/2}
+
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\complexes}{\mathbb{C}}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\renewcommand{\liminf}{\varliminf}
+\renewcommand{\limsup}{\varlimsup}
+
+\newcommand{\test}{\text{test}}
+\newcommand{\train}{\text{train}}
+\DeclareMathOperator*{\PE}{PE}
+\DeclareMathOperator*{\ME}{ME}
+\newcommand{\missing}{\ast}
+
+\endinput
