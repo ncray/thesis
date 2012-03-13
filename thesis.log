@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  13 MAR 2012 13:05
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  13 MAR 2012 15:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -361,11 +361,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Here is how much of TeX's memory you used:
  3148 strings out of 493738
  41067 string characters out of 3135951
- 104473 words of memory out of 3000000
+ 110473 words of memory out of 3000000
  6360 multiletter control sequences out of 15000+200000
  11058 words of font info for 41 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,15n,24p,750b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,17n,24p,232b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
 </h0a/stow/swtree/stow/
 texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></h0a/stow/
 swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -381,7 +381,7 @@ dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl2
 m/cmsy8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmti12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (10 pages, 129729 bytes).
+Output written on thesis.pdf (10 pages, 131456 bytes).
 PDF statistics:
  85 PDF objects out of 1000 (max. 8388607)
  60 compressed objects within 1 object stream

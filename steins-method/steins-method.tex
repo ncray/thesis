@@ -98,7 +98,25 @@ exchangeable pair.
         + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}^2 \\
         &\quad - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{i \Pi(j)}
         - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(i)} \\
-        &\quad + 10
+        &\quad + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(j)}
+        + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}a_{j \Pi(i)} \\
+        &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2 
+        + \frac{2}{n}\frac{1}{n-1} \left ( 
+          \sum_{i,j=1}^n a_{i \Pi(j)}^2 - \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) \\
+        &\quad - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n \left ( a_{i\Pi(i)} 
+        \sum_{j=1}^n \left ( a_{i\Pi(j)} + a_{j\Pi(i)} \right ) - 2 a_{i \Pi(i)}^2 
+        \right ) \\
+        &\quad + \frac{2}{n}\frac{1}{n-1} \left ( \sum_{i=1}^n \sum_{j=1}^n \left ( 
+          a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}
+          \right )  - 2 \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) \\
+        &= \frac{2}{n}\left ( 1 - \frac{1}{n-1} \right )  \sum_{i=1}^n a_{i \Pi(i)}^2 
+        + \frac{2}{n} \\
+        &\quad + \frac{8}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
+        &\quad + \frac{2}{n}\frac{1}{n-1} \sum_{i=1}^n \sum_{j=1}^n \left ( 
+          a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}
+        \right ) - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
+        &= \frac{2}{n} + \frac{2}{n-1}\sum_{i=1}^n a_{i \Pi(i)}^2 + \frac{2}{n}\frac{1}{n-1}
+        \sum_{i=1}^n \sum_{j=1}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)})
       \end{split}
     \end{equation}
   \end{proof}
