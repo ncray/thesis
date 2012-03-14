@@ -119,5 +119,29 @@ exchangeable pair.
         \sum_{i=1}^n \sum_{j=1}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)})
       \end{split}
     \end{equation}
+
+    \begin{theorem}[The $c_r$-inequality]
+      \label{T:c_r-inequality}
+      Let $r > 0$.  Suppose that $\E|X|^r < \infty$ and $\E|Y|^r < \infty$.  Then
+      \begin{equation}
+        \E|X + Y|^r < c_r(\E|X|^r+\E|Y|^r),
+      \end{equation}
+      where $c_r = 1$ when $r \leq 1$ and $c_r = 2^{r-1}$ when $r \geq 1$.
+    \end{theorem}
+
+    \begin{corollary}
+      \label{C:sum_variance}
+      Suppose that $\var(X) < \infty$ and $\var(Y) < \infty$.  Then
+      \begin{equation}
+        \var(X + Y) < 2(\var(X)+\var(Y)).
+      \end{equation}
+    \end{corollary}
+    \begin{proof}
+      This follows immediately from applying Theorem~\ref{T:c_r-inequality} to the centered random
+      variables $X' = X - \E[X]$ and $Y' = Y - \E[Y]$.
+    \end{proof}
+    
+    
+
   \end{proof}
 \end{theorem}
