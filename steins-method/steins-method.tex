@@ -220,7 +220,7 @@ Theorem 5.5 in ``Normal Approximation by Stein's Method'' concerns variance 1 ex
 random variables.  Our setting has the variance tending to 1, so we first prove a slight
 generalization of the theorem.  Large parts of the proof are copied verbatim from the book.
 
-\subsection{Preliminaries}
+\section{Preliminaries}
 \begin{definition}[Approximate Stein Pair]
   Let $(W, W')$ be an exchangeable pair.  If the pair satisfies the ``approximate linear
   regression condition''
@@ -286,7 +286,7 @@ Here is a slight generalization of Lemma 2.7:
   \end{equation}
   
   By the linear growth assumption on $f$, $\E [g(W, W')]$ exists for the antisymmetric function
-  $g(x,y) = (x-y)(f(y)+f(x))$.  By lemma~\ref{L:antisymmetric},
+  $g(x,y) = (x-y)(f(y)+f(x))$.  By Lemma~\ref{L:antisymmetric},
   \begin{equation*}
     \begin{split}
       0 &= \E [(W-W')(f(W')+f(W))] \\
@@ -301,6 +301,17 @@ Here is a slight generalization of Lemma 2.7:
   \end{equation}
 \end{proof}
 
+This is just a small part of Lemma 2.4:
+\begin{lemma}
+  \label{L:stein-eq-sol-bound}
+  For a given function $h: \mathbb{R} \to \mathbb{R}$, let $f_h$ be the solution to the Stein
+  equation.  If $h$ is absolutely continuous, then
+  \begin{equation}
+    ||f_h|| \leq 2 ||h'||.    
+  \end{equation}
+\end{lemma}
+
+\section{Main Theorem}
 Generalization of Theorem 5.5:
 \begin{theorem}
   If $T$, $T'$ are mean 0 exchangeable random variables with variance $\E[T^2]$
@@ -311,12 +322,13 @@ Generalization of Theorem 5.5:
   \end{equation*}
   for some $\lambda \in (0,1)$ and some random variable $R$, then 
   \begin{equation*}
-    \label{eq:14}
-    \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)| \leq B +
-    (2\pi)^{-1/4}\sqrt{\frac{\E|T'-T|^3}{\lambda}} + \E|R|,
+    \begin{split}
+      \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|
+      &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|T'-T|^3]}{\lambda}}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])} \\
+      &\quad + |1 - \E [T^2]| + \sqrt{\E [T^2]\E [R^2]} + \E [|R|]
+    \end{split}
   \end{equation*}
-  where $B \leq \frac{\Theta}{2\lambda}$ and $\Theta =
-  \sqrt{\var(\E[(T'-T)^2|T])}$. 
 \end{theorem}
 \begin{proof}
   For $z \in \mathbb{R}$ and $\alpha > 0$ let $f$ be the solution to the Stein equation 
@@ -384,7 +396,7 @@ Generalization of Theorem 5.5:
       |\E [J_1] | &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} +
       \E [|1 - \E [W^2] + \E [WR]|] \\
       &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E [|1 - \E [W^2]|] + \E [|WR|] \\
-      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E [|1 - \E [W^2]|] + 
+      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + |1 - \E [W^2]| + 
       \sqrt{\E [W^2]\E [R^2]}.
     \end{split}
   \end{equation}
@@ -398,5 +410,65 @@ Generalization of Theorem 5.5:
     \end{split}
   \end{equation}
 
-\end{proof}
+  To show the final equality, consider separately the cases $W \leq W'$ and $W' \leq W$.  For the
+  former, 
+  \begin{equation*}
+    \begin{split}
+      -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_W^t f''(u) du dt
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_u^{W'} f''(u) dt du \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'} (W'-u)f''(u) du.
+    \end{split}
+  \end{equation*}
+  For the latter,
+  \begin{equation*}
+    \begin{split}
+      \frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_t^W f''(u) du dt
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}\int_t^{W} f''(u) du dt \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}\int_{W'}^{u} f''(u) dt du \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}(u-W')f''(u) du.
+    \end{split}
+  \end{equation*}
+  
+  Since $W$ and $W'$ are exchangeable,
+  \begin{equation}
+    \begin{split}
+      |\E [J_2]| &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (W'-u)f''(u) du 
+        \right ] \right | \\
+      &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} \left ( \frac{W+W'}{2}-u \right )
+        f''(u) du \right ] \right | \\
+    &\leq \left | \E \left [ ||f''|| \frac{1}{2\lambda}|W'-W|\int_{\min(W,W')}^{\max(W,W')} \left | 
+          \frac{W+W'}{2} -u \right | du \right ] \right | \\
+    &= \left | \E \left [ ||f''|| \frac{1}{2\lambda}\frac{|W'-W|^3}{4}
+      \right ] \right | \\
+    &\leq \frac{\E [|W'-W|^3]}{4 \alpha \lambda},
+    \end{split}
+  \end{equation}
+  where the final inequality follows from the fact that $|h'_{z,\alpha}(x)|\leq 1/\alpha$ for all $x
+  \in \mathbb{R}$ and Lemma~\ref{L:stein-eq-sol-bound}.
 
+  Collecting the bounds, we obtain
+  \begin{equation}
+    \begin{split}
+      P(W \leq z) &\leq \E [h_{z,\alpha}(W)] \\
+      &\leq Nh_{z,\alpha} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|] \\
+      &\leq \Phi (z) + \frac{\alpha}{\sqrt{2\pi}} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|]
+    \end{split}
+  \end{equation}
+  The minimizer of the expression is
+  \begin{equation}
+    \alpha = \frac{(2\pi)^{1/4}}{2}\sqrt{\frac{\E [|W'-W|^3]}{\lambda}}.
+  \end{equation}
+  Plugging this in, we get the upper bound
+  \begin{equation}
+    \begin{split}
+      P(W \leq z) - \Phi(z) &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|W'-W|^3]}{\lambda}}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|]
+    \end{split}
+  \end{equation}
+  Proving the corresponding lower bound in a similar manner completes the proof of the theorem.
+\end{proof}

@@ -1,0 +1,233 @@
+\chapter{Main Proof}
+\label{C:stein-proof}
+In this chapter, we prove the core theoretical result of this thesis, a rate of convergence bound for
+the randomization distribution, using the theorem of chapter~\ref{C:steins-method}.
+
+\section{Set-up}
+We observe two samples with equal sample size: $\{u_i\}_{i=1}^N$ and $\{u_i\}_{i=N+1}^{2N}$.  
+
+Student's two-sample $t$-statistic is given by
+\begin{align*}
+T(\{u_i\}_{i=1}^N, \{u_i\}_{i=N+1}^{2N}) 
+&= \frac{\bar{u}_1 - \bar{u}_2}{\sqrt{\frac{\frac{1}{N-1}
+      \sum_{i=1}^N(u_i - \bar{u}_1)^2}{N} + \frac{\frac{1}{N-1}
+      \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}{N}}} \\
+&= \frac{1}{\sqrt{\frac{N}{N-1}}} \frac{\sum_{i=1}^N u_i -
+  \sum_{i=N+1}^{2N}u_i}{\sqrt{\sum_{i=1}^N(u_i - 
+    \bar{u}_1)^2 + \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}} \\
+&= \sqrt{\frac{N-1}{N}}\frac{q}{d},
+\end{align*}
+where
+\begin{align*}
+  q &= \left (\sum_{i=1, i\neq I}^N u_i + u_I -
+    \sum_{i=N+1, i\neq J}^{2N}u_i - u_J\right ) \\
+  d &= \sqrt{\sum_{i=1}^N(u_i - \bar{u}_1)^2 +
+    \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}.
+\end{align*}
+Similarly, 
+\begin{align*}
+  T'(\{u_i\}_{i=1}^N, \{u_i\}_{i=N+1}^{2N}) 
+  &= \sqrt{\frac{N-1}{N}}\frac{q'}{d'} \\
+  q' &= \left (\sum_{i=1, i\neq I}^N u_i + u_J -
+    \sum_{i=N+1, i\neq J}^{2N}u_i - u_I \right ) \\
+  &= q - 2u_I + 2u_J \\
+  d' &= \sqrt{\sum_{i=1}^N(u_i - \bar{u}'_1)^{2} +
+    \sum_{i=N+1}^{2N}(u_i - \bar{u}'_2)^{2}}.  
+\end{align*}
+
+In order to perform hypothesis testing, we would like to know the randomization distribution of $T$.
+We shall create an exchangeable pair $(T, T')$ by considering a uniformly random transposition $(I,
+J)$.  WLOG, take $I \leq J$.  We apply this transposition to the group labels.  Note that if $I, J
+\in \{1,\ldots,N\}$ or $I, J \in \{N+1,\ldots,2N\}$ then $T' = T$, where $T'$ is the $t$-statistic
+under this random transposition.  That is, the $t$-statistic is invariant to within-group
+transpositions.  Thus, the only changes occur when $1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$.
+With this in mind, let's redefine our transposition to be uniformly at random over the $N^2$ cases
+where $1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$.
+
+\section{Assumptions}
+Recall that the $t$-statistic is invariant up to sign under linear transformations, so we can
+mean-center and scale so that $\sum_{i=1}^{2N} u_i = 0$ and $\sum_{i=1}^{2N} u_i^2 = 2N$.  The
+proper transformation is 
+\begin{equation}
+  z_i = \sqrt{\frac{2N}{\sum (u_i - \bar{u})^2}}(u_i-\bar{u}), 
+\end{equation}
+so we just consider the $u_i$'s as having been transformed.  This can be seen as a very mild
+assumption of disallowing the case where all our data are constant.  
+
+We also assume that
+\begin{equation}
+  B = \max_{\pi} \bar{u}_2^2 < 1.
+\end{equation}
+This rejects situations like $(1, 1, \ldots, -1, -1)$.
+
+\section{Preliminaries}
+Here we collect useful bounds and other results.
+
+In order to bound various moments of $\bar{u}_2$ under the permutation
+distribution, we use a result of Serfling's
+\cite{serfling1974probability}:
+\begin{theorem}
+  Consider sampling without replacement from a finite list of values
+  $u_1, \ldots, u_{2N}$.  Let $a = \min_i u_i$ and $b = \max_i u_i$.
+  Then for $p > 0$,
+  \begin{align}
+    \E [\bar{u}_2^p] 
+    &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
+    \left [ \frac{N+1}{2N}(b-a)^2 \right ]^{p/2}
+    (2N)^{-p/2} \nonumber \\
+    &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
+    \left [ \frac{N+1}{4N}(b-a)^2 \right ]^{p/2}
+    (N)^{-p/2} \nonumber \\
+    &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
+    \left [ \frac{1}{2}(b-a)^2 \right ]^{p/2}
+    N^{-p/2} \nonumber \\
+    &:= f_{c_1}(p)N^{-p/2} \label{def:serfling}.
+  \end{align}
+\end{theorem}
+
+By assumption,
+\begin{align}
+  d^{-p} &= \frac{1}{(2N(1-\bar{u}_2^2))^{p/2}} \nonumber \\
+  &\leq \frac{1}{(2N(1-B^2))^{p/2}} \nonumber \\
+  &= \frac{1}{(2(1-B^2))^{p/2}}N^{-p/2} \nonumber \\
+  &:= f_{c_2}(p) N^{-p/2} \label{def:dp}.
+\end{align}
+
+The transposition $(I, J)$ also affects the denominator of $T'$, and we need to quantify the
+difference between the denominators of $T$ and $T'$.  
+\begin{align*}
+    d^2 &= \sum_{i=1}^N (u_i - \bar{u}_1)^2 + \sum_{i=N+1}^{2N} (u_i -
+    \bar{u}_2)^2 = \sum_{i=1}^{2N} u_i^2 - N \bar{u}_1^2 - N
+    \bar{u}_2^2 \\
+    d'^2 &= \sum_{i=1}^{2N} u_i^2 - N \bar{u}_1'^2 - N \bar{u}_2'^2,  
+\end{align*}
+where
+\begin{equation*}
+  \label{eq:6}
+  \bar{u}_1' = \bar{u}_1 - \frac{1}{N}u_I + \frac{1}{N}u_J \text{ and }
+  \bar{u}_2' = \bar{u}_2 - \frac{1}{N}u_J + \frac{1}{N}u_I.
+\end{equation*}
+
+So, 
+\begin{equation*}
+  \label{eq:7}
+  \bar{u}_1'^2 = \bar{u}_1^2 + \frac{2\bar{u}_1}{N}(u_J-u_I) +
+  \frac{1}{N^2}(u_J-u_I)^2
+\end{equation*}
+and
+\begin{equation*}
+  \label{eq:8}
+  \bar{u}_2'^2 = \bar{u}_2^2 + \frac{2\bar{u}_2}{N}(u_I-u_J) +
+  \frac{1}{N^2}(u_I-u_J)^2.
+\end{equation*}
+
+Since $\sum u_i = 0$, $\bar{u}_1 = -\bar{u}_2$, so
+\begin{align*}
+  h &= d^2-d'^2 \\
+  &= -N \bar{u}_1^2 -N \bar{u}_2^2 + N\bar{u}_1^{'2} + N\bar{u}_2^{'2} \\
+  &= 2\bar{u}_1(u_J-u_I) + 2\bar{u}_2(u_I-u_J)+\frac{2}{N}(u_I-u_J)^2 \\
+  &= 4\bar{u}_2(u_I-u_J) + \frac{2}{N}(u_I-u_J)^2
+\end{align*}
+
+Therefore,
+\begin{align}
+  \E[h^p] &= \E \left [ \left | 4\bar{u}_2(u_I-u_J) +
+      \frac{2}{N}(u_I-u_J)^2 \right |^p \right ] \nonumber \\
+  &\leq 2^{p-1} \left ( \E[|4\bar{u}_2(u_I-u_J)|^p] 
+    + \E \left [ \left |\frac{2}{N}(u_I-u_J)^2 \right |^p \right ]
+  \right ) \nonumber \\
+  &\leq 2^{p-1}\left [ (4(b-a))^p \E \left | \bar{u}_2 \right |^p
+    + \left ( \frac{2}{N}(b-a)^2 \right )^p \right ] \nonumber \\
+  &\leq 2^{p-1} (4(b-a))^p f_{c_1}(p)N^{-p/2} +
+  2^{p-1}(2(b-a)^2)^pN^{-p/2}N^{-p/2} \nonumber \\
+  &\leq (2^{p-1} (4(b-a))^p f_{c_1}(p)N^{-p/2} +
+  2^{p-1}(2(b-a)^2)^p)N^{-p/2} \nonumber \\
+  &:= f_{c_3}(p)N^{-p/2} \label{def:hp}.
+\end{align}
+
+Now we consider the difference $d-d'$.  For a given $d$ (which grows
+linearly), consider $d'$ as a function of the difference:
+\begin{equation*}
+  d' = \sqrt{d^2-h} = f(h) = f(0) + f'(0) h + \ldots = d -
+  \frac{h}{2d} + \ldots
+\end{equation*}
+
+The derivative is
+\begin{equation*}
+  f'(h) = \frac{d}{\sqrt{d^2-h}}
+\end{equation*}
+
+By Taylor's theorem, the remainder of the zeroth-order expansion takes
+the form 
+\begin{equation*}
+  R_0(h) = \frac{f'(\xi_L)}{1}h = \frac{-h}{2\sqrt{d^2-\xi_L}}, \quad
+  \text{where } \xi_L \in [0, h].
+\end{equation*}
+
+Here, we are approximating $d'$ by a constant and bounding the error
+by using the first derivative, but it's okay because the square root
+function flattens out and the difference inside the square root is
+probabilistically small.
+
+Now
+\begin{equation*}
+  |d-d'| \leq \frac{|h|}{2\sqrt{d^2-\xi_L}} \leq
+  \frac{|h|}{2\sqrt{d^2-\max(0, h)}}
+\end{equation*}
+
+Recall that $h = d^2 - d'^2$, so 
+\[
+d^2-\max(0, d^2-d'^2) = 
+\begin{cases}
+  d^2 & \text{if } d^2-d'^2 \leq 0 \\
+  d'^2 & \text{if } d^2-d'^2 > 0
+\end{cases}
+\]
+
+Therefore, 
+\begin{equation*}
+  |d-d'| \leq \frac{|h|}{2\min(d, d')} \leq \max \left (
+    \frac{|h|}{2d}, \frac{|h|}{2d'} \right ) \leq 
+  \frac{|h|}{2d} +  \frac{|h|}{2d'}.
+\end{equation*}
+
+The important thing to do is to isolate $|h|$, which is small in
+expectation, but not absolutely.
+\begin{align}
+  \E |d-d'|^p 
+  &\leq 2^{p-1} \left ( \E \left | \frac{h}{2d} \right |^p + \E \left |
+      \frac{h}{2d'} \right |^p \right ) \nonumber \\
+  &\leq 2^{-1} \left ( \E \left | \frac{h}{d} \right |^p + \E \left |
+      \frac{h}{d'} \right |^p \right ) \nonumber \\
+  &\leq 2^{-1} ( \sqrt{\E[h^{2p}]\E[d^{-2p}]} +
+  \sqrt{\E[h^{2p}]\E[d'^{-2p}]} ) \nonumber \\
+  &\leq \sqrt{\E[h^{2p}]\E[d^{-2p}]} \nonumber \\
+  &\leq \sqrt{f_{c_3}(2p)N^{-2p/2} f_{c_2}(2p) N^{-2p/2}} \nonumber \\
+  &\leq \sqrt{f_{c_3}(2p) f_{c_2}(2p)} N^{-p} \nonumber \\
+  &:= f_{c_4}(p) N^{-p} \label{def:ddiffp}.
+\end{align}
+
+With $q = N\bar{u}_1 - N\bar{u_2} = -2N\bar{u_2}$, and noting that $q$ and $q'$ are
+exchangeable,
+\begin{align}
+  \E[q'^p] 
+  &= \E[q^p] \nonumber \\
+  &= \E[(-2N\bar{u}_2)^p] \nonumber \\
+  &= (-2N)^p \E[\bar{u}_2^p] \nonumber \\
+  &\leq 2^pN^p f_{c_1}(p)N^{-p/2} \text{ from } (\ref{def:serfling})
+  \nonumber \\
+  &= 2^p f_{c_1}(p)N^{p/2} \nonumber \\
+  &:= f_{c_5}(p) N^{p/2} \label{def:qp}.
+\end{align}
+
+\begin{align}
+  \E \left [ \left ( \frac{q'}{dd'} \right )^p \right ]
+  &\leq \sqrt{\E |q'|^{2p} \E |dd'|^{-2p}} \nonumber \\
+  &\leq \sqrt{\E |q|^{2p} \sqrt{\E |d|^{-4p} \E |d'|^{-4p}}} \nonumber \\
+  &\leq \sqrt{\E |q|^{2p} \sqrt{\E |d|^{-4p} \E |d|^{-4p}}} \nonumber \\
+  &\leq \sqrt{\E |q|^{2p} \E |d|^{-4p}} \nonumber \\ 
+  &\leq \sqrt{f_{c_5}(2p) N^{2p/2} f_{c_2}(4p) N^{-4p/2}} \text{ from
+  } (\ref{def:qp}) \text{ and } (\ref{def:dp}) \nonumber \\
+  &\leq \sqrt{f_{c_5}(2p) f_{c_2}(4p)} N^{-p/2} \nonumber \\
+  &:= f_{c_6}(p) N^{-p/2} \label{def:qpddp}.
+\end{align}

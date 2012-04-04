@@ -2,4 +2,10 @@
 \contentsline {section}{\numberline {1.1}Introduction}{1}
 \contentsline {section}{\numberline {1.2}Hoeffding combinatorial CLT}{2}
 \contentsline {section}{\numberline {1.3}Exchangeable Pairs}{7}
-\contentsline {subsection}{\numberline {1.3.1}Preliminaries}{7}
+\contentsline {section}{\numberline {1.4}Preliminaries}{7}
+\contentsline {section}{\numberline {1.5}Main Theorem}{9}
+\contentsline {chapter}{\numberline {2}Main Proof}{15}
+\contentsline {section}{\numberline {2.1}Set-up}{15}
+\contentsline {section}{\numberline {2.2}Assumptions}{16}
+\contentsline {section}{\numberline {2.3}Preliminaries}{17}
+\contentsline {chapter}{References}{23}
