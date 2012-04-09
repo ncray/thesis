@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  8 APR 2012 10:41
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  9 APR 2012 16:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -413,55 +413,91 @@ Chapter 2.
 
 
 
-] [16]
+]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [17]
-[18]
+ [16]
+[17]
+Underfull \vbox (badness 2564) has occurred while \output is active []
+
+ [18]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [19]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 4429) has occurred while \output is active []
 
  [20]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [21]
-[22]
+Underfull \vbox (badness 6016) has occurred while \output is active []
+
+ [22]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [24]
-[25]
+[24] [25]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26]
+Overfull \hbox (8.45337pt too wide) in paragraph at lines 433--433
+[] 
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [27]
-Overfull \hbox (55.17451pt too wide) in paragraph at lines 471--471
+Overfull \hbox (115.07945pt too wide) in paragraph at lines 476--476
 [] 
  []
 
 
-Underfull \vbox (badness 2744) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [28]
-
-LaTeX Warning: Reference `def:ttpcubed' on page 29 undefined on input line 525.
-
-
-
-Overfull \hbox (53.14948pt too wide) in paragraph at lines 547--547
+Overfull \hbox (25.5586pt too wide) in paragraph at lines 504--504
 [] 
  []
 
-[29]) [30]
+
+Overfull \hbox (12.7959pt too wide) detected at line 529
+[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 X\OT1/cmr/m/n/12 ) = (\OML/cmm/m/it/12 f[]\
+OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] []\OT1/cmr/m/n/12 (\U/msb/m/n/12 E\OT
+1/cmr/m/n/12 [(2\OML/cmm/m/it/12 u[] \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 2\OML
+/cmm/m/it/12 u[]\OT1/cmr/m/n/12 )[]\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 ^^Y\OT1/c
+mr/m/n/12 ]) \OMS/cmsy/m/n/12 ^^T \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 f[]\OT1/cmr
+/m/n/12 (2))[]\OML/cmm/m/it/12 N[] [] :
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [29]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [30]
+
+LaTeX Warning: Reference `def:ttpcubed' on page 31 undefined on input line 576.
+
+
+
+Overfull \hbox (73.79155pt too wide) in paragraph at lines 598--598
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+[32]) [33]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl
+ (./bibliography.tex (./thesis.bbl [34
+
+
+
+]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -471,11 +507,7 @@ Missing character: There is no ™ in font cmr12!
 Missing character: There is no â in font cmti12!
 Missing character: There is no € in font cmti12!
 Missing character: There is no ™ in font cmti12!
- [31
-
-
-
-])) [32] (./thesis.aux
+ [35])) [36] (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
 (./bibliography.aux))
 
@@ -483,10 +515,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3210 strings out of 493738
- 42024 string characters out of 3135951
- 110536 words of memory out of 3000000
- 6401 multiletter control sequences out of 15000+200000
+ 3212 strings out of 493738
+ 42049 string characters out of 3135951
+ 110561 words of memory out of 3000000
+ 6403 multiletter control sequences out of 15000+200000
  12380 words of font info for 45 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  38i,19n,24p,232b,325s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -508,10 +540,10 @@ e/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></h0a
 /stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti
 12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsf
 onts/symbols/msbm10.pfb>
-Output written on thesis.pdf (38 pages, 244876 bytes).
+Output written on thesis.pdf (42 pages, 254648 bytes).
 PDF statistics:
- 189 PDF objects out of 1000 (max. 8388607)
- 132 compressed objects within 2 object streams
+ 201 PDF objects out of 1000 (max. 8388607)
+ 140 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

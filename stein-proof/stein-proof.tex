@@ -35,72 +35,90 @@ We use Stein's method of exchangeable pairs to prove a conservative bound of $O(
 rate of convergence of the randomization $t$ distribution to the standard normal distribution.
 
 \section{Set-up}
-We observe two samples with equal sample size: $\{u_i\}_{i=1}^N$ and $\{u_i\}_{i=N+1}^{2N}$.
+We observe two samples with equal sample size: $S_1 = \{u_i\}_{i=1}^N$ and $S_2 =
+\{u_i\}_{i=N+1}^{2N}$.  Since we consider the $t$-statistic under different permutations, it will be
+convenient to re-write the sample values relative to the null permutation $\pi_0$: $S_1 =
+\{u_{\pi_0(i)}\}_{i=1}^N$ and $S_2 = \{u_{\pi_0(i)}\}_{i=N+1}^{2N}$.
 Student's two-sample $t$-statistic is given by
 \begin{align*}
-T(\{u_i\}_{i=1}^N, \{u_i\}_{i=N+1}^{2N}) 
-&= \frac{\bar{u}_1 - \bar{u}_2}{\sqrt{\frac{\frac{1}{N-1}
-      \sum_{i=1}^N(u_i - \bar{u}_1)^2}{N} + \frac{\frac{1}{N-1}
-      \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}{N}}} \\
-&= \frac{1}{\sqrt{\frac{N}{N-1}}} \frac{\sum_{i=1}^N u_i -
-  \sum_{i=N+1}^{2N}u_i}{\sqrt{\sum_{i=1}^N(u_i - 
-    \bar{u}_1)^2 + \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}} \\
-&= \sqrt{\frac{N-1}{N}}\frac{q}{d},
+T_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N}) 
+&= \frac{\bar{u}_{1,\Pi} - \bar{u}_{2,\Pi}}{\sqrt{\frac{\frac{1}{N-1}
+      \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2}{N} + \frac{\frac{1}{N-1}
+      \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}{N}}} \\
+&= \frac{1}{\sqrt{\frac{N}{N-1}}} \frac{\sum_{i=1}^N u_{\Pi(i)} -
+  \sum_{i=N+1}^{2N}u_{\Pi(i)}}{\sqrt{\sum_{i=1}^N(u_{\Pi(i)} - 
+    \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}} \\
+&= \sqrt{\frac{N-1}{N}}\frac{q_\Pi}{d_\Pi},
 \end{align*}
 where
 \begin{align*}
-  q &= \left (\sum_{i=1, i\neq I}^N u_i + u_I -
-    \sum_{i=N+1, i\neq J}^{2N}u_i - u_J\right ) \\
-  d &= \sqrt{\sum_{i=1}^N(u_i - \bar{u}_1)^2 +
-    \sum_{i=N+1}^{2N}(u_i - \bar{u}_2)^2}.
+  q_\Pi &= \left (\sum_{i=1, i\neq I}^N u_{\Pi(i)} + u_{\Pi(I)} -
+    \sum_{i=N+1, i\neq J}^{2N}u_{\Pi(i)} - u_{\Pi(J)}\right ) \\
+  d_\Pi &= \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 +
+    \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}.
 \end{align*}
 
-In order to perform hypothesis testing, we would like to know the randomization distribution of $T$.
-We shall create an exchangeable pair $(T, T')$ by considering a uniformly random transposition $(I,
-J)$.  WLOG, take $I \leq J$.  We apply this transposition to the group labels.  Note that if $I, J
-\in \{1,\ldots,N\}$ or $I, J \in \{N+1,\ldots,2N\}$ then $T' = T$, where $T'$ is the $t$-statistic
-under this random transposition.  That is, the $t$-statistic is invariant to within-group
-transpositions: the only changes occur when $1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$.
-With this in mind, let's redefine our transposition to be uniformly at random over the $N^2$ cases
-where $1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$. Thus,
+In order to perform hypothesis testing, we compute the observed value of $T_{\Pi=\pi_0}$ and compare
+that with the randomization distribution of $T_{\Pi}$.  We shall create an exchangeable pair $(T, T')$
+by considering a uniformly random transposition $(I, J)$.  WLOG, take $I \leq J$.  We apply this
+transposition to the group labels.  Note that if $I, J \in \{1,\ldots,N\}$ or $I, J \in
+\{N+1,\ldots,2N\}$ then $T' = T$, where $T'$ is the $t$-statistic under this random transposition.
+That is, the $t$-statistic is invariant to within-group transpositions: the only changes occur when
+$1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$.  With this in mind, let's redefine our transposition
+to be uniformly at random over the $N^2$ cases where $1 \leq I \leq N$ and $N + 1 \leq J \leq
+2N$. Thus,
 \begin{align*}
-  T'(\{u_i\}_{i=1}^N, \{u_i\}_{i=N+1}^{2N}) 
-  &= \sqrt{\frac{N-1}{N}}\frac{q'}{d'} \\
-  q' &= \left (\sum_{i=1, i\neq I}^N u_i + u_J -
-    \sum_{i=N+1, i\neq J}^{2N}u_i - u_I \right ) \\
-  &= q - 2u_I + 2u_J \\
-  d' &= \sqrt{\sum_{i=1}^N(u_i - \bar{u}'_1)^{2} +
-    \sum_{i=N+1}^{2N}(u_i - \bar{u}'_2)^{2}}.  
+  T'_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N}) 
+  &= \sqrt{\frac{N-1}{N}}\frac{q'_{\Pi}}{d'_{\Pi}} \\
+  q'_{\Pi} &= \left (\sum_{i=1, i\neq I}^N u_{\Pi(i)} + u_{\Pi(J)} -
+    \sum_{i=N+1, i\neq J}^{2N}u_{\Pi(i)} - u_{\Pi(I)} \right ) \\
+  &= q_{\Pi} - 2u_{\Pi(I)} + 2u_{\Pi(J)} \\
+  d'_{\Pi} &= \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}'_{1, \Pi})^{2} +
+    \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}'_{2, \Pi})^{2}}.  
 \end{align*}
 
 \section{Assumptions}
 Recall that the $t$-statistic is invariant up to sign under linear transformations, so we can
-mean-center and scale so that $\sum_{i=1}^{2N} u_i = 0$ and $\sum_{i=1}^{2N} u_i^2 = 2N$.  The
+mean-center and scale so that $\sum_{i=1}^{2N} u_{i} = 0$ and $\sum_{i=1}^{2N} u_{i}^2 = 2N$.  The
 proper transformation is 
 \begin{equation}
-  z_i = \sqrt{\frac{2N}{\sum (u_i - \bar{u})^2}}(u_i-\bar{u}), 
+  z_i = \sqrt{\frac{2N}{\sum (u_{i} - \bar{u})^2}}(u_{i}-\bar{u}), 
 \end{equation}
-so we just consider the $u_i$'s as having been transformed.  This can be seen as a very mild
+so we just consider the $u_{i}$'s as having been transformed.  This can be seen as a very mild
 assumption of disallowing the case where all our data are constant.  
 
-We also assume that
+We also assume that the pooled sample standard deviation is non-zero for all permutations:
 \begin{equation}
-  B = \max_{\pi} \bar{u}_2^2 < 1.
+  \label{A:non-zero-std-dev}
+  d_\Pi = \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} -
+    \bar{u}_{2,\Pi})^2} > 0
 \end{equation}
-This rejects situations like $(1, 1, \ldots, -1, -1)$.
+The estimate is zero if and only if there is a grouping that is constant in each group.  The
+condition also implies that the sample mean for any group is strictly less than 1.
+\begin{align*}
+  0 &< \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} -
+    \bar{u}_{2,\Pi})^2} \\
+  &= \sqrt{\sum_{i=1}^{2N} u_{\Pi(i)} - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}} \\
+  &\leq \sum_{i=1}^{2N} u_{\Pi(i)} - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
+  &= 2N - N \bar{u}_{2,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
+  &= 2N(1 - \bar{u}_{2,\Pi}^2)
+\end{align*}
+It follows that $\bar{u}_{2,\Pi}^2 < 1$.  Let
+\begin{equation}
+  \label{A:B}
+  B = \max_\Pi \bar{u}_{2,\Pi}^2 < 1.
+\end{equation}
 
 \section{Preliminaries}
-Here we collect useful bounds and other results.
-
-In order to bound various moments of $\bar{u}_2$ under the permutation
-distribution, we use a result of Serfling's
+Here we collect useful bounds and other results.  In order to bound various moments of
+$\bar{u}_{2,\Pi}$ under the permutation distribution, we use a result of Serfling's
 \cite{serfling1974probability}:
-\begin{theorem}
+\begin{proposition}
   Consider sampling without replacement from a finite list of values
-  $u_1, \ldots, u_{2N}$.  Let $a = \min_i u_i$ and $b = \max_i u_i$.
+  $u_1, \ldots, u_{2N}$.  Let $a = \min_i u_{i}$ and $b = \max_i u_{i}$.
   Then for $p > 0$,
   \begin{align}
-    \E [\bar{u}_2^p] 
+    \E [\bar{u}_{2,\Pi}^p] 
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
     \left [ \frac{N+1}{2N}(b-a)^2 \right ]^{p/2}
     (2N)^{-p/2} \nonumber \\
@@ -112,11 +130,11 @@ distribution, we use a result of Serfling's
     N^{-p/2} \nonumber \\
     &:= f_{c_1}(p)N^{-p/2} \label{def:serfling}.
   \end{align}
-\end{theorem}
+\end{proposition}
 
-By assumption,
+By assumption~\eqref{A:B},
 \begin{align}
-  d^{-p} &= \frac{1}{(2N(1-\bar{u}_2^2))^{p/2}} \nonumber \\
+  d^{-p} &= \frac{1}{(2N(1-\bar{u}_{2,\Pi}^2))^{p/2}} \nonumber \\
   &\leq \frac{1}{(2N(1-B^2))^{p/2}} \nonumber \\
   &= \frac{1}{(2(1-B^2))^{p/2}}N^{-p/2} \nonumber \\
   &:= f_{c_2}(p) N^{-p/2} \label{def:dp}.
@@ -125,44 +143,43 @@ By assumption,
 The transposition $(I, J)$ also affects the denominator of $T'$, and we need to quantify the
 difference between the denominators of $T$ and $T'$.  
 \begin{align*}
-    d^2 &= \sum_{i=1}^N (u_i - \bar{u}_1)^2 + \sum_{i=N+1}^{2N} (u_i -
-    \bar{u}_2)^2 = \sum_{i=1}^{2N} u_i^2 - N \bar{u}_1^2 - N
-    \bar{u}_2^2 \\
-    d'^2 &= \sum_{i=1}^{2N} u_i^2 - N \bar{u}_1'^2 - N \bar{u}_2'^2,  
+    d_{\Pi}^2 &= \sum_{i=1}^N (u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N} (u_{\Pi(i)} -
+    \bar{u}_{2,\Pi})^2 = \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
+    d_{\Pi}'^2 &= \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}'^2 - N \bar{u}_{2,\Pi}'^2,  
 \end{align*}
 where
 \begin{equation*}
   \label{eq:6}
-  \bar{u}_1' = \bar{u}_1 - \frac{1}{N}u_I + \frac{1}{N}u_J \text{ and }
-  \bar{u}_2' = \bar{u}_2 - \frac{1}{N}u_J + \frac{1}{N}u_I.
+  \bar{u}_{1,\Pi}' = \bar{u}_{1,\Pi} - \frac{1}{N}u_{\Pi(I)} + \frac{1}{N}u_{\Pi(J)} \text{ and }
+  \bar{u}_{2,\Pi}' = \bar{u}_{2,\Pi} - \frac{1}{N}u_{\Pi(J)} + \frac{1}{N}u_{\Pi(I)}.
 \end{equation*}
 So, 
 \begin{equation*}
   \label{eq:7}
-  \bar{u}_1'^2 = \bar{u}_1^2 + \frac{2\bar{u}_1}{N}(u_J-u_I) +
-  \frac{1}{N^2}(u_J-u_I)^2
+  \bar{u}_{1,\Pi}'^2 = \bar{u}_{1,\Pi}^2 + \frac{2\bar{u}_{1,\Pi}}{N}(u_{\Pi(J)}-u_{\Pi(I)}) +
+  \frac{1}{N^2}(u_{\Pi(J)}-u_{\Pi(I)})^2
 \end{equation*}
 and
 \begin{equation*}
   \label{eq:8}
-  \bar{u}_2'^2 = \bar{u}_2^2 + \frac{2\bar{u}_2}{N}(u_I-u_J) +
-  \frac{1}{N^2}(u_I-u_J)^2.
+  \bar{u}_{2,\Pi}'^2 = \bar{u}_{2,\Pi}^2 + \frac{2\bar{u}_{2,\Pi}}{N}(u_{\Pi(I)}-u_{\Pi(J)}) +
+  \frac{1}{N^2}(u_{\Pi(I)}-u_{\Pi(J)})^2.
 \end{equation*}
-Since $\sum u_i = 0$, $\bar{u}_1 = -\bar{u}_2$, so
+Since $\sum u_{\Pi(i)} = 0$, $\bar{u}_{1,\Pi} = -\bar{u}_{2,\Pi}$, so
 \begin{align*}
-  h &= d^2-d'^2 \\
-  &= -N \bar{u}_1^2 -N \bar{u}_2^2 + N\bar{u}_1^{'2} + N\bar{u}_2^{'2} \\
-  &= 2\bar{u}_1(u_J-u_I) + 2\bar{u}_2(u_I-u_J)+\frac{2}{N}(u_I-u_J)^2 \\
-  &= 4\bar{u}_2(u_I-u_J) + \frac{2}{N}(u_I-u_J)^2
+  h_{\Pi} &= d_{\Pi}^2-d_{\Pi}'^2 \\
+  &= -N \bar{u}_{1,\Pi}^2 -N \bar{u}_{2,\Pi}^2 + N\bar{u}_{1,\Pi}^{'2} + N\bar{u}_{2,\Pi}^{'2} \\
+  &= 2\bar{u}_{1,\Pi}(u_{\Pi(J)}-u_{\Pi(I)}) + 2\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)})+\frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \\
+  &= 4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)}) + \frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2
 \end{align*}
 Therefore,
 \begin{align}
-  \E[h^p] &= \E \left [ \left | 4\bar{u}_2(u_I-u_J) +
-      \frac{2}{N}(u_I-u_J)^2 \right |^p \right ] \nonumber \\
-  &\leq 2^{p-1} \left ( \E[|4\bar{u}_2(u_I-u_J)|^p] 
-    + \E \left [ \left |\frac{2}{N}(u_I-u_J)^2 \right |^p \right ]
+  \E[h_{\Pi}^p] &= \E \left [ \left | 4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)}) +
+      \frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \right ] \nonumber \\
+  &\leq 2^{p-1} \left ( \E[|4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)})|^p] 
+    + \E \left [ \left |\frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \right ]
   \right ) \nonumber \\
-  &\leq 2^{p-1}\left [ (4(b-a))^p \E \left | \bar{u}_2 \right |^p
+  &\leq 2^{p-1}\left [ (4(b-a))^p \E \left | \bar{u}_{2,\Pi} \right |^p
     + \left ( \frac{2}{N}(b-a)^2 \right )^p \right ] \nonumber \\
   &\leq 2^{p-1} (4(b-a))^p f_{c_1}(p)N^{-p/2} +
   2^{p-1}(2(b-a)^2)^pN^{-p/2}N^{-p/2} \nonumber \\
@@ -171,87 +188,79 @@ Therefore,
   &:= f_{c_3}(p)N^{-p/2} \label{def:hp}.
 \end{align}
 
-Now we consider the difference $d-d'$.  For a given $d$ (which grows
-linearly), consider $d'$ as a function of the difference:
+Now we establish a bound on the difference $d_{\Pi}-d_{\Pi}'$ via a bound on the remainder of a
+zeroth order Taylor approximation.  Write
 \begin{equation*}
-  d' = \sqrt{d^2-h} = f(h) = f(0) + f'(0) h + \ldots = d -
-  \frac{h}{2d} + \ldots
-\end{equation*}
-
-The derivative is
-\begin{equation*}
-  f'(h) = \frac{d}{\sqrt{d^2-h}}
+  d_{\Pi}' = \sqrt{d_{\Pi}^2-h_{\Pi}} = f(h_{\Pi}) = f(0) + R_0(h_{\Pi}) = d_{\Pi} + R_0(h_{\Pi})
 \end{equation*}
 
 By Taylor's theorem, the remainder of the zeroth-order expansion takes
 the form 
 \begin{equation*}
-  R_0(h) = \frac{f'(\xi_L)}{1}h = \frac{-h}{2\sqrt{d^2-\xi_L}}, \quad
-  \text{where } \xi_L \in [0, h].
+  R_0(h_{\Pi}) = \frac{f'(\xi_L)}{1}h_{\Pi} = \frac{-h_{\Pi}}{2\sqrt{d_{\Pi}^2-\xi_L}}, \quad
+  \text{where } \xi_L \in [0, h_{\Pi}].
 \end{equation*}
 
-Here, we are approximating $d'$ by a constant and bounding the error
+Here, we are approximating $d_{\Pi}'$ by a constant and bounding the error
 by using the first derivative, but it's okay because the square root
 function flattens out and the difference inside the square root is
 probabilistically small.
 
 Now
 \begin{equation*}
-  |d-d'| \leq \frac{|h|}{2\sqrt{d^2-\xi_L}} \leq
-  \frac{|h|}{2\sqrt{d^2-\max(0, h)}}
+  |d_{\Pi}-d_{\Pi}'| \leq |R_0(h_{\Pi})| \leq \frac{|h_{\Pi}|}{2\sqrt{d_{\Pi}^2-\xi_L}} \leq
+  \frac{|h_{\Pi}|}{2\sqrt{d_{\Pi}^2-\max(0, h_{\Pi})}}
 \end{equation*}
 
-Recall that $h = d^2 - d'^2$, so 
-\[
-d^2-\max(0, d^2-d'^2) = 
-\begin{cases}
-  d^2 & \text{if } d^2-d'^2 \leq 0 \\
-  d'^2 & \text{if } d^2-d'^2 > 0
-\end{cases}
-\]
-
+Recall that $h_{\Pi} = d_{\Pi}^2 - d_{\Pi}'^2$, so 
+\begin{equation*}
+  d_{\Pi}^2-\max(0, d_{\Pi}^2-d_{\Pi}'^2) = 
+  \begin{cases}
+    d_{\Pi}^2 & \text{if } d_{\Pi}^2-d_{\Pi}'^2 \leq 0 \\
+    d_{\Pi}'^2 & \text{if } d_{\Pi}^2-d_{\Pi}'^2 > 0
+  \end{cases}  
+\end{equation*}
 Therefore, 
 \begin{equation*}
-  |d-d'| \leq \frac{|h|}{2\min(d, d')} \leq \max \left (
-    \frac{|h|}{2d}, \frac{|h|}{2d'} \right ) \leq 
-  \frac{|h|}{2d} +  \frac{|h|}{2d'}.
+  |d_{\Pi}-d_{\Pi}'| \leq \frac{|h_{\Pi}|}{2\min(d_{\Pi}, d_{\Pi}')} \leq \max \left (
+    \frac{|h_{\Pi}|}{2d_{\Pi}}, \frac{|h_{\Pi}|}{2d_{\Pi}'} \right ) \leq 
+  \frac{|h_{\Pi}|}{2d_{\Pi}} +  \frac{|h_{\Pi}|}{2d_{\Pi}'}.
 \end{equation*}
 
-The important thing to do is to isolate $|h|$, which is small in
+The important thing to do is to isolate $|h_{\Pi}|$, which is small in
 expectation, but not absolutely.
 \begin{align}
-  \E |d-d'|^p 
-  &\leq 2^{p-1} \left ( \E \left | \frac{h}{2d} \right |^p + \E \left |
-      \frac{h}{2d'} \right |^p \right ) \nonumber \\
-  &\leq 2^{-1} \left ( \E \left | \frac{h}{d} \right |^p + \E \left |
-      \frac{h}{d'} \right |^p \right ) \nonumber \\
-  &\leq 2^{-1} ( \sqrt{\E[h^{2p}]\E[d^{-2p}]} +
-  \sqrt{\E[h^{2p}]\E[d'^{-2p}]} ) \nonumber \\
-  &\leq \sqrt{\E[h^{2p}]\E[d^{-2p}]} \nonumber \\
+  \E |d_{\Pi}-d_{\Pi}'|^p 
+  &\leq 2^{p-1} \left ( \E \left | \frac{h_{\Pi}}{2d_{\Pi}} \right |^p + \E \left |
+      \frac{h_{\Pi}}{2d_{\Pi}'} \right |^p \right ) \nonumber \\
+  &\leq 2^{-1} \left ( \E \left | \frac{h_{\Pi}}{d_{\Pi}} \right |^p + \E \left |
+      \frac{h_{\Pi}}{d_{\Pi}'} \right |^p \right ) \nonumber \\
+  &\leq 2^{-1} ( \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} +
+  \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}'^{-2p}]} ) \nonumber \\
+  &\leq \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} \nonumber \\
   &\leq \sqrt{f_{c_3}(2p)N^{-2p/2} f_{c_2}(2p) N^{-2p/2}} \nonumber \\
   &\leq \sqrt{f_{c_3}(2p) f_{c_2}(2p)} N^{-p} \nonumber \\
   &:= f_{c_4}(p) N^{-p} \label{def:ddiffp}.
 \end{align}
 
-With $q = N\bar{u}_1 - N\bar{u_2} = -2N\bar{u_2}$, and noting that $q$ and $q'$ are
-exchangeable,
+With $q_{\Pi} = N\bar{u}_{1,\Pi} - N\bar{u}_{2,\Pi} = -2N\bar{u}_{2,\Pi}$, and noting that $q_{\Pi}$
+and $q_{\Pi}'$ are exchangeable,
 \begin{align}
-  \E[q'^p] 
-  &= \E[q^p] \nonumber \\
-  &= \E[(-2N\bar{u}_2)^p] \nonumber \\
-  &= (-2N)^p \E[\bar{u}_2^p] \nonumber \\
-  &\leq 2^pN^p f_{c_1}(p)N^{-p/2} \text{ from } (\ref{def:serfling})
-  \nonumber \\
+  \E[q_{\Pi}'^p] 
+  &= \E[q_{\Pi}^p] \nonumber \\
+  &= \E[(-2N\bar{u}_{2,\Pi})^p] \nonumber \\
+  &= (-2N)^p \E[\bar{u}_{2,\Pi}^p] \nonumber \\
+  &\leq 2^pN^p f_{c_1}(p)N^{-p/2} \text{ from } (\ref{def:serfling}) \nonumber \\
   &= 2^p f_{c_1}(p)N^{p/2} \nonumber \\
   &:= f_{c_5}(p) N^{p/2} \label{def:qp}.
 \end{align}
 
 \begin{align}
-  \E \left [ \left ( \frac{q'}{dd'} \right )^p \right ]
-  &\leq \sqrt{\E |q'|^{2p} \E |dd'|^{-2p}} \nonumber \\
-  &\leq \sqrt{\E |q|^{2p} \sqrt{\E |d|^{-4p} \E |d'|^{-4p}}} \nonumber \\
-  &\leq \sqrt{\E |q|^{2p} \sqrt{\E |d|^{-4p} \E |d|^{-4p}}} \nonumber \\
-  &\leq \sqrt{\E |q|^{2p} \E |d|^{-4p}} \nonumber \\ 
+  \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]
+  &\leq \sqrt{\E |q_{\Pi}'|^{2p} \E |d_{\Pi}d_{\Pi}'|^{-2p}} \nonumber \\
+  &\leq \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}'|^{-4p}}} \nonumber \\
+  &\leq \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}|^{-4p}}} \nonumber \\
+  &\leq \sqrt{\E |q_{\Pi}|^{2p} \E |d_{\Pi}|^{-4p}} \nonumber \\ 
   &\leq \sqrt{f_{c_5}(2p) N^{2p/2} f_{c_2}(4p) N^{-4p/2}} \text{ from
   } (\ref{def:qp}) \text{ and } (\ref{def:dp}) \nonumber \\
   &\leq \sqrt{f_{c_5}(2p) f_{c_2}(4p)} N^{-p/2} \nonumber \\
@@ -259,52 +268,52 @@ exchangeable,
 \end{align}
 
 \section{Proof}
-$T$ and $T'$ are exchangeable by construction.  $T$ (and thus $T'$ by
-exchangeability) has mean zero by symmetry ($P(T = t) = P(T = -t)$ by
+$T_{\Pi}$ and $T_{\Pi}'$ are exchangeable by construction.  $T_{\Pi}$ (and thus $T_{\Pi}'$ by
+exchangeability) has mean zero by symmetry ($P(T_{\Pi} = t) = P(T_{\Pi} = -t)$ by
 switching groups).
 
 \begin{proposition}
-  $|\var(T)-1| \leq cN^{-1}$ for some $c>0$.
+  $|\var(T_{\Pi})-1| \leq cN^{-1}$ for some $c>0$.
 \end{proposition}
 \begin{proof}
   \begin{align}
-    \var(T) &= \E[T^2] \nonumber \\
+    \var(T_{\Pi}) &= \E[T_{\Pi}^2] \nonumber \\
     &= \E \left [\frac{N-1}{N} \frac{
-        (\sum_{i=1}^N u_i - \sum_{i=N+1}^{2N}u_i)^2}
-      {\sum_{i=1}^{2N}u_i^2-N\bar{u}_1^2-N\bar{u}_2^2} \right ] \nonumber \\
+        (\sum_{i=1}^N u_{\Pi(i)} - \sum_{i=N+1}^{2N}u_{\Pi(i)})^2}
+      {\sum_{i=1}^{2N}u_{\Pi(i)}^2-N\bar{u}_{1,\Pi}^2-N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
     &= \frac{N-1}{N} \E \left [\frac{
-        (N\bar{u}_1-N\bar{u}_2)^2}
-      {\sum_{i=1}^{2N}u_i^2-N\bar{u}_1^2-N\bar{u}_2^2} \right ] \nonumber \\
+        (N\bar{u}_{1,\Pi}-N\bar{u}_{2,\Pi})^2}
+      {\sum_{i=1}^{2N}u_{\Pi(i)}^2-N\bar{u}_{1,\Pi}^2-N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
     &= (N-1)\E \left [\frac{
-        4 N\bar{u}_2^2}{2N-2N\bar{u}_2^2} \right ] \nonumber \\
+        4 N\bar{u}_{2,\Pi}^2}{2N-2N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
     &= 2(N-1)\E \left [\frac{
-        \bar{u}_2^2}{1-\bar{u}_2^2} \right ] \nonumber \\
-    &= 2(N-1) \E[g(\bar{u}_2)], \label{def:varT}
+        \bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
+    &= 2(N-1) \E[g(\bar{u}_{2,\Pi})], \label{def:varT}
   \end{align}
   where $g(x) = \frac{x^2}{1-x^2}$. 
 
-  Mean-centering the $u_i$ has the effect of mean-centering $\bar{u}_2$:
+  Mean-centering the $u_{\Pi(i)}$ has the effect of mean-centering $\bar{u}_{2,\Pi}$:
   \begin{equation*}
-    \E[\bar{u}_2] = 
-    \frac{1}{N} \E \left [ \sum_{i=N+1}^{2N} u_i \right ] = 
-    \frac{1}{N} \sum_{i=N+1}^{2N} \E[u_i] = 
-    \frac{1}{N} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{i=1}^N u_i = 0
+    \E[\bar{u}_{2,\Pi}] = 
+    \frac{1}{N} \E \left [ \sum_{i=N+1}^{2N} u_{\Pi(i)} \right ] = 
+    \frac{1}{N} \sum_{i=N+1}^{2N} \E[u_{\Pi(i)}] = 
+    \frac{1}{N} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{j=1}^{2N} u_{\Pi(j)} = 0
   \end{equation*}
-  Under independence, $\var(\bar{u}_2)$ would be $\frac{1}{N}$ given
+  Under independence, $\var(\bar{u}_{2,\Pi})$ would be $\frac{1}{N}$ given
   the scaling.  However, the negative dependence induced by the
   permutation structure approximately halves this value.
-  The scaling is such that $\var(u_i) = 1$.  Under independence and
-  with $i \neq j$, $\var(u_i + u_j) = 2$.  Summing only 2 (out of $2N$)
-  values under permutation dependence, $\var(u_i + u_j) = 2 - \frac{2}{2N-1}$.
+  The scaling is such that $\var(u_{\Pi(i)}) = 1$.  Under independence and
+  with $i \neq j$, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2$.  Summing only 2 (out of $2N$)
+  values under permutation dependence, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2 - \frac{2}{2N-1}$.
   \begin{align*}
-    \var(\bar{u}_2) 
-    &= \frac{1}{N^2} \E \left [\left (\sum_{i=N+1}^{2N}u_i\right
+    \var(\bar{u}_{2,\Pi}) 
+    &= \frac{1}{N^2} \E \left [\left (\sum_{i=N+1}^{2N}u_{\Pi(i)}\right
       )^2\right ] \\
-    &= \frac{1}{N^2} \E \left [\sum_{i=N+1}^{2N} u_i^2 +
-    \sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq i}^{2N}u_iu_j \right ] \\
-    &= \frac{1}{N^2} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{j=1}^{2N} u_j^2
+    &= \frac{1}{N^2} \E \left [\sum_{i=N+1}^{2N} u_{\Pi(i)}^2 +
+    \sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq i}^{2N}u_{\Pi(i)}u_{\Pi(j)} \right ] \\
+    &= \frac{1}{N^2} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{j=1}^{2N} u_{\Pi(j)}^2
     + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
-      i}^{2N} \E[u_i u_j] \\
+      i}^{2N} \E[u_{\Pi(i)} u_{\Pi(j)}] \\
     &= \frac{1}{N} + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
       i}^{2N} \frac{1}{2N}\frac{1}{2N-1}\sum_{k=1}^{2N}
     \sum_{l=1, l\neq k}^{2N} u_ku_l \\
@@ -322,45 +331,45 @@ switching groups).
     &= \frac{1}{2N-1}
   \end{align*}
 
-  By Taylor's theorem, we expand the function $g(\bar{u}_2) =
-  \frac{\bar{u}_2^2}{1-\bar{u}_2^2}$ around $\E[\bar{u}_2] = 0$: 
+  By Taylor's theorem, we expand the function $g(\bar{u}_{2,\Pi}) =
+  \frac{\bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2}$ around $\E[\bar{u}_{2,\Pi}] = 0$: 
   \begin{equation*}
-    g(\bar{u}_2) = \frac{\bar{u}_2^2}{1-\bar{u}_2^2} = g(0) + g'(0)
-    \bar{u}_2 + \frac{g''(0)}{2!}\bar{u}_2^2 +
-    \frac{g^{(3)}(0)}{3!}\bar{u}_2^3 + R_3(\bar{u}_2),
+    g(\bar{u}_{2,\Pi}) = \frac{\bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2} = g(0) + g'(0)
+    \bar{u}_{2,\Pi} + \frac{g''(0)}{2!}\bar{u}_{2,\Pi}^2 +
+    \frac{g^{(3)}(0)}{3!}\bar{u}_{2,\Pi}^3 + R_3(\bar{u}_{2,\Pi}),
   \end{equation*}
-  where $R_3(\bar{u}_2) = \frac{g^{(4)}(\xi_L)}{4!}\bar{u}_2^4$, with
-  $\xi_L \in [0, \bar{u}_2]$.
+  where $R_3(\bar{u}_{2,\Pi}) = \frac{g^{(4)}(\xi_L)}{4!}\bar{u}_{2,\Pi}^4$, with
+  $\xi_L \in [0, \bar{u}_{2,\Pi}]$.
 
   From (\ref{def:varT}) and evaluating the Taylor series, we have 
   \begin{equation*}
-    \frac{\var(T)}{2(N-1)} = \E[\bar{u}_2^2 + R_3(\bar{u}_2)].
+    \frac{\var(T_{\Pi})}{2(N-1)} = \E[\bar{u}_{2,\Pi}^2 + R_3(\bar{u}_{2,\Pi})].
   \end{equation*}
   Therefore,
   \begin{align*}
-    \left | \frac{\var(T)}{2(N-1)} - \E[\bar{u}_2^2] \right | 
-    &= \left | \frac{\var(T)}{2(N-1)} - \frac{1}{2N-1} \right | \\
-    &\leq  \E |R_3(\bar{u}_2)| \\
-    &\leq \E \left | \frac{24(5\bar{u}_2^4 + 10  \bar{u}_2^2 +
-        1)}{4!(\bar{u}_2-1)^5}\bar{u}_2^4  \right |, \quad
-    \bar{u}_2 \leq B < 1 \\
-    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} \E [\bar{u}_2^4] \\
+    \left | \frac{\var(T_{\Pi})}{2(N-1)} - \E[\bar{u}_{2,\Pi}^2] \right | 
+    &= \left | \frac{\var(T_{\Pi})}{2(N-1)} - \frac{1}{2N-1} \right | \\
+    &\leq  \E |R_3(\bar{u}_{2,\Pi})| \\
+    &\leq \E \left | \frac{24(5\bar{u}_{2,\Pi}^4 + 10  \bar{u}_{2,\Pi}^2 +
+        1)}{4!(\bar{u}_{2,\Pi}-1)^5}\bar{u}_{2,\Pi}^4  \right |, \quad
+    \bar{u}_{2,\Pi} \leq B < 1 \\
+    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} \E [\bar{u}_{2,\Pi}^4] \\
     &\leq \frac{5B^4+10B^2+1}{|B-1|^5} f_{c_1}(4) N^{-2} \quad \text{
       by } (\ref{def:serfling}) \\
     &:= c_1 N^{-2}
   \end{align*}
   
   \begin{align*}
-    |\var(T) - 1| - \frac{1}{2N-1} 
-    &\leq \left | \var(T) - 1 + \frac{1}{2N-1} \right | \\
-    &= \left | \var(T) - \frac{2(N-1)}{2N-1} \right | \\
-    &= 2(N-1) \left | \frac{\var(T)}{2(N-1)} - \frac{1}{2N-1} \right | \\
+    |\var(T_{\Pi}) - 1| - \frac{1}{2N-1} 
+    &\leq \left | \var(T_{\Pi}) - 1 + \frac{1}{2N-1} \right | \\
+    &= \left | \var(T_{\Pi}) - \frac{2(N-1)}{2N-1} \right | \\
+    &= 2(N-1) \left | \frac{\var(T_{\Pi})}{2(N-1)} - \frac{1}{2N-1} \right | \\
     &\leq c_1 2(N-1)N^{-2}
   \end{align*}
   
   This implies that 
   \begin{equation*}
-    |\var(T) - 1| \leq \frac{1}{2N-1} + c_1 \frac{2N-2}{N^2} \leq
+    |\var(T_{\Pi}) - 1| \leq \frac{1}{2N-1} + c_1 \frac{2N-2}{N^2} \leq
     \frac{1 + 2c_1}{N}
   \end{equation*}
 \end{proof}
@@ -381,100 +390,142 @@ switching groups).
   \end{align*}
 
   \begin{align*}
-    \var (\E[(T'-T)^2 | \pi]) &= \var \left ( \frac{N-1}{N}\E \left [
-      \left ( \frac{2u_J-2u_I}{d}+T'\frac{d-d'}{d} \right )^2
+    \var (\E[(T_{\Pi}'-T_{\Pi})^2 | \pi]) &= \var \left ( \frac{N-1}{N}\E \left [
+      \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
         \middle | \pi \right ] \right ) \\
     &\leq \var \left ( \E \left [
-      \left ( \frac{2u_J-2u_I}{d}+T'\frac{d-d'}{d} \right )^2
+      \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
         \middle | \pi \right ] \right ) \\
     &\leq 4(\var(X) + \var(Y) + \var(Z))
   \end{align*}
   where
   \begin{align*}
-    X &= \E \left [ \left ( \frac{2u_J-2u_I}{d} \right )^2
+    X &= \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}} \right )^2
         \middle | \pi \right ] \\
     Y &= \E \left [ \left
-          ( T'\frac{d-d'}{d} \right )^2 \middle | \pi \right ] \\
-    Z &= 2 \E \left [ \left ( \frac{2u_J-2u_I}{d}
-         T'\frac{d-d'}{d} \right ) \middle | \pi \right ]
+          ( T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2 \middle | \pi \right ] \\
+    Z &= 2 \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}
+         T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right ) \middle | \pi \right ]
   \end{align*}
 
   The first term is going to dominate.
   \begin{align*}
     \var(X) 
-    &= \var \left ( \E \left [ \left ( \frac{2u_J-2u_I}{d} \right )^2
+    &= \var \left ( \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}} \right )^2
        \middle | \pi \right ] \right ) \\
-   &= \var (\E [(2u_J-2u_I)^2 | \pi ] \E[d^{-2} | \pi] ) \\
-   &= \var (d^{-2} \E [(2u_J-2u_I)^2 | \pi ]) \\
-   &\leq (f_{c_2}(2) N^{-2/2})^2 \var(\E [(2u_J-2u_I)^2 | \pi ]) 
+   &= \var (\E [(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \pi ] \E[d_{\Pi}^{-2} | \pi] ) \\
+   &= \var (d_{\Pi}^{-2} \E [(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \pi ]) \\
+   &\leq (f_{c_2}(2) N^{-2/2})^2 \var(\E [(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \pi ]) 
    \text{ from } (\ref{def:dp}) \\
-   &= (f_{c_2}(2))^2 N^{-2} \var(\E [(2u_J-2u_I)^2 | \pi ]),
+   &= (f_{c_2}(2))^2 N^{-2} \var(\E [(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \pi ]),
   \end{align*}
   where
   \begin{align*}
-    \var (\E[(2u_J-2u_I)^2 | \pi]) 
-    &= \var(\E[u_J^2+u_I^2-2u_Ju_I|\pi]) \\
+    \var (\E[(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \Pi = \pi]) 
+    &= \var(\E[u_{\Pi(J)}^2+u_{\Pi(I)}^2-2u_{\Pi(J)}u_{\Pi(I)}| \Pi = \pi]) \\
     &= \var \left ( \frac{1}{N^2} \sum_{I=1}^{N}\sum_{J=N+1}^{2N}
-    (u_J^2+u_I^2-2u_Ju_I) \right ) \\
+    (u_{\pi(J)}^2+u_{\pi(I)}^2-2u_{\pi(J)}u_{\pi(I)}) \right ) \\
     &= \var \left ( \frac{1}{N^2} \left ( N \sum_{K=1}^{2N}u_K^2 -
-      \sum_{I=1}^{N}\sum_{J=N+1}^{2N}2u_Ju_I \right ) \right ) \\
+      \sum_{I=1}^{N}\sum_{J=N+1}^{2N}2u_{\pi(J)}u_{\pi(I)} \right ) \right ) \\
     &= \frac{4}{N^4}
     \sum_{I=1}^{N}\sum_{J=N+1}^{2N}\sum_{K=1}^{N}\sum_{L=N+1}^{2N}
     \cov(u_{\pi(I)}u_{\pi(J)},u_{\pi(K)}u_{\pi(L)})
   \end{align*}
-  since $\sum_{K=1}^{2N}u_K^2 = 2N$ is a constant.
+  since $\sum_{K=1}^{2N}u_K^2 = 2N$ is a constant.  We proceed by calculating
+  \begin{equation*}
+    \cov(u_{\pi(I)}u_{\pi(J)},u_{\pi(K)}u_{\pi(L)}) 
+    = \E[u_{\pi(I)}u_{\pi(J)}u_{\pi(K)}u_{\pi(L)}] - \E[u_{\pi(I)}u_{\pi(J)}]\E[u_{\pi(K)}u_{\pi(L)}].
+  \end{equation*}
+  The index sets for variables $I$ and $J$ (and $K$ and $L$) are disjoint, so 
+  \begin{equation*}
+    \E[u_{\pi(I)}u_{\pi(J)}] = \E[u_{\pi(K)}u_{\pi(L)}]
+    = \frac{1}{2N}\frac{1}{2N-1}\sum_{I=1}^{2N} u_{\pi(I)} \sum_{J=1,J\neq I}^{2N} u_{\pi(J)} = -\frac{1}{2N-1}
+  \end{equation*}
+  for all values of $I, J, K, L$ in the sum.  Therefore, 
+  \begin{equation*}
+    \E[u_{\pi(I)}u_{\pi(J)}]\E[u_{\pi(K)}u_{\pi(L)}] = \frac{1}{(2N-1)^2}.
+  \end{equation*}
+  However, $K$ could equal $I$ and $L$ could equal $J$, which changes the mass assigned by the
+  permutation distribution.  This necessitates considering each case separately.
 
-  In order to calculate the covariance terms, we need to consider each
-  case separately.
   Case $I \neq J \neq K \neq L$: 
-  \begin{equation*}
-    \E[u_{\pi(I)}u_{\pi(J)},u_{\pi(K)}u_{\pi(L)}] =
-    \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} \left ( -6
-      \sum_{i=1}^{2N}u_i^4 + 12N^2 \right ) 
-  \end{equation*}
-  and
-  \begin{equation*}
-    \E[u_{\pi(I)}u_{\pi(J)}] = \E[u_{\pi(K)}u_{\pi(L)}] =
-    -\frac{1}{2N-1},
-  \end{equation*}
+  \begin{align*}
+    &\E[u_{\pi(I)} u_{\pi(J)} u_{\pi(K)} u_{\pi(L)}] \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} \sum_{J=1, J\neq I}^{2N} \sum_{K=1, K \neq I,J}^{2N} \sum_{L=1, L \neq I,J,K}^{2N} 
+    u_{\pi(I)} u_{\pi(J)} u_{\pi(K)} u_{\pi(L)} \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} u_{\pi(I)} \sum_{J=1, J\neq I}^{2N} u_{\pi(J)} \sum_{K=1, K \neq
+      I,J}^{2N} u_{\pi(K)} (-u_{\pi(I)}-u_{\pi(J)}-u_{\pi(K)}) \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} u_{\pi(I)} \sum_{J=1, J\neq I}^{2N} u_{\pi(J)} 
+    ((-u_{\pi(I)}-u_{\pi(J)})(-u_{\pi(I)}-u_{\pi(J)})+(u_{\pi(I)}^2+u_{\pi(J)}^2-2N)) \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} u_{\pi(I)} \sum_{J=1, J\neq I}^{2N} u_{\pi(J)} 
+    (2u_{\pi(I)}^2-2N+2u_{\pi(J)}^2+2u_{\pi(I)}u_{\pi(J)}) \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} u_{\pi(I)} \left ( 
+      (2u_{\pi(I)}^2-2N)(-u_{\pi(I)})+2\sum_{J=1, J\neq I}^{2N} u_{\pi(J)}^3+2u_{\pi(I)}(2N-u_{\pi(I)}^2) 
+    \right) \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \sum_{I=1}^{2N} u_{\pi(I)} \left ( 
+      -4u_{\pi(I)}^3 + 6Nu_{\pi(I)} + 2\left (\sum_{J=1}^{2N}u_{\pi(J)}^3 - u_{\pi(I)}^3 \right )
+    \right) \\
+    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3} 
+    \left ( -6\sum_{I=1}^{2N}u_{\pi(I)}^4+12N^2 \right )
+  \end{align*}
   with $N^2(N-1)^2$ choices.
   
   Case $I=K, J=L$:
-  \begin{equation*}
-    \E[u_{\pi(I)}^2 u_{\pi(J)}^2] = \frac{2N}{2N-1} -
-    \frac{1}{2N}\frac{1}{2N-1}\sum_{i=1}^{2N}u_i^4 
-  \end{equation*}
+  \begin{align*}
+    \E[u_{\pi(I)}^2 u_{\pi(J)}^2] &= \frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N}
+    \sum_{J=1, J\neq I}^{2N} u_{\pi(I)}^2 u_{\pi(J)}^2 \\
+    &= \frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N} u_{\pi(I)}^2 (2N - u_{\pi(I)}^2) \\
+    &= \frac{2N}{2N-1}-\frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N} u_{\pi(I)}^4
+  \end{align*}
   with $N^2$ choices.
 
   Case $I=K, J\neq L$ or $I\neq K, J= L$:
-  \begin{equation*}
-    \E[u_{\pi(I)}^2 u_{\pi(J)}u_{\pi(L)}] =
-    \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\left (
-      2 \sum_{i=1}^{2N} u_i^4 - 4N^2 \right ) 
-  \end{equation*}
+  \begin{align*}
+    \E[u_{\pi(I)}^2 u_{\pi(J)} u_{\pi(K)}] &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \sum_{I=1}^{2N}
+    \sum_{J=1, J\neq I}^{2N} \sum_{K=1, K \neq I,J}^{2N} u_{\pi(I)}^2 u_{\pi(J)} u_{\pi(K)} \\
+    &=\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \sum_{I=1}^{2N}
+    \sum_{J=1, J\neq I}^{2N} u_{\pi(I)}^2 u_{\pi(J)} (0 - u_{\pi(I)} - u_{\pi(J)}) \\ 
+    &=-\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
+      \sum_{I=1}^{2N} u_{\pi(I)}^3 \sum_{J=1, J\neq I}^{2N} u_{\pi(J)} +
+      \sum_{I=1}^{2N} u_{\pi(I)}^2 \sum_{J=1, J\neq I}^{2N} u_{\pi(J)}^2
+    \right ) \\
+    &=-\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
+      \sum_{I=1}^{2N} - u_{\pi(I)}^4 + 
+      \sum_{I=1}^{2N} u_{\pi(I)}^2 (2N - u_{\pi(I)}^2)
+    \right ) \\
+    &=\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
+      2 \sum_{I=1}^{2N} u_{\pi(I)}^4 -4N^2 \right )
+  \end{align*}
   with $2N^2(N-1)$ choices.  
 
   Putting it all together, we have 
   \begin{align*}
-    \var (\E[(2u_J-2u_I)^2]) &= 4 \frac{N^2(N-1)^2}{N^4(2N)(2N-1)(2N-2)(2N-3)} \left ( -6
-      \sum_{i=1}^{2N}u_i^4 + 12N^2 - \frac{1}{(2N-1)^2} \right ) \\
+    &\var (\E[(2u_{\Pi(J)}-2u_{\Pi(i)})^2] | \Pi = \pi) \\
+    &= 4 \frac{N^2(N-1)^2}{N^4(2N)(2N-1)(2N-2)(2N-3)} \left ( -6
+      \sum_{i=1}^{2N}u_{\pi(i)}^4 + 12N^2 - \frac{1}{(2N-1)^2} \right ) \\
     &+ 4 \frac{N^2}{N^4} \left ( \frac{2N}{2N-1} -
-    \frac{1}{2N}\frac{1}{2N-1}\sum_{i=1}^{2N}u_i^4 - \frac{1}{(2N-1)^2}
+    \frac{1}{2N}\frac{1}{2N-1}\sum_{i=1}^{2N}u_{\pi(i)}^4 - \frac{1}{(2N-1)^2}
   \right ) \\
   &+ 4 \frac{2N^2(N-1)}{N^4} \left ( 
     \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\left (
-      2 \sum_{i=1}^{2N} u_i^4 - 4N^2 \right ) - \frac{1}{(2N-1)^2}
+      2 \sum_{i=1}^{2N} u_{\pi(i)}^4 - 4N^2 \right ) - \frac{1}{(2N-1)^2}
   \right ) \\
   &\leq \frac{48}{4N^2} + \frac{8}{N^2} + \frac{16 \sum_{i=1}^{2N}
-    u_i^4}{N^4} \\
-  &= \frac{20}{N^2} + 16\frac{\sum_{i=1}^{2N} u_i^4}{N^4}.
+    u_{\pi(i)}^4}{N^4} \\
+  &= \frac{20}{N^2} + 16\frac{\sum_{i=1}^{2N} u_{i}^4}{N^4}.
   \end{align*}
   
   Therefore, 
   \begin{equation*}
-    \var(X) = (f_{c_2}(2))^2 N^{-2} \var(\E [(2u_J-2u_I)^2 | \pi ])
+    \var(X) = (f_{c_2}(2))^2 N^{-2} \var(\E [(2u_{\Pi(J)}-2u_{\Pi(I)})^2 | \pi ])
     \leq (f_{c_2}(2))^2 N^{-4} \left (20 + 16\frac{\sum_{i=1}^{2N}
-        u_i^4}{N^2} \right ).
+        u_{i}^4}{N^2} \right ).
   \end{equation*}
   
   Because the latter two terms are much smaller in order, we can apply
@@ -485,11 +536,11 @@ switching groups).
 
   Applying to the second term,
   \begin{align*}
-    \var(Y) &= \var \left ( \E \left [ \left ( T'\frac{d-d'}{d} \right )^2
-        \middle | \pi \right ] \right ) \\
-    &\leq \E \left [ \left ( \frac{q'}{dd'} (d-d') \right )^4 \right ] \\
-    &\leq \sqrt{\E \left [ \left ( \frac{q'}{dd'} \right )^8 \right ]
-      \E [(d-d')^8]} \\
+    \var(Y) &= \var \left ( \E \left [ \left ( T'_{\Pi}\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
+        \middle | \Pi = \pi \right ] \right ) \\
+    &\leq \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} (d_{\Pi}-d_{\Pi}') \right )^4 \right ] \\
+    &\leq \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^8 \right ]
+      \E [(d_{\Pi}-d_{\Pi}')^8]} \\
     &\leq \sqrt{f_{c_6}(8) N^{-8/2} f_{c_4}(8) N^{-8}} \text{ from }
     (\ref{def:qpddp}),(\ref{def:ddiffp}) \\
     &= \sqrt{f_{c_6}(8)f_{c_4}(8)}N^{-6}.
@@ -497,21 +548,21 @@ switching groups).
 
   And to the third,
   \begin{align*}
-    \var(Z) &= 4 \var \left ( \E \left [ \left ( \frac{2u_J-2u_I}{d}
-          T'\frac{d-d'}{d} \right ) \middle | \pi \right ] \right ) \\
-    &\leq 4 \E \left [ \left ( \frac{1}{d} \frac{q'}{dd'}
-        (2u_J-2u_I)(d-d') \right )^2 \right ] \\
+    \var(Z) &= 4 \var \left ( \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(i)}}{d_{\Pi}}
+          T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right ) \middle | \Pi = \pi \right ] \right ) \\
+    &\leq 4 \E \left [ \left ( \frac{1}{d_{\Pi}} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}
+        (2u_{\Pi(J)}-2u_{\Pi(i)})(d_{\Pi}-d_{\Pi}') \right )^2 \right ] \\
     &\leq 4 f_{c_2}(2) N^{-2/2} \sqrt{\E \left [ \left (
-          \frac{q'}{dd'} \right )^4 \right ] \E[((2u_J-2u_I)(d-d'))^4]
+          \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^4 \right ] \E[((2u_{\Pi(J)}-2u_{\Pi(i)})(d_{\Pi}-d_{\Pi}'))^4]
     } \text{ from } (\ref{def:dp}) \\
     &\leq 4 f_{c_2}(2) N^{-1} \sqrt{\E \left [ \left (
-          \frac{q'}{dd'} \right )^4 \right ] \sqrt{\E[(2u_J-2u_I)^8]
-      \E[(d-d')^8]}} \\
+          \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^4 \right ] \sqrt{\E[(2u_{\Pi(J)}-2u_{\Pi(i)})^8]
+      \E[(d_{\Pi}-d_{\Pi}')^8]}} \\
     &\leq 4 f_{c_2}(2) N^{-1} \sqrt{f_{c_6}(4) N^{-4/2} \sqrt{2^9
-        \frac{\sum_{i=1}^{2N}u_i^4}{2N} f_{c_4}(8) N^{-8}}}
+        \frac{\sum_{i=1}^{2N}u_{\Pi(i)}^4}{2N} f_{c_4}(8) N^{-8}}}
     \text{ from } (\ref{def:qpddp}),(\ref{def:ddiffp}) \\
     &\leq 2^{4.25}f_{c_2}(2) (f_{c_6}(4))^{-1/2} (f_{c_4}(8))^{-1/4}
-    (\sum_{i=1}^{2N}u_i^4)^{1/4} N^{-4.25}
+    (\sum_{i=1}^{2N}u_{\Pi(i)}^4)^{1/4} N^{-4.25}
   \end{align*}
 \end{proof}
 
@@ -524,45 +575,66 @@ switching groups).
 
   From (\ref{def:ttpcubed}),
   \begin{align*}
-    \E|T'-T|^3 
+    \E|T_{\Pi}'-T_{\Pi}|^3 
     &= \left (\frac{N-1}{N}\right )^{3/2}
-    \E \left [d^{-3} \left |2u_J-2u_I+q'\frac{d-d'}{d'} \right |^3
+    \E \left [d_{\Pi}^{-3} \left |2u_{\Pi(J)}-2u_{\Pi(i)}+q_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}'} \right |^3
     \right ] \\
     &\leq 8 \left (
-      \E \left [ \frac{|2u_J-2u_I|^3}{d^3} \right ] + 
-      \E \left [ \left | q'\frac{d-d'}{dd'} \right |^3
+      \E \left [ \frac{|2u_{\Pi(J)}-2u_{\Pi(i)}|^3}{d^3} \right ] + 
+      \E \left [ \left | q_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right |^3
       \right ] \right ) \\
     &\leq 8 \left (
-      \E \left [ |2u_J-2u_I|^3 \right ] \E [d^{-3}] + 
-      \sqrt{\E \left [ \left ( \frac{q'}{dd'} \right )^6 \right ]  \E
-        [(d-d')^6]} \right ) \\
-    &\leq 8 \left ( 128 \frac{\sum_{i=1}^{2N} |u_i|^3}{2N} \right )
+      \E \left [ |2u_{\Pi(J)}-2u_{\Pi(i)}|^3 \right ] \E [d_{\Pi}^{-3}] + 
+      \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^6 \right ]  \E
+        [(d_{\Pi}-d_{\Pi}')^6]} \right ) \\
+    &\leq 8 \left ( 128 \frac{\sum_{i=1}^{2N} |u_{\Pi(i)}|^3}{2N} \right )
     f_{c_2}(3) N^{-3/2} + 
     8 \sqrt{f_{c_6}(6) N^{-6/2} f_{c_4}(6) N^{-6}} \text{ from } 
     (\ref{def:dp}),(\ref{def:qpddp}),(\ref{def:ddiffp}) \\
-    &\leq 1024 f_{c_2}(3) \left ( \frac{\sum_{i=1}^{2N} |u_i|^3}{2N}
+    &\leq 1024 f_{c_2}(3) \left ( \frac{\sum_{i=1}^{2N} |u_{\Pi(i)}|^3}{2N}
     \right ) N^{-3/2} + 8 \sqrt{f_{c_6}(6)f_{c_4}(6)} N^{-3} N^{-3/2} \\
-    &\leq \left ( 1024 f_{c_2}(3) \left ( \frac{\sum_{i=1}^{2N} |u_i|^3}{2N}
+    &\leq \left ( 1024 f_{c_2}(3) \left ( \frac{\sum_{i=1}^{2N} |u_{\Pi(i)}|^3}{2N}
     \right ) + 8 \sqrt{f_{c_6}(6)f_{c_4}(6)} \right ) N^{-3/2}
   \end{align*}
 
-  Thus, $(2\pi)^{-1/4}\sqrt{\frac{\E|T'-T|^3}{\lambda}}$ is $O(N^{-1/4})$.
+  Thus, $(2\pi)^{-1/4}\sqrt{\frac{\E|T_{\Pi}'-T_{\Pi}|^3}{\lambda}}$ is $O(N^{-1/4})$.
 \end{proof}
 
 \begin{proposition}
-  $\E|R|$ is $O(N^{-1/2})$.
+  $\E|R| \leq \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}$.
 \end{proposition}
 \begin{proof}
   \begin{align*}
     \E|R| &= \E \left | \left (\frac{N}{2}\right )
-      \sqrt{\frac{N-1}{N}}\frac{1}{d}\E
-      \left [q'\frac{(d-d')}{d'} \middle | T \right ]\right | \\
-    &\leq \frac{N}{2} \E \left | \frac{q'}{dd'}(d-d') \right | \\
-    &\leq \frac{N}{2} \sqrt{\E \left | \frac{q'}{dd'} \right |^2
-      \E[d-d']^2} \\
+      \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\E
+      \left [q_{\Pi}'\frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'} \middle | T_{\Pi} \right ]\right | \\
+    &\leq \frac{N}{2} \E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
+    &\leq \frac{N}{2} \sqrt{\E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right |^2
+      \E[d_{\Pi}-d_{\Pi}']^2} \\
     &\leq \frac{N}{2} \sqrt{f_{c_6}(2) N^{-2/2} f_{c_4}(2) N^{-2}}
     \text{ from } (\ref{def:qpddp}), (\ref{def:ddiffp}) \\
     &=\frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}
   \end{align*}
+\end{proof}
+
+\begin{proposition}
+  $\E|T_{\Pi}R| \leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2}$.
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \E|T_{\Pi}R| &= \E \left | T_{\Pi} \left (\frac{N}{2}\right )
+      \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\E
+      \left [q_{\Pi}'\frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'} \middle | T_{\Pi} \right ]\right | \\
+    &\leq \frac{N}{2} \E \left |T_{\Pi} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
+    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^2
+        (d_{\Pi}-d_{\Pi}')^2 \right ] } \\
+    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} 
+          \right )^4 \right ] \E[(d_{\Pi}-d_{\Pi}')^4] }} \\
+    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \sqrt{f_{c_6}(4) N^{-4/2} f_{c_4}(4) N^{-4}}} 
+    \text{ from } (\ref{def:qpddp}), (\ref{def:ddiffp}) \\
+    &=\frac{N^{-1/2}}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4}\sqrt{\E T_{\Pi}^2} \\
+    &\leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2}
+  \end{align*}
+  because $\E T_{\Pi}^2 \leq 1 + \frac{1+2c_1}{N} \leq 2 + 2c_1$.
 \end{proof}
 
