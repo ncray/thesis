@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  9 APR 2012 16:42
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  10 APR 2012 11:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -387,7 +387,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8]
 [9]
-Overfull \hbox (6.15395pt too wide) in paragraph at lines 383--383
+Overfull \hbox (6.15395pt too wide) in paragraph at lines 384--384
 [] 
  []
 
@@ -400,55 +400,47 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [11]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
-Underfull \vbox (badness 1221) has occurred while \output is active []
-
- [13])
-[14]
+ [12])
+[13]
 \openout2 = `stein-proof/stein-proof.aux'.
 
- (./stein-proof/stein-proof.tex
-Chapter 2.
-[15
+ (./stein-proof/stein-proof.tex [14
 
 
 
 ]
+Chapter 2.
+[15]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [16]
-[17]
-Underfull \vbox (badness 2564) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [19]
-Underfull \vbox (badness 4429) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [20]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [21]
-Underfull \vbox (badness 6016) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23]
-[24] [25]
+[24]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26]
-Overfull \hbox (8.45337pt too wide) in paragraph at lines 433--433
-[] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [27]
-Overfull \hbox (115.07945pt too wide) in paragraph at lines 476--476
+ [25]
+[26] [27]
+Overfull \hbox (20.32236pt too wide) in paragraph at lines 438--438
 [] 
  []
 
@@ -456,48 +448,53 @@ Overfull \hbox (115.07945pt too wide) in paragraph at lines 476--476
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [28]
-Overfull \hbox (25.5586pt too wide) in paragraph at lines 504--504
+Overfull \hbox (8.45337pt too wide) in paragraph at lines 471--471
 [] 
- []
-
-
-Overfull \hbox (12.7959pt too wide) detected at line 529
-[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 X\OT1/cmr/m/n/12 ) = (\OML/cmm/m/it/12 f[]\
-OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] []\OT1/cmr/m/n/12 (\U/msb/m/n/12 E\OT
-1/cmr/m/n/12 [(2\OML/cmm/m/it/12 u[] \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 2\OML
-/cmm/m/it/12 u[]\OT1/cmr/m/n/12 )[]\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 ^^Y\OT1/c
-mr/m/n/12 ]) \OMS/cmsy/m/n/12 ^^T \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 f[]\OT1/cmr
-/m/n/12 (2))[]\OML/cmm/m/it/12 N[] [] :
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [29]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [30]
-
-LaTeX Warning: Reference `def:ttpcubed' on page 31 undefined on input line 576.
-
-
-
-Overfull \hbox (73.79155pt too wide) in paragraph at lines 598--598
+Overfull \hbox (20.84483pt too wide) in paragraph at lines 514--514
 [] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [30]
+Overfull \hbox (37.4095pt too wide) detected at line 567
+[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 X\OT1/cmr/m/n/12 ) = (\OML/cmm/m/it/12 f[]\
+OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] []\OT1/cmr/m/n/12 (\U/msb/m/n/12 E\OT
+1/cmr/m/n/12 [(2\OML/cmm/m/it/12 u[] \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 2\OML
+/cmm/m/it/12 u[]\OT1/cmr/m/n/12 )[]\OMS/cmsy/m/n/12 j\OT1/cmr/m/n/12 ^^E = \OML
+/cmm/m/it/12 ^^Y\OT1/cmr/m/n/12 ]) \OMS/cmsy/m/n/12 ^^T \OT1/cmr/m/n/12 (\OML/c
+mm/m/it/12 f[]\OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] [] :
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [31]
-[32]) [33]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33]
+Overfull \hbox (60.81358pt too wide) in paragraph at lines 649--649
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [34]
+[35]) [36]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl [34
-
-
-
-]
+ (./bibliography.tex (./thesis.bbl
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -507,43 +504,43 @@ Missing character: There is no ™ in font cmr12!
 Missing character: There is no â in font cmti12!
 Missing character: There is no € in font cmti12!
 Missing character: There is no ™ in font cmti12!
- [35])) [36] (./thesis.aux
+ [37
+
+
+
+])) [38] (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
-(./bibliography.aux))
-
-LaTeX Warning: There were undefined references.
-
- ) 
+(./bibliography.aux)) ) 
 Here is how much of TeX's memory you used:
  3212 strings out of 493738
- 42049 string characters out of 3135951
- 110561 words of memory out of 3000000
+ 42055 string characters out of 3135951
+ 110573 words of memory out of 3000000
  6403 multiletter control sequences out of 15000+200000
  12380 words of font info for 45 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  38i,19n,24p,232b,325s stack positions out of 5000i,500n,10000p,200000b,50000s
-</h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/font
-s/type1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtree/stow/texlive/tl2010
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0a/stow/swtree/stow/te
-xlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></h0a/stow/swt
-ree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></h
-0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/stow/texlive/tl2010/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/stow/swtree/stow/texl
-ive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></h0a/stow/swtre
-e/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></h0a
-/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti
-12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsf
-onts/symbols/msbm10.pfb>
-Output written on thesis.pdf (42 pages, 254648 bytes).
+</h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/t
+l2010/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtre
+e/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0
+a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive
+/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/
+stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/
+stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6
+.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmsy8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmti12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fo
+nts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (44 pages, 259784 bytes).
 PDF statistics:
- 201 PDF objects out of 1000 (max. 8388607)
- 140 compressed objects within 2 object streams
+ 208 PDF objects out of 1000 (max. 8388607)
+ 145 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

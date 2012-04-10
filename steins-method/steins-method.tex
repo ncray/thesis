@@ -314,6 +314,7 @@ This is just a small part of Lemma 2.4:
 \section{Main Theorem}
 Generalization of Theorem 5.5:
 \begin{theorem}
+  \label{T:main}
   If $T$, $T'$ are mean 0 exchangeable random variables with variance $\E[T^2]$
   satisfying
   \begin{equation*}
@@ -326,7 +327,7 @@ Generalization of Theorem 5.5:
       \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|
       &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|T'-T|^3]}{\lambda}}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])} \\
-      &\quad + |1 - \E [T^2]| + \sqrt{\E [T^2]\E [R^2]} + \E [|R|]
+      &\quad + |\E [T^2] - 1| + \E |TR| + \E [|R|]
     \end{split}
   \end{equation*}
 \end{theorem}
@@ -395,9 +396,7 @@ Generalization of Theorem 5.5:
     \begin{split}
       |\E [J_1] | &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} +
       \E [|1 - \E [W^2] + \E [WR]|] \\
-      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E [|1 - \E [W^2]|] + \E [|WR|] \\
-      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + |1 - \E [W^2]| + 
-      \sqrt{\E [W^2]\E [R^2]}.
+      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E [|1 - \E W^2|] + \E |WR| \\
     \end{split}
   \end{equation}
   
@@ -452,10 +451,10 @@ Generalization of Theorem 5.5:
       P(W \leq z) &\leq \E [h_{z,\alpha}(W)] \\
       &\leq Nh_{z,\alpha} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|] \\
+      &\quad + |1 - \E [W^2]| + \E |WR| + \E |R| \\
       &\leq \Phi (z) + \frac{\alpha}{\sqrt{2\pi}} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|]
+      &\quad + |\E [W^2] - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation}
   The minimizer of the expression is
@@ -467,7 +466,7 @@ Generalization of Theorem 5.5:
     \begin{split}
       P(W \leq z) - \Phi(z) &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|W'-W|^3]}{\lambda}}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |1 - \E [W^2]| + \sqrt{\E [W^2]\E [R^2]} + \E [|R|]
+      &\quad + |\E [W^2] - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation}
   Proving the corresponding lower bound in a similar manner completes the proof of the theorem.

@@ -7,7 +7,7 @@
 \contentsline {chapter}{\numberline {2}Main Proof}{15}
 \contentsline {section}{\numberline {2.1}Motivation}{15}
 \contentsline {section}{\numberline {2.2}Set-up}{16}
-\contentsline {section}{\numberline {2.3}Assumptions}{17}
-\contentsline {section}{\numberline {2.4}Preliminaries}{18}
-\contentsline {section}{\numberline {2.5}Proof}{22}
-\contentsline {chapter}{References}{35}
+\contentsline {section}{\numberline {2.3}Assumptions}{18}
+\contentsline {section}{\numberline {2.4}Preliminaries}{19}
+\contentsline {section}{\numberline {2.5}Proof}{23}
+\contentsline {chapter}{References}{37}
