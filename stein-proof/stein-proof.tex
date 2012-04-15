@@ -96,40 +96,43 @@ We also assume that the pooled sample standard deviation is non-zero for all per
   d_\Pi = \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} -
     \bar{u}_{2,\Pi})^2} > 0
 \end{equation}
-The estimate is zero if and only if there is a grouping that is constant in each group.  The
-condition also implies that the sample mean for any group is strictly less than 1.
+The estimate is zero if and only if there exists a grouping that is constant in each group.  The
+condition also implies that the sample mean for any group is strictly less than 1.  The
+mean-centering assumption implies that $\sum_{i=1}^{N} u_{\Pi(i)} = - \sum_{i=N+1}^{2N} u_{\Pi(i)}$
+and hence that $\bar{u}_{1,\Pi} = -\bar{u}_{2,\Pi}$ for all $\Pi$.  Here we establish an equality
+with $d_{\Pi}$ that will prove easier to work with:
 \begin{align*}
-  0 &< \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} -
-    \bar{u}_{2,\Pi})^2} \\
-  &= \sqrt{\sum_{i=1}^{2N} u_{\Pi(i)} - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}} \\
-  &\leq \sum_{i=1}^{2N} u_{\Pi(i)} - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
+  d_\Pi^2 &=  \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} -
+    \bar{u}_{2,\Pi})^2 \\
+  &= \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi} \\
   &= 2N - N \bar{u}_{2,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
   &= 2N(1 - \bar{u}_{2,\Pi}^2)
 \end{align*}
-It follows that $\bar{u}_{2,\Pi}^2 < 1$.  Define
+Since $d_\Pi > 0$, it follows that $|\bar{u}_{2,\Pi}| < 1$.  Define
 \begin{equation}
   \label{A:B}
-  B = \max_\Pi \bar{u}_{2,\Pi}^2 < 1.
+  B = \max_\Pi |\bar{u}_{2,\Pi}| < 1.
 \end{equation}
 
 \section{Preliminaries}
-Here we collect useful bounds and other results.  In order to bound various moments of
-$\bar{u}_{2,\Pi}$ under the permutation distribution, we use a result of Serfling's
+Here we collect useful bounds and other results.  
+
+In order to bound various moments of $\bar{u}_{2,\Pi}$ under the permutation distribution, we use a
+result of Serfling's
 \cite{serfling1974probability}:
 \begin{proposition}
   Consider sampling without replacement from a finite list of values
-  $u_1, \ldots, u_{2N}$.  Let $a = \min_i u_{i}$ and $b = \max_i u_{i}$.
-  Then for $p > 0$,
+  $u_1, \ldots, u_{2N}$.  Let $u_{\Delta} = \max_i u_{i} - \min_i u_{i}$. Then for $p > 0$,
   \begin{align}
     \E [\bar{u}_{2,\Pi}^p] 
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
-    \left [ \frac{N+1}{2N}(b-a)^2 \right ]^{p/2}
+    \left [ \frac{N+1}{2N}u_{\Delta}^2 \right ]^{p/2}
     (2N)^{-p/2} \nonumber \\
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
-    \left [ \frac{N+1}{4N}(b-a)^2 \right ]^{p/2}
-    (N)^{-p/2} \nonumber \\
+    \left [ \frac{N+1}{4N}u_{\Delta}^2 \right ]^{p/2}
+    N^{-p/2} \nonumber \\
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
-    \left [ \frac{1}{2}(b-a)^2 \right ]^{p/2}
+    \left [ \frac{1}{2}u_{\Delta}^2 \right ]^{p/2}
     N^{-p/2} \nonumber \\
     &:= f_{c_1}(p)N^{-p/2} \label{def:serfling}.
   \end{align}
@@ -144,44 +147,32 @@ By assumption~\eqref{A:B},
 \end{align}
 
 The transposition $(I, J)$ also affects the denominator of $T_{\Pi}'$, and we need to quantify the
-difference between the denominators of $T_{\Pi}$ and $T_{\Pi}'$.
+difference between the denominators of $T_{\Pi}$ and $T_{\Pi}'$.  Letting $\bar{u}_{2,\Pi}'^2$
+denote the sample mean of the second group after the transposition,
 \begin{align*}
-    d_{\Pi}^2 &= \sum_{i=1}^N (u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N} (u_{\Pi(i)} -
-    \bar{u}_{2,\Pi})^2 = \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
-    d_{\Pi}'^2 &= \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}'^2 - N \bar{u}_{2,\Pi}'^2,  
+  \bar{u}_{2,\Pi}'^2 &= \left ( \bar{u}_{2,\Pi}-\frac{1}{N}u_{\Pi(J)}+\frac{1}{N}u_{\Pi(I)} \right )^2 \\
+  &= \bar{u}_{2,\Pi}^2 + \bar{u}_{2,\Pi} \left ( -\frac{1}{N}u_{\Pi(J)} +
+      \frac{1}{N}u_{\Pi(I)} \right ) + \frac{1}{N^2}(u_{\Pi(I)} - u_{\Pi(J)})^2
 \end{align*}
-where
-\begin{equation*}
-  \label{eq:6}
-  \bar{u}_{1,\Pi}' = \bar{u}_{1,\Pi} - \frac{1}{N}u_{\Pi(I)} + \frac{1}{N}u_{\Pi(J)} \text{ and }
-  \bar{u}_{2,\Pi}' = \bar{u}_{2,\Pi} - \frac{1}{N}u_{\Pi(J)} + \frac{1}{N}u_{\Pi(I)}.
-\end{equation*}
-So, 
+We consider the difference
 \begin{align*}
-  \bar{u}_{1,\Pi}'^2 &= \bar{u}_{1,\Pi}^2 + \frac{2\bar{u}_{1,\Pi}}{N}(u_{\Pi(J)}-u_{\Pi(I)}) +
-  \frac{1}{N^2}(u_{\Pi(J)}-u_{\Pi(I)})^2 \\
-  \bar{u}_{2,\Pi}'^2 &= \bar{u}_{2,\Pi}^2 + \frac{2\bar{u}_{2,\Pi}}{N}(u_{\Pi(I)}-u_{\Pi(J)}) +
-  \frac{1}{N^2}(u_{\Pi(I)}-u_{\Pi(J)})^2.
+  h_{\Pi} &= d_{\Pi}^2 - d_{\Pi}'^2 \\
+  &= 2N - 2N \bar{u}_{2,\Pi}^2 - 2N + 2N\bar{u}_{2,\Pi}'^2 \\
+  &= 4\bar{u}_{2,\Pi}(u_{\Pi(I)} - u_{\Pi(J)}) + \frac{2}{N}(u_{\Pi(I)} - u_{\Pi(J)})^2
 \end{align*}
-Since $\sum u_{\Pi(i)} = 0$, $\bar{u}_{1,\Pi} = -\bar{u}_{2,\Pi}$, and
-\begin{align*}
-  h_{\Pi} &= d_{\Pi}^2-d_{\Pi}'^2 \\
-  &= -N \bar{u}_{1,\Pi}^2 -N \bar{u}_{2,\Pi}^2 + N\bar{u}_{1,\Pi}^{'2} + N\bar{u}_{2,\Pi}^{'2} \\
-  &= 2\bar{u}_{1,\Pi}(u_{\Pi(J)}-u_{\Pi(I)}) + 2\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)})+\frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \\
-  &= 4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)}) + \frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2
-\end{align*}
-Therefore,
+
+Therefore, by the $c_r$-inequality,
 \begin{align}
   \E[h_{\Pi}^p] &= \E \left | 4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)}) +
       \frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \nonumber \\
   &\leq 2^{p-1} \left ( \E |4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)})|^p 
     + \E \left |\frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \right ) \nonumber \\
-  &\leq 2^{p-1}\left [ (4(b-a))^p \E \left | \bar{u}_{2,\Pi} \right |^p
-    + \left ( \frac{2}{N}(b-a)^2 \right )^p \right ] \nonumber \\
-  &\leq 2^{p-1} (4(b-a))^p f_{c_1}(p)N^{-p/2} +
-  2^{p-1}(2(b-a)^2)^pN^{-p/2}N^{-p/2} \nonumber \\
-  &\leq (2^{p-1} (4(b-a))^p f_{c_1}(p)N^{-p/2} +
-  2^{p-1}(2(b-a)^2)^p)N^{-p/2} \nonumber \\
+  &\leq 2^{p-1}\left [ (4u_{\Delta})^p \E \left | \bar{u}_{2,\Pi} \right |^p
+    + \left ( \frac{2}{N}u_{\Delta}^2 \right )^p \right ] \nonumber \\
+  &\leq 2^{p-1} (4u_{\Delta})^p f_{c_1}(p)N^{-p/2} +
+  2^{p-1}(2u_{\Delta}^2)^pN^{-p/2}N^{-p/2} \nonumber \\
+  &\leq (2^{p-1} (4u_{\Delta})^p f_{c_1}(p)N^{-p/2} +
+  2^{p-1}(2u_{\Delta}^2)^p)N^{-p/2} \nonumber \\
   &:= f_{c_3}(p)N^{-p/2} \label{def:hp}.
 \end{align}
 
@@ -191,8 +182,7 @@ zeroth order Taylor approximation.  Write
   d_{\Pi}' = \sqrt{d_{\Pi}^2-h_{\Pi}} = f(h_{\Pi}) = f(0) + R_0(h_{\Pi}) = d_{\Pi} + R_0(h_{\Pi})
 \end{equation*}
 
-By Taylor's theorem, the remainder of the zeroth-order expansion takes
-the form 
+By Taylor's theorem, the remainder of the zeroth-order expansion takes the form 
 \begin{equation*}
   R_0(h_{\Pi}) = \frac{f'(\xi_L)}{1}h_{\Pi} = \frac{-h_{\Pi}}{2\sqrt{d_{\Pi}^2-\xi_L}}, \quad
   \text{where } \xi_L \in [0, h_{\Pi}].
@@ -222,29 +212,35 @@ Therefore,
 \end{equation*}
 
 The important thing to do is to isolate $|h_{\Pi}|$, which is small in
-expectation, but not absolutely.
+expectation, but not absolutely.  By the $c_r$-inequality,
 \begin{align}
   \E |d_{\Pi}-d_{\Pi}'|^p 
   &\leq 2^{p-1} \left ( \E \left | \frac{h_{\Pi}}{2d_{\Pi}} \right |^p + \E \left |
       \frac{h_{\Pi}}{2d_{\Pi}'} \right |^p \right ) \nonumber \\
   &\leq 2^{-1} \left ( \E \left | \frac{h_{\Pi}}{d_{\Pi}} \right |^p + \E \left |
       \frac{h_{\Pi}}{d_{\Pi}'} \right |^p \right ) \nonumber \\
-  &\leq 2^{-1} ( \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} +
-  \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}'^{-2p}]} ) \nonumber \\
-  &\leq \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} \nonumber \\
-  &\leq \sqrt{f_{c_3}(2p)N^{-2p/2} f_{c_2}(2p) N^{-2p/2}} \nonumber \\
-  &\leq \sqrt{f_{c_3}(2p) f_{c_2}(2p)} N^{-p} \nonumber \\
+  &\leq 2^{-1} \left ( \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} +
+  \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}'^{-2p}]} \right ) \nonumber \\
+  &= \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} \nonumber \\
+  &\leq \sqrt{f_{c_3}(2p)N^{-2p/2} f_{c_2}(2p) N^{-2p/2}} \quad \text{ by } \eqref{def:hp}
+  \text{ and } \eqref{def:dp} \nonumber \\
+  &= \sqrt{f_{c_3}(2p) f_{c_2}(2p)} N^{-p} \nonumber \\
   &:= f_{c_4}(p) N^{-p} \label{def:ddiffp}.
 \end{align}
 
-With $q_{\Pi} = N\bar{u}_{1,\Pi} - N\bar{u}_{2,\Pi} = -2N\bar{u}_{2,\Pi}$, and noting that $q_{\Pi}$
+With 
+\begin{equation}
+  \label{eq:qpi}
+  q_{\Pi} = N\bar{u}_{1,\Pi} - N\bar{u}_{2,\Pi} = -2N\bar{u}_{2,\Pi},
+\end{equation}
+and noting that $q_{\Pi}$
 and $q_{\Pi}'$ are exchangeable,
 \begin{align}
   \E[q_{\Pi}'^p] 
   &= \E[q_{\Pi}^p] \nonumber \\
   &= \E[(-2N\bar{u}_{2,\Pi})^p] \nonumber \\
   &= (-2N)^p \E[\bar{u}_{2,\Pi}^p] \nonumber \\
-  &\leq 2^pN^p f_{c_1}(p)N^{-p/2} \text{ from } (\ref{def:serfling}) \nonumber \\
+  &\leq 2^pN^p f_{c_1}(p)N^{-p/2} \quad \text{ from } \eqref{def:serfling} \nonumber \\
   &= 2^p f_{c_1}(p)N^{p/2} \nonumber \\
   &:= f_{c_5}(p) N^{p/2} \label{def:qp}.
 \end{align}
@@ -253,18 +249,41 @@ and $q_{\Pi}'$ are exchangeable,
   \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]
   &\leq \sqrt{\E |q_{\Pi}'|^{2p} \E |d_{\Pi}d_{\Pi}'|^{-2p}} \nonumber \\
   &\leq \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}'|^{-4p}}} \nonumber \\
-  &\leq \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}|^{-4p}}} \nonumber \\
-  &\leq \sqrt{\E |q_{\Pi}|^{2p} \E |d_{\Pi}|^{-4p}} \nonumber \\ 
-  &\leq \sqrt{f_{c_5}(2p) N^{2p/2} f_{c_2}(4p) N^{-4p/2}} \text{ from
-  } (\ref{def:qp}) \text{ and } (\ref{def:dp}) \nonumber \\
+  &= \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}|^{-4p}}} \nonumber \\
+  &= \sqrt{\E |q_{\Pi}|^{2p} \E |d_{\Pi}|^{-4p}} \nonumber \\ 
+  &\leq \sqrt{f_{c_5}(2p) N^{2p/2} f_{c_2}(4p) N^{-4p/2}} \quad \text{ from
+  } \eqref{def:qp} \text{ and } \eqref{def:dp} \nonumber \\
   &\leq \sqrt{f_{c_5}(2p) f_{c_2}(4p)} N^{-p/2} \nonumber \\
   &:= f_{c_6}(p) N^{-p/2} \label{def:qpddp}.
 \end{align}
 
 \section{Proof}
-$T_{\Pi}$ and $T_{\Pi}'$ are exchangeable by construction.  $T_{\Pi}$ (and thus $T_{\Pi}'$ by
-exchangeability) has mean zero by symmetry ($P(T_{\Pi} = t) = P(T_{\Pi} = -t)$ by
-switching groups).
+$T_{\Pi}$ and $T_{\Pi}'$ are exchangeable by construction:  
+\begin{align*}
+  P(\Pi = \pi, \Pi' = \pi') &= P(\Pi' = \pi' | \Pi = \pi)P(\Pi = \pi) \\
+  &= \frac{1}{N^2}\mathbbm{1}_{\{\pi'=\pi \circ (i,j), 1\leq i \leq N, N+1 \leq j \leq 2N\}} P(\Pi =
+  \pi') \\
+  &=\frac{1}{N^2}\mathbbm{1}_{\{\pi=\pi' \circ (i,j), 1\leq i \leq N, N+1 \leq j \leq 2N\}} P(\Pi =
+  \pi') \\
+  &= P(\Pi' = \pi | \Pi = \pi')P(\Pi = \pi') \\
+  &= P(\Pi = \pi', \Pi' = \pi)
+\end{align*}
+
+Since $(\Pi, \Pi')$ are exchangeable, $(T_{\Pi}, T_{\Pi}') = (T(\Pi), T(\Pi'))$ are exchangeable as
+well.  
+
+$T_{\Pi}$ and thus $T_{\Pi}'$ by exchangeability have mean zero by symmetry.  Let $\pi^*$ identify
+the permutation that reverses the order of the indices after the original permutation $\pi$.  That
+is, $\pi^* = (2N, \ldots, 1) \circ \pi$.  Since indices $1$ to $N$ correspond to the first group and
+$N+1$ to $2N$ to the second, $\pi^*$ flips the groups after $\pi$, so $T_{\pi^*} = -T_{\pi}$.
+\begin{align*}
+  P(T_{\Pi} = t) &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi) \\
+  &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi^*) \quad \text{by exchangeability} \\
+  &= \sum_{\pi^* : T_{\pi^*} = -t} P(\Pi = \pi^*) \quad \text{since } T_{\pi^*} = -T_{\pi} \text{
+    and } \pi \mapsto \pi^* \text{ is bijective} \\
+  &= P(T_{\Pi} = -t)
+\end{align*}
+
 
 For convenience, we restate theorem~\ref{T:main} of chapter~\ref{C:steins-method}:
 \begin{theorem}
@@ -297,11 +316,11 @@ The difference of our exchangeable pair is given by
 
 \begin{align*}
   \E[T_{\Pi}'-T_{\Pi}|T_{\Pi}] 
-  &= - \lambda T_{\Pi} + \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}
-  \E\left [q_{\Pi}' \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \\
+  &= - \lambda T_{\Pi} + \sqrt{\frac{N-1}{N}}
+  \E\left [\frac{q_{\Pi}'}{d_{\Pi}} \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \\
   &= - \lambda \left ( T_{\Pi} - \left ( \frac{N}{2} \right ) 
-    \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}
-    \E\left [q_{\Pi}' \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \right ) 
+    \sqrt{\frac{N-1}{N}}
+    \E\left [\frac{q_{\Pi}'}{d_{\Pi}} \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \right ) 
 \end{align*}
 so 
 \begin{equation}
@@ -313,17 +332,14 @@ so
 \begin{proposition}
   $|\E T_{\Pi}^2 -1| \leq \frac{c_2}{N}$
 \end{proposition}
+
 \begin{proof}
   \begin{align}
     \E T_{\Pi}^2
-    &= \E \left [\frac{N-1}{N} \frac{
-        (\sum_{i=1}^N u_{\Pi(i)} - \sum_{i=N+1}^{2N}u_{\Pi(i)})^2}
-      {\sum_{i=1}^{2N}u_{\Pi(i)}^2-N\bar{u}_{1,\Pi}^2-N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
+    &= \frac{N-1}{N} \E \left [ \left ( \frac{q_\Pi}{d_\Pi} \right )^2 \right ] \\
     &= \frac{N-1}{N} \E \left [\frac{
-        (N\bar{u}_{1,\Pi}-N\bar{u}_{2,\Pi})^2}
-      {\sum_{i=1}^{2N}u_{\Pi(i)}^2-N\bar{u}_{1,\Pi}^2-N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
-    &= (N-1)\E \left [\frac{
-        4 N\bar{u}_{2,\Pi}^2}{2N-2N\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
+        4 N^2\bar{u}_{2,\Pi}^2}{2N-2N\bar{u}_{2,\Pi}^2} \right ] \quad \text{ from } \eqref{eq:qpi}
+    \nonumber \\
     &= 2(N-1)\E \left [\frac{
         \bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
     &= 2(N-1) \E[g(\bar{u}_{2,\Pi})], \label{def:varT}
@@ -343,6 +359,8 @@ so
   The scaling is such that $\var(u_{\Pi(i)}) = 1$.  Under independence and
   with $i \neq j$, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2$.  Summing only 2 (out of $2N$)
   values under permutation dependence, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2 - \frac{2}{2N-1}$.
+
+  We can't use Serfling's result here because we need more than just an upper bound.
   \begin{align*}
     \var(\bar{u}_{2,\Pi}) 
     &= \frac{1}{N^2} \E \left [\left (\sum_{i=N+1}^{2N}u_{\Pi(i)}\right )^2\right ] \\
@@ -361,10 +379,8 @@ so
     &= \frac{1}{N} + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
       i}^{2N} \frac{1}{2N}\frac{1}{2N-1} \left (
     0^2 - 2N \right ) \\
-    &= 1 + \frac{1}{N}(N^2-N)\left (-\frac{1}{2N-1}\right ) \\
-    &= 1 + (1-N)\left (\frac{1}{2N-1}\right ) \\
-    &= 1 - \frac{1}{2} + \frac{2N-1}{4N-2} + \frac{2-2N}{4N-2} \\
-    &= \frac{1}{2} + \frac{1}{4N-2} \\
+    &= \frac{1}{N} + \frac{1}{N}(N^2-N)\left (-\frac{1}{2N-1}\right ) \\
+    &= \frac{2N-1}{N(2N-1)} + \frac{1-N}{N(2N-1)} \\
     &= \frac{1}{2N-1}
   \end{align*}
 
@@ -380,16 +396,17 @@ so
 
   From (\ref{def:varT}) and evaluating the Taylor series, we have 
   \begin{equation*}
-    \frac{\E T_{\Pi}^2}{2(N-1)} = \E[\bar{u}_{2,\Pi}^2 + R_3(\bar{u}_{2,\Pi})].
+    \E[g(\bar{u}_{2,\Pi})] = \frac{\E T_{\Pi}^2}{2(N-1)} = \E[\bar{u}_{2,\Pi}^2 + R_3(\bar{u}_{2,\Pi})].
   \end{equation*}
   Therefore,
   \begin{align*}
     \left | \frac{\E T_{\Pi}^2}{2(N-1)} - \E[\bar{u}_{2,\Pi}^2] \right | 
     &= \left | \frac{\E T_{\Pi}^2}{2(N-1)} - \frac{1}{2N-1} \right | \\
     &\leq  \E |R_3(\bar{u}_{2,\Pi})| \\
-    &\leq \E \left | \frac{24(5\bar{u}_{2,\Pi}^4 + 10  \bar{u}_{2,\Pi}^2 +
-        1)}{4!(\bar{u}_{2,\Pi}-1)^5}\bar{u}_{2,\Pi}^4  \right |, \quad
-    \bar{u}_{2,\Pi} \leq B < 1 \\
+    &= \E \left | \frac{24(5\xi_L^4 + 10 \xi_L^2 +
+        1)}{4!(\xi_L-1)^5}\bar{u}_{2,\Pi}^4 \right | \\
+    &\leq \E \left | \frac{24(5\bar{u}_{2,\Pi}^4 + 10 \bar{u}_{2,\Pi}^2 +
+        1)}{4!(\bar{u}_{2,\Pi}-1)^5}\bar{u}_{2,\Pi}^4 \right | \\
     &\leq \frac{5B^4+10B^2+1}{|B-1|^5} \E [\bar{u}_{2,\Pi}^4] \\
     &\leq \frac{5B^4+10B^2+1}{|B-1|^5} f_{c_1}(4) N^{-2} \quad \text{
       by } (\ref{def:serfling}) \\
@@ -427,6 +444,7 @@ $\frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \leq N^{-1} 
     &\leq 4(\var(X) + \var(Y) + \var(Z))
   \end{align*}
 
+  From \eqref{def:ttpcubed},
   \begin{align*}
     \var (\E[(T_{\Pi}'-T_{\Pi})^2 | \Pi = \pi]) &= \var \left ( \frac{N-1}{N}\E \left [
       \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
@@ -445,6 +463,101 @@ $\frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \leq N^{-1} 
     Z &= 2 \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}
          T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right ) \middle | \Pi = \pi \right ]
   \end{align*}
+
+  The $\E[(u_{\Pi(J)}-u_{\Pi(I)} | \Pi = \pi]$ term is common to applications of Stein's method of
+  exchangeable pairs.  However, there is a complication in the $d_{\Pi}$ random variable in the
+  denominator.  Our strategy will be to calculate the two variances separately with some necessary
+  additional terms.
+
+  First, we prove an intermediate result regarding the variance of a product of random variables
+  \begin{equation*}
+    W = (d_{\Pi})^{-2} \text{ and } V = \E [(u_{\Pi(J)} - u_{\Pi(I)})^2 | \Pi = \pi].
+  \end{equation*}
+  Then $\var(X) = 4 \var(WV)$ since $d_{\Pi}$ is $\sigma(\Pi)$-measurable and 
+  \begin{align}
+    \label{E:var_prod}
+    \var(WV) &= \var(W(V-\E V) + W \E V) \nonumber \\
+    &\leq \var(W(V-\E V)) + 2 \var (W \E V) \nonumber \\
+    &\leq 2 \E [W^2 (V-\E V)^2] + 2(\E V)^2 \var(W) \nonumber \\
+    &\leq 2(f_{c_2}(2))^2 N^{-2} \var(V) + 2u_{\Delta}^4 \var(W)
+  \end{align}
+  
+  \begin{align*}
+    \var(W) &= \var ((d_{\Pi})^{-2}) \\
+    &= \var \left ( \frac{1}{2N(1-\bar{u}_{2,\Pi}^2)} \right ) \\
+    &= \frac{1}{4N^2} \left [ \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2}
+        \right )^2 \right ] - 
+      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
+    \right ] \\
+    &= \frac{1}{4N^2}[\E h(\bar{u}_{2,\Pi}) - (\E \tilde{h}(\bar{u}_{2,\Pi}))^2],
+  \end{align*}
+  where 
+  \begin{equation*}
+    h(x) = \left ( \frac{1}{1-x^2} \right )^2 = 1 + 2x^2 + 3x^4 + \dots
+      \text{ and } \tilde{h}(x) = \frac{1}{1-x^2} = 1 + x^2 + x^4 + \ldots
+  \end{equation*}
+
+  By Taylor's theorem,
+  \begin{equation*}
+    \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] 
+    = 1 + 2 \left ( \frac{1}{2N-1} \right ) + \E [R_3(\bar{u}_{2,\Pi})],
+  \end{equation*}
+  with
+  \begin{equation*}
+    \E |R_3(\bar{u}_{2,\Pi})| \leq \frac{24(35B^4 + 42 B^2 + 3)}{4!(B-1)^6}f_{c_1}(4) N^{-2}
+    := c_4 N^{-2}
+  \end{equation*}
+  Re-arranging, we get
+  \begin{equation*}
+    \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] 
+      - 1 - \frac{2}{2N-1} \right | \leq c_4 N^{-2}.
+  \end{equation*}
+  
+  Applying Taylor's theorem to $\tilde{h}$:
+  \begin{equation*}
+    \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ]
+    = 1 + \frac{1}{2N-1} + \E [\tilde{R}_3(\bar{u}_{2,\Pi})],
+  \end{equation*}
+  with
+  \begin{equation*}
+    \E |\tilde{R}_3(\bar{u}_{2,\Pi})| \leq \frac{24(5B^4 + 10B^2 + 1)}{4!(B-1)^5}f_{c_1}(4) N^{-2}
+    := c_5 N^{-2}
+  \end{equation*}
+  Squaring, applying the bound, and re-arranging yields
+  \begin{equation*}
+    \left | \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 
+      - \left ( 1 + \frac{1}{2N-1} \right )^2 \right | \leq 
+    2 \left ( 1 + \frac{1}{2N-1} \right ) c_5 N^{-2} + c_5^2 N^{-4}
+  \end{equation*}
+  
+  Now we combine bounds to get
+  \begin{align*}
+    &\left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] - 
+      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 \right | \\
+    &= \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] - 
+      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 
+    + \frac{1}{(2N-1)^2} - \frac{1}{(2N-1)^2} \right | \\
+  &\leq \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] - 
+      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 
+      + \frac{1}{(2N-1)^2} \right | + \left | \frac{1}{(2N-1)^2} \right |\\
+    &\leq \left | 
+      \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ]
+      - 1 - \frac{2}{2N-1} - 
+      \left ( 
+        \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 
+        - \left ( 1 + \frac{1}{2N-1} \right )^2 
+      \right ) \right | + \left | \frac{1}{(2N-1)^2} \right | \\
+    &\leq c_4 N^{-2}
+    + 2 \left ( 1 + \frac{1}{2N-1} \right ) c_5 N^{-2} + c_5^2 N^{-4} 
+    + \left | \frac{1}{(2N-1)^2} \right | \\
+    &\leq (c_4 + 3c_5 + c_5^2 + \frac{1}{4}) N^{-2} \\
+    &:= c_6 N^{-2}
+  \end{align*}
+  Therefore,
+  \begin{equation*}
+    \var(W) \leq \frac{c_6}{4N^4} \text{ and } 
+    \var(WV) \leq 2(f_{c_2}(2))^2 N^{-2} \var(V) + 2u_{\Delta}^4 \frac{c_6}{2} N^{-4}.
+  \end{equation*}
 
   The first term is going to dominate.
   \begin{align*}

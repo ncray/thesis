@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  10 APR 2012 11:46
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  15 APR 2012 11:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -126,6 +126,13 @@ Package: amsthm 2004/08/06 v2.20
 \thm@headsep=\skip49
 \dth@everypar=\toks24
 )
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bbm-macros/bbm.sty
+Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
+LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
+(Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
+(Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
+)
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/tools/enumerate.sty
 Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
 \@enLab=\toks25
@@ -231,18 +238,18 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 (./stein-proof/stein-proof.aux) (./bibliography.aux))
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -314,20 +321,20 @@ e
 
 {/h0a/stow/swtree/stow/texlive/tl2010/texmf-var/fonts/map/pdftex/updmap/pdftex.
 map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 62.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 63.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <14.4> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 62.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 63.
 
 [2]
-LaTeX Font Info:    Try loading font information for U+msa on input line 62.
+LaTeX Font Info:    Try loading font information for U+msa on input line 63.
  (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 62.
+LaTeX Font Info:    Try loading font information for U+msb on input line 63.
  (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
@@ -420,43 +427,46 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [19]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[19]
+Underfull \vbox (badness 2521) has occurred while \output is active []
 
  [20]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [21]
+LaTeX Font Info:    Try loading font information for U+bbm on input line 270.
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23]
-[24]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
-[26] [27]
-Overfull \hbox (20.32236pt too wide) in paragraph at lines 438--438
-[] 
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [28]
-Overfull \hbox (8.45337pt too wide) in paragraph at lines 471--471
+ [26]
+[27]
+Overfull \hbox (20.32236pt too wide) in paragraph at lines 456--456
 [] 
  []
 
 
+Underfull \vbox (badness 6380) has occurred while \output is active []
+
+ [28]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [29]
-Overfull \hbox (20.84483pt too wide) in paragraph at lines 514--514
+Overfull \hbox (57.19702pt too wide) in paragraph at lines 555--555
 [] 
  []
 
@@ -464,7 +474,26 @@ Overfull \hbox (20.84483pt too wide) in paragraph at lines 514--514
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [30]
-Overfull \hbox (37.4095pt too wide) detected at line 567
+Overfull \hbox (8.45337pt too wide) in paragraph at lines 584--584
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+Overfull \hbox (20.84483pt too wide) in paragraph at lines 627--627
+[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [33]
+Overfull \hbox (37.4095pt too wide) detected at line 680
 []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 X\OT1/cmr/m/n/12 ) = (\OML/cmm/m/it/12 f[]\
 OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] []\OT1/cmr/m/n/12 (\U/msb/m/n/12 E\OT
 1/cmr/m/n/12 [(2\OML/cmm/m/it/12 u[] \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 2\OML
@@ -473,28 +502,29 @@ OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] []\OT1/cmr/m/n/12 (\U/msb/m/n/12 E\OT
 mm/m/it/12 f[]\OT1/cmr/m/n/12 (2))[]\OML/cmm/m/it/12 N[] [] :
  []
 
-
+[34]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [31]
+ [35]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [32]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [33]
-Overfull \hbox (60.81358pt too wide) in paragraph at lines 649--649
+ [36]
+Overfull \hbox (66.68852pt too wide) in paragraph at lines 762--762
 [] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [34]
-[35]) [36]
+ [37]
+[38]) [39]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl
+ (./bibliography.tex (./thesis.bbl [40
+
+
+
+]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -504,43 +534,40 @@ Missing character: There is no ™ in font cmr12!
 Missing character: There is no â in font cmti12!
 Missing character: There is no € in font cmti12!
 Missing character: There is no ™ in font cmti12!
- [37
-
-
-
-])) [38] (./thesis.aux
+ [41])) [42] (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
 (./bibliography.aux)) ) 
 Here is how much of TeX's memory you used:
- 3212 strings out of 493738
- 42055 string characters out of 3135951
- 110573 words of memory out of 3000000
- 6403 multiletter control sequences out of 15000+200000
- 12380 words of font info for 45 fonts, out of 3000000 for 9000
+ 3250 strings out of 493738
+ 43056 string characters out of 3135951
+ 111748 words of memory out of 3000000
+ 6431 multiletter control sequences out of 15000+200000
+ 12775 words of font info for 48 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  38i,19n,24p,232b,325s stack positions out of 5000i,500n,10000p,200000b,50000s
-</h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/t
-l2010/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtre
-e/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0
-a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
-i6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive
-/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/
-stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/
-stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6
-.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmsy8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmti12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fo
-nts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (44 pages, 259784 bytes).
+ </home/ncray/.texlive2010/texmf-var/fonts/pk/ljfour/pub
+lic/bbm/bbm12.600pk></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/tl20
+10/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtree/s
+tow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0a/s
+tow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.
+pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl
+2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/sto
+w/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/sto
+w/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pf
+b></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmti12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (48 pages, 269429 bytes).
 PDF statistics:
- 208 PDF objects out of 1000 (max. 8388607)
- 145 compressed objects within 2 object streams
+ 225 PDF objects out of 1000 (max. 8388607)
+ 157 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
