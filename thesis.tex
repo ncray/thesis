@@ -16,9 +16,10 @@
 \usepackage{enumerate}
 \usepackage{epsfig}
 \usepackage{perry-thesis-macros}
+\usepackage{tikz}
 %\usepackage{breqn} %because \left and \right can't go on multiple lines
 
-\DeclareGraphicsExtensions{.png,.pdf}
+\DeclareGraphicsExtensions{.png,.pdf,.tex}
 
 \newcommand{\dirsep}{/}
 \newcommand{\dirprefix}{}
@@ -55,6 +56,7 @@
 \includeonly{
   {\thesischapter{steins-method}},
   {\thesischapter{stein-proof}},
+  {\thesischapter{simulations}},
   bibliography
 }
 
@@ -74,5 +76,6 @@
 
 \includechapter{steins-method}
 \includechapter{stein-proof}
+\includechapter{simulations}
 \include{bibliography}
 \end{document}

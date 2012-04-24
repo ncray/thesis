@@ -1,0 +1,165 @@
+\chapter{Simulations}
+\label{C:simulations}
+This chapter is a computational companion to chapter~\ref{C:stein-proof}.  
+
+\section{Preliminaries}
+First, we provide simulations accompanying section~\ref{S:stein-proof-preliminaries}.  We generate 
+i.i.d. samples $\{u_i\}_{i=1}^{N} \sim \Normal(-1, 1)$ and $\{u_i\}_{i=N+1}^{2N} \sim \Normal(1, 1)$
+for exponentially spaced values of $N \in \{\text{floor}(10^{.5+.5i})\}_{i=1}^7$.  The $u_i$ are scaled
+and centered, and for each $N$, we perform $10,000$ permutations.  
+
+We plot Monte Carlo estimates of the means of each term, scaled by the rate of our bound, along with
+95\%ile bootstrap confidence intervals for different values of $p \in \{2, 4, 6, 8\}$.
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/sim1.tex}
+\end{figure}
+Due to the flatness of the curves, we conclude that the bounds we have proved are of the correct
+rate.  In addition, we can observe the behavior of the constants as functions of $p$.  For instance,
+our $f_{c_3}(p)$ constant for $\E [h_{\Pi}^p]$ appears to be an exponential function of $p$.
+\clearpage
+
+Here, to compute the corresponding ``prime'' random variables, in each permutation we pick a
+transposition uniformly at random among transpositions that switch groups.
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/sim2.tex}
+\end{figure}
+It is possible that the bound of rate $N^{-p/2}$ on 
+$\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
+\clearpage
+
+\section{Main Bounds}
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/sim3.tex}
+\end{figure}
+Our bounds appear to be of the correct order or slightly conservative in some cases.  The bounds on
+the remainder terms ($\E |R_{\Pi}|$ and $\E |T_{\Pi}R_{\Pi}|$) are of order $N^{1/2}$, but the true
+rates are probably lower.  
+
+\section{True Rate}
+
+
+
+
+Chen et al. \cite{chen2010normal} provide a simple example
+(pp.154-155) in which the sum of i.i.d. random variables yields
+\begin{equation*}
+  E|W' - W|^3 = \frac{4}{N^{3/2}}
+\end{equation*}
+with $\lambda = N^{-1}$.  This leads to an $O(N^{-1/4})$ bound,
+which is suboptimal and apparently not uncommon when applying this
+kind of theorem.
+
+\section{Efficient Updates}
+Instead of conditioning on the value of $T_{\Pi}$, we condition on the
+observed permutation $\pi$.  For $N$ observations in each group, there
+are $N^2 \: T_{\Pi}'$ values that come from swapping one value in the first
+group with one value in the second.  $T_{\Pi}'$ should not differ much from
+$T_{\Pi}$, and calculating the $t$-statistics from scratch is inefficient.  
+
+We use an efficient $t$-statistic update rule to easily calculate
+millions of $t$-statistics.  The two sample $t$-statistic is given by
+\begin{equation*}
+  T_{\Pi} = \frac{\bar{x}-\bar{u}}
+  {\sqrt{\frac{2}{n}}\sqrt{\frac{1}{2}(S_X^2+S_U^2)}},
+\end{equation*}
+where $S_X^2=\frac{1}{N-1}(\sum_{i=1}^Nx_i^2-n\bar{x}^2)$.
+
+Let $T_{x_i,u_j}$ be the result of $T'$ by swapping $x_i$ with $u_j$:
+\begin{align*}
+  \Delta &\equiv u_j-x_i \\
+  \bar{x}_{x_i,u_j} &= \bar{x}-\frac{1}{N}x_i+\frac{1}{N}u_j =
+  \bar{x}+\frac{\Delta}{N} \\
+  \bar{u}_{x_i,u_j} &= \bar{u}+\frac{1}{N}x_i-\frac{1}{N}u_j =
+  \bar{u}-\frac{\Delta}{N} \\
+  S_{X_{x_i,u_j}}^2 &= \frac{1}{N-1}(\sum_{k=1}^N x_k^2 - x_i^2 +
+  u_j^2) - \frac{N}{N-1}\bar{x}^2_{x_i,u_j} \\
+  S_{U_{x_i,u_j}}^2 &= \frac{1}{N-1}(\sum_{k=1}^N u_k^2 + x_i^2 -
+  u_j^2) - \frac{N}{N-1}\bar{u}^2_{x_i,u_j} \\
+  \bar{x}_{x_i,u_j}^2 &= \bar{x}^2 + \frac{2\Delta}{N}\bar{x} +
+  \frac{\Delta^2}{N} \\
+  \bar{u}_{x_i,u_j}^2 &= \bar{u}^2 - \frac{2\Delta}{N}\bar{u} + \frac{\Delta^2}{N}
+\end{align*}
+
+Then
+\begin{align*}
+  T_{x_i,u_j} &= \frac{\bar{x}_{x_i,u_j}-\bar{u}_{x_i,u_j}}
+  {\sqrt{\frac{2}{N}}\sqrt{\frac{1}{2}(S_{X_{x_i,u_j}}^2+S_{U_{x_i,u_j}}^2)}}\\
+  &= \frac{\bar{x}-\bar{u}+\frac{2\Delta}{N}}
+  {\sqrt{\frac{2}{N}}\sqrt{\frac{1}{2(N-1)}[\sum_{k=1}^N (x_k^2+u_k^2)
+      -N(\bar{x}^2+\bar{u}^2+\Delta(\frac{2\bar{x}}{n}
+      -\frac{2\bar{u}}{n})+\frac{2}{n^2}\Delta^2)]}}.
+\end{align*}
+Only the terms involving $\Delta$ need to be recomputed for each of the $N^2$ swaps.
+
+Consider a na\"{\i}ve implementation based on a double for-loop and recomputing each $t$-statistic
+anew versus a vectorized approach using the update formula:
+\begin{verbatim}
+computeAllCond2 <- function(T, N, u, l, x, y){
+    minus <- which(l == -1)
+    plus <- which(l == 1)
+    Tprime <- 1:(N^2)
+    for(j in 1:N){
+      for(k in 1:N){
+        swap <- c(minus[j], plus[k])
+        l[swap] <- l[rev(swap)]
+        Tprime[N*(j-1)+k] <- t.test(u[l==1], u[l==-1], var.equal=TRUE)$statistic
+        l[swap] <- l[rev(swap)]
+      }
+    }
+    data.frame("T" = T, "Tprime" = Tprime, "N" = N, "lambda" = 2 / N)
+}
+
+computeAllCond <- function(T, N, u, l, x, y){
+  del <- rep(y, length(x)) - rep(x, each = length(y))
+  xbar <- mean(x)
+  ybar <- mean(y)
+  Tprime <- -(xbar - ybar + 2/N*del) /
+    (sqrt(2/N)*sqrt(sum(u^2)/(2*(N-1)) - 1/2*N/(N-1)*(xbar^2 + ybar^2 + 2*del/N*(xbar-ybar) + 2*del^2/N^2)))
+  data.frame("T" = T, "Tprime" = Tprime, "N" = N, "lambda" = 2 / N)
+}
+\end{verbatim}
+
+We observe roughly a 2,000 times increase in speed on a problem instance of size $N=100$.  With
+byte-compilation and additional tuning, a four order of magnitude increase is possible.  
+\begin{verbatim}
+> system.time(computeAllCond2(T, N, u, l, x, y))
+   user  system elapsed 
+  7.333   0.000   7.334 
+> system.time(computeAllCond(T, N, u, l, x, y))
+   user  system elapsed 
+  0.005   0.000   0.004 
+> sum((sort(computeAllCond(T, N, u, l, x, y)$Tprime) - sort(computeAllCond2(T, N, u, l, x, y)$Tprime))^2)
+[1] 3.137579e-27
+dat <- ldply(rep(floor(10^(seq(1, 3.5, by=.5))), each = 8),
+simulateBounds, .parallel = TRUE, .progress = "text")
+> print(object.size(dat), units = "Gb")
+2.6 Gb
+\end{verbatim}
+
+\section{A Different Exchangeable Pair}
+Rather than only consider transpositions that swap one element of the
+first group with one from the second group, we have a few different
+choices.  Let's take the other extreme, where we consider all $(2N)^2$
+transpositions, including null transpositions.  There are $N^2$
+transpositions within each group, for a total of $2N^2$.  Each of
+these does not change the $t$-statistic.  We previously only
+considered the $N^2$ transpositions where $I < J$.  There are another
+$N^2$ with $I > J$.  These transpositions have exactly the same effect
+as the previous group $(I, J) = (J, I)$, and all within-group
+transpositions have no effect.  
+
+The only changes should be to adjust the weights when taking
+conditional expectations (the weights should be $1/2$) and to divide
+$\lambda$ by 2.  The new $\lambda$ is $N^{-1}$.
+
+However, every term involving the conditional expectation also has a
+division by lambda, so any decrease in the c.e. is cancelled out by a
+corresponding decrease in $\lambda$, so there is no change in any of
+the simulations.
+
+It's nice that the calculations are invariant to change in the
+exchangeable pair.  Whether that holds true for more drastic changes
+(e.g. swapping more than 2 elements) is not known.

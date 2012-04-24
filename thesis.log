@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  18 APR 2012 10:48
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  24 APR 2012 15:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -233,36 +233,305 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \@lastruleclass=\count113
 \@thisrulewidth=\dimen130
 ))
-\c@theorem=\count114
- (./thesis.aux (./steins-method/steins-method.aux)
-(./stein-proof/stein-proof.aux) (./bibliography.aux))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/frontendlayer/ti
+kz.sty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/basiclayer/pgf.s
+ty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/utilities/pgfrcs
+.sty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfu
+til-common.tex
+\pgfutil@everybye=\toks30
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfu
+til-latex.def)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfr
+cs.code.tex
+Package: pgfrcs 2008/02/20 v2.00 (rcs-revision 1.21)
+))
+Package: pgf 2008/01/15 v2.00 (rcs-revision 1.12)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/basiclayer/pgfco
+re.sty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/systemlayer/pgfs
+ys.sty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+fsys.code.tex
+Package: pgfsys 2008/02/07 v2.00 (rcs-revision 1.31)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfk
+eys.code.tex
+\pgfkeys@pathtoks=\toks31
+\pgfkeys@temptoks=\toks32
+)
+\pgf@x=\dimen131
+\pgf@y=\dimen132
+\pgf@xa=\dimen133
+\pgf@ya=\dimen134
+\pgf@xb=\dimen135
+\pgf@yb=\dimen136
+\pgf@xc=\dimen137
+\pgf@yc=\dimen138
+\c@pgf@counta=\count114
+\c@pgf@countb=\count115
+\c@pgf@countc=\count116
+\c@pgf@countd=\count117
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+f.cfg
+File: pgf.cfg 2008/01/13  (rcs-revision 1.6)
+)
+Package pgfsys Info: Driver file for pgf: pgfsys-pdftex.def on input line 885.
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+fsys-pdftex.def
+File: pgfsys-pdftex.def 2007/12/20  (rcs-revision 1.20)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+fsys-common-pdf.def
+File: pgfsys-common-pdf.def 2007/12/17  (rcs-revision 1.8)
+)))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+fsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2008/01/23  (rcs-revision 1.6)
+\pgfsyssoftpath@smallbuffer@items=\count118
+\pgfsyssoftpath@bigbuffer@items=\count119
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
+fsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/latexconfig/color.cf
+g
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+core.code.tex
+Package: pgfcore 2008/01/15 v2.00 (rcs-revision 1.6)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmath.c
+ode.tex
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathca
+lc.code.tex
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathut
+il.code.tex
+\pgfmath@box=\box30
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathpa
+rser.code.tex
+\pgfmath@stack=\toks33
+\c@pgfmath@parsecounta=\count120
+\c@pgfmath@parsecountb=\count121
+\c@pgfmath@parsecountc=\count122
+\pgfmath@parsex=\dimen139
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathop
+erations.code.tex
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathtr
+ig.code.tex)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathrn
+d.code.tex))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathba
+se.code.tex)))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corepoints.code.tex
+File: pgfcorepoints.code.tex 2008/02/03  (rcs-revision 1.13)
+\pgf@picminx=\dimen140
+\pgf@picmaxx=\dimen141
+\pgf@picminy=\dimen142
+\pgf@picmaxy=\dimen143
+\pgf@pathminx=\dimen144
+\pgf@pathmaxx=\dimen145
+\pgf@pathminy=\dimen146
+\pgf@pathmaxy=\dimen147
+\pgf@xx=\dimen148
+\pgf@xy=\dimen149
+\pgf@yx=\dimen150
+\pgf@yy=\dimen151
+\pgf@zx=\dimen152
+\pgf@zy=\dimen153
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2008/02/13  (rcs-revision 1.14)
+\pgf@path@lastx=\dimen154
+\pgf@path@lasty=\dimen155
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corepathusage.code.tex
+File: pgfcorepathusage.code.tex 2008/01/23  (rcs-revision 1.11)
+\pgf@shorten@end@additional=\dimen156
+\pgf@shorten@start@additional=\dimen157
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corescopes.code.tex
+File: pgfcorescopes.code.tex 2008/01/15  (rcs-revision 1.26)
+\pgfpic=\box31
+\pgf@hbox=\box32
+\pgf@layerbox@main=\box33
+\pgf@picture@serial@count=\count123
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2007/12/12  (rcs-revision 1.8)
+\pgflinewidth=\dimen158
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coretransformations.code.tex
+File: pgfcoretransformations.code.tex 2008/02/04  (rcs-revision 1.10)
+\pgf@pt@x=\dimen159
+\pgf@pt@y=\dimen160
+\pgf@pt@temp=\dimen161
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corequick.code.tex
+File: pgfcorequick.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coreobjects.code.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2008/01/23  (rcs-revision 1.7)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corearrows.code.tex
+File: pgfcorearrows.code.tex 2007/06/07  (rcs-revision 1.8)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coreshade.code.tex
+File: pgfcoreshade.code.tex 2007/12/10  (rcs-revision 1.9)
+\pgf@max=\dimen162
+\pgf@sys@shading@range@num=\count124
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coreimage.code.tex
+File: pgfcoreimage.code.tex 2008/01/15  (rcs-revision 1.1)
+\pgfexternal@startupbox=\box34
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corelayers.code.tex
+File: pgfcorelayers.code.tex 2008/01/15  (rcs-revision 1.1)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+coretransparency.code.tex
+File: pgfcoretransparency.code.tex 2008/01/17  (rcs-revision 1.2)
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
+corepatterns.code.tex
+File: pgfcorepatterns.code.tex 2008/01/15  (rcs-revision 1.1)
+)))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
+uleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2008/02/13  (rcs-revision 1.4)
+\pgfnodeparttextbox=\box35
+\toks@savedmacro=\toks34
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
+uleplot.code.tex
+File: pgfmoduleplot.code.tex 2008/01/15  (rcs-revision 1.1)
+\pgf@plotwrite=\write3
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/compatibility/pg
+fcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v2.00 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen163
+\pgf@nodesepend=\dimen164
+)
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/compatibility/pg
+fcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v2.00 (rcs-revision 1.1)
+))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/utilities/pgffor
+.sty
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgff
+or.code.tex
+Package: pgffor 2007/11/07 v2.00 (rcs-revision 1.8)
+\pgffor@iter=\dimen165
+\pgffor@skip=\dimen166
+))
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/frontendlayer/
+tikz/tikz.code.tex
+Package: tikz 2008/02/13 v2.00 (rcs-revision 1.27)
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/libraries/pgfl
+ibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2007/03/09 v2.00 (rcs-revision 1.9)
+\pgf@plot@mark@count=\count125
+\pgfplotmarksize=\dimen167
+)
+\tikz@lastx=\dimen168
+\tikz@lasty=\dimen169
+\tikz@lastxsaved=\dimen170
+\tikz@lastysaved=\dimen171
+\tikzleveldistance=\dimen172
+\tikzsiblingdistance=\dimen173
+\tikz@figbox=\box36
+\tikz@tempbox=\box37
+\tikztreelevel=\count126
+\tikznumberofchildren=\count127
+\tikznumberofcurrentchild=\count128
+\tikz@fig@count=\count129
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
+ulematrix.code.tex
+File: pgfmodulematrix.code.tex 2008/01/15  (rcs-revision 1.1)
+\pgfmatrixcurrentrow=\count130
+\pgfmatrixcurrentcolumn=\count131
+\pgf@matrix@numberofcolumns=\count132
+)
+\tikz@expandcount=\count133
+
+(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/frontendlayer/
+tikz/libraries/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/01/09 v2.00 (rcs-revision 1.1)
+)))
+\c@theorem=\count134
+ (./thesis.aux
+(./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
+(./simulations/simulations.aux) (./bibliography.aux))
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count115
-\scratchdimen=\dimen131
-\scratchbox=\box30
-\nofMPsegments=\count116
-\nofMParguments=\count117
-\everyMPshowfont=\toks30
-\MPscratchCnt=\count118
-\MPscratchDim=\dimen132
-\MPnumerator=\count119
-\everyMPtoPDFconversion=\toks31
+\scratchcounter=\count135
+\scratchdimen=\dimen174
+\scratchbox=\box38
+\nofMPsegments=\count136
+\nofMParguments=\count137
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count138
+\MPscratchDim=\dimen175
+\MPnumerator=\count139
+\everyMPtoPDFconversion=\toks36
 )
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/pdftexcmd
 s.sty
@@ -310,7 +579,7 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 )))
 Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.eps]
+(grfext)             [.png,.pdf,.tex,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 436.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/latexconfig/epstopdf
@@ -321,26 +590,26 @@ e
 
 {/h0a/stow/swtree/stow/texlive/tl2010/texmf-var/fonts/map/pdftex/updmap/pdftex.
 map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 64.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 66.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <14.4> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
 
 [2]
-LaTeX Font Info:    Try loading font information for U+msa on input line 64.
+LaTeX Font Info:    Try loading font information for U+msa on input line 66.
  (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 64.
+LaTeX Font Info:    Try loading font information for U+msb on input line 66.
  (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
 [3] [4] (./thesis.toc)
-\tf@toc=\write3
-\openout3 = `thesis.toc'.
+\tf@toc=\write4
+\openout4 = `thesis.toc'.
 
  [5
 
@@ -436,7 +705,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [21]
-LaTeX Font Info:    Try loading font information for U+bbm on input line 257.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 258.
 
 (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
@@ -451,7 +720,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26]
-Overfull \hbox (20.32236pt too wide) in paragraph at lines 460--460
+Overfull \hbox (20.32236pt too wide) in paragraph at lines 461--461
 [] 
  []
 
@@ -465,7 +734,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [29]
-Overfull \hbox (57.19702pt too wide) in paragraph at lines 560--560
+Overfull \hbox (57.19702pt too wide) in paragraph at lines 561--561
 [] 
  []
 
@@ -476,7 +745,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
-Overfull \hbox (20.84483pt too wide) in paragraph at lines 619--619
+Overfull \hbox (20.84483pt too wide) in paragraph at lines 620--620
 [] 
  []
 
@@ -487,7 +756,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [33]
-Overfull \hbox (36.01935pt too wide) in paragraph at lines 666--666
+Overfull \hbox (36.01935pt too wide) in paragraph at lines 667--667
 [] 
  []
 
@@ -505,9 +774,65 @@ Underfull \vbox (badness 1152) has occurred while \output is active []
 
  [37])
 [38]
+\openout2 = `simulations/simulations.aux'.
+
+ (./simulations/simulations.tex
+Chapter 3.
+(./simulations/sim1.tex) [39
+
+
+
+] [40] (./simulations/sim2.tex) [41
+
+]
+(./simulations/sim6.tex) [42
+
+] (./simulations/sim3.tex) [43
+
+]
+<./simulations/sim5.png, id=177, 433.62pt x 325.215pt>
+File: ./simulations/sim5.png Graphic file (type png)
+
+<use ./simulations/sim5.png> [44
+
+ <./simulations/sim5.png (PNG copy)>]
+(./simulations/sim4.tex) [45
+
+]
+
+LaTeX Warning: Citation `chen2010normal' on page 46 undefined on input line 102
+.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [46]
+[47]
+Overfull \hbox (60.38025pt too wide) in paragraph at lines 178--178
+[]        \OT1/cmtt/m/n/12 Tprime[N*(j-1)+k] <- t.test(u[l==1], u[l==-1], var.e
+qual=TRUE)$statistic[] 
+ []
+
+
+Overfull \hbox (233.28033pt too wide) in paragraph at lines 178--178
+[]    \OT1/cmtt/m/n/12 (sqrt(2/N)*sqrt(sum(u^2)/(2*(N-1)) - 1/2*N/(N-1)*(xbar^2
+ + ybar^2 + 2*del/N*(xbar-ybar) + 2*del^2/N^2)))[] 
+ []
+
+
+Overfull \hbox (214.75533pt too wide) in paragraph at lines 195--195
+[]\OT1/cmtt/m/n/12 > sum((sort(computeAllCond(T, N, u, l, x, y)$Tprime) - sort(
+computeAllCond2(T, N, u, l, x, y)$Tprime))^2)[] 
+ []
+
+[48]) [49]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl
+ (./bibliography.tex (./thesis.bbl [50
+
+
+
+]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -517,44 +842,45 @@ Missing character: There is no ™ in font cmr12!
 Missing character: There is no â in font cmti12!
 Missing character: There is no € in font cmti12!
 Missing character: There is no ™ in font cmti12!
- [39
-
-
-
-])) [40] (./thesis.aux
+ [51])) [52] (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
-(./bibliography.aux)) ) 
+(./simulations/simulations.aux) (./bibliography.aux))
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3257 strings out of 493738
- 43097 string characters out of 3135951
- 111824 words of memory out of 3000000
- 6438 multiletter control sequences out of 15000+200000
- 12775 words of font info for 48 fonts, out of 3000000 for 9000
+ 9623 strings out of 493738
+ 163693 string characters out of 3135951
+ 303559 words of memory out of 3000000
+ 12611 multiletter control sequences out of 15000+200000
+ 13251 words of font info for 50 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,19n,24p,232b,325s stack positions out of 5000i,500n,10000p,200000b,50000s
- </home/ncray/.texlive2010/texmf-var/fonts/pk/ljfour/pub
-lic/bbm/bbm12.600pk></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/tl20
-10/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtree/s
-tow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0a/s
-tow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.
+ 47i,19n,55p,315b,670s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </home/ncray/.texlive2010/texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk><
+/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/t
+ype1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtree/stow/texlive/tl2010/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0a/stow/swtree/stow/texli
+ve/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></h0a/stow/swtree
+/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></h0a/
+stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12
+.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/stow/swtree/stow/texlive
+/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></h0a/stow/swtree/s
+tow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></h0a/st
+ow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.
 pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmmi8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl
-2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/sto
-w/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/sto
-w/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pf
-b></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmti12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts
-/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (46 pages, 267964 bytes).
+s/cm/cmtt12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pu
+blic/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (58 pages, 497121 bytes).
 PDF statistics:
- 219 PDF objects out of 1000 (max. 8388607)
- 153 compressed objects within 2 object streams
+ 265 PDF objects out of 1000 (max. 8388607)
+ 185 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 18 words of extra memory for PDF output out of 10000 (max. 10000000)
 
