@@ -12,10 +12,11 @@
 \contentsline {section}{\numberline {2.5}Proof}{22}
 \contentsline {chapter}{\numberline {3}Simulations}{39}
 \contentsline {section}{\numberline {3.1}Preliminaries}{39}
-\contentsline {section}{\numberline {3.2}Main Bounds}{42}
-\contentsline {subsection}{\numberline {3.2.1}Failure of Monte Carlo}{42}
-\contentsline {subsection}{\numberline {3.2.2}Exact Conditional Expectation Calculations}{43}
-\contentsline {section}{\numberline {3.3}True Rate}{44}
-\contentsline {section}{\numberline {3.4}Efficient Updates}{46}
-\contentsline {section}{\numberline {3.5}A Different Exchangeable Pair}{49}
+\contentsline {section}{\numberline {3.2}Approximate Regression Condition}{42}
+\contentsline {section}{\numberline {3.3}Main Bounds}{43}
+\contentsline {subsection}{\numberline {3.3.1}Failure of Monte Carlo}{43}
+\contentsline {subsection}{\numberline {3.3.2}Exact Conditional Expectation Calculations}{44}
+\contentsline {section}{\numberline {3.4}True Rate}{45}
+\contentsline {section}{\numberline {3.5}Efficient Updates}{47}
+\contentsline {section}{\numberline {3.6}A Different Exchangeable Pair}{50}
 \contentsline {chapter}{References}{51}

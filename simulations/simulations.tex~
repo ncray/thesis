@@ -10,9 +10,11 @@ and centered, and for each $N$, we perform $10,000$ permutations.
 
 We plot Monte Carlo estimates of the means of each term, scaled by the rate of our bound, along with
 95\%ile bootstrap confidence intervals for different values of $p \in \{2, 4, 6, 8\}$.
+
 \begin{figure}[!ht]
   \centering
   \input{./simulations/sim1.tex}
+  \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
 Due to the flatness of the curves, we conclude that the bounds we have proved are of the correct
 rate.  In addition, we can observe the behavior of the constants as functions of $p$.  For instance,
@@ -21,36 +23,89 @@ our $f_{c_3}(p)$ constant for $\E [h_{\Pi}^p]$ appears to be an exponential func
 
 Here, to compute the corresponding ``prime'' random variables, in each permutation we pick a
 transposition uniformly at random among transpositions that switch groups.
+
 \begin{figure}[!ht]
   \centering
   \input{./simulations/sim2.tex}
+  \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
 It is possible that the bound of rate $N^{-p/2}$ on 
 $\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
 \clearpage
 
 \section{Main Bounds}
+Here we simulate the main bounds under the same setting as the previous section.  
+\subsection{Failure of Monte Carlo}
+Again, we simulate the conditional expectations of the form $\E[f(T'_{\Pi}, T_{\Pi}) | T_{\Pi}]$
+with 1,000 draws from the uniform distribution on all group-switching transpositions $(I, J)$.
+
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/sim6.tex}
+  \caption{Log-log plot of values for each term in the bound, simulating the conditional expectation
+    by Monte Carlo (1,000 MC draws, 100 permutations each).}
+\end{figure}
+The MC error is too large, and we see some scaled bounds actually increase.
+\clearpage
+
+\subsection{Exact Conditional Expectation Calculations}
+Here we $T'$ for all $N^2$ group-switching transpositions $(I, J)$:
 \begin{figure}[!ht]
   \centering
   \input{./simulations/sim3.tex}
+  \caption{Log-log plot of values for each term in the bound, calculating the conditional
+    expectation exactly (200,000 permutations each).}
 \end{figure}
+
 Our bounds appear to be of the correct order or slightly conservative in some cases.  The bounds on
 the remainder terms ($\E |R_{\Pi}|$ and $\E |T_{\Pi}R_{\Pi}|$) are of order $N^{1/2}$, but the true
-rates are probably lower.  
+rates are probably lower.
+\clearpage
 
 \section{True Rate}
+To assess the true rate of convergence, we consider two settings: the earlier Normal setting and
+group draws from a Cauchy distribution with location parameters $-1$ and $1$ depending on the
+group.  Our bounds include a dependence on $u_{\Delta} = \max_i u_{i} - \min_i u_{i}$.  To better
+understand the differences between these two models, we simulate the minimum and maximum scaled
+(mean $0$ and sum of squares $2N$) values:
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/sim5.png}
+\end{figure}
 
+For $N=1000$, the Normal model typically has $u_{\Delta}$ values around 6.  In contrast, the Cauchy
+model has $u_{\Delta}$ values closer to 40.  
+\clearpage
 
+Here, we plot the empirical Kolmogorov-Smirnov test statistic in the following three settings:
+\begin{enumerate}
+\item a standard Normal draw of size $N$ (repeated N times to get the empirical distribution)
+\item the permutation $t$-statistic under Cauchy sampling (N permutations)
+\item the permutation $t$-statistic under Normal sampling (N permutations)
+\end{enumerate}
+We also add the sum of the five unscaled, simulated bound terms ($200,000$ permutations) from the
+previous section.
 
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/sim4.tex}
+  \caption{Solid black line: $N^{-1/4}$; dashed black line: $N^{-1/2}$}
+\end{figure}
+
+It's not a fair comparison to place the sum of the bounds on the same plot because that was computed
+over $200,000$ separate permutations instead of the $500$ shared by the other three.  Still, we can
+draw some general conclusions.  The normal and two permutation-$t$ K-S statistics decay perfectly at
+a rate of $N^{-1/2}$, and our bound follows a rate of $N^{-1/4}$, suggesting that the true rate of
+convergence is the former.  Also, the error-bars seem to be increasing in size but are actually
+roughly constant due to the log-log scale.
 
 Chen et al. \cite{chen2010normal} provide a simple example
 (pp.154-155) in which the sum of i.i.d. random variables yields
 \begin{equation*}
   E|W' - W|^3 = \frac{4}{N^{3/2}}
 \end{equation*}
-with $\lambda = N^{-1}$.  This leads to an $O(N^{-1/4})$ bound,
-which is suboptimal and apparently not uncommon when applying this
-kind of theorem.
+with $\lambda = N^{-1}$.  This leads to an $O(N^{-1/4})$ bound, which is suboptimal and apparently
+not uncommon when applying this kind of theorem.
 
 \section{Efficient Updates}
 Instead of conditioning on the value of $T_{\Pi}$, we condition on the

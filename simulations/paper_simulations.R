@@ -138,12 +138,20 @@ swap <- function(l){
   l
 }
 
+## getTpminusTMC <- function(u, l, N, p){
+##   T <- computeT(u, l)
+##   mean(laply(1:1000, function(i){
+##     l2 <- swap(l)
+##     computeT(u, l2) - T
+##   }))
+## }
+
 getTpminusTMC <- function(u, l, N, p){
   T <- computeT(u, l)
-  mean(laply(1:1000, function(i){
+  laply(1:N, function(i){
     l2 <- swap(l)
     computeT(u, l2) - T
-  }))
+  })
 }
       
 
@@ -230,6 +238,35 @@ rescale <- function(df){
 dat3.rs <- ddply(dat3, .(group), rescale)
 p3 %+% dat3.rs
 dat3.sum <- data.frame(ddply(dat3.rs[, -5], .(N), function(df) colSums(df[, -1])), group = "Sum of Bounds")
+
+##Approximate regression condition
+sim <- function(N){
+  dat <- getData(N)
+  u <- dat$u
+  l <- dat$l
+  nperm <- 20
+  res <- ldply(1:nperm, function(i){
+    u <- sample(u)
+    T <- computeT(u, l)
+#    diff <- getTpminusT(u, l, N, p)
+    diff <- getTpminusTMC(u, l, 100, p)    
+    R <- N / 2 * diff + T
+    data.frame("N" = N, "T" = T, "Tprime" = T + diff)
+  }, .parallel = TRUE)
+  res
+}
+dat <- ldply(10^(1:4), sim)
+tikz('sim7.tex', width = 6, height = 4.5)
+png('sim7.png', width = 6, height = 4.5, units = "in", res = 300)
+ggplot(dat, aes(T, Tprime)) +
+  geom_point(alpha = .1) +
+  geom_line(aes(y = (1 - 2 / N) * T)) +
+  xlab("$T_{\\Pi}$") +
+  ylab("$T'_{\\Pi}$") +
+  opts(title = "Approximate Regression Condition with $(1-\\lambda)T_{\\Pi} Line$") +
+  facet_wrap(~ N)
+dev.off()
+
 
 ###KS DISTANCE###
 getStat <- function(vec, ind = 1:length(vec)) ks.test(vec[ind], "pnorm")$statistic

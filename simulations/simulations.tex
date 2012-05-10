@@ -33,6 +33,31 @@ It is possible that the bound of rate $N^{-p/2}$ on
 $\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
 \clearpage
 
+\section{Approximate Regression Condition}
+From the approximate regression condition
+\begin{equation*}
+  \E [T'_{\Pi} - T_{\Pi} | T_{\Pi}] = -\lambda (T_{\Pi} - R_{\Pi})
+\end{equation*}
+we get
+\begin{equation*}
+  \E [T'_{\Pi}| T_{\Pi}] = (1-\lambda) T_{\Pi} - \lambda R_{\Pi}.
+\end{equation*}
+That is, the conditional expectation of $T'_{\Pi}$ on $T_{\Pi}$ is expected to lie near the line
+$(1-\lambda) T_{\Pi}$ with a small perturbation of order $1 / N$ (recall that $\lambda = 2 / N$).
+
+For various values of $N$, we compute 20 permutations that correspond with 20 values of $T_{\Pi}$.
+For each $T_{\Pi}$, we draw a transposition $(I, J)$ uniformly at random from the space of our
+allowable transpositions, repeating this 100 times.  
+\begin{figure}[!ht]
+  \centering
+  %\input{./simulations/sim7.tex}
+  \includegraphics[scale = .75]{sim7.png}
+  \caption{Faceted on per-group sample size, $N$.}
+\end{figure}
+
+The approximate regression condition appears to hold visually.
+\clearpage
+
 \section{Main Bounds}
 Here we simulate the main bounds under the same setting as the previous section.  
 \subsection{Failure of Monte Carlo}
