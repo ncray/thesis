@@ -243,3 +243,77 @@ the simulations.
 It's nice that the calculations are invariant to change in the
 exchangeable pair.  Whether that holds true for more drastic changes
 (e.g. swapping more than 2 elements) is not known.
+
+\section{Generalizations (Null Distribution)}
+It is natural to consider generalizations from the univariate data, linear
+kernel setting.  We explore whether the randomization distribution is
+still Normal with multivariate data and/or a non-linear kernel.
+Should the null distribution be non-Normal, we further attempt to determine
+whether the approximate regression condition holds.  
+
+We generate 100 observations with dimensionality 1, 10, 100, and
+1000.  For each set of data, we permute 100 times and plot the
+Friedman statistic ($t$-statistic on SVM fitted values) with a linear
+kernel against the standard Normal quantiles.  Note that we take the
+sign of the Friedman statistic to be positive or negative with equal
+probability for ease of comparing distributions.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/ARC/multivar_qq.png}
+\end{figure}
+
+At a sample size of 100 and with univariate data, the standard Normal
+is a close fit.  With increasing dimensionality, the Friedman
+statistic gets more and more extreme.  One possible explanation is
+that it becomes easier to separate two sets of points as the
+dimensionality increases.
+\clearpage
+
+Here we look at univariate data but with an inhomogeneous kernel
+($k(x, x') = (<x,x'>+1)^d$) of degree $d$:
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/ARC/poly_ker_qq.png}
+\end{figure}
+
+The polynomial kernel for degrees greater than 1 yields null
+distributions with fatter tails than the standard Normal.
+\clearpage
+
+Here we look at the effects of both dimension of the underlying data
+and degree of the inhomogeneous kernel:
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/ARC/multivar_poly_ker_qq.png}
+\end{figure}
+\clearpage
+
+\section{Generalizations (Approximate Regression Condition)}
+Here we plot $T'$ on $T$, where $T'$ results from swapping labels and
+refitting the SVM.  Note that here we don't assign the statistics
+random signs because there is no clear way to maintain the coupling
+between $T$ and $T'$.
+
+The dimensions (rows) are 1, 10, and 100, and the sample sizes
+(columns) are 10, 100, and 1000.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/ARC/multivar_ARC.png}
+\end{figure}
+
+Across a row, it is clear that a larger sample size decreases the
+variability of $T'$ about $T$.  And down a column, it is clear that
+increasing dimensionality results in a greater departure from (folded)
+Normality.  It is not clear whether the reduction in variability is of
+order $1/N$.
+\clearpage
+
+Here we look at sample sizes (columns) of 10, 100, and 200 and
+inhomogeneous polynomial kernel degrees (rows) of 1, 2, and 5.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics{./simulations/ARC/poly_ker_ARC.png}
+\end{figure}
+
+We again observe an approximately linear plus noise relationship
+between $T'$ and $T$ with the noise decreasing in sample size.  

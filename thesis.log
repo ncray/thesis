@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.10.4)  10 MAY 2012 09:35
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  13 MAY 2012 15:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -8,16 +8,17 @@ LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
 rman-x-2009-06-19, ngerman-x-2009-06-19, afrikaans, ancientgreek, ibycus, arabi
 c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
-h, dutch, ukenglish, usenglishmax, esperanto, estonian, farsi, finnish, french,
- galician, german, ngerman, swissgerman, monogreek, greek, hungarian, icelandic
-, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, oriya, panja
-bi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji, lao, lati
-n, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, polish, portu
-guese, romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedis
-h, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded.
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/report.cls
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, galician, german, ngerman, swissgerman, monogreek, greek, hungarian,
+ icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, or
+iya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji,
+ lao, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, pol
+ish, portuguese, romanian, russian, sanskrit, serbian, serbianc, slovak, sloven
+ian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded
+.
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/size12.clo
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/size12.clo
 File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -37,32 +38,30 @@ File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 Document Style Option `suthesis' for latex2e <$Date: 9/17/2008 $>.
 Note that this tries to fulfill the Stanford Thesis requirements but it is unof
 ficial
-
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/setspace/setspace.st
-y
+(/usr/local/texlive/2011/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
 
 Package: `setspace' 6.7 <2000/12/01>
 )
 \signaturespace=\skip43
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsmath/amsmath.sty
+) (/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip44
 
 For additional information on amsmath, use the `?' option.
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsmath/amsgen.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks14
 \ex@=\dimen103
-)) (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsmath/amsbsy.st
-y
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen104
-) (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsmath/amsopn.sty
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count88
@@ -103,19 +102,18 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2009/06/22 v3.00
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/amsfonts.st
-y
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
 ))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amscls/amsthm.sty
-Package: amsthm 2004/08/06 v2.20
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2009/07/02 v2.20.1
 \thm@style=\toks19
 \thm@bodyfont=\toks20
 \thm@headfont=\toks21
@@ -126,43 +124,47 @@ Package: amsthm 2004/08/06 v2.20
 \thm@headsep=\skip49
 \dth@everypar=\toks24
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bbm-macros/bbm.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/bbm-macros/bbm.sty
 Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
 LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
 (Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
 LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 (Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/tools/enumerate.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/tools/enumerate.sty
 Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
 \@enLab=\toks25
-) (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/graphics/epsfig.st
-y
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/epsfig.sty
 Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/graphics/graphicx.st
-y
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks26
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/graphics/graphics.st
-y
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
- (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/graphics/trig.sty
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/latexconfig/graphics
-.cfg
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pdftex-def/pdftex.de
-f
-File: pdftex.def 2010/09/14 v0.05b Graphics/color for pdfTeX
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/message (HO)
+)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
+)
 \Gread@gobject=\count100
 ))
 \Gin@req@height=\dimen112
@@ -170,10 +172,11 @@ File: pdftex.def 2010/09/14 v0.05b Graphics/color for pdfTeX
 )
 \epsfxsize=\dimen114
 \epsfysize=\dimen115
-) (./perry-thesis-macros.sty
+)
+(./perry-thesis-macros.sty
 Package: perry-thesis-macros 
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bezos/accents.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/bezos/accents.sty
 Package: accents 2006/05/12 v1.3 Math Accent Tools
 \cc@skew=\dimen116
 \cc@wd=\dimen117
@@ -181,29 +184,29 @@ Package: accents 2006/05/12 v1.3 Math Accent Tools
 \cc@group=\count102
 \cc@skewchar=\count103
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/url/url.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/algorithms/algorithm
-.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/algorithms/algorithm.sty
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
- (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/float/float.sty
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count104
 \float@exts=\toks27
 \float@box=\box28
 \@float@everytoks=\toks28
 \@floatcapt=\box29
-) (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/ifthen.sty
+)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \@float@every@algorithm=\toks29
 \c@algorithm=\count105
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/algorithms/algorithm
-ic.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/algorithms/algorithmic.sty
 Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \c@ALC@unique=\count106
 \c@ALC@line=\count107
@@ -212,8 +215,7 @@ Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \ALC@tlm=\skip50
 \algorithmicindent=\skip51
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/booktabs/booktabs.st
-y
+(/usr/local/texlive/2011/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \heavyrulewidth=\dimen118
 \lightrulewidth=\dimen119
@@ -233,37 +235,34 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \@lastruleclass=\count113
 \@thisrulewidth=\dimen130
 ))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/frontendlayer/ti
-kz.sty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/basiclayer/pgf.s
-ty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/utilities/pgfrcs
-.sty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfu
-til-common.tex
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
 \pgfutil@everybye=\toks30
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfu
-til-latex.def)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfr
-cs.code.tex
-Package: pgfrcs 2008/02/20 v2.00 (rcs-revision 1.21)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box30
+(/usr/local/texlive/2011/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
 ))
-Package: pgf 2008/01/15 v2.00 (rcs-revision 1.12)
-
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/basiclayer/pgfco
-re.sty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/systemlayer/pgfs
-ys.sty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-fsys.code.tex
-Package: pgfsys 2008/02/07 v2.00 (rcs-revision 1.31)
-
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgfk
-eys.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2010/10/25 v2.10 (rcs-revision 1.24)
+))
+Package: pgf 2008/01/15 v2.10 (rcs-revision 1.12)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2010/06/30 v2.10 (rcs-revision 1.37)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks31
 \pgfkeys@temptoks=\toks32
-)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
+ode.tex
+\pgfkeys@tmptoks=\toks33
+))
 \pgf@x=\dimen131
 \pgf@y=\dimen132
 \pgf@xa=\dimen133
@@ -272,40 +271,39 @@ eys.code.tex
 \pgf@yb=\dimen136
 \pgf@xc=\dimen137
 \pgf@yc=\dimen138
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
 \c@pgf@counta=\count114
 \c@pgf@countb=\count115
 \c@pgf@countc=\count116
 \c@pgf@countd=\count117
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-f.cfg
-File: pgf.cfg 2008/01/13  (rcs-revision 1.6)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
 )
-Package pgfsys Info: Driver file for pgf: pgfsys-pdftex.def on input line 885.
+Package pgfsys Info: Driver file for pgf: pgfsys-pdftex.def on input line 900.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-fsys-pdftex.def
-File: pgfsys-pdftex.def 2007/12/20  (rcs-revision 1.20)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2009/05/22  (rcs-revision 1.26)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-fsys-common-pdf.def
-File: pgfsys-common-pdf.def 2007/12/17  (rcs-revision 1.8)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2008/05/19  (rcs-revision 1.10)
 )))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-fsyssoftpath.code.tex
-File: pgfsyssoftpath.code.tex 2008/01/23  (rcs-revision 1.6)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2008/07/18  (rcs-revision 1.7)
 \pgfsyssoftpath@smallbuffer@items=\count118
 \pgfsyssoftpath@bigbuffer@items=\count119
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/systemlayer/pg
-fsysprotocol.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
 File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
-))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/xcolor/xcolor.sty
+)) (/usr/local/texlive/2011/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/latexconfig/color.cf
-g
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package xcolor Info: Driver file: pdftex.def on input line 225.
@@ -319,37 +317,41 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-core.code.tex
-Package: pgfcore 2008/01/15 v2.00 (rcs-revision 1.6)
-
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmath.c
-ode.tex
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathca
-lc.code.tex
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathut
-il.code.tex
-\pgfmath@box=\box30
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v2.10 (rcs-revision 1.7)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen139
+\pgfmath@count=\count120
+\pgfmath@box=\box31
+\pgfmath@toks=\toks34
+\pgfmath@stack@operand=\toks35
+\pgfmath@stack@operation=\toks36
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathpa
-rser.code.tex
-\pgfmath@stack=\toks33
-\c@pgfmath@parsecounta=\count120
-\c@pgfmath@parsecountb=\count121
-\c@pgfmath@parsecountc=\count122
-\pgfmath@parsex=\dimen139
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathop
-erations.code.tex
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathtr
-ig.code.tex)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathrn
-d.code.tex))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/math/pgfmathba
-se.code.tex)))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corepoints.code.tex
-File: pgfcorepoints.code.tex 2008/02/03  (rcs-revision 1.13)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)))
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count121
+))
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2010/04/09  (rcs-revision 1.20)
 \pgf@picminx=\dimen140
 \pgf@picmaxx=\dimen141
 \pgf@picminy=\dimen142
@@ -365,114 +367,118 @@ File: pgfcorepoints.code.tex 2008/02/03  (rcs-revision 1.13)
 \pgf@zx=\dimen152
 \pgf@zy=\dimen153
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corepathconstruct.code.tex
-File: pgfcorepathconstruct.code.tex 2008/02/13  (rcs-revision 1.14)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2010/08/03  (rcs-revision 1.24)
 \pgf@path@lastx=\dimen154
 \pgf@path@lasty=\dimen155
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corepathusage.code.tex
-File: pgfcorepathusage.code.tex 2008/01/23  (rcs-revision 1.11)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2008/04/22  (rcs-revision 1.12)
 \pgf@shorten@end@additional=\dimen156
 \pgf@shorten@start@additional=\dimen157
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corescopes.code.tex
-File: pgfcorescopes.code.tex 2008/01/15  (rcs-revision 1.26)
-\pgfpic=\box31
-\pgf@hbox=\box32
-\pgf@layerbox@main=\box33
-\pgf@picture@serial@count=\count123
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2010/09/08  (rcs-revision 1.34)
+\pgfpic=\box32
+\pgf@hbox=\box33
+\pgf@layerbox@main=\box34
+\pgf@picture@serial@count=\count122
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coregraphicstate.code.tex
-File: pgfcoregraphicstate.code.tex 2007/12/12  (rcs-revision 1.8)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2008/04/22  (rcs-revision 1.9)
 \pgflinewidth=\dimen158
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coretransformations.code.tex
-File: pgfcoretransformations.code.tex 2008/02/04  (rcs-revision 1.10)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2009/06/10  (rcs-revision 1.11)
 \pgf@pt@x=\dimen159
 \pgf@pt@y=\dimen160
 \pgf@pt@temp=\dimen161
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corequick.code.tex
-File: pgfcorequick.code.tex 2006/10/11  (rcs-revision 1.2)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coreobjects.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
 File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corepathprocessing.code.tex
-File: pgfcorepathprocessing.code.tex 2008/01/23  (rcs-revision 1.7)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2008/10/09  (rcs-revision 1.8)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corearrows.code.tex
-File: pgfcorearrows.code.tex 2007/06/07  (rcs-revision 1.8)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2008/04/23  (rcs-revision 1.11)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coreshade.code.tex
-File: pgfcoreshade.code.tex 2007/12/10  (rcs-revision 1.9)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2008/11/23  (rcs-revision 1.13)
 \pgf@max=\dimen162
-\pgf@sys@shading@range@num=\count124
+\pgf@sys@shading@range@num=\count123
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coreimage.code.tex
-File: pgfcoreimage.code.tex 2008/01/15  (rcs-revision 1.1)
-\pgfexternal@startupbox=\box34
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2010/03/25  (rcs-revision 1.16)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2010/09/01  (rcs-revision 1.17)
+\pgfexternal@startupbox=\box35
+))
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2010/08/27  (rcs-revision 1.2)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corelayers.code.tex
-File: pgfcorelayers.code.tex 2008/01/15  (rcs-revision 1.1)
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-coretransparency.code.tex
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
 File: pgfcoretransparency.code.tex 2008/01/17  (rcs-revision 1.2)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/basiclayer/pgf
-corepatterns.code.tex
-File: pgfcorepatterns.code.tex 2008/01/15  (rcs-revision 1.1)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2009/07/02  (rcs-revision 1.3)
 )))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
-uleshapes.code.tex
-File: pgfmoduleshapes.code.tex 2008/02/13  (rcs-revision 1.4)
-\pgfnodeparttextbox=\box35
-\toks@savedmacro=\toks34
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2010/09/09  (rcs-revision 1.13)
+\pgfnodeparttextbox=\box36
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
-uleplot.code.tex
-File: pgfmoduleplot.code.tex 2008/01/15  (rcs-revision 1.1)
-\pgf@plotwrite=\write3
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2010/10/22  (rcs-revision 1.8)
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/compatibility/pg
-fcomp-version-0-65.sty
-Package: pgfcomp-version-0-65 2007/07/03 v2.00 (rcs-revision 1.7)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v2.10 (rcs-revision 1.7)
 \pgf@nodesepstart=\dimen163
 \pgf@nodesepend=\dimen164
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/compatibility/pg
-fcomp-version-1-18.sty
-Package: pgfcomp-version-1-18 2007/07/23 v2.00 (rcs-revision 1.1)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v2.10 (rcs-revision 1.1)
 ))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/pgf/utilities/pgffor
-.sty
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/utilities/pgff
-or.code.tex
-Package: pgffor 2007/11/07 v2.00 (rcs-revision 1.8)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2010/03/23 v2.10 (rcs-revision 1.18)
 \pgffor@iter=\dimen165
 \pgffor@skip=\dimen166
+\pgffor@stack=\toks37
+\pgffor@toks=\toks38
 ))
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/frontendlayer/
-tikz/tikz.code.tex
-Package: tikz 2008/02/13 v2.00 (rcs-revision 1.27)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2010/10/13 v2.10 (rcs-revision 1.76)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/libraries/pgfl
-ibraryplothandlers.code.tex
-File: pgflibraryplothandlers.code.tex 2007/03/09 v2.00 (rcs-revision 1.9)
-\pgf@plot@mark@count=\count125
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2010/05/31 v2.10 (rcs-revision 1.15)
+\pgf@plot@mark@count=\count124
 \pgfplotmarksize=\dimen167
 )
 \tikz@lastx=\dimen168
@@ -481,27 +487,27 @@ File: pgflibraryplothandlers.code.tex 2007/03/09 v2.00 (rcs-revision 1.9)
 \tikz@lastysaved=\dimen171
 \tikzleveldistance=\dimen172
 \tikzsiblingdistance=\dimen173
-\tikz@figbox=\box36
-\tikz@tempbox=\box37
-\tikztreelevel=\count126
-\tikznumberofchildren=\count127
-\tikznumberofcurrentchild=\count128
-\tikz@fig@count=\count129
+\tikz@figbox=\box37
+\tikz@tempbox=\box38
+\tikztreelevel=\count125
+\tikznumberofchildren=\count126
+\tikznumberofcurrentchild=\count127
+\tikz@fig@count=\count128
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/modules/pgfmod
-ulematrix.code.tex
-File: pgfmodulematrix.code.tex 2008/01/15  (rcs-revision 1.1)
-\pgfmatrixcurrentrow=\count130
-\pgfmatrixcurrentcolumn=\count131
-\pgf@matrix@numberofcolumns=\count132
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2010/08/24  (rcs-revision 1.4)
+\pgfmatrixcurrentrow=\count129
+\pgfmatrixcurrentcolumn=\count130
+\pgf@matrix@numberofcolumns=\count131
 )
-\tikz@expandcount=\count133
+\tikz@expandcount=\count132
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/pgf/frontendlayer/
-tikz/libraries/tikzlibrarytopaths.code.tex
-File: tikzlibrarytopaths.code.tex 2008/01/09 v2.00 (rcs-revision 1.1)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
 )))
-\c@theorem=\count134
+\c@theorem=\count133
  (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
 (./simulations/simulations.aux) (./bibliography.aux))
@@ -520,59 +526,52 @@ LaTeX Font Info:    ... okay on input line 64.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
 LaTeX Font Info:    ... okay on input line 64.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/context/base/supp-pdf.mkii
+(/usr/local/texlive/2011/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count135
+\scratchcounter=\count134
 \scratchdimen=\dimen174
-\scratchbox=\box38
-\nofMPsegments=\count136
-\nofMParguments=\count137
-\everyMPshowfont=\toks35
-\MPscratchCnt=\count138
+\scratchbox=\box39
+\nofMPsegments=\count135
+\nofMParguments=\count136
+\everyMPshowfont=\toks39
+\MPscratchCnt=\count137
 \MPscratchDim=\dimen175
-\MPnumerator=\count139
-\everyMPtoPDFconversion=\toks36
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/pdftexcmd
-s.sty
-Package: pdftexcmds 2010/04/01 v0.9 Utility functions of pdfTeX for LuaTeX (HO)
+\MPnumerator=\count138
+\makeMPintoPDFobject=\count139
+\everyMPtoPDFconversion=\toks40
+) (/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
 
-
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/infwarerr
-.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/message (HO)
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/ifluatex.
-sty
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/ltxcmds.s
-ty
-Package: ltxcmds 2010/04/26 v1.7 LaTeX kernel commands for general use (HO)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/oberdiek/epstopdf-ba
-se.sty
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2007/09/30 v1.0 Managing graphics extensions (HO)
-)
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/oberdiek/kvoptions.s
-ty
-Package: kvoptions 2010/02/22 v3.7 Keyval support for LaTeX options (HO)
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Managing graphics extensions (HO)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/kvsetkeys
-.sty
-Package: kvsetkeys 2010/03/01 v1.9 Key value parser (HO)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
+))
+(/usr/local/texlive/2011/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2010/12/23 v3.10 Keyval support for LaTeX options (HO)
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/generic/oberdiek/etexcmds.
-sty
-Package: etexcmds 2010/01/28 v1.3 Prefix for e-TeX command names (HO)
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
+
+(/usr/local/texlive/2011/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Prefix for e-TeX command names (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
 (etexcmds)             that some package has redefined \expanded.
@@ -580,34 +579,34 @@ Package etexcmds Info: Could not find \expanded.
 )))
 Package grfext Info: Graphics extension search list:
 (grfext)             [.png,.pdf,.tex,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 436.
+(grfext)             \AppendGraphicsExtensions on input line 452.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/latexconfig/epstopdf
--sys.cfg
+(/usr/local/texlive/2011/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
-)) [1
+))
+ABD: EveryShipout initializing macros [1
 
-{/h0a/stow/swtree/stow/texlive/tl2010/texmf-var/fonts/map/pdftex/updmap/pdftex.
-map}]
+{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 66.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/base/omscmr.fd
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <14.4> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
-
-[2]
+ [2]
 LaTeX Font Info:    Try loading font information for U+msa on input line 66.
- (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 66.
- (/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/amsfonts/umsb.fd
+
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-[3] [4] (./thesis.toc [5
+) [3] [4]
+(./thesis.toc [5
 
 
 ])
@@ -706,7 +705,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [21]
 LaTeX Font Info:    Try loading font information for U+bbm on input line 258.
 
-(/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+(/usr/local/texlive/2011/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 )
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -786,17 +785,24 @@ Chapter 3.
 ]
 <sim7.png, id=170, 433.62pt x 325.215pt>
 File: sim7.png Graphic file (type png)
- <use sim7.png> [42
+ <use sim7.png>
+Package pdftex.def Info: sim7.png used on input line 54.
+(pdftex.def)             Requested size: 325.2142pt x 243.91064pt.
+ [42
 
- <./sim7.png (PNG copy)>] (./simulations/sim6.tex) [43
+ <./sim7.png>]
+(./simulations/sim6.tex) [43
 
 ] (./simulations/sim3.tex) [44
 
 ]
-<./simulations/sim5.png, id=183, 433.62pt x 325.215pt>
+<./simulations/sim5.png, id=182, 433.62pt x 325.215pt>
 File: ./simulations/sim5.png Graphic file (type png)
 
-<use ./simulations/sim5.png> [45
+<use ./simulations/sim5.png>
+Package pdftex.def Info: ./simulations/sim5.png used on input line 98.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+ [45
 
  <./simulations/sim5.png (PNG copy)>]
 (./simulations/sim4.tex) [46
@@ -828,10 +834,65 @@ Overfull \hbox (214.75533pt too wide) in paragraph at lines 220--220
 computeAllCond2(T, N, u, l, x, y)$Tprime))^2)[] 
  []
 
-[49]) [50]
+[49] <./simulations/ARC/multivar_qq.png, id=201, 433.62pt x 325.215pt>
+File: ./simulations/ARC/multivar_qq.png Graphic file (type png)
+
+<use ./simulations/ARC/multivar_qq.png>
+Package pdftex.def Info: ./simulations/ARC/multivar_qq.png used on input line 2
+62.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+ [50] [51 <./simulations/ARC/multivar_qq.png>] <./simulations/ARC/poly_ker_qq.p
+ng, id=209, 433.62pt x 325.215pt>
+File: ./simulations/ARC/poly_ker_qq.png Graphic file (type png)
+
+<use ./simulations/ARC/poly_ker_qq.png>
+Package pdftex.def Info: ./simulations/ARC/poly_ker_qq.png used on input line 2
+76.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+ [52
+
+ <./simulations/ARC/poly_ker_qq.png>] <./simulations/ARC/multivar_poly_ker_qq.p
+ng, id=214, 433.62pt x 325.215pt>
+File: ./simulations/ARC/multivar_poly_ker_qq.png Graphic file (type png)
+
+<use ./simulations/ARC/multivar_poly_ker_qq.png>
+Package pdftex.def Info: ./simulations/ARC/multivar_poly_ker_qq.png used on inp
+ut line 287.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+ [53
+
+ <./simulations/ARC/multivar_poly_ker_qq.png>]
+Overfull \hbox (5.7638pt too wide) in paragraph at lines 291--291
+[]\OT1/cmr/bx/n/17.28 Generalizations (Ap-prox-i-mate Re-gres-sion Con-
+ []
+
+<./simulations/ARC/multivar_ARC.png, id=219, 433.62pt x 325.215pt>
+File: ./simulations/ARC/multivar_ARC.png Graphic file (type png)
+
+<use ./simulations/ARC/multivar_ARC.png>
+Package pdftex.def Info: ./simulations/ARC/multivar_ARC.png used on input line 
+301.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+ [54
+
+ <./simulations/ARC/multivar_ARC.png>] <./simulations/ARC/poly_ker_ARC.png, id=
+224, 433.62pt x 325.215pt>
+File: ./simulations/ARC/poly_ker_ARC.png Graphic file (type png)
+
+<use ./simulations/ARC/poly_ker_ARC.png>
+Package pdftex.def Info: ./simulations/ARC/poly_ker_ARC.png used on input line 
+315.
+(pdftex.def)             Requested size: 433.61894pt x 325.2142pt.
+) [55
+
+ <./simulations/ARC/poly_ker_ARC.png>]
 \openout2 = `bibliography.aux'.
 
- (./bibliography.tex (./thesis.bbl
+ (./bibliography.tex (./thesis.bbl [56
+
+
+
+]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -841,11 +902,7 @@ Missing character: There is no ™ in font cmr12!
 Missing character: There is no â in font cmti12!
 Missing character: There is no € in font cmti12!
 Missing character: There is no ™ in font cmti12!
- [51
-
-
-
-])) [52] (./thesis.aux
+ [57])) [58] (./thesis.aux
 (./steins-method/steins-method.aux) (./stein-proof/stein-proof.aux)
 (./simulations/simulations.aux) (./bibliography.aux))
 
@@ -853,37 +910,34 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9628 strings out of 493738
- 163752 string characters out of 3135951
- 303559 words of memory out of 3000000
- 12615 multiletter control sequences out of 15000+200000
+ 12701 strings out of 493633
+ 231998 string characters out of 3143378
+ 342636 words of memory out of 3000000
+ 15657 multiletter control sequences out of 15000+200000
  13251 words of font info for 50 fonts, out of 3000000 for 9000
- 714 hyphenation exceptions out of 8191
- 47i,19n,55p,315b,670s stack positions out of 5000i,500n,10000p,200000b,50000s
- </home/ncray/.texlive2010/texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk><
-/h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmbx12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmex10.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/t
-ype1/public/amsfonts/cmextra/cmex8.pfb></h0a/stow/swtree/stow/texlive/tl2010/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></h0a/stow/swtree/stow/texli
-ve/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></h0a/stow/swtree
-/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></h0a/
-stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12
-.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr6.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr8.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmsl12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></h0a/stow/swtree/stow/texlive
-/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></h0a/stow/swtree/s
-tow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></h0a/st
-ow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.
-pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmtt12.pfb></h0a/stow/swtree/stow/texlive/tl2010/texmf-dist/fonts/type1/pu
-blic/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (58 pages, 605132 bytes).
+ 831 hyphenation exceptions out of 8191
+ 56i,19n,55p,396b,691s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </Users/ncray/Library/texlive/2011/texmf-var/fonts/pk/ljfour/public/bbm/bbm1
+2.600pk></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx
+12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmex1
+0.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cmextra/c
+mex8.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i12.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+6.pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.
+pfb></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pf
+b></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><
+/usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
+r/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr
+/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
+local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/lo
+cal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loca
+l/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local
+/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/
+texlive/2011/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on thesis.pdf (64 pages, 1009592 bytes).
 PDF statistics:
- 267 PDF objects out of 1000 (max. 8388607)
- 185 compressed objects within 2 object streams
+ 296 PDF objects out of 1000 (max. 8388607)
+ 198 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 48 words of extra memory for PDF output out of 10000 (max. 10000000)
 

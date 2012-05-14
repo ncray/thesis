@@ -19,4 +19,6 @@
 \contentsline {section}{\numberline {3.4}True Rate}{45}
 \contentsline {section}{\numberline {3.5}Efficient Updates}{47}
 \contentsline {section}{\numberline {3.6}A Different Exchangeable Pair}{50}
-\contentsline {chapter}{References}{51}
+\contentsline {section}{\numberline {3.7}Generalizations (Null Distribution)}{50}
+\contentsline {section}{\numberline {3.8}Generalizations (Approximate Regression Condition)}{54}
+\contentsline {chapter}{References}{57}
