@@ -10,24 +10,42 @@ getData <- function(N, D = 1){
   l <- c(rep(-1, N), rep(1, N))
   list("u" = u, "l" = l)
 }
-friedStat <- function(km, l, C = 1, epsilon = .1){
+friedStat <- function(km, l, rand.sign = TRUE, C = 1, epsilon = .1){
   ksvm.mod <- ksvm(km, l, C = C, epsilon = epsilon)
-  #sample(c(-1, 1), 1) * as.numeric(computeT(fitted(ksvm.mod), l))
-  as.numeric(computeT(fitted(ksvm.mod), l))
+  if(rand.sign){
+    sgn <- sample(c(-1, 1), 1)
+  } else {
+    sgn <- 1
+  }
+  sgn * as.numeric(computeT(fitted(ksvm.mod), l))
+}
+nullDist <- function(D = 1, ker = polydot, N = 100, ...){
+  dat <- getData(N, D)
+  u <- dat$u
+  l <- dat$l
+  u <- scale(u)    
+  ker <- ker(...)
+  print(paste("D:", D, "--degree:", ker@kpar$degree))  
+  km <- kernelMatrix(ker, u)
+  ldply(1:N, function(x){
+    print(x)
+    l.perm <- sample(l)
+    data.frame("D" = D, "degree" = ker@kpar$degree, "T" = friedStat(km, l.perm), "N" = N)
+  }, .parallel = TRUE)
 }
 
-D <- 2
-N <- 10
-dat <- getData(N, D)
-u <- dat$u
-l <- dat$l
-u <- scale(u)
-degree <- 5
-ker <- polydot(degree = degree, offset = 0)
-km <- kernelMatrix(ker, u)
-sort(eigen(km)$values)
-range(eigen(km)$values)
-system.time(ksvm(km, l))
+## D <- 2
+## N <- 10
+## dat <- getData(N, D)
+## u <- dat$u
+## l <- dat$l
+## u <- scale(u)
+## degree <- 5
+## ker <- polydot(degree = degree, offset = 0)
+## km <- kernelMatrix(ker, u)
+## sort(eigen(km)$values)
+## range(eigen(km)$values)
+## system.time(ksvm(km, l))
 
 ## dat <- getData(20, 1)
 ## u <- dat$u
@@ -40,24 +58,14 @@ system.time(ksvm(km, l))
 ## ksvm2 <- ksvm(km, l, C = 2, epsilon = .05)
 ## computeT(fitted(ksvm2), l)
 ##d = 1, C and epsilon don't affect t-stat, not true for d > 1
-
-res <- ldply(10^(0:3), function(D){
-  dat <- getData(100, D)
-  u <- dat$u
-  l <- dat$l
-  ker <- vanilladot()
-  km <- kernelMatrix(ker, u)
-  ldply(1:100, function(x){
-    l.perm <- sample(l)
-    data.frame("D" = D, "T" = friedStat(km, l.perm))
-  }, .parallel = TRUE)
-})
+res <- ldply(10^(0:3), function(D) nullDist(D = D))
 ggplot(res, aes(sample = T)) +
   geom_point(stat = "qq", distribution = qnorm) + 
   geom_abline(intercept = 0, slope = 1) +
   facet_wrap(~D, scales = "free") +
   opts(title = "Normal QQ Plots Faceted by Dimension")
 ggsave("multivar_qq.png", width = 6, height = 4.5)
+
 
 res <- ldply(1:4, function(degree){
   print(paste("degree:", degree))
@@ -79,28 +87,10 @@ ggplot(res, aes(sample = T)) +
   opts(title = "Normal QQ Plots Faceted by Degree")
 ggsave("poly_ker_qq.png", width = 6, height = 4.5)
 
-## dat <- getData(20, 2)
-## u <- dat$u
-## l <- dat$l
-## kernelMatrix(polydot(degree = 1), u) - kernelMatrix(vanilladot(), u)
-## ker <- vanilladot()
-## km <- kernelMatrix(ker, u)
-## friedStat(kernelMatrix(vanilladot(), u), l)
-## friedStat(kernelMatrix(polydot(degree = 1, offset = 0), u), l)
 
-res <- mdply(expand.grid("D" = 10^(0:3), "degree" = 1:4), function(D, degree){
-  print(paste("D:", D, "--", "degree", degree))
-  dat <- getData(100, D)
-  u <- dat$u
-  l <- dat$l
-  ker <- polydot(degree = degree)
-  km <- kernelMatrix(ker, u)
-  ldply(1:100, function(x){
-    print(x)
-    l.perm <- sample(l)
-    data.frame("degree" = degree, "T" = friedStat(km, l.perm))
-  }, .parallel = TRUE)
-})
+nullDist(1, polydot, degree = 1)
+
+res <- mdply(expand.grid("D" = 10^(0:3), "degree" = 1:4), nullDist)
 ggplot(res, aes(sample = T)) +
   geom_point(stat = "qq", distribution = qnorm) + 
   geom_abline(intercept = 0, slope = 1) +
@@ -111,7 +101,7 @@ ggsave("multivar_poly_ker_qq.png", width = 6, height = 4.5)
 
 getTp <- function(u, l, km){
   T <- friedStat(km, l)
-  laply(1:100, function(i){
+  laply(1:16, function(i){
     print(i)
     l2 <- swap(l)
     friedStat(km, l2)
@@ -171,6 +161,7 @@ sim <- function(N, D = 1, degree = 1){
   res
 }
 dat <- mdply(expand.grid("N" = c(10, 100, 200), "degree" = c(1, 2, 5)), sim)
+system.time(dat <- mdply(expand.grid("N" = c(200), "degree" = c(5)), sim))
 ##scale, 0 offset 1.4, 1.4, 1.4 (11.5, 14.4)
 ##no scale, 0 offset 8, 113
 ##scale, 1 offset 1.4, 2.9, 3.7 (17.6, 17.4)
