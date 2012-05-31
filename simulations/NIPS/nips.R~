@@ -20,7 +20,7 @@ computeKMMD <- function(u, l, ...){
   }
 }
 computeFS <- function(u, l, ...){
-  ksvm.fit <- ksvm(x = u, y = l, C = .1, ...)
+  ksvm.fit <- ksvm(x = u, y = l, ...)
   ##print(ksvm.fit)
   as.numeric(computeT(fitted(ksvm.fit), l))
 }
@@ -247,35 +247,14 @@ power <- function(N = 10){
                "FSp1" = rejectFS(kernelMatrix(polydot(degree = 1, offset = 1), x = u), l),
                "KMMDp2" = rejectKMMD(u, l, kernel = "polydot", kpar = list(degree = 2, offset = 1)),
                "FSp2" = rejectFS(kernelMatrix(polydot(degree = 2, offset = 1), x = u), l),
-##               "KMMDp3" = rejectKMMD(u, l, kernel = "polydot", kpar = list(degree = 3, offset = 1)),
-##               "FSp3" = rejectFS(kernelMatrix(polydot(degree = 3, offset = 1), x = u), l),
+               "KMMDp3" = rejectKMMD(u, l, kernel = "polydot", kpar = list(degree = 3, offset = 1)),
+               "FSp3" = rejectFS(kernelMatrix(polydot(degree = 2, offset = 1), x = u), l),
                "KMMDrbf" = rejectKMMD(u, l, kernel = "rbfdot"),
-               "FSrbf" = rejectFS(kernelMatrix(rbfdot(sigest(u)[2]), x = u), l))
+               "FSrbf" = rejectFS(kernelMatrix(rbfdot(), x = u), l))
   }, .parallel = TRUE)
 }
 
-fitted(ksvm(x = km, y = l))
-fitted(ksvm(x = km, y = l, C = .01))
-fitted(ksvm(u, l, C = .01, kernel = "polydot", kpar = list(degree = 3, offset = 1)))
-## fitted(ksvm(x = km, y = c(l, 1)))
-## computeFS(km, c(l, 1))
-computeFS(km, l, C = .01)
-computeFS(u, l, kernel = "polydot", kpar = list(degree = 3, offset = 1))
-rejectFS(u, l, kernel = "polydot", kpar = list(degree = 2, offset = 1))
-
-km <- kernelMatrix(polydot(degree = 2, offset = 1), x = u)
-km <- kernelMatrix(rbfdot(), x = u)
-km <- kernelMatrix(rbfdot(sigest(u)[2]), x = u)
-km <- kernelMatrix(polydot(degree = 3, offset = 1), x = scale(u))
-computeFS(km, l)
-## computeFS(km, l, C = .01)
-sort(laply(1:19, function(i) computeFS(km, sample(l))))
-## sort(laply(1:19, function(i) computeFS(km, sample(l), C = .01)))
-## sort(laply(1:19, function(i) computeFS(u, sample(l)), .parallel = TRUE))
-quantile(laply(1:1000, function(i) computeFS(km, sample(l))), .95)
-
 ##Npwr = 8 takes 9 minutes
-Npwr <- 400
 system.time(res <- ldply(seq(10, 40, 10), power))
 
 res2 <- ddply(res, .(N), function(df){
@@ -286,31 +265,18 @@ res2 <- ddply(res, .(N), function(df){
                   bootM(df$FSp1),
                   bootM(df$KMMDp2),
                   bootM(df$FSp2),
-##                  bootM(df$KMMDp3),
-##                  bootM(df$FSp3),
+                  bootM(df$KMMDp3),
+                  bootM(df$FSp3),
                   bootM(df$KMMDrbf),
                   bootM(df$FSrbf))
   data.frame("N" = df$N[1], "length" = df$length[1], "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = names(df[-(1:2)]))
 })
-library(stringr)
-res2 <- transform(res2, test = str_detect(group, "KMMD"))
-res2$test[res2$test == TRUE] <- "KMMD"
-res2$test[res2$test == FALSE] <- "FS"
-ker.list <- str_split(res2$group, "KMMD|FS")
-res2$ker <- laply(ker.list, `[[`, 2)
 
-## p4 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
-##   geom_line() + 
-##   geom_errorbar(aes(ymin = lower, ymax = upper, width = 1)) +
-##   xlab("N") +
-##   opts(title = "Power on Image Data")
-
-p4 <- ggplot(res2, aes(x = N, y = value, color = ker, linetype = ker)) +
+p4 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
   geom_line() + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = 1)) +
   xlab("N") +
-  opts(title = "Power on Image Data") +
-  facet_grid(~test)
+  opts(title = "Power on Image Data")
 ##ggsave(p4, "power_image.png")
 png("power_image.png", width = 800, height = 600)
 print(p4)
