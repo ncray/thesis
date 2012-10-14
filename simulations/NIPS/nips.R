@@ -315,3 +315,50 @@ p4 <- ggplot(res2, aes(x = N, y = value, color = ker, linetype = ker)) +
 png("power_image.png", width = 800, height = 600)
 print(p4)
 dev.off()
+
+
+
+computeFS <- function(u, l, C, eps){
+  ksvm.fit <- ksvm(x = u, y = l, C = C, epsilon = eps)
+  ##print(ksvm.fit)
+  as.numeric(computeT(fitted(ksvm.fit), l))
+}
+rejectFS <- function(km, l, C, eps) as.numeric(computeFS(km, l, C, eps) > max(laply(1:19, function(i) computeFS(km, sample(l), C, eps))))
+
+power <- function(N, C, eps){
+  print(paste("N:", N, "C:", C, "eps:", eps))
+  ldply(1:Npwr, function(x){  
+    dat <- getTextSamp(obama, palin, N)
+    u <- dat$u
+    l <- dat$l
+    ker <- stringdot(list(length = 3))
+    km <- kernelMatrix(ker, x = u)
+    print(x)
+    data.frame("N" = N, "C" = C, "eps" = eps,
+                     "FS" = rejectFS(km, l, C, eps))
+  }, .parallel = TRUE)
+}
+
+Npwr <- 1000
+## 1 minutes for Npwr = 8
+system.time(res <- mdply(expand.grid(N = seq(10, 50, 10), C = c(.1, 1, 10), eps = c(.01, .05, .1, .5)), power))
+res2 <- ddply(res, .(N, C, eps), function(df){
+  means <- mean(df$FS)
+  lims <- c(.025, .975)
+  bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
+  bounds <- bootM(df$FS)
+  data.frame("N" = df$N[1], "C" = df$C[1], "eps" = df$eps[1], "value" = means, "lower" = bounds[1], "upper" = bounds[2])
+})
+
+res2$C <- factor(res2$C)
+res2$eps <- factor(res2$eps)
+p3 <- ggplot(res2, aes(x = N, y = value, color = eps)) +
+  geom_line() + 
+  geom_errorbar(aes(ymin = lower, ymax = upper, width = 1)) +
+  xlab("N") +
+  facet_wrap(~C) +  
+  opts(title = "Power on Text Data")
+##ggsave(p3, "power_string.png")
+png("power_kpar.png", width = 800, height = 600)
+print(p3)
+dev.off()
