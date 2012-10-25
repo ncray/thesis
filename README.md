@@ -1,7 +1,7 @@
 Nelson Ray's PhD thesis
 Using .tex, .sty files and structure from Patrick Perry's thesis: git://github.com/patperry/thesis.git
 
-#Thesis Schedule
+# Thesis Schedule
 For the remainder of the thesis, I'll adopt a breadth-first strategy: first lay down as much of the framework as possible in generality, fill in the missing gaps, and finally polish up.
 
 ## 10/24 Plan
