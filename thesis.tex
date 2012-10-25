@@ -17,6 +17,7 @@
 \usepackage{epsfig}
 \usepackage{perry-thesis-macros}
 \usepackage{tikz}
+\usepackage{mathrsfs}
 %\usepackage{breqn} %because \left and \right can't go on multiple lines
 
 \DeclareGraphicsExtensions{.png,.pdf,.tex}
@@ -29,6 +30,7 @@
     \include{\thesischapter{#1}}
 }
 \renewcommand{\bibname}{References}
+\providecommand{\norm}[1]{\lVert#1\rVert}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{assumption}[theorem]{Assumption}
