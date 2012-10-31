@@ -6,9 +6,12 @@ For the remainder of the thesis, I'll adopt a breadth-first strategy: first lay 
 
 ## 10/24 Plan
 ### Short Term
-* put up copy + paste of Friedman Test chapter from NIPS paper (due 10/28/2012)
-* include skeleton of multiple kernel learning chapter (due 10/28/2012)
-* get Nike and Sourav's comments on Stein's Method chapters (fall quarter)
+* ~~put up copy + paste of Friedman Test chapter from NIPS paper (due 10/28/2012)~~
+* ~~include skeleton of multiple kernel learning chapter (due 10/28/2012)~~
+* get Nike and Sourav's comments on Stein's Method chapters (fall quarter) (Nike traveling until the end of October with a visitor in early November, will be available mid November)
+* rewrite, re-organize, and flesh out Friedman Test chapter (due 11/7/2012)
+* make code for Friedman Test chapter nicer and allow for easy plot generation (due 11/14/2012)
+
 
 ### Medium Term
 * add more substance and examples to FT and MKL chapters (11/2012)
