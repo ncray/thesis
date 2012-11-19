@@ -13,7 +13,24 @@ simple parametric, location alternative tests on univariate data such as the
 $t$-test to more general non-parametric, asymptotically consistent tests, which
 have power against all alternatives.  Many options exist for vectorial
 data, and kernels provide an enticing avenue for extensions to more
-general data types.  
+general data types.
+
+The following table illustrates some of the myriad two sample tests in
+the literature:
+\begin{tabular}{r|c|c|}
+\multicolumn{1}{r}{}
+ & \multicolumn{1}{c}{parametric}
+ & \multicolumn{1}{c}{non-parametric} \\
+\cline{2-3}
+univariate & $t$-test & permutation $t$-test \\
+\cline{2-3}
+multivariate & Hotelling's $T^2$ test & Friedman-Rafsky test \\
+\cline{2-3}
+non-vectorial & & Friedman's test (KSVM) \\
+\cline{2-3}
+heterogeneous & & Friedman's test (MKL) \\
+\cline{2-3}
+\end{tabular}
 
 The two-sample problem is also widely prevalent: ensuring
 cross-platform compability of microarray data allows for the merging
