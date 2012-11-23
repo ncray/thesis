@@ -15,23 +15,6 @@ have power against all alternatives.  Many options exist for vectorial
 data, and kernels provide an enticing avenue for extensions to more
 general data types.
 
-The following table illustrates some of the myriad two sample tests in
-the literature:
-\begin{tabular}{r|c|c|}
-\multicolumn{1}{r}{}
- & \multicolumn{1}{c}{parametric}
- & \multicolumn{1}{c}{non-parametric} \\
-\cline{2-3}
-univariate & $t$-test & permutation $t$-test \\
-\cline{2-3}
-multivariate & Hotelling's $T^2$ test & Friedman-Rafsky test \\
-\cline{2-3}
-non-vectorial & & Friedman's test (KSVM) \\
-\cline{2-3}
-heterogeneous & & Friedman's test (MKL) \\
-\cline{2-3}
-\end{tabular}
-
 The two-sample problem is also widely prevalent: ensuring
 cross-platform compability of microarray data allows for the merging
 samples to achieve larger sample sizes.  Biologists would like to know
@@ -40,6 +23,7 @@ and control groups.  Further uses for two-sample testing include
 authorship validation: Given two sets of documents, is the hypothesis
 of a single author consistent with the data?
 
+\section{Two-Sample Tests}
 The two-sample problem is generally posed in the following fashion: $\{
 \mathbf{x}_i\}_1^n$ are drawn from $p(\mathbf{x})$ and
 $\{\mathbf{y}_i\}_1^m$ are drawn from $q(\mathbf{y})$, where $\mathbf{x}_i,
@@ -49,6 +33,32 @@ q(\mathbf{y})$. An ideal test should have power against all
 alternatives. That is, as $n,m \to \infty$, the test
 will always reject when $p \neq q$ for any non-zero significance level
 $\alpha$. 
+
+There are many two-sample tests in the literature, as
+table~\ref{tab:twosampletests} illustrates.  
+
+\begin{table}
+\centering
+%\begin{tabular}{r|c|c|}
+\begin{tabular}{r | p{5cm} | p{5cm} |}
+\multicolumn{1}{r}{}
+ & \multicolumn{1}{c}{parametric}
+ & \multicolumn{1}{c}{non-parametric} \\
+\cline{2-3}
+univariate & $t$-test & permutation $t$-test; Kolmogorov-Smirnov
+test; Wilcoxon rank-sum test \\
+\cline{2-3}
+multivariate & Hotelling's $T^2$ test & Friedman-Rafsky test \\
+\cline{2-3}
+non-vectorial & Maximum Mean Discrepancy (asymptotic) & Friedman's test (KSVM);
+MMD (distribution-free) \\
+\cline{2-3}
+heterogeneous & & Friedman's test (MKL) \\
+\cline{2-3}
+\end{tabular}
+\caption{Two-sample tests.}
+\label{tab:twosampletests}
+\end{table}
 
 \section{The Friedman Two-Sample Test}
 Friedman proposed the following approach to the two-sample problem
