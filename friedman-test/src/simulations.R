@@ -107,41 +107,81 @@ powerSim <- function(){
   dev.off()
 }
 
-source("./twitter.R")
-obama <- getObama()
-palin <- getPalin()
-getTextSamp <- function(obama, palin, n){
-  list(u = c(obama[sample(1:length(obama), n)], palin[sample(1:length(palin), n)]),
-       l = factor(c(rep(-1, n), rep(1, n))))
+twitter <- function(){
+  source("./twitter.R")
+  obama <- getObama()
+  palin <- getPalin()
+  getTextSamp <- function(obama, palin, n){
+    list(u = c(obama[sample(1:length(obama), n)], palin[sample(1:length(palin), n)]),
+         l = factor(c(rep(-1, n), rep(1, n))))
+  }
+
+  powerTwitter <- function(N = 10, len = 3, C = 1){
+    print(unlist(as.list(environment())))
+    ldply(1:Npwr, function(x){  
+      dat <- getTextSamp(obama, palin, N)
+      l <- dat$l
+      u <- dat$u
+      kmString <- kernelMatrix(stringdot(length = len), x = u)
+      print(x)
+      data.frame("N" = N, "length" = len,
+                 "KMMD" = reject(computeKMMD)(u, kmString, l, C),
+                 "FS" = reject(computeFS)(u, kmString, l, C))
+    }, .parallel = parallel)
+  }
+
+  system.time(res <- mdply(expand.grid("N" = c(10, 15, 20, 30, 40), "len" = 3), powerTwitter))
+  ddply(res, .(N, length), colMeans)
+
+  ## single sided
+  ##   len  N length  KMMD    FS
+  ## 1   3 10      3 0.460 0.310
+  ## 2   3 15      3 0.670 0.425
+  ## 3   3 20      3 0.790 0.545
+  ## 4   3 30      3 0.990 0.620
+  ## 5   3 40      3 0.995 0.700
+  ## double sided
+  ## 1   3 10      3 0.335 0.245
+  ## 2   3 15      3 0.530 0.450
+  ## 3   3 20      3 0.790 0.470
+  ## 4   3 30      3 0.980 0.540
+  ## 5   3 40      3 0.990 0.735
 }
 
-powerTwitter <- function(N = 10, len = 3, C = 1){
-  print(unlist(as.list(environment())))
-  ldply(1:Npwr, function(x){  
-    dat <- getTextSamp(obama, palin, N)
-    l <- dat$l
-    u <- dat$u
-    kmString <- kernelMatrix(stringdot(length = len), x = u)
-    print(x)
-    data.frame("N" = N, "length" = len,
-               "KMMD" = reject(computeKMMD)(u, kmString, l, C),
-               "FS" = reject(computeFS)(u, kmString, l, C))
-  }, .parallel = parallel)
+birds <- function(){
+  library(jpeg)
+  library(plyr)
+  rooster.path <- list.files("../img/rooster_resized", full.names = TRUE)[1:45]
+  pigeon.path <- list.files("../img/pigeon_resized", full.names = TRUE)[1:45]
+
+  rooster <- laply(rooster.path, function(path) as.vector(readJPEG(path)))
+  pigeon <- laply(pigeon.path, function(path) as.vector(readJPEG(path)))
+
+  getImageSamp <- function(rooster, pigeon, N){
+    u <- rbind(rooster[sample(1:nrow(rooster), N), ], pigeon[sample(1:nrow(pigeon), N), ])
+    u <- sweep(u, 1, apply(u, 1, mean), "-")
+    u <- sweep(u, 1, apply(u, 1, function(vec) sqrt(sum(vec^2))), "/")
+    l <- factor(c(rep(-1, N), rep(1, N)))
+    list(u = u, l = l)
+  }
+
+  powerBirds <- function(N = 10, C = 1){
+    print(unlist(as.list(environment())))
+    ldply(1:Npwr, function(x){
+      print(x)
+      dat <- getImageSamp(rooster, pigeon, N)
+      l <- dat$l
+      u <- dat$u
+      kmp1 <- kernelMatrix(polydot(degree = 1, offset = 1), x = u)
+      kmp2 <- kernelMatrix(polydot(degree = 2, offset = 1), x = u)
+      kmp3 <- kernelMatrix(polydot(degree = 3, offset = 1), x = u)
+      data.frame("N" = N, "length" = NA,
+                 "KMMDp1" = reject(computeFS)(u, kmp1, l, C),
+                 "FSp1" = reject(computeFS)(u, kmp1, l, C),
+                 "KMMDp2" = reject(computeFS)(u, kmp2, l, C),
+                 "FSp2" = reject(computeFS)(u, kmp2, l, C),
+                 "KMMDp3" = reject(computeFS)(u, kmp3, l, C),
+                 "FSp3" = reject(computeFS)(u, kmp3, l, C))
+    }, .parallel = parallel)
+  }
 }
-
-system.time(res <- mdply(expand.grid("N" = c(10, 15, 20, 30, 40), "len" = 3), powerTwitter))
-ddply(res, .(N, length), colMeans)
-
-single sided
-  len  N length  KMMD    FS
-1   3 10      3 0.460 0.310
-2   3 15      3 0.670 0.425
-3   3 20      3 0.790 0.545
-4   3 30      3 0.990 0.620
-5   3 40      3 0.995 0.700
-double sided
-1   3 10      3 0.335 0.245
-2   3 15      3 0.530 0.450
-3   3 20      3 0.790 0.470
-4   3 30      3 0.980 0.540
-5   3 40      3 0.990 0.735
