@@ -76,7 +76,7 @@ test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
   from the second sample ($N + 1 \leq i \leq N+M)$. 
 \item Apply a binary classification learning machine to the training
   data to produce a scoring function $f(\mathbf{u})$ to score each of
-  the observations $\{s_i = f(\mathbf{u}_i)\}_1^{N+M}$. 
+  the observations $\{s_i = f(\mathbf{u}_i)\}_1^{N+M}$. \label{item:friedman-score}
 \item Calculate a univariate two-sample test statistic $\hat{t} =
   T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$. 
 \item Determine the permutation null distribution of the above
@@ -84,6 +84,10 @@ test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
 \item The test rejects $\mathcal{H}_0$ at significance level $\alpha$
   if $p < \alpha$.
 \end{enumerate}
+
+Note that in step~\ref{item:friedman-score}, for a given learning
+machine, there can still be some choice in the scoring function
+$f(\mathbf{u})$.
 
 \begin{figure}
   \centering
@@ -149,6 +153,31 @@ matrix is expensive relative to finding the SVM parameters via
 quadratic programming.
 
 \section{SVM}
+TODO: write in the kernelized versions
+
+Consider the $\ell_1$-regularized support vector classification problem:
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
+& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
+& \text{subject to}
+& & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
+&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
+\end{aligned}
+\end{equation*}
+
+There are three obvious possibilities for the Friedman scoring
+function $f$: 
+\begin{enumerate}
+\item The predicted class label $\text{sign}(\mathbf{w}^t \mathbf{x}_i
++ b)$.
+\item An estimate of the posterior class probability, such as by a
+sigmoid (Platt, \cite{platt1999probabilistic, lin2007note}) or a
+logistic link function (Wahba \cite{wahba1992multivariate, wahba1999support}).
+\item The margin $\mathbf{w}^t \mathbf{x}_i + b$.
+\end{enumerate}
+
+
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{power_string.png}

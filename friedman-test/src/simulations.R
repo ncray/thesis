@@ -132,20 +132,6 @@ twitter <- function(){
 
   system.time(res <- mdply(expand.grid("N" = c(10, 15, 20, 30, 40), "len" = 3), powerTwitter))
   ddply(res, .(N, length), colMeans)
-
-  ## single sided
-  ##   len  N length  KMMD    FS
-  ## 1   3 10      3 0.460 0.310
-  ## 2   3 15      3 0.670 0.425
-  ## 3   3 20      3 0.790 0.545
-  ## 4   3 30      3 0.990 0.620
-  ## 5   3 40      3 0.995 0.700
-  ## double sided
-  ## 1   3 10      3 0.335 0.245
-  ## 2   3 15      3 0.530 0.450
-  ## 3   3 20      3 0.790 0.470
-  ## 4   3 30      3 0.980 0.540
-  ## 5   3 40      3 0.990 0.735
 }
 
 birds <- function(){
