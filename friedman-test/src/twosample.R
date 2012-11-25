@@ -34,6 +34,7 @@ computeFS <- function(u, km, l, C = 1, ...){
   ##margins <- km.sub %*% alpha * y + b
   ##margins <- fitted(ksvm(x = km, y = y, C = C, shrinking = FALSE, tol = .01, ...))
   margins <- km.sub %*% alpha + b
+  ##browser()
   as.numeric(computeT(margins, km, y))
 }
 

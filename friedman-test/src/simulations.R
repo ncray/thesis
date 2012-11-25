@@ -1,3 +1,5 @@
+setwd("~/Dropbox/VMshare/thesis/friedman-test/src")
+imgDir <- "../img/"
 source("./twosample.R")
 library(ggplot2)
 library(reshape)
@@ -7,8 +9,15 @@ registerDoMC(4)
 parallel <- TRUE
 Npwr <- 50
 
+myplot <- function(plot, name){
+  png(paste(imgDir, name, sep = ""), width = 800, height = 600)
+  print(plot)
+  dev.off()
+}
+
 getData <- function(N, D = 1, delta = 1){
   u <- rbind(matrix(rnorm(N * D, 0), ncol = D), matrix(rnorm(N * D, delta), ncol = D))
+  ##u <- rbind(matrix(rnorm(N * D, -delta / 2), ncol = D), matrix(rnorm(N * D, delta / 2), ncol = D))
   l <- factor(c(rep(-1, N), rep(1, N)))
   list("u" = u, "l" = l)
 }
@@ -23,10 +32,22 @@ checkComputeReject <- function(){
   computeT2(u, km, l)
   computeKMMD(u, km, l)
   computeFS(u, km, l)
+  computeFS(u, km, l)^2
 
   reject(computeT2, TRUE)(u, km, l)
   reject(computeKMMD, TRUE)(u, km, l)
   reject(computeFS, TRUE)(u, km, l)
+
+  set.seed(1)
+  dat <- ldply(1:500, function(i){
+    dat <- getData(10, 1)
+    u <- dat$u
+    km <- kernelMatrix(vanilladot(), x = u)
+    l <- dat$l
+    data.frame("t" = computeT(u, km, l), "fs" = computeFS(u, km, l))
+  })
+  which(abs(dat$t) - abs(dat$fs) > 1e-5)
+  plot(dat$t, dat$fs)
 }
 
 nullDist <- function(D = 1, N = 100, C = 1){
@@ -50,7 +71,7 @@ nullDist <- function(D = 1, N = 100, C = 1){
 }
 
 nullDistSim <- function(){
-  res <- mdply(expand.grid(D = c(1, 5, 10)), nullDist)
+  res <- mdply(expand.grid(D = c(1, 5, 10), N = 1000), nullDist)
   res$D <- factor(res$D)
   res.m <- melt(res, id.vars = c("D", "N"))
 
@@ -58,10 +79,10 @@ nullDistSim <- function(){
     geom_density(alpha = .4) +
       facet_wrap(~variable, scales = "free") +
         opts(title = "Null Distributions (Faceted by Statistic)")
-  png("null_dist.png", width = 800, height = 600)
-  print(p1)
-  dev.off()
+  myplot(p1, "null_dist.png")
 }
+
+system.time(nullDistSim())
 
 powerMultivariate <- function(D = 1, delta = 1, C = 1){
   print(unlist(as.list(environment())))
@@ -102,9 +123,7 @@ powerSim <- function(){
           facet_wrap(~D) +
             opts(title = "Power (Faceted by Dimension)")
   ##ggsave(p2, "power_normal.png")
-  png("power_normal.png", width = 800, height = 600)
-  print(p2)
-  dev.off()
+  myplot(p2, "power_normal.png")
 }
 
 twitter <- function(){

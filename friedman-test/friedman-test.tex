@@ -169,14 +169,33 @@ Consider the $\ell_1$-regularized support vector classification problem:
 There are three obvious possibilities for the Friedman scoring
 function $f$: 
 \begin{enumerate}
-\item The predicted class label $\text{sign}(\mathbf{w}^t \mathbf{x}_i
-+ b)$.
+\item The predicted class label $f_1(\mathbf{x}_i)
+= \text{sign}(\mathbf{w}^t \mathbf{x}_i + b)$.
 \item An estimate of the posterior class probability, such as by a
-sigmoid (Platt, \cite{platt1999probabilistic, lin2007note}) or a
-logistic link function (Wahba \cite{wahba1992multivariate, wahba1999support}).
-\item The margin $\mathbf{w}^t \mathbf{x}_i + b$.
+sigmoid (Platt \cite{platt1999probabilistic, lin2007note}) or a
+logistic link function (Wahba \cite{wahba1992multivariate,
+wahba1999support}) 
+$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\mathbf{w}^t \mathbf{x}_i + b))}$.
+\item The margin $f_3(\mathbf{x}_i) = \mathbf{w}^t \mathbf{x}_i + b$.
 \end{enumerate}
 
+Because the predicted class label is simply the sign of the margin, we
+lose information about how likely it is for a given observation
+to belong to a particular class.  Moreover, given constant within-class
+predicted class labels, the sample standard deviation is $0$ and hence
+the $t$-statistic is unbounded.
+
+Using, for instance, a logistic link function, $f_2$ has the
+interpretability of being a posterior class probability (if you
+believe in the probability model) and yields no information loss
+(since it is simply an invertible function of the margin).  However,
+it is typically not a linear function of the margin.
+
+The margin $f_3$ has the advantage of being a linear function of the
+data.  In one dimension, $f_3(x_i) = w x_i + b$, and since the
+$t$-statistic is invariant (up to sign) to affine transformations of
+the data, we can see that using the margin generalizes the permutation
+$t$-test.  
 
 \begin{figure}
   \centering
@@ -242,7 +261,7 @@ $\alpha$.  The grid search likely maximizes the power over the set of
 tuning parameters: it is hoped that the search benefits the actual
 labeling of values by at least as much as it does permuted labels.
 
-\subsection{Equivalence to Permutation $t$-test}
+\subsection{Equivalence to the Permutation $t$-test}
 \begin{theorem}
   \label{friedman_equiv}
   The Friedman Test paired with support vector regression generalizes
