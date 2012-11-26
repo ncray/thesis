@@ -24,6 +24,7 @@ getData <- function(N, D = 1, delta = 1){
 
 checkComputeReject <- function(){
   dat <- getData(10, 2)
+  ##dat <- getData(10, 1)
   u <- dat$u
   km <- kernelMatrix(vanilladot(), x = u)
   l <- dat$l
@@ -33,6 +34,8 @@ checkComputeReject <- function(){
   computeKMMD(u, km, l)
   computeFS(u, km, l)
   computeFS(u, km, l)^2
+
+  laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ##in 1 dimension, FS is independent of C, but not in > 1 dim
 
   reject(computeT2, TRUE)(u, km, l)
   reject(computeKMMD, TRUE)(u, km, l)
@@ -71,9 +74,15 @@ nullDist <- function(D = 1, N = 100, C = 1){
 }
 
 nullDistSim <- function(){
-  res <- mdply(expand.grid(D = c(1, 5, 10), N = 1000), nullDist)
+  res <- mdply(expand.grid(D = c(1, 5, 10), N = 5000), nullDist)
   res$D <- factor(res$D)
   res.m <- melt(res, id.vars = c("D", "N"))
+
+  library(nortest)
+  pvals <- ddply(res.m, .(D, variable), function(df) ad.test(df$value)$p.value)
+  subset(pvals, V1 > .001)
+  ##ks.test(subset(res.m, D == 1 & variable == "FS.l")$value, "pt", 1)
+  ##qplot(x = sort(subset(res.m, D == 1 & variable == "FS.l")$value), y = qt(p = seq(1/2001, 1-1/2001, 1 / 2001), df = 1))
 
   p1 <- ggplot(data = res.m, aes(x = value, fill = D)) +
     geom_density(alpha = .4) +
@@ -82,7 +91,7 @@ nullDistSim <- function(){
   myplot(p1, "null_dist.png")
 }
 
-system.time(nullDistSim())
+##system.time(nullDistSim())
 
 powerMultivariate <- function(D = 1, delta = 1, C = 1){
   print(unlist(as.list(environment())))
@@ -103,10 +112,10 @@ powerMultivariate <- function(D = 1, delta = 1, C = 1){
 }
 
 powerSim <- function(){
-  system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .25), "D" = c(1, 5, 10, 20)),
+  system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .25), "D" = c(1, 5, 10, 20), "C" = c(.1, 1, 10)),
                            powerMultivariate))
 
-  res2 <- ddply(res, .(delta, D), function(df){
+  res2 <- ddply(res, .(delta, D, C), function(df){
     ldply(names(df)[-(1:2)], function(name){
       dat <- df[, name]
       lims <- c(.025, .975)
@@ -125,6 +134,8 @@ powerSim <- function(){
   ##ggsave(p2, "power_normal.png")
   myplot(p2, "power_normal.png")
 }
+
+##powerSim()
 
 twitter <- function(){
   source("./twitter.R")

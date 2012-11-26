@@ -1,4 +1,4 @@
-\graphicspath{{./NIPS/img/}}
+\graphicspath{{./friedman-test/img/}}
 \chapter{Friedman's Test}
 \label{C:friedman-test}
 In this chapter we describe Friedman's approach to the two-sample
@@ -89,38 +89,28 @@ Note that in step~\ref{item:friedman-score}, for a given learning
 machine, there can still be some choice in the scoring function
 $f(\mathbf{u})$.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_kpar.png}
-  \caption{Friedman Test (SVM with 3-spectrum kernel) for Twitter data
-    demonstrating power for columns $C \in \{.1, 1, 10\}$ and colors
-    $\epsilon \in \{.01, .05, .1, .5\}$.  Error bars indicate 95\%
-    bootstrap confidence intervals.  Tuning parameter choice is
-    \emph{critical}.  We fix $C = 1$ and $\epsilon = .1$ for
-    computational considerations, but cross-validation is
-    recommended.}
-  \label{fig:power_kpar}
-\end{figure}
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=\linewidth]{power_kpar.png}
+%%   \caption{Friedman Test (SVM with 3-spectrum kernel) for Twitter data
+%%     demonstrating power for columns $C \in \{.1, 1, 10\}$ and colors
+%%     $\epsilon \in \{.01, .05, .1, .5\}$.  Error bars indicate 95\%
+%%     bootstrap confidence intervals.  Tuning parameter choice is
+%%     \emph{critical}.  We fix $C = 1$ and $\epsilon = .1$ for
+%%     computational considerations, but cross-validation is
+%%     recommended.}
+%%   \label{fig:power_kpar}
+%% \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.8\linewidth]{null_dist.png}
-  \caption{T2: Hotelling's $T^2$-statistic; sqrtT2: $|T|$;
-    KMMD.l: kernel MMD with a linear kernel; FS.l: FS with a
-  linear kernel; KMMD.rbf: kernel MMD with a radial basis function (RBF) kernel;
-  FS.rbf: FS with RBF kernel}
-  \label{fig:null_dist}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_normal.png}
-  \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
-    Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
-    95\% bootstrap confidence intervals.  The tests perform similarly,
-    and the kernel-based tests use a linear kernel.}
-  \label{fig:power_normal}
-\end{figure}
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=.8\linewidth]{null_dist.png}
+%%   \caption{T2: Hotelling's $T^2$-statistic; sqrtT2: $|T|$;
+%%     KMMD.l: kernel MMD with a linear kernel; FS.l: FS with a
+%%   linear kernel; KMMD.rbf: kernel MMD with a radial basis function (RBF) kernel;
+%%   FS.rbf: FS with RBF kernel}
+%%   \label{fig:null_dist}
+%% \end{figure}
 
 The Friedman Test (FT) is a simple, elegant idea that leverages the
 many advancements made over the past several decades in the fields of
@@ -197,14 +187,14 @@ $t$-statistic is invariant (up to sign) to affine transformations of
 the data, we can see that using the margin generalizes the permutation
 $t$-test.  
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_string.png}
-  \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
-    Discrepancy; Error bars indicate 95\% bootstrap confidence
-    intervals.  The MMD test is more powerful.}
-  \label{fig:power_string}
-\end{figure}
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=\linewidth]{power_string.png}
+%%   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
+%%     Discrepancy; Error bars indicate 95\% bootstrap confidence
+%%     intervals.  The MMD test is more powerful.}
+%%   \label{fig:power_string}
+%% \end{figure}
 
 \begin{figure}
   \centering
@@ -322,14 +312,14 @@ traditional Fourier-analytic techniques yet can be managed via Stein's
 eponymous method of proof.  
 
 \section{Maximum Mean Discrepancy}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_image.png}
-  \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
-    kernel; rbf: radial basis function kernel; Error bars indicate
-    95\% bootstrap confidence intervals.}
-  \label{fig:power_image}
-\end{figure}
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=\linewidth]{power_image.png}
+%%   \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
+%%     kernel; rbf: radial basis function kernel; Error bars indicate
+%%     95\% bootstrap confidence intervals.}
+%%   \label{fig:power_image}
+%% \end{figure}
 
 Gretton et al.\ \cite{gretton19m, gretton2010fast, gretton2012kernel,
   borgwardt2006integrating} introduce a kernel based approach for
@@ -378,7 +368,61 @@ have that $T^2 \sim F_{(1, n+m-2)}$.  As a consequence of
 Theorem~\ref{friedman_equiv}, the Friedman Statistic in the univariate
 data, linear kernel setting is equal to the $|T|$.  In figure~\ref{fig:null_dist} we simulate
 200 standard multivariate normal draws from each class with dimension
-$D \in \{1, 5, 10\}$.
+$D \in \{1, 5, 10\}$.  We compare the null distributions of the
+$T^2$-statistic, KMMD, and Friedman statistics with a linear kernel
+and RBF kernel with width parameter 1.  We draw 5,000 samples from
+each permutation null distribution and apply a kernel density smoother
+to the results.  It appears that many of the null distributions are
+very close to Normal (or, $t(398)$, rather).  
+
+Observe the Anderson-Darling test for normality $p$-values for each
+statistic:
+\begin{verbatim}
+    D variable            p-value
+1   1       T2           NaN
+2   1   sqrtT2 1.152257e-157
+3   1   KMMD.l 2.659966e-156
+4   1     FS.l  9.210211e-01
+5   1 KMMD.rbf  2.220671e-84
+6   1   FS.rbf  7.945208e-01
+7   5       T2 1.750434e-156
+8   5   sqrtT2  1.320034e-14
+9   5   KMMD.l  4.955331e-39
+10  5     FS.l  2.908307e-03
+11  5 KMMD.rbf  1.475365e-15
+12  5   FS.rbf  5.837144e-01
+13 10       T2 5.660731e-105
+14 10   sqrtT2  4.132584e-11
+15 10   KMMD.l  4.087932e-38
+16 10     FS.l  7.618190e-01
+17 10 KMMD.rbf  3.778002e-01
+18 10   FS.rbf  8.071885e-01
+\end{verbatim}
+
+Now only $p$-values $> .001$:
+\begin{verbatim}
+    D variable            p-value
+4   1     FS.l 0.921021148
+6   1   FS.rbf 0.794520826
+10  5     FS.l 0.002908307
+12  5   FS.rbf 0.583714415
+16 10     FS.l 0.761819040
+17 10 KMMD.rbf 0.377800181
+18 10   FS.rbf 0.807188534
+\end{verbatim}
+
+The Friedman Statistic null distributions appear to be consistent with
+a standard Normal distribution.
+
+\begin{figure}
+\centering
+\includegraphics[width=.8\linewidth]{null_dist.png}
+\caption{T2: Hotelling's $T^2$-statistic; sqrtT2: $|T|$;
+KMMD.l: kernel MMD with a linear kernel; FS.l: FS with a
+linear kernel; KMMD.rbf: kernel MMD with a radial basis function (RBF) kernel;
+FS.rbf: FS with RBF kernel}
+\label{fig:null_dist}
+\end{figure}
 
 For the FS, the SVM cost parameter $C$ is fixed at 1, with $\epsilon =
 .1$.  We choose the RBF kernel hyperparameter via estimation
@@ -401,6 +445,16 @@ We consider $\{x_i\}_{i=1}^{20} \sim \mathrm{MVN}_d(\mathbf{0},
 \mathrm{MVN}_d(\Delta \mathbf{1}, \mathbf{I})$ where our
 dimensionality $d \in \{1, 5, 10, 20\}$ and mean difference $\Delta \in
 \{0, .25, \ldots, 1.5\}$ in figure~\ref{fig:power_normal}.
+
+%% \begin{figure}
+%%   \centering
+%%   \includegraphics[width=\linewidth]{power_normal.png}
+%%   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
+%%     Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
+%%     95\% bootstrap confidence intervals.  The tests perform similarly,
+%%     and the kernel-based tests use a linear kernel.}
+%%   \label{fig:power_normal}
+%% \end{figure}
 
 For FS and MMD, we used the the RBF kernel with the same method of
 hyperparameter estimation.  In this simple setting, all three methods
