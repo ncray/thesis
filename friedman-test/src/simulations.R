@@ -23,10 +23,11 @@ getData <- function(N, D = 1, delta = 1){
 }
 
 checkComputeReject <- function(){
-  dat <- getData(10, 2)
+  dat <- getData(N = 10, D = 10)
   ##dat <- getData(10, 1)
   u <- dat$u
   km <- kernelMatrix(vanilladot(), x = u)
+  kmRBF <- kernelMatrix(rbfdot(sigma = 1), x = u)
   l <- dat$l
 
   computeT(u, km, l)^2
@@ -112,11 +113,11 @@ powerMultivariate <- function(D = 1, delta = 1, C = 1){
 }
 
 powerSim <- function(){
-  system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .25), "D" = c(1, 5, 10, 20), "C" = c(.1, 1, 10)),
-                           powerMultivariate))
+  system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .5), "D" = c(1, 5, 10, 20), "C" = c(.1, 1, 10)),
+                           powerMultivariate)) ##700s for 4 cores, Npwr = 50
 
   res2 <- ddply(res, .(delta, D, C), function(df){
-    ldply(names(df)[-(1:2)], function(name){
+    ldply(names(df)[-(1:3)], function(name){
       dat <- df[, name]
       lims <- c(.025, .975)
       bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
@@ -129,8 +130,8 @@ powerSim <- function(){
     geom_line() + 
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
         xlab(expression(Delta)) +
-          facet_wrap(~D) +
-            opts(title = "Power (Faceted by Dimension)")
+          facet_grid(C~D) +
+            opts(title = "Power (Faceted by Dimension and C)")
   ##ggsave(p2, "power_normal.png")
   myplot(p2, "power_normal.png")
 }
@@ -160,8 +161,26 @@ twitter <- function(){
     }, .parallel = parallel)
   }
 
-  system.time(res <- mdply(expand.grid("N" = c(10, 15, 20, 30, 40), "len" = 3), powerTwitter))
+  system.time(res <- mdply(expand.grid("N" = c(10, 15, 20, 30, 40), "len" = 1:3, "C" = c(.1, 1, 10)), powerTwitter))
   ddply(res, .(N, length), colMeans)
+
+  res2 <- ddply(res, .(N, len, C), function(df){
+    ldply(names(df)[-(1:4)], function(name){
+      dat <- df[, name]
+      lims <- c(.025, .975)
+      bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
+      boot <- bootM(dat)
+      data.frame("value" = mean(dat), "lower" = boot[1], "upper" = boot[2], "group" = name)
+    })
+  })
+
+  p2 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
+    geom_line() + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
+        xlab(expression(Delta)) +
+          facet_grid(C~len) +
+            opts(title = "Power (Faceted by Length and C)")
+  myplot(p2, "power_string.png")
 }
 
 birds <- function(){

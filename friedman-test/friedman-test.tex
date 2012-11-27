@@ -181,20 +181,18 @@ believe in the probability model) and yields no information loss
 (since it is simply an invertible function of the margin).  However,
 it is typically not a linear function of the margin.
 
-The margin $f_3$ has the advantage of being a linear function of the
+The margin $f_3$ has the advantage of being an affine function of the
 data.  In one dimension, $f_3(x_i) = w x_i + b$, and since the
 $t$-statistic is invariant (up to sign) to affine transformations of
 the data, we can see that using the margin generalizes the permutation
-$t$-test.  
+$t$-test in some sense.  
 
-%% \begin{figure}
-%%   \centering
-%%   \includegraphics[width=\linewidth]{power_string.png}
-%%   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
-%%     Discrepancy; Error bars indicate 95\% bootstrap confidence
-%%     intervals.  The MMD test is more powerful.}
-%%   \label{fig:power_string}
-%% \end{figure}
+In the univariate setting, whether or not the $t$-statistic computed
+on the scores $\{f_3(x_i)\}$ agrees with that on the raw data
+$\{x_i\}$ depends on $\text{sign}(w)$.  Due to symmetry, in the
+permutation null distribution, $w$ is negative with probability $.5$
+and positive with probability $.5$.  Thus, the permutation null in
+both settings appears to be $t$ (and hence asymptotically Normal).
 
 \begin{figure}
   \centering
@@ -209,11 +207,11 @@ $t$-test.
   \label{fig:birds}
 \end{figure}
 
-We experience better computational results with Support Vector
-Machine (SVM) regression rather than classification 
+We use Support Vector Machine (SVM) classification 
 as implemented in the {\bf ksvm} function of the {\bf R}
 \cite{cran} package {\bf kernlab} \cite{kernlab}.
 
+SVM regression scores also generalize the permutation-$t$ test.
 Recall that SVM regression solves the following problem \cite{scholkopf2002learning}:
 \begin{equation*}
 \begin{aligned}
@@ -230,16 +228,16 @@ with solution is given by
   f(x)=\sum_{i=1}^m(\alpha_i^*-\alpha_i)k(x_i,x)+b.
 \end{equation*}
 \subsection{Tuning Parameters}
-The cost parameter $C$ controls the complexity of the
-prediction function, and $\epsilon$ controls the leniency of the loss
-function.  These parameters are typically chosen via cross-validation
-over a grid of choices.  However, due to computational considerations,
-we mostly fix these values at $C = 1$ and $\epsilon = .1$.  In
-subsection~\ref{twitter_data}, we describe a sample of string data
-from Twitter.  In figure~\ref{fig:power_kpar} we demonstrate the
-statistical power of the test for the Twitter data over a grid of SVM
-parameters.  It is clear that these parameters play a \emph{crucial}
-role in the operating characteristics of the resultant test.  
+
+The cost parameter $C$ controls the complexity of the prediction
+function, and $\epsilon$ controls the leniency of the loss function.
+These parameters are typically chosen via cross-validation over a grid
+of choices.  In subsection~\ref{twitter_data}, we describe a sample of
+string data from Twitter.  In figure~\ref{fig:power_kpar} we
+demonstrate the statistical power of the test for the Twitter data
+over a grid of SVM parameters.  It is clear that these parameters play
+a \emph{crucial} role in the operating characteristics of the
+resultant test.
 
 We emphasize that the proper strategy is to conduct the search anew
 for each statistic calculation in each permutation.  That is, use cross-validation to
@@ -414,6 +412,19 @@ Now only $p$-values $> .001$:
 The Friedman Statistic null distributions appear to be consistent with
 a standard Normal distribution.
 
+Note that in one dimension, the $t$-statistic is independent of the
+regularization parameter $C$.  This relationship does not hold in
+higher dimensions:
+\begin{verbatim}
+laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 1 dimension
+> [1] 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212
+laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 2 dimensions
+> [1] 3.172028 3.172028 3.174125 3.168278 3.172856 3.169756 3.169530
+laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 10 dimensions
+> [1] 6.830184 6.850385 6.034328 6.619036 6.619036 6.619036 6.619036
+\end{verbatim}
+This suggests that $C$ actually has an influence in higher dimensions.
+
 \begin{figure}
 \centering
 \includegraphics[width=.8\linewidth]{null_dist.png}
@@ -444,17 +455,18 @@ We consider $\{x_i\}_{i=1}^{20} \sim \mathrm{MVN}_d(\mathbf{0},
 \mathbf{I})$ and $\{y_i\}_{i=1}^{20} \sim
 \mathrm{MVN}_d(\Delta \mathbf{1}, \mathbf{I})$ where our
 dimensionality $d \in \{1, 5, 10, 20\}$ and mean difference $\Delta \in
-\{0, .25, \ldots, 1.5\}$ in figure~\ref{fig:power_normal}.
+\{0, .5, \ldots, 1.5\}$ in figure~\ref{fig:power_normal}.  The width
+parameter in the RBF kernel is fixed at 1.
 
-%% \begin{figure}
-%%   \centering
-%%   \includegraphics[width=\linewidth]{power_normal.png}
-%%   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
-%%     Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
-%%     95\% bootstrap confidence intervals.  The tests perform similarly,
-%%     and the kernel-based tests use a linear kernel.}
-%%   \label{fig:power_normal}
-%% \end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{power_normal.png}
+  \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
+    Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
+    95\% bootstrap confidence intervals.  The tests perform similarly,
+    and the kernel-based tests use a linear kernel.}
+  \label{fig:power_normal}
+\end{figure}
 
 For FS and MMD, we used the the RBF kernel with the same method of
 hyperparameter estimation.  In this simple setting, all three methods
@@ -475,6 +487,15 @@ letter and space combinations.  We draw samples of various sizes from
 both the Barack Obama tweets and Sarah Palin tweets in order to
 empirically determine the power, with results detailed in
 figure~\ref{fig:power_string}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{power_string.png}
+  \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
+    Discrepancy; Error bars indicate 95\% bootstrap confidence
+    intervals.  The MMD test is more powerful.}
+  \label{fig:power_string}
+\end{figure}
 
 The MMD test outperforms the Friedman test on this task.  Power
 increases as a function of $k$ for both tests, and it is somewhat
