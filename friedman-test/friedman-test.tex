@@ -191,6 +191,15 @@ the data.  So, for what kernels $k$ do we have
 \sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
 \end{equation}
 
+A sufficient condition is for $k(x, x_i) = <\Phi(x), \Phi(x_i)> =
+f(x_i) x$.  The linear kernel satisfies this condition with $f(x_i) =
+x_i$.  The RBF kernel $k(x, x_i) = \text{exp}(-\sigma (x-x_i)^2)$ does
+not yield an affine function of the data:
+\begin{equation}
+\sum_{i=1}^m y_i \alpha_i \text{exp}(-\sigma (x-x_i)^2) + b
+\end{equation}
+cannot be written as $cx + d$.
+
 We use Support Vector Machine (SVM) classification 
 as implemented in the {\bf ksvm} function of the {\bf R}
 \cite{cran} package {\bf kernlab} \cite{kernlab}.
@@ -236,7 +245,9 @@ labeling of values by at least as much as it does permuted labels.
 \subsection{Equivalence to the Permutation $t$-test}
 \begin{theorem}
   \label{friedman_equiv}
-  The Friedman Test paired with support vector regression generalizes
+  The Friedman Test paired with support vector regression 
+  or support vector classification (using the margin as a score) 
+  with the appropriate kernel generalizes
   the two-sample permutation $t$-test. Namely, the two procedures are
   equivalent with univariate data and a linear kernel.
 \end{theorem}
@@ -410,12 +421,7 @@ FS.rbf: FS with RBF kernel}
 \label{fig:null_dist}
 \end{figure}
 
-For the FS, the SVM cost parameter $C$ is fixed at 1, with $\epsilon =
-.1$.  We choose the RBF kernel hyperparameter via estimation
-techniques such as those implemented in the {\bf sigest} function of 
-{\bf kernlab} \cite{kernlab}.  Due to the different
-scales, it is not easy to see that FS and
-$|T|$ in fact have the same distribution.  The $T^2$ densities correspond to a
+The $T^2$ densities correspond to a
 parametrized family of $F$-distributions.  It is not surprising that the MMD
 linear kernel null distributions shift rightward as a function of
 dimension: the higher dimensionality affords the function in the RKHS
@@ -443,9 +449,10 @@ parameter in the RBF kernel is fixed at 1.
   \label{fig:power_normal}
 \end{figure}
 
-For FS and MMD, we used the the RBF kernel with the same method of
-hyperparameter estimation.  In this simple setting, all three methods
-perform similarly with perhaps a small edge to MMD.
+For FS and MMD, we used the the RBF kernel with a width of 1.  The
+methods perform similarly with the exception of the kernel methods
+using the RBF kernel.  This suggests that either a width of 1 is
+ineffective or the RBF kernel is unsuitable for these data (probably the former).
 
 \subsection{String Data}
 \label{twitter_data}
@@ -455,8 +462,9 @@ latest 1,000 tweets from Barack Obama (@BarackObama) and Sarah Palin
 \cite{twitteR}.  We pre-process each tweet by removing all
 hyperlinks and anything that is neither a letter nor a space.
 Finally, we convert all letters to lowercase.  For simplicity, we
-choose the $k$-spectrum kernel \cite{leslie2002spectrum} with $k=4$ 
-as our kernel for both the FT and MMD.  Thus, each string is mapped to
+choose the $k$-spectrum kernel \cite{leslie2002spectrum} with
+$k \in \{1, 2, 3 \}$ 
+as our kernels for both the FT and MMD.  Thus, each string is mapped to
 a $27^k$ dimensional feature vector of counts of the number of $k$
 letter and space combinations.  We draw samples of various sizes from
 both the Barack Obama tweets and Sarah Palin tweets in order to
@@ -468,11 +476,11 @@ figure~\ref{fig:power_string}.
   \includegraphics[width=\linewidth]{power_string.png}
   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
     Discrepancy; Error bars indicate 95\% bootstrap confidence
-    intervals.  The MMD test is more powerful.}
+    intervals.}
   \label{fig:power_string}
 \end{figure}
 
-The MMD test outperforms the Friedman test on this task.  Power
+The MMD test outperforms the Friedman test on this task for $k < 3$.  Power
 increases as a function of $k$ for both tests, and it is somewhat
 surprising to see the strong performance from considering only
 frequencies of unigrams.

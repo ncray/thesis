@@ -209,14 +209,14 @@ birds <- function(){
       u <- dat$u
       kmp <- kernelMatrix(polydot(degree = deg, offset = 1), x = u)
       data.frame("N" = N, "length" = NA,
-                 "KMMD" = reject(computeFS)(u, kmp, l, C),
+                 "KMMD" = reject(computeKMMD)(u, kmp, l, C),
                  "FS" = reject(computeFS)(u, kmp, l, C))
     }, .parallel = parallel)
   }
 
   system.time(res <- mdply(expand.grid("N" = seq(5, 40, 5), "C" = c(.1, 1, 10), "deg" = 1:4), powerBirds))
-  res2 <- ddply(res, .(N, C), function(df){
-    ldply(names(df)[-(1:3)], function(name){
+  res2 <- ddply(res, .(N, C, deg), function(df){
+    ldply(names(df)[-(1:4)], function(name){
       dat <- df[, name]
       lims <- c(.025, .975)
       bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
@@ -225,11 +225,11 @@ birds <- function(){
     })
   })
 
-  p3 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
+  p3 <- ggplot(res2, aes(x = N, y = value, color = group)) +
     geom_line() + 
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
         xlab(expression(Delta)) +
-          facet_grid(C~.) +
-            opts(title = "Power (Faceted by C)")
+          facet_grid(C~deg) +
+            opts(title = "Power (Faceted by C and Degree)")
   myplot(p3, "power_birds.png")
 }
