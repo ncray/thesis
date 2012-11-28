@@ -89,29 +89,6 @@ Note that in step~\ref{item:friedman-score}, for a given learning
 machine, there can still be some choice in the scoring function
 $f(\mathbf{u})$.
 
-%% \begin{figure}
-%%   \centering
-%%   \includegraphics[width=\linewidth]{power_kpar.png}
-%%   \caption{Friedman Test (SVM with 3-spectrum kernel) for Twitter data
-%%     demonstrating power for columns $C \in \{.1, 1, 10\}$ and colors
-%%     $\epsilon \in \{.01, .05, .1, .5\}$.  Error bars indicate 95\%
-%%     bootstrap confidence intervals.  Tuning parameter choice is
-%%     \emph{critical}.  We fix $C = 1$ and $\epsilon = .1$ for
-%%     computational considerations, but cross-validation is
-%%     recommended.}
-%%   \label{fig:power_kpar}
-%% \end{figure}
-
-%% \begin{figure}
-%%   \centering
-%%   \includegraphics[width=.8\linewidth]{null_dist.png}
-%%   \caption{T2: Hotelling's $T^2$-statistic; sqrtT2: $|T|$;
-%%     KMMD.l: kernel MMD with a linear kernel; FS.l: FS with a
-%%   linear kernel; KMMD.rbf: kernel MMD with a radial basis function (RBF) kernel;
-%%   FS.rbf: FS with RBF kernel}
-%%   \label{fig:null_dist}
-%% \end{figure}
-
 The Friedman Test (FT) is a simple, elegant idea that leverages the
 many advancements made over the past several decades in the fields of
 prediction and classification and applies them to the problem of
@@ -194,18 +171,25 @@ permutation null distribution, $w$ is negative with probability $.5$
 and positive with probability $.5$.  Thus, the permutation null in
 both settings appears to be $t$ (and hence asymptotically Normal).
 
-\begin{figure}
-  \centering
-      \includegraphics[scale=.2]{roosterrs-image_0001.jpg}
-      \includegraphics[scale=.2]{roosterrs-image_0002.jpg}
-      \includegraphics[scale=.2]{roosterrs-image_0003.jpg}
-      \includegraphics[scale=.2]{pigeonrs-image_0001.jpg}
-      \includegraphics[scale=.2]{pigeonrs-image_0002.jpg} 
-      \includegraphics[scale=.2]{pigeonrs-image_0004.jpg} 
-      \caption{Images of roosters and pigeons for use in
-        discrimination test.}
-  \label{fig:birds}
-\end{figure}
+\subsection{Kernelized Form}
+After applying the kernel trick,
+\begin{enumerate}
+\item The predicted class label $f_1(\mathbf{x}_i)
+= \text{sign}(\sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b)$.
+\item An estimate of the posterior class probability, such as by a
+sigmoid (Platt \cite{platt1999probabilistic, lin2007note}) or a
+logistic link function (Wahba \cite{wahba1992multivariate,
+wahba1999support}) 
+$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b)}$.
+\item The margin $f_3(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b$.
+\end{enumerate}
+
+We know that in the univariate setting, we have an equivalence to the
+permutation-$t$ test as long as the margin is an affine function of
+the data.  So, for what kernels $k$ do we have 
+\begin{equation}
+\sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
+\end{equation}
 
 We use Support Vector Machine (SVM) classification 
 as implemented in the {\bf ksvm} function of the {\bf R}
@@ -310,15 +294,6 @@ traditional Fourier-analytic techniques yet can be managed via Stein's
 eponymous method of proof.  
 
 \section{Maximum Mean Discrepancy}
-%% \begin{figure}
-%%   \centering
-%%   \includegraphics[width=\linewidth]{power_image.png}
-%%   \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
-%%     kernel; rbf: radial basis function kernel; Error bars indicate
-%%     95\% bootstrap confidence intervals.}
-%%   \label{fig:power_image}
-%% \end{figure}
-
 Gretton et al.\ \cite{gretton19m, gretton2010fast, gretton2012kernel,
   borgwardt2006integrating} introduce a kernel based approach for
 the two-sample problem based on the Maximum Mean Discrepancy (MMD)
@@ -503,6 +478,19 @@ surprising to see the strong performance from considering only
 frequencies of unigrams.
 
 \subsection{Image Data}
+\begin{figure}
+  \centering
+      \includegraphics[scale=.2]{roosterrs-image_0001.jpg}
+      \includegraphics[scale=.2]{roosterrs-image_0002.jpg}
+      \includegraphics[scale=.2]{roosterrs-image_0003.jpg}
+      \includegraphics[scale=.2]{pigeonrs-image_0001.jpg}
+      \includegraphics[scale=.2]{pigeonrs-image_0002.jpg} 
+      \includegraphics[scale=.2]{pigeonrs-image_0004.jpg} 
+      \caption{Images of roosters and pigeons for use in
+        discrimination test.}
+  \label{fig:birds}
+\end{figure}
+
 We consider the task of discriminating between images of roosters and
 pigeons from the Caltech 101 Object Categories dataset
 \cite{fei2007learning}.  Samples of the birds are in figure~\ref{fig:birds}.
@@ -510,7 +498,16 @@ We resize images to a common resolution of $300 \times
 297$ and convert to a vector of monochrome bitmap values.  
 To correct for global differences in illumination and ensure
 that only local patterns would be used for discrimination, we center and
-scale each vector.  Power comparisons can be seen in figure~\ref{fig:power_image}.
+scale each vector.  Power comparisons can be seen in figure~\ref{fig:power_birds}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{power_birds.png}
+  \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
+    kernel; rbf: radial basis function kernel; Error bars indicate
+    95\% bootstrap confidence intervals.}
+  \label{fig:power_birds}
+\end{figure}
 
 Again, MMD performs better.  However, it appears that the linear
 kernel performs significantly worse for the MMD than for the FS.

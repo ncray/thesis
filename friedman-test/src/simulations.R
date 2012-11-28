@@ -200,23 +200,36 @@ birds <- function(){
     list(u = u, l = l)
   }
 
-  powerBirds <- function(N = 10, C = 1){
+  powerBirds <- function(N = 10, C = 1, deg = 3){
     print(unlist(as.list(environment())))
     ldply(1:Npwr, function(x){
       print(x)
       dat <- getImageSamp(rooster, pigeon, N)
       l <- dat$l
       u <- dat$u
-      kmp1 <- kernelMatrix(polydot(degree = 1, offset = 1), x = u)
-      kmp2 <- kernelMatrix(polydot(degree = 2, offset = 1), x = u)
-      kmp3 <- kernelMatrix(polydot(degree = 3, offset = 1), x = u)
+      kmp <- kernelMatrix(polydot(degree = deg, offset = 1), x = u)
       data.frame("N" = N, "length" = NA,
-                 "KMMDp1" = reject(computeFS)(u, kmp1, l, C),
-                 "FSp1" = reject(computeFS)(u, kmp1, l, C),
-                 "KMMDp2" = reject(computeFS)(u, kmp2, l, C),
-                 "FSp2" = reject(computeFS)(u, kmp2, l, C),
-                 "KMMDp3" = reject(computeFS)(u, kmp3, l, C),
-                 "FSp3" = reject(computeFS)(u, kmp3, l, C))
+                 "KMMD" = reject(computeFS)(u, kmp, l, C),
+                 "FS" = reject(computeFS)(u, kmp, l, C))
     }, .parallel = parallel)
   }
+
+  system.time(res <- mdply(expand.grid("N" = seq(5, 40, 5), "C" = c(.1, 1, 10), "deg" = 1:4), powerBirds))
+  res2 <- ddply(res, .(N, C), function(df){
+    ldply(names(df)[-(1:3)], function(name){
+      dat <- df[, name]
+      lims <- c(.025, .975)
+      bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
+      boot <- bootM(dat)
+      data.frame("value" = mean(dat), "lower" = boot[1], "upper" = boot[2], "group" = name)
+    })
+  })
+
+  p3 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
+    geom_line() + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
+        xlab(expression(Delta)) +
+          facet_grid(C~.) +
+            opts(title = "Power (Faceted by C)")
+  myplot(p3, "power_birds.png")
 }
