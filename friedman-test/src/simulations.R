@@ -208,7 +208,7 @@ birds <- function(){
       l <- dat$l
       u <- dat$u
       kmp <- kernelMatrix(polydot(degree = deg, offset = 1), x = u)
-      data.frame("N" = N, "length" = NA,
+      data.frame("N" = N, "C" = C, "deg" = deg,
                  "KMMD" = reject(computeKMMD)(u, kmp, l, C),
                  "FS" = reject(computeFS)(u, kmp, l, C))
     }, .parallel = parallel)
@@ -216,7 +216,7 @@ birds <- function(){
 
   system.time(res <- mdply(expand.grid("N" = seq(5, 40, 5), "C" = c(.1, 1, 10), "deg" = 1:4), powerBirds))
   res2 <- ddply(res, .(N, C, deg), function(df){
-    ldply(names(df)[-(1:4)], function(name){
+    ldply(names(df)[-(1:3)], function(name){
       dat <- df[, name]
       lims <- c(.025, .975)
       bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
