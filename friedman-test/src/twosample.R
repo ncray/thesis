@@ -56,3 +56,16 @@ reject <- function(compute, verbose = FALSE){
     ifelse((val > max(perms) | val < min(perms)), 1, 0)
   }
 }
+
+myplot <- function(plot, name){
+  png(paste(imgDir, name, sep = ""), width = 800, height = 600)
+  print(plot)
+  dev.off()
+}
+
+getDataNormal <- function(N, D = 1, delta = 1){
+  u <- rbind(matrix(rnorm(N * D, 0), ncol = D), matrix(rnorm(N * D, delta), ncol = D))
+  ##u <- rbind(matrix(rnorm(N * D, -delta / 2), ncol = D), matrix(rnorm(N * D, delta / 2), ncol = D))
+  l <- factor(c(rep(-1, N), rep(1, N)))
+  list("u" = u, "l" = l)
+}

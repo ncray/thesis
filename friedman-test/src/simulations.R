@@ -9,22 +9,9 @@ registerDoMC(4)
 parallel <- TRUE
 Npwr <- 50
 
-myplot <- function(plot, name){
-  png(paste(imgDir, name, sep = ""), width = 800, height = 600)
-  print(plot)
-  dev.off()
-}
-
-getData <- function(N, D = 1, delta = 1){
-  u <- rbind(matrix(rnorm(N * D, 0), ncol = D), matrix(rnorm(N * D, delta), ncol = D))
-  ##u <- rbind(matrix(rnorm(N * D, -delta / 2), ncol = D), matrix(rnorm(N * D, delta / 2), ncol = D))
-  l <- factor(c(rep(-1, N), rep(1, N)))
-  list("u" = u, "l" = l)
-}
-
 checkComputeReject <- function(){
-  dat <- getData(N = 10, D = 10)
-  ##dat <- getData(10, 1)
+  dat <- getDataNormal(N = 10, D = 10)
+  ##dat <- getDataNormal(10, 1)
   u <- dat$u
   km <- kernelMatrix(vanilladot(), x = u)
   kmRBF <- kernelMatrix(rbfdot(sigma = 1), x = u)
@@ -44,7 +31,7 @@ checkComputeReject <- function(){
 
   set.seed(1)
   dat <- ldply(1:500, function(i){
-    dat <- getData(10, 1)
+    dat <- getDataNormal(10, 1)
     u <- dat$u
     km <- kernelMatrix(vanilladot(), x = u)
     l <- dat$l
@@ -56,7 +43,7 @@ checkComputeReject <- function(){
 
 nullDist <- function(D = 1, N = 100, C = 1){
   print(unlist(as.list(environment())))
-  dat <- getData(200, D)
+  dat <- getDataNormal(200, D)
   l <- dat$l
   u <- dat$u
   kmLinear <- kernelMatrix(vanilladot(), x = u)
@@ -98,7 +85,7 @@ powerMultivariate <- function(D = 1, delta = 1, C = 1){
   print(unlist(as.list(environment())))
   ldply(1:Npwr, function(x){
     print(x)
-    dat <- getData(20, D, delta)
+    dat <- getDataNormal(20, D, delta)
     l <- dat$l
     u <- dat$u
     kmLinear <- kernelMatrix(vanilladot(), x = u)
