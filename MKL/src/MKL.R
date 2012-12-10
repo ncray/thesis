@@ -91,35 +91,69 @@ testShogunKernlab <- function(){
   system.time(computeFSRBF(u = t(u), l = l, r = 1, C = 1))
 }
 
-nullDist <- function(D = 1, N = 100, C = 1){
+nullDistNormal <- function(D = 1, N = 100, C = 1){
+  RBF.v <- 10^(-1:2)
   print(unlist(as.list(environment())))
-  dat <- getDataNormal(200, 10)
+  dat <- getDataNormal(200, D)
   l <- dat$l
   u <- dat$u
 
-  computeFSRBF(u = t(u), l = l, r = 1, C = 1)
-  kmRBF <- kernelMatrix(rbfdot(sigma = 1), x = u)
-  computeFS(u, kmRBF, l, 1)
-  
-  ##kmLinear <- kernelMatrix(vanilladot(), x = u)
-  
   ldply(1:N, function(x){
     print(x)
     l.perm <- sample(l)
-    data.frame("D" = D, "N" = N,
-               "T2" = computeT2(u, kmLinear, l.perm, C),
-               "sqrtT2" = sqrt(computeT2(u, kmLinear, l.perm, C)),
-               "KMMD-l" = computeKMMD(u, kmLinear, l.perm, C),
-               "FS-l" = computeFS(u, kmLinear, l.perm, C),
-               "KMMD-rbf" = computeKMMD(u, kmRBF, l.perm, C),
-               "FS-rbf" = computeFS(u, kmRBF, l.perm, C))
+    res <- data.frame("D" = D, "N" = N, "C" = C,
+               "T2" = computeT2(u, kmLinear = NULL, l.perm, C),
+               "FS-l" = compute(trainLinear)(u = t(u), l = l.perm, r = 1, C = C),
+               "FS-MKL1" = compute(trainMKL)(u1 = t(u), l = l.perm, RBF.v = c(RBF.v), mkl_norm = 1, C = C),
+               "FS-MKL2" = compute(trainMKL)(u1 = t(u), l = l.perm, RBF.v = c(RBF.v), mkl_norm = 2, C = C)
+               )
+    res2 <- laply(RBF.v, function(r) compute(trainRBF)(u = t(u), l = l.perm, r = r, C = C))
+    res2 <- data.frame(do.call(cbind, llply(RBF.v, function(r) compute(trainRBF)(u = t(u), l = l.perm, r = r, C = C))))
+    names(res2) <- paste("FS-rbf", RBF.v, sep = "")
+    cbind(res, res2)
   }, .parallel = parallel)
 }
 
+system.time(res <- mdply(expand.grid(D = c(1, 5, 10), N = 10, C = c(.1, 1, 10)), nullDistNormal))
+res$D <- factor(res$D)
+res.m <- melt(res, id.vars = c("D", "N", "C"))
+
+p1 <- ggplot(data = res.m, aes(x = value, fill = D)) +
+  geom_density(alpha = .4) +
+  facet_grid(C~variable, scales = "free") +
+  opts(title = "Null Distributions (Faceted by Statistic)")
+p1
 
 
+compute(trainLinear)(u = t(u), l = l, r = 1, C = 1)
+compute(trainMKL)(u1 = t(u), l = l, RBF.v = c(RBF.v), mkl_norm = 1, C = 1)
+
+reject(compute(trainLinear), verbose = TRUE)(u = t(u), km = NULL, l = l, r = 1, C = 1)
+reject(compute(trainRBF), verbose = TRUE)(u = t(u), km = NULL, l = l, r = 1, C = 1)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = c(RBF.v), mkl_norm = 1, C = 1)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = c(RBF.v), mkl_norm = 2, C = 1)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = c(RBF.v), mkl_norm = 2, C = 10)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = 1, mkl_norm = 1, C = 1)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = 1, mkl_norm = 2, C = 1)
+reject(compute(trainMKL), verbose = TRUE)(u1 = t(u), l = l, RBF.v = c(RBF.v[-1]), mkl_norm = 2, C = 10)
 
 
+powerNormal <- function(D = 1, delta = 1, C = 1){
+  print(unlist(as.list(environment())))
+  ldply(1:Npwr, function(x){
+    print(x)
+    dat <- getDataNormal(20, D, delta)
+    l <- dat$l
+    u <- dat$u
+
+    data.frame("D" = D, "delta" = delta,
+               "T2" = reject(computeT2)(u, kmLinear, l, C),
+               "KMMD-l" = reject(computeKMMD)(u, kmLinear, l, C),
+               "FS-l" = reject(computeFS)(u, kmLinear, l, C),
+               "KMMD-rbf" = reject(computeKMMD)(u, kmRBF, l, C),
+               "FS-rbf" = reject(computeFS)(u, kmRBF, l, C))
+  }, .parallel = parallel)
+}
 
 
 

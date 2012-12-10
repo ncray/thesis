@@ -6,7 +6,7 @@ library(boot)
 library(ggplot2)
 library(plyr)
 library(reshape)
-cache_size <- 100 ##cache size per kenel in MB
+cache_size <- 100 ##cache size per kernel in MB
 svm_eps <- 1e-3
 mkl_eps <- 1e-3
 mkl_C <- 0
@@ -30,7 +30,7 @@ trainString <- function(u, l, order, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
-trainRBF <- function(u, l, r, C){
+trainRBF <- function(u, km = NULL, l, r, C){
   sg('clean_kernel')
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u) ##takes numeric, not integer
@@ -42,7 +42,7 @@ trainRBF <- function(u, l, r, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
-trainLinear <- function(u, l, r, C){
+trainLinear <- function(u, km = NULL, l, r, C){
   sg('clean_kernel')
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u) ##takes numeric, not integer
@@ -54,7 +54,7 @@ trainLinear <- function(u, l, r, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
-trainMKL <- function(u1, u2, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1){
+trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1){
   dump <- sg('clean_kernel')
   dump <- sg('clean_features', 'TRAIN')
   if(length(RBF.v) > 0){
@@ -68,7 +68,7 @@ trainMKL <- function(u1, u2, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C =
       dump <- sg('attach_preproc', 'TRAIN')
     }
   }
-  dump <- sg('set_labels','TRAIN', l)
+  dump <- sg('set_labels','TRAIN', as.numeric(as.character(l)))
   dump <- sg('new_classifier', 'MKL_CLASSIFICATION')
   dump <- sg('mkl_parameters', mkl_eps, mkl_C, mkl_norm)
   dump <- sg('svm_epsilon', svm_eps)
@@ -78,11 +78,11 @@ trainMKL <- function(u1, u2, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C =
   }
   if(length(string.v) > 0){
     for(i in string.v){
-      dump <- sg('add_kernel', 1, 'COMMSTRING', 'ULONG', cache_size, FALSE, 'FULL') ##FULL
+      dump <- sg('add_kernel', 1, 'COMMSTRING', 'ULONG', cache_size, FALSE, 'FULL') ###NO,SQRT,LEN,SQLEN,FULL
     }
   }
   dump <- sg('c', C)
-  dump <- sg('set_kernel_normalization', 'VARIANCE')
+  dump <- sg('set_kernel_normalization', 'IDENTITY') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
   dump <- sg('train_classifier')
 }
 getMKLWeights <- function() sg('get_subkernel_weights')
@@ -99,26 +99,35 @@ getMargins <- function(l){
   ##sg('classify')
   mar
 }
-computeFSRBF <- function(u, l, r, C){
-  trainRBF(u, l, r, C)
-  mar <- getMargins(l)
-  computeT(u = mar, l = l)
+
+compute <- function(train){
+  function(u, km, l, ...){
+    train(u, km, l, ...)
+    mar <- getMargins(l)
+    computeT(u = mar, l = l)
+  }
 }
-computeFSLinear <- function(u, l, r, C){
-  trainLinear(u, l, r, C)
-  mar <- getMargins(l)
-  computeT(u = mar, l = l)
-}
-computeFSString <- function(u, l, order, C){
-  trainString(u, l, order, C)
-  mar <- getMargins(l)
-  computeT(u = mar, l = l)  
-}
-computeFSMKL <- function(u1, u2, l, r.v, C){
-  trainMKL(u1, u2, l, r.v, C)
-  mar <- getMargins(l)
-  computeT(u = mar, l = l)  
-}
+
+## computeFSRBF <- function(u, l, r, C){
+##   trainRBF(u, l, r, C)
+##   mar <- getMargins(l)
+##   computeT(u = mar, l = l)
+## }
+## computeFSLinear <- function(u, l, r, C){
+##   trainLinear(u, l, r, C)
+##   mar <- getMargins(l)
+##   computeT(u = mar, l = l)
+## }
+## computeFSString <- function(u, l, order, C){
+##   trainString(u, l, order, C)
+##   mar <- getMargins(l)
+##   computeT(u = mar, l = l)  
+## }
+## computeFSMKL <- function(u1 = NULL, u2 = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = C){
+##   trainMKL(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = mkl_norm, C = C)
+##   mar <- getMargins(l)
+##   computeT(u = mar, l = l)  
+## }
 
 ## rejectT2 <- function(u, l) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$p.value < .05)
 ## rejectFSRBF <- function(u, l, r, C) as.numeric(computeFSRBF(u, l, r, C) > max(laply(1:19, function(i) computeFSRBF(u, sample(l), r, C))))
