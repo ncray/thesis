@@ -3,7 +3,7 @@ library(kernlab)
 library(ICSNP)
 library(plyr)
 
-computeT <- function(u, km, l, ...) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
+computeT <- function(u, km = NULL, l, ...) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
 
 computeT2 <- function(u, km, l, ...) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$statistic)
 

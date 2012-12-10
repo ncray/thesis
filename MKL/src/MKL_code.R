@@ -11,7 +11,6 @@ svm_eps <- 1e-3
 mkl_eps <- 1e-3
 mkl_C <- 0
 
-computeT <- function(u, l, ...) as.numeric(t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic)
 trainString <- function(u, l, order, C){
   gap <- 0
   reverse <- 'n'
@@ -36,7 +35,19 @@ trainRBF <- function(u, l, r, C){
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u) ##takes numeric, not integer
   sg('set_kernel', 'GAUSSIAN', 'REAL', cache_size, r)
-  sg('set_labels', 'TRAIN', l)
+  sg('set_labels', 'TRAIN', as.numeric(as.character(l)))
+  sg('new_classifier', 'LIBSVM')
+  sg('c', C)
+  sg('svm_use_bias', TRUE) ##default is TRUE
+  ##sg('get_kernel_matrix', 'TRAIN')
+  sg('train_classifier')
+}
+trainLinear <- function(u, l, r, C){
+  sg('clean_kernel')
+  sg('clean_features', 'TRAIN')
+  sg('set_features', 'TRAIN', u) ##takes numeric, not integer
+  sg('set_kernel', 'LINEAR', 'REAL', cache_size)
+  sg('set_labels', 'TRAIN', as.numeric(as.character(l)))
   sg('new_classifier', 'LIBSVM')
   sg('c', C)
   sg('svm_use_bias', TRUE) ##default is TRUE
@@ -75,14 +86,14 @@ trainMKL <- function(u1, u2, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C =
   dump <- sg('train_classifier')
 }
 getMKLWeights <- function() sg('get_subkernel_weights')
-getMargins <- function(){
+getMargins <- function(l){
   svmparams <- sg('get_svm')
   b <- as.numeric(svmparams[[1]])
   aw <- svmparams[[2]][, 1]
   inds <- svmparams[[2]][, 2] + 1 ## 0 indexing
   km <- sg('get_kernel_matrix')
   km.sub <- km[, inds]
-  mar <- as.numeric(km.sub %*% aw + b)
+  mar <- as.numeric(km.sub %*% (aw * as.numeric(as.character(l))[inds]) + b)  
   ##print(all((mar < 0) == (sg('classify') == -1)))
   ##plot(mar, sg('classify'))
   ##sg('classify')
@@ -90,18 +101,23 @@ getMargins <- function(){
 }
 computeFSRBF <- function(u, l, r, C){
   trainRBF(u, l, r, C)
-  mar <- getMargins()
-  computeT(mar, l)
+  mar <- getMargins(l)
+  computeT(u = mar, l = l)
+}
+computeFSLinear <- function(u, l, r, C){
+  trainLinear(u, l, r, C)
+  mar <- getMargins(l)
+  computeT(u = mar, l = l)
 }
 computeFSString <- function(u, l, order, C){
   trainString(u, l, order, C)
-  mar <- getMargins()
-  computeT(mar, l)
+  mar <- getMargins(l)
+  computeT(u = mar, l = l)  
 }
 computeFSMKL <- function(u1, u2, l, r.v, C){
   trainMKL(u1, u2, l, r.v, C)
-  mar <- getMargins()
-  computeT(mar, l)
+  mar <- getMargins(l)
+  computeT(u = mar, l = l)  
 }
 
 ## rejectT2 <- function(u, l) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$p.value < .05)
