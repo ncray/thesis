@@ -34,6 +34,7 @@ trainRBF <- function(u, km = NULL, l, r, C){
   sg('clean_kernel')
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u) ##takes numeric, not integer
+  ##http://www.shogun-toolbox.org/doc/en/current/classshogun_1_1CGaussianKernel.html
   sg('set_kernel', 'GAUSSIAN', 'REAL', cache_size, r)
   sg('set_labels', 'TRAIN', as.numeric(as.character(l)))
   sg('new_classifier', 'LIBSVM')

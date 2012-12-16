@@ -21,7 +21,7 @@ computeKMMD <- function(u, km, l, ...){
 computeFS <- function(u, km, l, C = 1, ...){
   ksvm.fit <- ksvm(x = km, y = factor(l), C = C, shrinking = FALSE, tol = .01, ...)
   ##ksvm.fit <- ksvm(x = km, y = l, C = C)
-  y <- l
+  y <- as.numeric(as.character(l))
   alpha <- unlist(ksvm.fit@alpha)
   sv.ind <- ksvm.fit@SVindex
   km.sub <- km[, sv.ind]
