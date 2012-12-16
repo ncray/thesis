@@ -19,9 +19,9 @@ computeKMMD <- function(u, km, l, ...){
 }
 
 computeFS <- function(u, km, l, C = 1, ...){
-  ksvm.fit <- ksvm(x = km, y = l, C = C, shrinking = FALSE, tol = .01, ...)
+  ksvm.fit <- ksvm(x = km, y = factor(l), C = C, shrinking = FALSE, tol = .01, ...)
   ##ksvm.fit <- ksvm(x = km, y = l, C = C)
-  y <- as.numeric(as.character(l))
+  y <- l
   alpha <- unlist(ksvm.fit@alpha)
   sv.ind <- ksvm.fit@SVindex
   km.sub <- km[, sv.ind]
@@ -42,18 +42,22 @@ computeFS <- function(u, km, l, C = 1, ...){
 ## rejectKMMD <- function(u, l, ...) as.numeric(computeKMMD(u, l, ...) > max(laply(1:19, function(i) computeKMMD(u, sample(l), ...))))
 ## rejectFS <- function(u, l, ...) as.numeric(computeFS(u, l, ...) > max(laply(1:19, function(i) computeFS(u, sample(l), ...))))
 
-reject <- function(compute, verbose = FALSE){
+reject <- function(compute, verbose = FALSE, parametric = FALSE){
   function(u, km, l, ...){
     val <- compute(u, km, l, ...)
     ##perms <- laply(1:19, function(i) compute(u, km, sample(l), ...))
-    perms <- laply(1:39, function(i) compute(u, km, sample(l), ...))
-    if(verbose){
-      print(paste("value:", val))
-      print("permuted: ")
-      print(round(sort(perms), 3))
-    }
+    if(parametric){
+      abs(val) > qnorm(.975)
+    } else {
+      perms <- laply(1:39, function(i) compute(u, km, sample(l), ...))
+      if(verbose){
+        print(paste("value:", val))
+        print("permuted: ")
+        print(round(sort(perms), 3))
+      }
     ##ifelse((val > max(perms)), 1, 0)
-    ifelse((val > max(perms) | val < min(perms)), 1, 0)
+      ifelse((val > max(perms) | val < min(perms)), 1, 0)
+    }
   }
 }
 

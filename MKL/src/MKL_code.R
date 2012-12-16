@@ -54,9 +54,10 @@ trainLinear <- function(u, km = NULL, l, r, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
-trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1){
+trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE){
   dump <- sg('clean_kernel')
   dump <- sg('clean_features', 'TRAIN')
+  if(linear) dump <- sg('add_features','TRAIN', u1)
   if(length(RBF.v) > 0){
     for(i in RBF.v){dump <- sg('add_features','TRAIN', u1)}
   }
@@ -73,6 +74,7 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
   dump <- sg('mkl_parameters', mkl_eps, mkl_C, mkl_norm)
   dump <- sg('svm_epsilon', svm_eps)
   dump <- sg('set_kernel', 'COMBINED', 0)
+  if(linear) dump <- sg('add_kernel', 1, 'LINEAR', 'REAL', cache_size)
   if(length(RBF.v) > 0){
     for(width in RBF.v){dump <- sg('add_kernel', 1, 'GAUSSIAN', 'REAL', cache_size, width)}
   }
@@ -82,7 +84,7 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
     }
   }
   dump <- sg('c', C)
-  dump <- sg('set_kernel_normalization', 'IDENTITY') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
+  dump <- sg('set_kernel_normalization', 'SQRTDIAG') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
   dump <- sg('train_classifier')
 }
 getMKLWeights <- function() sg('get_subkernel_weights')
