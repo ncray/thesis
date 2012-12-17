@@ -11,11 +11,12 @@ svm_eps <- 1e-3
 mkl_eps <- 1e-3
 mkl_C <- 0
 
-trainString <- function(u, l, order, C){
+trainString <- function(u, km = NULL, l, order, C){
   gap <- 0
   reverse <- 'n'
   use_sign <- FALSE
-  normalization <- 'FULL' #NO,SQRT,LEN,SQLEN,FULL
+  ##normalization <- 'FULL' #NO,SQRT,LEN,SQLEN,FULL
+  normalization <- 'NO' #NO,SQRT,LEN,SQLEN,FULL
   sg('clean_kernel')
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u, 'RAW')
@@ -23,7 +24,7 @@ trainString <- function(u, l, order, C){
   sg('add_preproc', 'SORTULONGSTRING')
   sg('attach_preproc', 'TRAIN')
   sg('set_kernel', 'COMMSTRING', 'ULONG', cache_size, use_sign, normalization)
-  sg('set_labels', 'TRAIN', l)
+  sg('set_labels', 'TRAIN', as.numeric(as.character(l)))
   sg('new_classifier', 'LIBSVM')
   sg('c', C)
   sg('svm_use_bias', TRUE) ##default is TRUE
@@ -55,7 +56,7 @@ trainLinear <- function(u, km = NULL, l, r, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
-trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE){
+trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE, ...){
   dump <- sg('clean_kernel')
   dump <- sg('clean_features', 'TRAIN')
   if(linear) dump <- sg('add_features','TRAIN', u1)
@@ -105,65 +106,69 @@ getMargins <- function(l){
 
 compute <- function(train){
   function(u, km, l, ...){
-    train(u, km, l, ...)
+    train(u = u, km = NULL, l = l, ...)
     mar <- getMargins(l)
     computeT(u = mar, l = l)
   }
 }
 
-## computeFSRBF <- function(u, l, r, C){
-##   trainRBF(u, l, r, C)
-##   mar <- getMargins(l)
-##   computeT(u = mar, l = l)
-## }
-## computeFSLinear <- function(u, l, r, C){
-##   trainLinear(u, l, r, C)
-##   mar <- getMargins(l)
-##   computeT(u = mar, l = l)
-## }
-## computeFSString <- function(u, l, order, C){
-##   trainString(u, l, order, C)
-##   mar <- getMargins(l)
-##   computeT(u = mar, l = l)  
-## }
-## computeFSMKL <- function(u1 = NULL, u2 = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = C){
-##   trainMKL(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = mkl_norm, C = C)
-##   mar <- getMargins(l)
-##   computeT(u = mar, l = l)  
-## }
+getTransMat <- function(self = .25){
+  m <- matrix((1 - self) / 3, nrow = 4, ncol = 4)
+  diag(m) <- self
+  m
+}
 
-## rejectT2 <- function(u, l) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$p.value < .05)
-## rejectFSRBF <- function(u, l, r, C) as.numeric(computeFSRBF(u, l, r, C) > max(laply(1:19, function(i) computeFSRBF(u, sample(l), r, C))))
-## rejectFSString <- function(u, l, order, C) as.numeric(computeFSString(u, l, order, C) > max(laply(1:19, function(i) computeFSString(u, sample(l), order, C))))
-## rejectFSMKL <- function(u1, u2, l, r.v, C) as.numeric(computeFSMKL(u1, u2, l, r.v, C)
-##                                                       > max(laply(1:19, function(i) computeFSMKL(u1, u2, sample(l), r.v, C))))
-MKLwts <- function(r1, self, C){
-  print(paste("r1:", r1, "self:", self, "C:", C))
-  dat <- getData(r1, self)
-  u1 <- dat$u1
-  u2 <- dat$u2
+generateMC <- function(self){
+  alphabet <- c("A", "G", "T", "C")
+  lambda <- 100
+  N <- rpois(1, lambda)
+  trans.mat <- getTransMat(self)
+  stat.dist <- Re(eigen(t(trans.mat))$vectors[,1])
+  stat.dist <- stat.dist / sum(stat.dist)
+  res <- rep(0, N)
+  res[1] <- sample(x = 1:length(alphabet), size = 1, prob = stat.dist)
+  for(i in 2:N){
+    res[i] <- sample(x = 1:length(alphabet), size = 1, prob = trans.mat[res[i - 1], ])
+  }
+  paste(alphabet[res], sep = "", collapse = "")
+}
+
+getDataDNAStar <- function(r1, self, n){
+  u2 <- c(laply(rep(.25, n), generateMC),
+          laply(rep(self, n), generateMC))
+  dat <- generateStar(r1 = r1, r2 = 4, n)
+  u1 <- dat$u
   l <- dat$l
-  trainMKL(u1, u2, l, r.v, C)
-  wts <- getMKLWeights()
-  df1 <- cbind(data.frame("r1" = r1, "self" = self, "C" = C, "perm" = 0), matrix(wts, nrow = 1))
-  df2 <- ldply(1:Nwts, function(x){  
-    trainMKL(u1, u2, sample(l), r.v, C)
-    wts <- getMKLWeights()
-    cbind(data.frame("r1" = r1, "self" = self, "C" = C, "perm" = 1), matrix(wts, nrow = 1))
-  })
-  rbind(df1, df2)
+  list(u1 = u1, u2 = u2, l = l)
 }
-power <- function(r1, self, C){
-  print(paste("r1:", r1, "self:", self, "C:", C))
-  ldply(1:Npwr, function(x){
-    dat <- getData(r1, self)
-    u1 <- dat$u1
-    u2 <- dat$u2
-    l <- dat$l
-    print(x)
-    data.frame(cbind(data.frame("r1" = r1, "self" = self, "C" = C, "FSMKL" = rejectFSMKL(u1, u2, l, r.v, C)),
-                     matrix(laply(r.v, function(r) rejectFSRBF(u1, l, r, C)), nrow = 1),
-                     matrix(laply(1:2, function(order) rejectFSString(u2, l, order, C)), nrow = 1)))
-  })
-}
+
+## MKLwts <- function(r1, self, C){
+##   print(paste("r1:", r1, "self:", self, "C:", C))
+##   dat <- getData(r1, self)
+##   u1 <- dat$u1
+##   u2 <- dat$u2
+##   l <- dat$l
+##   trainMKL(u1, u2, l, r.v, C)
+##   wts <- getMKLWeights()
+##   df1 <- cbind(data.frame("r1" = r1, "self" = self, "C" = C, "perm" = 0), matrix(wts, nrow = 1))
+##   df2 <- ldply(1:Nwts, function(x){  
+##     trainMKL(u1, u2, sample(l), r.v, C)
+##     wts <- getMKLWeights()
+##     cbind(data.frame("r1" = r1, "self" = self, "C" = C, "perm" = 1), matrix(wts, nrow = 1))
+##   })
+##   rbind(df1, df2)
+## }
+## power <- function(r1, self, C){
+##   print(paste("r1:", r1, "self:", self, "C:", C))
+##   ldply(1:Npwr, function(x){
+##     dat <- getData(r1, self)
+##     u1 <- dat$u1
+##     u2 <- dat$u2
+##     l <- dat$l
+##     print(x)
+##     data.frame(cbind(data.frame("r1" = r1, "self" = self, "C" = C, "FSMKL" = rejectFSMKL(u1, u2, l, r.v, C)),
+##                      matrix(laply(r.v, function(r) rejectFSRBF(u1, l, r, C)), nrow = 1),
+##                      matrix(laply(1:2, function(order) rejectFSString(u2, l, order, C)), nrow = 1)))
+##   })
+## }
 

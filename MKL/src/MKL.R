@@ -177,7 +177,50 @@ powerNormal <- function(D = 1, delta = 1, C = 1){
                "FS-MKL2" = reject(compute(trainMKL), parametric = TRUE)(u1 = t(u), l = l, RBF.v = RBF.v, mkl_norm = 2, C = C))
   }, .parallel = parallel)
 }
+###
+power23 <- function(dx1, dx2, C, p){
+  print(paste("dx1:", dx1, "dx2:", dx2, "C:", C, "p:", p))
+  ##RBF.v <- round(10^((0:6) / 2), 4)
+  ##RBF.v <- 1 / round(10^((0:6) / 2), 4)
+  RBF.v <- round(10^((-3:3) / 2), 4)
+  ldply(1:Npwr, function(x){
+    dat <- getData(50, dx1, dx2, p)
+    u <- dat$u1
+    u2 <- NULL
+    l <- dat$l
+    print(x)
 
+    df1 <- data.frame("dx1" = dx1, "dx2" = dx2, "p" = p, "C" = C,
+                      "T2" = reject(computeT2)(u, kmLinear, l, C),
+                      "FS-l" = reject(compute(trainLinear), parametric = TRUE)(u = t(u), l = l, r = 1, C = C),
+                      "FS-MKL1" = reject(compute(trainMKL), parametric = TRUE)(u1 = t(u), l = l, RBF.v = RBF.v, mkl_norm = 1, C = C),
+                      "FS-MKL2" = reject(compute(trainMKL), parametric = TRUE)(u1 = t(u), l = l, RBF.v = RBF.v, mkl_norm = 2, C = C))
+    df2 <- as.data.frame(matrix(laply(RBF.v, function(r) reject(compute(trainRBF), parametric = TRUE)
+                 (u = t(u), l = l, r = r, C = C)), nrow = 1))
+    cbind(df1, df2)
+  }, .parallel = parallel)
+}
+
+Npwr <- 50
+##system.time(res <- mdply(expand.grid(dx1 = 1, dx2 = 10, C = .01, p = c(0, .5, 1)), power23))
+system.time(res <- mdply(expand.grid(dx1 = 100, dx2 = 1000, C = .1, p = c(0, .5, 1)), power23))
+res2 <- ddply(res, .(dx1, dx2, p, C), function(df){
+  ldply(names(df)[-(1:4)], function(name){
+    dat <- df[, name]
+    lims <- c(.025, .975)
+    bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
+    boot <- bootM(dat)
+    data.frame("value" = mean(dat), "lower" = boot[1], "upper" = boot[2], "group" = name)
+  })
+})
+
+p4 <- ggplot(res2, aes(x = group, y = value)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin = lower, ymax = upper, width = .05)) +
+  facet_grid(p~.)
+p4
+
+###
 getPowerNormal <- function(){
   Npwr <- 20
   system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .5), "D" = c(1, 5, 10, 20), "C" = c(.1, 1, 10)),
@@ -317,3 +360,95 @@ powerStarPlot <- function(){
 }
 
 
+MKLwtsDNAStar <- function(r1, self, n, C){
+  print(unlist(as.list(environment())))
+  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
+  string.v <- 1:2
+  dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+  trainMKL(u1 = dat$u1, u2 = dat$u2, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
+  wts <- getMKLWeights()
+  df1 <- cbind(data.frame("r1" = r1, "n" = n, "C" = C, "perm" = 0, "mkl_norm" = 1), matrix(wts, nrow = 1))
+  trainMKL(u1 = dat$u1, u2 = dat$u2, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 2, linear = FALSE)
+  wts <- getMKLWeights()
+  wts <- wts / sum(wts)
+  df2 <- cbind(data.frame("r1" = r1, "n" = n, "C" = C, "perm" = 0, "mkl_norm" = 2), matrix(wts, nrow = 1))
+  dfperm <- ldply(1:Nwts, function(x){
+    trainMKL(u1 = dat$u1, u2 = dat$u2, l = sample(dat$l), RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
+    wts <- getMKLWeights()
+    df1p <- cbind(data.frame("r1" = r1, "n" = n, "C" = C, "perm" = 1, "mkl_norm" = 1), matrix(wts, nrow = 1))
+    trainMKL(u1 = dat$u1, u2 = dat$u2, l = sample(dat$l), RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 2, linear = FALSE)
+    wts <- getMKLWeights()
+    wts <- wts / sum(wts)
+    df2p <- cbind(data.frame("r1" = r1, "n" = n, "C" = C, "perm" = 1, "mkl_norm" = 2), matrix(wts, nrow = 1))
+    rbind(df1p, df2p)
+  })
+  df1 <- rbind(df1, df2, dfperm)
+  len <- ncol(df1)
+  names(df1)[6:(6 + length(RBF.v) - 1)] <- paste("rbf: ", RBF.v, sep = "")
+  names(df1)[(6 + length(RBF.v)):len] <- paste("sk: ", string.v, sep = "")
+  df1
+}
+
+MKLwtsDNAStarPlot <- function(){
+  system.time(res <- mdply(expand.grid(r1 = 4.5, self = seq(.25, .4, .05), n = 200, C = .1), MKLwtsDNAStar))
+
+  res.m <- melt(res, id.vars = c(1:6))
+  p1 <- qplot(variable, value, data = subset(res.m, perm == 1), geom = "boxplot") +
+    facet_grid(mkl_norm~self) +
+      geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
+        xlab("Kernels") +
+          ylab("Kernel Weights") +
+            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and Outer Radius")
+  p1
+}
+
+powerDNAStar <- function(r1, self, n, C){
+  print(unlist(as.list(environment())))
+  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
+  string.v <- 1:3
+  ldply(1:Npwr, function(x){
+    print(x)
+    dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+    l <- dat$l
+    u1 <- dat$u1
+    u2 <- dat$u2
+
+    dfMKL <- data.frame("r1" = r1, "self" = self, "n" = n, "C" = C,
+                        "FSMKL: 1" = reject(compute(trainMKL), parametric = TRUE)
+                        (u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE),
+                        "FSMKL: 2" = reject(compute(trainMKL), parametric = TRUE)
+                        (u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE))
+    dfRBF <- as.data.frame(matrix(laply(RBF.v, function(r) reject(compute(trainRBF), parametric = TRUE)
+                                        (u = u1, l = l, r = r, C = C)), nrow = 1))
+    names(dfRBF) <- paste("RBF: ", RBF.v, sep = "")
+    dfSK <- as.data.frame(matrix(laply(string.v, function(order) reject(compute(trainString), parametric = TRUE)
+                                       (u = u2, l = l, order = order, C = C)), nrow = 1))
+    names(dfSK) <- paste("SK: ", string.v, sep = "")
+    cbind(dfMKL, dfRBF, dfSK)
+  }, .parallel = parallel)
+}
+
+powerDNAStarPlot <- function(){
+  Npwr <- 200
+  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
+  system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
+  
+  res2 <- ddply(res, .(r1, self, n, C), function(df){
+    ldply(names(df)[-(1:4)], function(name){
+      dat <- df[, name]
+      lims <- c(.025, .975)
+      bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
+      boot <- bootM(dat)
+      data.frame("value" = mean(dat), "lower" = boot[1], "upper" = boot[2], "group" = name)
+    })
+  })
+
+  p2 <- ggplot(res2, aes(x = self, y = value, color = group, linetype = group)) +
+    geom_line() + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005)) +
+        facet_grid(r1~.) +
+          ggtitle("Power (Christmas Star Example)") +
+            xlab("Radius of Outer Star (Inner is 4)") +
+              ylab("Power")
+  p2
+}

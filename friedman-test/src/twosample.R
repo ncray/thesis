@@ -44,7 +44,7 @@ computeFS <- function(u, km, l, C = 1, ...){
 
 reject <- function(compute, verbose = FALSE, parametric = FALSE){
   function(u, km, l, ...){
-    val <- compute(u, km, l, ...)
+    val <- compute(u = u, km = km, l = l, ...)
     ##perms <- laply(1:19, function(i) compute(u, km, sample(l), ...))
     if(parametric){
       abs(val) > qnorm(.975)
