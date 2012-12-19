@@ -428,10 +428,39 @@ powerDNAStar <- function(r1, self, n, C){
   }, .parallel = parallel)
 }
 
+C <- .1
+r1 <- 4.3
+self <- .335
+n <- 50
+dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+l <- dat$l
+u1 <- dat$u1
+u2 <- dat$u2
+RBF.v <- 100
+string.v <- 3
+
+##change kernel normalization from SQRTDIAG to IDENTITY
+reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
+getMKLWeights()
+reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
+getMKLWeights()
+reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
+reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
+
+reject(compute(trainRBF), parametric = TRUE)(u = u1, l = l, r = RBF.v, C = C)
+reject(compute(trainRBF), parametric = FALSE, verbose = TRUE)(u = u1, l = l, r = RBF.v, C = C)
+
+reject(compute(trainString), parametric = TRUE)(u = u2, l = l, order = string.v, C = C)
+reject(compute(trainString), parametric = FALSE, verbose = TRUE)(u = u2, l = l, order = string.v, C = C)
+
+
 powerDNAStarPlot <- function(){
   Npwr <- 200
   ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
   system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
+
+  ##system.time(res <- mdply(expand.grid(r1 = c(4.3), self = c(.335), n = 50, C = .1), powerDNAStar))
+  ##colMeans(res)
   
   res2 <- ddply(res, .(r1, self, n, C), function(df){
     ldply(names(df)[-(1:4)], function(name){

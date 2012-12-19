@@ -87,6 +87,7 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
   }
   dump <- sg('c', C)
   dump <- sg('set_kernel_normalization', 'SQRTDIAG') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
+  ##dump <- sg('set_kernel_normalization', 'IDENTITY') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
   dump <- sg('train_classifier')
 }
 getMKLWeights <- function() sg('get_subkernel_weights')
