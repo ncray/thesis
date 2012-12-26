@@ -8,6 +8,8 @@ library(doMC)
 registerDoMC(4)
 parallel <- TRUE
 ##http://www.shogun-toolbox.org/doc/en/2.0.1/staticr.html
+Npwr <- 200
+Nwts <- 100
 
 testShogunKernlab <- function(){
   dat <- ldply(1:20, function(D){
@@ -95,9 +97,10 @@ testShogunKernlab <- function(){
 }
 
 nullDistNormal <- function(D = 1, N = 100, C = 1){
-  RBF.v <- 10^(-1:2)
+  RBF.v <- c(5, 10, 20, 40) ##second run
+  ##RBF.v <- 10^(-1:2)
   print(unlist(as.list(environment())))
-  dat <- getDataNormal(200, D)
+  dat <- getDataNormal(100, D)
   l <- dat$l
   u <- dat$u
 
@@ -105,7 +108,6 @@ nullDistNormal <- function(D = 1, N = 100, C = 1){
     print(x)
     l.perm <- sample(l)
     res <- data.frame("D" = D, "N" = N, "C" = C,
-                      "T2" = computeT2(u, km = NULL, l.perm, C),
                       "FS-l" = compute(trainLinear)(u = t(u), l = l.perm, r = 1, C = C),
                       "FS-MKL1" = compute(trainMKL)(u1 = t(u), l = l.perm, RBF.v = c(RBF.v), mkl_norm = 1, C = C),
                       "FS-MKL2" = compute(trainMKL)(u1 = t(u), l = l.perm, RBF.v = c(RBF.v), mkl_norm = 2, C = C)
@@ -117,26 +119,33 @@ nullDistNormal <- function(D = 1, N = 100, C = 1){
   }, .parallel = parallel)
 }
 
-getNullDist <- function(){
+getNullDistPlot <- function(){
   system.time(res <- mdply(expand.grid(D = c(1, 5, 10), N = 100, C = c(.1, 1, 10)), nullDistNormal))
   library(nortest)
-  apply(res[, -(1:3)], 2, ad.test)
   res$D <- factor(res$D)
   res.m <- melt(res, id.vars = c("D", "N", "C"))
+  pvals <- ddply(res.m, .(C, variable, D), function(df) c("pval" = ad.test(df$value)$p.value))
+  arrange(pvals, desc(pval))
 
   p1 <- ggplot(data = res.m, aes(x = value, fill = D)) +
     geom_density(alpha = .4) +
       facet_grid(C~variable, scales = "free") +
-        ggtitle("Null Distributions (Faceted by Statistic)")
+        ggtitle("Null Distributions (Faceted by Statistic)") +
+          geom_text(data = pvals, aes(x = 0, y = as.numeric(as.character(D)) / 20, label = round(pval, 5)), color = "red")
   p1
+  ##myplot(p1, "null_dist.png")
+  myplot(p1, "null_dist2.png")
 }
 
 testReject <- function(){
-  dat <- getDataNormal(50, 10, delta = 10)
+  dat <- getDataNormal(100, D = 10, delta = 1)
   l <- dat$l
   u <- dat$u
   RBF.v <- 10^(-2:2)
-  RBF.v <- seq(.5, 5, 1)
+  ##RBF.v <- seq(.5, 5, 1)
+  trainRBF(u = t(u), l = l, r = .01, C = 1) ## margin is always 1
+  mar <- getMargins(l)
+  computeT(u = mar, l = l)
 
   compute(trainLinear)(u = t(u), l = l, r = 1, C = 1)
   compute(trainMKL)(u1 = t(u), l = l, RBF.v = RBF.v, mkl_norm = 1, C = 1)
@@ -159,7 +168,7 @@ testReject <- function(){
 powerNormal <- function(D = 1, delta = 1, C = 1){
   print(unlist(as.list(environment())))
   ldply(1:Npwr, function(x){
-    RBF.v <- c(.5, 1, 5)
+    RBF.v <- c(.5, 1, 5, 10)
     print(x)
     dat <- getDataNormal(20, D, delta)
     l <- dat$l
@@ -201,6 +210,7 @@ power23 <- function(dx1, dx2, C, p){
   }, .parallel = parallel)
 }
 
+test <- function(){
 Npwr <- 50
 ##system.time(res <- mdply(expand.grid(dx1 = 1, dx2 = 10, C = .01, p = c(0, .5, 1)), power23))
 system.time(res <- mdply(expand.grid(dx1 = 100, dx2 = 1000, C = .1, p = c(0, .5, 1)), power23))
@@ -219,10 +229,10 @@ p4 <- ggplot(res2, aes(x = group, y = value)) +
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .05)) +
   facet_grid(p~.)
 p4
-
+}
 ###
 getPowerNormal <- function(){
-  Npwr <- 20
+  Npwr <- 1000
   system.time(res <- mdply(expand.grid("delta" = seq(0, 1.5, .5), "D" = c(1, 5, 10, 20), "C" = c(.1, 1, 10)),
                            powerNormal))
 
@@ -243,6 +253,7 @@ getPowerNormal <- function(){
           facet_grid(C~D) +
             ggtitle("Power (Faceted by Dimension and C)")
   p2
+  myplot(p2, "normal_power.png")
 }
 
 
@@ -299,9 +310,9 @@ MKLwtsStar <- function(r1, n, C){
 }
 
 MKLwtShiftStar <- function(){
-  Nwts <- 50
+  Nwts <- 100
   RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  system.time(res <- mdply(expand.grid(r1 = round(10^(seq(-.5, 2, .5)) / 3, 2), n = 100, C = 1), MKLwtsStar, .parallel = TRUE))
+  ##system.time(res <- mdply(expand.grid(r1 = round(10^(seq(-.5, 2, .5)) / 3, 2), n = 100, C = 1), MKLwtsStar, .parallel = TRUE))
   system.time(res <- mdply(expand.grid(r1 = c(1, 3, 7, 9, 11, 13, 15, 20), n = 100, C = 1), MKLwtsStar, .parallel = TRUE))
 
   res.m <- melt(res, id.vars = c(1:5))
@@ -310,8 +321,9 @@ MKLwtShiftStar <- function(){
       geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
         xlab("Kernels") +
           ylab("Kernel Weights") +
-            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and Outer Radius")
+            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by MKL Norm and Outer Radius")
   p1
+  myplot(p1, "mkl_weights_star.png")
 }
 
 powerStar <- function(r1, n, C){
@@ -336,7 +348,7 @@ powerStar <- function(r1, n, C){
 }
 
 powerStarPlot <- function(){
-  Npwr <- 200
+  Npwr <- 1000
   system.time(res <- mdply(expand.grid(r1 = seq(4, 7, .5), n = 50, C = 1), powerStar))
 
   res2 <- ddply(res, .(r1, n, C), function(df){
@@ -357,13 +369,14 @@ powerStarPlot <- function(){
           xlab("Radius of Outer Star (Inner is 4)") +
             ylab("Power")
   p2
+  myplot(p2, "star_power.png")
 }
 
 
 MKLwtsDNAStar <- function(r1, self, n, C){
   print(unlist(as.list(environment())))
   RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  string.v <- 1:2
+  string.v <- 1:3
   dat <- getDataDNAStar(r1 = r1, self = self, n = n)
   trainMKL(u1 = dat$u1, u2 = dat$u2, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
   wts <- getMKLWeights()
@@ -390,6 +403,7 @@ MKLwtsDNAStar <- function(r1, self, n, C){
 }
 
 MKLwtsDNAStarPlot <- function(){
+  Nwts <- 100
   system.time(res <- mdply(expand.grid(r1 = 4.5, self = seq(.25, .4, .05), n = 200, C = .1), MKLwtsDNAStar))
 
   res.m <- melt(res, id.vars = c(1:6))
@@ -398,8 +412,9 @@ MKLwtsDNAStarPlot <- function(){
       geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
         xlab("Kernels") +
           ylab("Kernel Weights") +
-            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and Outer Radius")
+            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and MKL Norm")
   p1
+  myplot(p1, "mkl_weights_star_dna.png")
 }
 
 powerDNAStar <- function(r1, self, n, C){
@@ -428,34 +443,36 @@ powerDNAStar <- function(r1, self, n, C){
   }, .parallel = parallel)
 }
 
-C <- .1
-r1 <- 4.3
-self <- .335
-n <- 50
-dat <- getDataDNAStar(r1 = r1, self = self, n = n)
-l <- dat$l
-u1 <- dat$u1
-u2 <- dat$u2
-RBF.v <- 100
-string.v <- 3
+test <- function(){
+  C <- .1
+  r1 <- 4.3
+  self <- .35
+  n <- 75
+  dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+  l <- dat$l
+  u1 <- dat$u1
+  u2 <- dat$u2
+  RBF.v <- 100
+  string.v <- 3
 
-##change kernel normalization from SQRTDIAG to IDENTITY
-reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
-getMKLWeights()
-reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
-getMKLWeights()
-reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
-reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
+  ##change kernel normalization from SQRTDIAG to IDENTITY
+  reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
+  getMKLWeights()
+  reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
+  getMKLWeights()
+  
+  reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
+  reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
 
-reject(compute(trainRBF), parametric = TRUE)(u = u1, l = l, r = RBF.v, C = C)
-reject(compute(trainRBF), parametric = FALSE, verbose = TRUE)(u = u1, l = l, r = RBF.v, C = C)
+  reject(compute(trainRBF), parametric = TRUE)(u = u1, l = l, r = RBF.v, C = C)
+  reject(compute(trainRBF), parametric = FALSE, verbose = TRUE)(u = u1, l = l, r = RBF.v, C = C)
 
-reject(compute(trainString), parametric = TRUE)(u = u2, l = l, order = string.v, C = C)
-reject(compute(trainString), parametric = FALSE, verbose = TRUE)(u = u2, l = l, order = string.v, C = C)
-
+  reject(compute(trainString), parametric = TRUE)(u = u2, l = l, order = string.v, C = C)
+  reject(compute(trainString), parametric = FALSE, verbose = TRUE)(u = u2, l = l, order = string.v, C = C)
+}
 
 powerDNAStarPlot <- function(){
-  Npwr <- 200
+  Npwr <- 1000
   ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
   system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
 
@@ -476,8 +493,20 @@ powerDNAStarPlot <- function(){
     geom_line() + 
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .005)) +
         facet_grid(r1~.) +
-          ggtitle("Power (Christmas Star Example)") +
-            xlab("Radius of Outer Star (Inner is 4)") +
+          ggtitle("Power (Christmas Star + DNA Example), Faceted on Outer Radius") +
+            xlab("Self Transition Probability") +
               ylab("Power")
   p2
+  myplot(p2, "dna_star_power.png")
 }
+
+
+
+
+getNullDistPlot()
+getPowerNormal()
+RBF.v <- round(10^(seq(.5, 2, .5)), 2)
+MKLwtShiftStar()
+powerStarPlot()
+MKLwtsDNAStarPlot()
+powerDNAStarPlot()
