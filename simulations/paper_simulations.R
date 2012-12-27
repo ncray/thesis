@@ -609,6 +609,15 @@ computeAllCond <- function(T, N, u, l, x, y){
   data.frame("T" = T, "Tprime" = Tprime, "N" = N, "lambda" = 2 / N)
 }
 
+######IMPORTANT, TRY
+  x <- u[l]
+  y <- u[-l]
+  del <- rep(y, length(x)) - rep(x, each = length(y))
+  xbar <- mean(x)
+  ybar <- mean(y)
+#######
+
+
 system.time(computeAllCond(T, N, u, l, x, y))
 system.time(computeAllCond2(T, N, u, l, x, y))
 sum((sort(computeAllCond(T, N, u, l, x, y)$Tprime) - sort(computeAllCond2(T, N, u, l, x, y)$Tprime))^2)
