@@ -3,6 +3,7 @@ library(plyr)
 library(doMC)
 registerDoMC(4)
 parallel <- TRUE
+setwd("better_bound_condition")
 
 getPairedTprime <- function(T, N, u, l, x, y){
   x <- u[l]
@@ -17,8 +18,8 @@ getPairedTprime <- function(T, N, u, l, x, y){
 
 getT <- function(u, l) as.vector(t.test(u[l], u[-l], var.equal = TRUE)$statistic)
 
-getDifferences <- function(N = 5){
-  x <- rnorm(N, 5)
+getDifferences <- function(N = 5, mu = 1){
+  x <- rnorm(N, mu)
   y <- rnorm(N, 0)
   u <- c(x, y)
   
@@ -47,9 +48,9 @@ getDifferences <- function(N = 5){
 }
 
 getDifferencesFast <- function(N = 5){
-  std <- sqrt(N)
-  std <- 1
-  ##std <- 1 / sqrt(N)
+  ##std <- sqrt(N)
+  ##std <- 1
+  std <- 1 / sqrt(N)
   x <- rnorm(N, mean = 2, sd = std)
   y <- rnorm(N, mean = 0, sd = std)
   u <- c(x, y)
@@ -71,7 +72,10 @@ ggplot(dat, aes(x = N, y = diff)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ -1 + I(1/x), color = "red") +
   geom_smooth(method = "lm", formula = y ~ -1 + I(1/x^(1/2)), color = "blue") +
-  geom_smooth(method = "lm", formula = y ~ -1 + I(1/x^(1/4)), color = "black")
+  geom_smooth(method = "lm", formula = y ~ -1 + I(1/x^(1/4)), color = "black") +
+  ggtitle("SD: 1 / sqrt(N), Red: Fitted 1/N, Blue: Fitted 1/N^(1/2), Black: Fitted 1/N^(1/4)")
+ggsave("rate_plot_3.png")
+
 ##scale_y_log10(breaks = c(.5, 1, 2, 3, 4, 5))
 ##geom_line(aes(y = log10(15 * N^(-1))), col = "black", linetype = 2) + 
 ##geom_line(aes(y = log10(15 * N^(-1/2))), col = "black", linetype = 2)
@@ -86,6 +90,12 @@ arrange(dat, T)
 library(ggplot2)
 
 system.time(dat <- getDifferences(6))
-ggplot(data = dat, aes(x = T, y = Tprime, color = factor(abs(absDiff - max(absDiff)) < 1e-10))) +
-  geom_point() +
-  geom_abline(intercept = 0, slope = 1)
+system.time(dat <- mdply(expand.grid(N = 5:7, mu = c(1, 5, 10)), getDifferences, .parallel = TRUE))
+dat <- ddply(dat, .(N, mu), transform, isMax = abs(absDiff - max(absDiff)) < 1e-10)
+ggplot(data = dat, aes(x = T, y = Tprime, color = factor(isMax))) +
+  geom_point(alpha = 1) +
+  geom_abline(intercept = 0, slope = 1) +
+  facet_grid(N~mu) + 
+  ggtitle("Tprime on T, Faceted by N and Mu")
+ggsave("t_tprime_plot.png")
+
