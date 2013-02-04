@@ -1,0 +1,17 @@
+\frametitle {Twitter Data}Raw:
+\begin{verbatim}
+"BarackObama: We need to reward education reforms that are
+driven not by Washington, but by principals and teachers and
+parents. http://OFA.BO/6p2EMy"
+"SarahPalinUSA: You betcha!! MT \"@AlaskaAces: Alaska Aces
+are 2011 Kelly Cup Champs w/ 5-3 win over Kalamazoo Wings!
+Aces win  ECHL Championship series 4-1\""
+\end{verbatim}
+  After pre-processing:
+\begin{verbatim}
+"we need to reward education reforms that are driven not by
+washington but by principals and teachers and parents "
+"you betcha mt alaskaaces alaska aces are  kelly cup champs
+w  win over kalamazoo wings aces win  echl championship
+series "
+\end{verbatim}
