@@ -24,31 +24,33 @@ getDataSpike <- function(N){
 range(getData(100)$u)
 range(getDataSpike(100)$u)
 
+swap <- function(l){
+  minus <- which(l == -1)
+  plus <- which(l == 1)
+  l[sample(minus, 1)] = 1
+  l[sample(plus, 1)] = -1
+  l
+}
+
 u2BarP <- function(u, l, N, p) mean(u[l == 1])^p / N^(-p / 2)
 dMinusP <- function(u, l, N, p) (2 * N * (1 - mean(u[l == 1])^2))^(-p / 2) / N^(-p / 2)
-##fix swapping, did i fix it?
 hP <- function(u, l, N, p){
-  ##samps <- sample(1:(2 * N), 2)
-  ##i1 <- samps[1]
-  i1 <- sample(1:N, 2)
-  i2 <- samps[2]
-  i2 <- sample((N + 1):(2 * N), 2)
+  i1 <- sample(1:N, 1)
+  i2 <- sample((N + 1):(2 * N), 1)
   d <- (u[i1] - u[i2])
   (abs(4 * mean(u[l == 1]) * d + 2 / N * d^2))^p / N^(-p / 2)
 }
 
 dDiffP <- function(u, l, N, p){
-  samps <- sample(1:(2 * N), 2)
   d <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  u[samps] <- u[rev(samps)]
+  l <- swap(l)
   dp <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
   (d - dp)^p / N^(-p)
 }
 qP <- function(u, l, N, p) (-2 * N * mean(u[l == 1]))^p / N^(p / 2)
 qddP <- function(u, l, N, p){
-  samps <- sample(1:(2 * N), 2)
   d <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  u[samps] <- u[rev(samps)]
+  l <- swap(l)
   dp <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
   qp <- -2 * N * mean(u[l == 1])
   (qp / (d * dp))^p / N^(-p / 2)
@@ -130,14 +132,6 @@ getTpminusT <- function(u, l, N, p){
   Tprime <- -(xbar - ybar + 2/N*del) /
     (sqrt(2/N)*sqrt(sum(u^2)/(2*(N-1)) - 1/2*N/(N-1)*(xbar^2 + ybar^2 + 2*del/N*(xbar-ybar) + 2*del^2/N^2)))
   Tprime - computeT(u, l)
-}
-
-swap <- function(l){
-  minus <- which(l == -1)
-  plus <- which(l == 1)
-  l[sample(minus, 1)] = 1
-  l[sample(plus, 1)] = -1
-  l
 }
 
 ## getTpminusTMC <- function(u, l, N, p){
