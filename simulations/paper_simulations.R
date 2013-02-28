@@ -26,11 +26,13 @@ range(getDataSpike(100)$u)
 
 u2BarP <- function(u, l, N, p) mean(u[l == 1])^p / N^(-p / 2)
 dMinusP <- function(u, l, N, p) (2 * N * (1 - mean(u[l == 1])^2))^(-p / 2) / N^(-p / 2)
-##fix swapping
+##fix swapping, did i fix it?
 hP <- function(u, l, N, p){
-  samps <- sample(1:(2 * N), 2)
-  i1 <- samps[1]
+  ##samps <- sample(1:(2 * N), 2)
+  ##i1 <- samps[1]
+  i1 <- sample(1:N, 2)
   i2 <- samps[2]
+  i2 <- sample((N + 1):(2 * N), 2)
   d <- (u[i1] - u[i2])
   (abs(4 * mean(u[l == 1]) * d + 2 / N * d^2))^p / N^(-p / 2)
 }
