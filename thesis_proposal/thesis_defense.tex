@@ -1,0 +1,317 @@
+\documentclass{beamer}
+\mode<presentation> { \setbeamercovered{transparent} }
+\setbeamertemplate{navigation symbols}{}
+\usetheme{CambridgeUS}
+\DeclareGraphicsExtensions{.pdf, .jpg, .gif, .bmp}
+\usepackage{amsmath,amsthm}
+%\usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+%\def\newblock{} %this is needed for natbib
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\law}{\overset{D}{\rightarrow}}
+\newcommand{\prob}{\overset{P}{\rightarrow}}
+\makeatletter
+\def\beamerorig@set@color{%
+  \pdfliteral{\current@color}%
+  \aftergroup\reset@color
+}
+\def\beamerorig@reset@color{\pdfliteral{\current@color}}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{theorem}{Theorem}
+
+\begin{document}
+\title[Topics in Two-Sample Testing]{Topics in Two-Sample Testing}
+\author[N. Ray with S. Holmes]{Nelson Ray \\
+  (joint work with Susan Holmes)}
+\institute[Stanford]{Stanford University}
+\date{\today}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% \begin{frame}{The paper}
+%   \begin{figure}
+%     \includegraphics[scale=.55]{title.png}
+%   \end{figure}
+% \end{frame}
+
+\begin{frame}{Outline}
+  \begin{itemize}
+  \item Motivation: breast cancer study with heterogeneous data \pause
+  \item Friedman's two-sample test \cite{friedman30908multivariate}:
+    leverage regression and classification techniques \pause
+  \item Univariate data and linear scoring functions: permutation
+    $t$-test \pause
+  \item Permutation dependence: Stein's method for rates of
+    convergence bounds \pause
+  \item Simulations to verify bounds in proof (experimental
+    mathematics) \pause
+  \item Kernel-based two sample tests for non-vectorial data \pause
+  \item Multiple Kernel Learning for heterogeneous data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Breast Cancer Data: Spatial}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.5]{Fig2healthyDC.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Breast Cancer Data: Survival}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.5]{survival.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Breast Cancer Data: Medical}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.5]{medical.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Breast Cancer Study}
+  \begin{itemize}
+  \item How do you deal with the data integration problem? \pause
+  \item Kernel methods \pause
+  \item Are there any differences (spatial, medical) between women who
+    relapse and those who remain disease free? \pause
+  \item Two-sample tests
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Friedman's Two-Sample Test}
+  $\{\mathbf{x}_i\}_1^N$ from $p(\mathbf{x})$ and
+  $\{\mathbf{z}_i\}_1^M$ from $q(\mathbf{z})$ testing \\
+  $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$ \pause
+  \begin{enumerate}
+  \item Pool the two samples $\{\mathbf{u}_i\}_1^{N+M} =
+    \{\mathbf{x}_i\}_1^{N} \cup \{\mathbf{z}_i\}_1^{M}$. \pause
+  \item Assign label $y_i = 1$ to the first group and $y_i = -1$ to
+    the second group. \pause
+  \item Apply a binary classification learning machine $f$ to the training
+    data to score the observations $\{s_i = f(\mathbf{u}_i)\}_1^{N+M}$. \pause
+  \item Calculate a univariate two-sample test statistic
+    $T = T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$. \pause
+  \item Determine the permutation null distribution of the above
+    statistic to yield a p-value.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Permutation $t$-test Connection}
+  With univariate data and linear scoring functions/kernels, Friedman's test reduces
+  to the permutation $t$-test (normal convergence result).  \pause
+  With multivariate/non-vectorial/heterogeneous data and arbitrary kernels, null distribution
+  is consistent with the Normal.
+\end{frame}
+
+\begin{frame}{Other Work}
+  \begin{itemize}
+  \item Fisher (1935) \cite{fisher1935design} proposed distribution-free
+    randomization test.  \pause
+  \item Lehmann \cite{lehmann1999elements} proved a normal convergence
+    result for the randomization distribution. \pause
+  \item Bentkus et al. \cite{bentkus1996berry}, Shao
+    \cite{shao2005explicit} proved Berry-Esseen bounds for
+    Student's $t$-statistic in independent case.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Stein's Method and the Randomization Distribution}
+  Let $\Phi(t)$ denote the standard normal CDF.
+
+  Can we get a bound on
+  \begin{equation*}
+    \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|?
+  \end{equation*}
+  \pause
+
+  $\mathcal{O}(N^{-1/4})$ with mild conditions on the data
+  and $\mathcal{O}(N^{-1/2})$ with an additional condition
+\end{frame}
+
+\begin{frame}{Other Results}
+  \begin{theorem}[Berry-Esseen]
+  Suppose $X_1, \ldots, X_n$ are i.i.d. random variables with
+  $\E X_i = 0$, $\E X_i^2 = \sigma^2 > 0$, and $\E |X_i|^3 = \rho
+  < \infty$.  Let $F_n(x)$ denote the CDF of standardized sample mean
+  of the $X_i$.  Then
+  \begin{align*}
+    \sup_x |F_n(x) - \Phi(x)| &\leq \frac{0.33477(\rho + 0.429\sigma^3)}{\sigma^3 \sqrt{n}} \\ \pause
+    &= \frac{C}{\sqrt{n}} f(\rho, \sigma). \pause
+  \end{align*}
+  \end{theorem}
+  Note that $\rho$ and $\sigma$ are fixed as $n \to \infty$.
+\end{frame}
+
+\begin{frame}{Other Results}
+  \begin{theorem}[Hoeffding, Stein]
+    Let $A = \{a_{ij}\}_{i, j \in \{1, \ldots, n\}}$ be a square array of
+      numbers such that $\sum_j a_{ij} = 0$ for all $i$, $\sum_i
+      a_{ij} = 0$ for all $j$, and $\sum_i \sum_j a_{ij}^2 = n - 1$.
+      Then with $F_n(x) = P(\sum_i a_{i\Pi(i)} \leq x)$,
+  \begin{align*}
+    |F_n(x) - \Phi(x)| &\leq \frac{C}{\sqrt{n}}
+    \left (
+      \sqrt{\sum_{i,j}a_{ij}^4} + \sqrt{\sum_{i,j}|a_{ij}|^3}
+    \right ) \\ \pause
+    &= \frac{C}{\sqrt{n}} f(A). \pause
+  \end{align*}
+  \end{theorem}
+  Given a sampling scheme for $A$, $f(A)$ must be $\mathcal{O}(1)$ to have rate $\mathcal{O}(n^{-1/2})$.
+\end{frame}
+
+\begin{frame}{Exchangeable Pair}
+  Assume $M = N$.  Fix data $\{u_1, \ldots, u_N,
+  u_{N+1}, \ldots, u_{2N}\}$.  $\Pi$ is a uniformly random permutation, and let
+  \begin{equation*}
+    T = T \left (\{u_{\Pi(i)}\}_{i=1}^{N},
+      \{u_{\Pi(i)}\}_{i=N+1}^{2N} \right).
+  \end{equation*}
+  \pause
+
+  Let $(I, J) = (i, j)$ w.p. $\frac{1}{N^2}$ for $1 \leq i \leq N$ and
+  $N + 1 \leq j \leq 2N$.  Then
+  \begin{equation*}
+    T' = T \left (\{u_{\Pi \circ (I, J) (i)}\}_{i=1}^{N},
+      \{u_{\Pi \circ (I, J) (i)}\}_{i=N+1}^{2N} \right).
+  \end{equation*}
+  \pause
+
+  $T$ and $T'$ form an exchangeable pair.
+\end{frame}
+
+% \begin{frame}{Main Theorem}
+% \begin{theorem}
+%   If $T$, $T'$ are mean 0, exchangeable random variables with variance
+%   $\E[T^2]$ satisfying
+%   \begin{equation*}
+%     \E[T'-T|T] = -\lambda(T-R)
+%   \end{equation*}
+%   for some $\lambda \in (0,1)$ and some random variable $R$, then
+%   $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
+%   \begin{equation*}
+%     \begin{split}
+%       &(2\pi)^{-1/4} \sqrt{\frac{\E |T'-T|^3}{\lambda}}
+%       + \frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])} \\
+%       &|\E T^2 - 1| + \E |TR| + \E |R|
+%     \end{split}
+%   \end{equation*}
+% \end{theorem}
+% \end{frame}
+
+\begin{frame}{Main Theorem}
+\begin{theorem}
+  If $T$, $T'$ are mean 0, exchangeable random variables with variance
+  $\E[T^2]$ satisfying
+  \begin{equation*}
+    \E[T'-T|T] = -\lambda(T-R)
+  \end{equation*}
+  for some $\lambda \in (0,1)$ and some random variable $R$, then
+  $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
+  \begin{align*}
+    &\color{red}{\underbrace{(2\pi)^{-1/4} \sqrt{\frac{\E |T'-T|^3}{\lambda}}}_{\leq N^{-1/4} f_1({\bf u})}}
+    \onslide<2->{
+    \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq N^{-1} f_2({\bf u})}} \\
+      &\underbrace{|\E T^2 - 1|}_{\leq N^{-1} f_3({\bf u})} + \underbrace{\E |TR|}_{\leq N^{-1/2} f_4({\bf u})} +
+      \underbrace{\E |R|}_{\leq N^{-1/2} f_5({\bf u})}
+    }
+    \onslide<3->{\leq N^{-1/4} f_6({\bf u})}
+  \end{align*}
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Main Theorem}
+\begin{theorem}
+  If in addition $|T'-T| \leq \delta$,
+  $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
+  \begin{align*}
+    &\color{red}{\underbrace{\frac{.41 \delta^3}{\lambda}}_{\leq N^{-1/2} c''^\ast_1}} \color{black}{+} \,
+    \color{red}{\underbrace{3 \delta (\sqrt{\E T^2} + \E |R|)}_{\leq N^{-1} f'_1({\bf u})^\ast}} \,
+    \onslide<2->{
+      \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq N^{-1} f_2({\bf u})}} \\
+      &\underbrace{|\E T^2 - 1|}_{\leq N^{-1} f_3({\bf u})} + \underbrace{\E |TR|}_{\leq N^{-1/2} f_4({\bf u})} +
+      \underbrace{\E |R|}_{\leq N^{-1/2} f_5({\bf u})}
+    }
+    \onslide<3->{\leq N^{-1/2} f'_6({\bf u})^\ast}
+  \end{align*}
+\end{theorem}
+${}^\ast$ if $\delta < c'_1 N^{-1/2}$
+\end{frame}
+
+\begin{frame}{Bounds Comparison}
+  \begin{figure}[!ht]
+   \centering
+   \includegraphics[scale=.5]{boundsexact.png}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Twitter Example}
+  \begin{figure}[!ht]
+   \centering
+   \includegraphics[scale=.3]{pres3.png}
+   \includegraphics[scale=.3]{pres4.png}
+ \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Twitter Data}
+  Raw:
+\begin{verbatim}
+"BarackObama: We need to reward education reforms that are
+driven not by Washington, but by principals and teachers and
+parents. http://OFA.BO/6p2EMy"
+"SarahPalinUSA: You betcha!! MT \"@AlaskaAces: Alaska Aces
+are 2011 Kelly Cup Champs w/ 5-3 win over Kalamazoo Wings!
+Aces win  ECHL Championship series 4-1\""
+\end{verbatim}
+  After pre-processing:
+\begin{verbatim}
+"we need to reward education reforms that are driven not by
+washington but by principals and teachers and parents "
+"you betcha mt alaskaaces alaska aces are  kelly cup champs
+w  win over kalamazoo wings aces win  echl championship
+series "
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Twitter Example}
+  $p < .001$:
+    \begin{figure}[!ht]
+   \centering
+   \includegraphics[scale=.4]{pres6.pdf}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Power Simulations at .05 Level}
+   \begin{figure}[!ht]
+   \centering
+   \includegraphics[scale=.4]{pres7.pdf}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Future Work}
+  \begin{itemize}
+  \item Generalize theory for higher dimensional settings and/or
+    non-linear scoring functions \pause
+  \item Develop similarities with Hotelling's $T^2$-test \pause
+  \item Explore performance on different types of data, in particular,
+    unstructured data such as images \pause
+  \item Heterogeneous data: optimal combinations of kernels
+    via SDPs, KL divergence \pause
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+  \bibliographystyle{ieeetr}
+  \bibliography{ncray}
+\end{frame}
+
+\end{document}
