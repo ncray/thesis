@@ -161,6 +161,7 @@ simVar <- function(N){
   nperm <- 100000
   res <- laply(1:nperm, function(i){computeT(sample(u), l)})
   f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * N
+  lims <- c(.025, .975)  
   bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
   #boot(res, f3, 1000)$t
   bounds <- bootf(res, f3)
@@ -171,12 +172,12 @@ sim <- function(N){
   dat <- getData(N)
   u <- dat$u
   l <- dat$l
-  nperm <- 100
+  nperm <- 5 * N
   res <- llply(1:nperm, function(i){
     u <- sample(u)
     T <- computeT(u, l)
-#    diff <- getTpminusT(u, l, N, p)
-    diff <- getTpminusTMC(u, l, N, p)    
+    diff <- getTpminusT(u, l, N, p)
+#    diff <- getTpminusTMC(u, l, N, p)
     R <- N / 2 * diff + T
     c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
   }, .parallel = TRUE)
@@ -203,10 +204,10 @@ sim <- function(N){
   data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = labels)
 }
 
-xbreaks <- floor(10^(seq(1, 3, by = .5)))
+xbreaks <- floor(10^(seq(1, 2.5, by = .5)))
 system.time(dat3 <- ldply(xbreaks, sim, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
 #save(dat3, file = "dat3")
-dat <- ldply(floor(10^(seq(1, 5, by = .5))), simVar, .parallel = TRUE, .progress = "text")
+system.time(dat <- ldply(floor(10^(seq(1, 3, by = .5))), simVar, .parallel = TRUE, .progress = "text"))
 
 p3 <- ggplot(dat3, aes(x = N, y = value, color = group)) +
   geom_line() + 
