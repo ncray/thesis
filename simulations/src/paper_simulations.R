@@ -1,94 +1,23 @@
+setwd("~/Dropbox/VMshare/thesis/simulations/src")
+imgDir <- "../img/"
+source("./sim_funcs.R")
+
 library(ggplot2)
 library(boot)
 library(reshape)
 library(doMC)
+#install.packages("tikzDevice", repos=c("http://r-forge.r-project.org", getOption("repos")))
+library(tikzDevice)
 registerDoMC(4)
-#melt.data.frame(data.frame("ind" = 1:10, "x" = rnorm(10), "y" = rnorm(10)), id.vars = "ind")
+options(tikzLatexPackages = c(getOption("tikzLatexPackages"),
+          "\\usepackage{amsfonts}"))
 
-getData <- function(N){
-  u <- c(rnorm(N, -1), rnorm(N, 1))
-  l <- c(rep(-1, N), rep(1, N))
-  u <- u - mean(u)
-  u <- u * sqrt(1 / sum(u^2) * 2 * N)
-  list("u" = u, "l" = l)
-}
-
-getDataSpike <- function(N){
-  u <- c(rcauchy(N, -1), rcauchy(N, 1))
-  l <- c(rep(-1, N), rep(1, N))
-  u <- u - mean(u)
-  u <- u * sqrt(1 / sum(u^2) * 2 * N)
-  list("u" = u, "l" = l)
-}
-
-range(getData(100)$u)
-range(getDataSpike(100)$u)
-
-swap <- function(l){
-  minus <- which(l == -1)
-  plus <- which(l == 1)
-  l[sample(minus, 1)] = 1
-  l[sample(plus, 1)] = -1
-  l
-}
-
-u2BarP <- function(u, l, N, p) mean(u[l == 1])^p / N^(-p / 2)
-dMinusP <- function(u, l, N, p) (2 * N * (1 - mean(u[l == 1])^2))^(-p / 2) / N^(-p / 2)
-hP <- function(u, l, N, p){
-  i1 <- sample(1:N, 1)
-  i2 <- sample((N + 1):(2 * N), 1)
-  d <- (u[i1] - u[i2])
-  (abs(4 * mean(u[l == 1]) * d + 2 / N * d^2))^p / N^(-p / 2)
-}
-
-dDiffP <- function(u, l, N, p){
-  d <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  l <- swap(l)
-  dp <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  (d - dp)^p / N^(-p)
-}
-qP <- function(u, l, N, p) (-2 * N * mean(u[l == 1]))^p / N^(p / 2)
-qddP <- function(u, l, N, p){
-  d <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  l <- swap(l)
-  dp <- sqrt(2 * N * (1 - mean(u[l == 1])^2))
-  qp <- -2 * N * mean(u[l == 1])
-  (qp / (d * dp))^p / N^(-p / 2)
-}
-
-sim <- function(N, p, funcs, labels){
-  dat <- getData(N)
-  u <- dat$u
-  l <- dat$l
-  nperm <- 10000
-  res <- laply(1:nperm, function(i){
-    u <- sample(u)
-    funcs(u, l, N, p)
-  })
-  means <- apply(res, 2, mean)
-  bounds <- aaply(res, 2, function(col)
-                  quantile(as.vector(boot(col, function(dat, ind) mean(dat[ind]), 1000)$t),
-                           c(.025, .975)))
-  dat <- data.frame(N, p, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2])
-  data.frame(dat, "group" = labels)
-}
-
-#simOne <- function(...)  sim(..., funcs = each(u2BarP, dMinusP, hP), labels = c("u2BarP", "dMinusP", "hP"))
-simOne <- function(...)  sim(..., funcs = each(u2BarP, dMinusP, hP), labels =
-                             c("$N^{p/2}\\mathbb{E}[\\bar{u}_{2, \\Pi}^p]\\;$",
-                               "$N^{p/2}(d_{\\Pi})^{-p}\\;$",
-                               "$N^{p/2}h_{\\Pi}\\;$"))
-#simTwo <- function(...)  sim(..., funcs = each(dDiffP, qP, qddP), labels = c("dDiffP", "qP", "qddP"))
-simTwo <- function(...)  sim(..., funcs = each(dDiffP, qP, qddP), labels =
-                             c("$N^{p}\\mathbb{E}|d_{\\Pi}-d'_{\\Pi}|^p\\;$",
-                               "$N^{-p/2}\\mathbb{E}[q_{\\Pi}^p]\\;$",
-                               "$N^{p/2}\\mathbb{E}\\left [ \\left ( \\frac{q'_{\\Pi}}{d_{\\Pi}d'_{\\Pi}} \\right ) ^p \\right ]\\;$"))
 xbreaks <- floor(10^seq(1, 4, .5))
 params <- expand.grid(xbreaks, seq(2, 8, 2))
 names(params) <- c("N", "p")
 system.time(dat <- mdply(params, simOne, .parallel = TRUE, .progress = "text"))
 save(dat, file = "dat")
-#dat <- ddply(dat, .(N, p), transform, value = value / N^(-p/2), lower = lower / N^(-p/2), upper = upper / N^(-p/2))
+
 system.time(dat2 <- mdply(params, simTwo, .parallel = TRUE, .progress = "text"))
 save(dat2, file = "dat2")
 
@@ -99,131 +28,45 @@ p1 <- ggplot(dat, aes(x = N, y = value, color = group)) +
   scale_y_log10(breaks = 10^seq(-1, 10, 2)) +
   scale_x_log10(breaks = xbreaks) + 
   xlab("$N$") +
-  opts(legend.position = "bottom")
+  theme(legend.position = "bottom")
 p1
 
 p2 <- p1 %+% dat2
 
-#dat2 <- unique(dat[, 1:2])
-#dat2 <- transform(dat2, B2 = N^(-1), B4 = N^(-2), B6 = N^(-3), B8 = N^(-4), sq = N^2)
-#dat2 <- melt(dat2, id.vars = c("N", "p"))
-#geom_line(data = dat2, aes(linetype = variable), color = "black")
+myTikz <- function(filename, plot){
+  tikz(paste(imgDir, filename, sep = ""), width = 6, height = 4.5)
+  print(plot)
+  dev.off()
+}
 
-
-library(tikzDevice)
-options(tikzLatexPackages = c(getOption("tikzLatexPackages"),
-          "\\usepackage{amsfonts}"))
+myTikz("sim1.tex", p1)
+myTikz("sim2.tex", p2)
 getOption("tikzLatexPackages")
-tikz('sim1.tex', width = 6, height = 4.5)
-print(p1)
-dev.off()
-tikz('sim2.tex', width = 6, height = 4.5)
-print(p2)
-dev.off()
 
-computeT <- function(u, l) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
 
-getTpminusT <- function(u, l, N, p){
-  x <- u[l == -1]
-  y <- u[l == 1]
-  del <- rep(y, length(x)) - rep(x, each = length(y))
-  xbar <- mean(x)
-  ybar <- mean(y)
-  Tprime <- -(xbar - ybar + 2/N*del) /
-    (sqrt(2/N)*sqrt(sum(u^2)/(2*(N-1)) - 1/2*N/(N-1)*(xbar^2 + ybar^2 + 2*del/N*(xbar-ybar) + 2*del^2/N^2)))
-  Tprime - computeT(u, l)
-}
-
-## getTpminusTMC <- function(u, l, N, p){
-##   T <- computeT(u, l)
-##   mean(laply(1:1000, function(i){
-##     l2 <- swap(l)
-##     computeT(u, l2) - T
-##   }))
-## }
-
-getTpminusTMC <- function(u, l, N, p){
-  T <- computeT(u, l)
-  laply(1:N, function(i){
-    l2 <- swap(l)
-    computeT(u, l2) - T
-  })
-}
-      
-
-#first <- function(u, l, N, p) mean(getTpminusT(u, l, N, p)^3)
-#second <- function(u, l, N, p) mean(getTpminusT(u, l, N, p)^2)
-
-simVar <- function(N){
-  dat <- getData(N)
-  u <- dat$u
-  l <- dat$l
-  nperm <- 100000
-  res <- laply(1:nperm, function(i){computeT(sample(u), l)})
-  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * N
-  lims <- c(.025, .975)  
-  bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
-  #boot(res, f3, 1000)$t
-  bounds <- bootf(res, f3)
-  data.frame(N, "value" = f3(res), "lower" = bounds[1], "upper" = bounds[2], group = 1)
-}
-
-sim <- function(N){
-  dat <- getData(N)
-  u <- dat$u
-  l <- dat$l
-  nperm <- 5 * N
-  res <- llply(1:nperm, function(i){
-    u <- sample(u)
-    T <- computeT(u, l)
-    diff <- getTpminusT(u, l, N, p)
-#    diff <- getTpminusTMC(u, l, N, p)
-    R <- N / 2 * diff + T
-    c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
-  }, .parallel = TRUE)
-  res <- do.call(rbind, res)
-  f1 <- function(x, ind = 1:length(x)) (2 * pi)^(-1 / 4) * sqrt(mean(x[ind]) * N / 2) * N^(1 / 4)
-  f2 <- function(x, ind = 1:length(x)) N * sqrt(var(x[ind])) * N
-  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * N
-  f4 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
-  f5 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
-  
-  means <- c(f1(res[, 1]), f2(res[, 2]), f3(res[, 3]), f4(res[, 4]), f5(res[, 5]))
-  lims <- c(.025, .975)
-  bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
-  bounds <- rbind(bootf(res[, 1], f1),
-                  bootf(res[, 2], f2),
-                  bootf(res[, 3], f3),
-                  bootf(res[, 4], f4),
-                  bootf(res[, 5], f5))
-  labels <- c("$(2\\pi)^{-1/4}\\sqrt{\\frac{\\mathbb{E}|T\'_{\\Pi}-T_{\\Pi}|^3}{\\lambda}}N^{1/4}\\quad $",
-              "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}N\\quad $",
-              "$|\\mathbb{E}T_{\\Pi}^2-1|N\\quad $",
-              "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
-              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $")
-  data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = labels)
-}
-
-xbreaks <- floor(10^(seq(1, 2.5, by = .5)))
-system.time(dat3 <- ldply(xbreaks, sim, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
+xbreaks <- floor(10^(seq(1, 2.5, by = .25)))
+system.time(dat3 <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
+system.time(dat4 <- ldply(xbreaks, simBetterBound, .progress = "text"))
 #save(dat3, file = "dat3")
-system.time(dat <- ldply(floor(10^(seq(1, 3, by = .5))), simVar, .parallel = TRUE, .progress = "text"))
+##system.time(dat <- ldply(floor(10^(seq(1, 3, by = .5))), simVar, .parallel = TRUE, .progress = "text"))
 
 p3 <- ggplot(dat3, aes(x = N, y = value, color = group)) +
   geom_line() + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
   xlab("$N$") +
   #ylab("$\\log_{10}(\\mathrm{value})$") + 
-  opts(legend.position = "bottom") +
-  opts(legend.direction = "vertical") +
+  theme(legend.position = "bottom", legend.direction = "vertical") +
   #coord_trans(ytrans = "log10")
   scale_y_log10(breaks = round(10^seq(-2.5, 2.5, .5), 3)) +
   scale_x_log10(breaks = xbreaks)
 p3
-tikz('sim3.tex', width = 6, height = 4.5)
-tikz('sim6.tex', width = 6, height = 4.5)
-print(p3)
-dev.off()
+
+p4 <- p3 %+% dat4
+p4
+
+myTikz("sim3.tex", p3)
+myTikz("sim6.tex", p4)
+
 rescale <- function(df){
   if(df$group[[1]] == levels(dat3$group)[1]) df[, 2:4] <- df[, 2:4] / df$N^(1/4)
   if(df$group[[1]] == levels(dat3$group)[2]) df[, 2:4] <- df[, 2:4] / df$N

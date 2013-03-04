@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{tikz}
 %\def\newblock{} %this is needed for natbib
 \newcommand{\var}{\mathrm{var}}
 \newcommand{\cov}{\mathrm{cov}}
@@ -229,7 +230,7 @@
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Main Theorem}
+\begin{frame}{Main Theorem (Improved Rate)}
 \begin{theorem}
   If in addition $|T'-T| \leq \delta$,
   $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
@@ -247,11 +248,22 @@
 ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 \end{frame}
 
-\begin{frame}{Bounds Comparison}
-  \begin{figure}[!ht]
-   \centering
-   \includegraphics[scale=.5]{boundsexact.png}
- \end{figure}
+\begin{frame}{Simulated Bounds}
+  \begin{center}
+    \resizebox{12.0cm}{!}{
+      \input{../simulations/img/sim3.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Simulated Bounds (Improved Rate)}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../simulations/img/sim6.tex}
+    }
+  \end{center}
+  \pause
+  When ${\bf u} = \{i\}_{i=1}^{i=2N}, \frac{.41 \delta^3}{\lambda}N^{1/2} \to .205(16\sqrt{6}))^3$
 \end{frame}
 
 \begin{frame}{Twitter Example}
@@ -282,6 +294,47 @@ series "
 \end{verbatim}
 \end{frame}
 
+\begin{frame}{The Spectrum Kernel}
+  Compares two strings based on the their length $k$ contiguous
+  subsequences. \pause
+  \begin{itemize}
+  \item $\mathcal{X}$ is our input space, built up from an alphabet
+    $\mathcal{A} = \{a,b,\ldots,z,$ $\}$ with $|\mathcal{A}|=27$. \pause
+  \item The $k$-spectrum ($k \geq 1$) of an input sequence is the set
+    of all length $k$ contiguous subsequences it contains. \pause
+  \item Define the feature map from $\mathcal{X}$ to
+    $\mathbb{R}^{|\mathcal{A}|^k}$ by $\Phi_k(x) = (\phi_a(x))_{a \in
+      \mathcal{A}^k}$ where $\phi_a(x)$ is the number of times $a$
+    occurs in $x$: $\{\#aaa,\#aab,\#aac,\ldots,\}$. \pause
+  \item $K_k(x,y) = \langle \Phi_k(x),\Phi_k(y) \rangle$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Support Vector Machines for Regression}
+  $$
+  f(x) = \sum_{m=1}^M \beta_m h_m(x) + \beta_0, \quad {h_m(x)} \:
+\text{basis functions}
+  $$
+  \pause
+  To estimate $\beta$ and $\beta_0$, minimize
+  $$
+  H(\beta,\beta_0) = \sum_{i=1}^N V(y_i-f(x_i)) +
+  \frac{\lambda}{2}\sum_{m=1}^M \beta_m^2.
+  $$
+  \pause
+  $V$ is taken to be $\epsilon$-insensitive loss:
+  \[
+  V_\epsilon(r) = \left\{
+    \begin{array}{l l}
+      0 & \quad \text{if } |r| < \epsilon,\\
+      |r|-\epsilon & \quad \text{otherwise.}\\
+    \end{array} \right.
+  \]
+  \pause
+  The solution has the form $\hat{f}(x)=\sum_{i=1}^N \hat\alpha_i
+  K(x,x_i)$, where $K(x,y)=\langle h(x),h(y) \rangle$.
+\end{frame}
+
 \begin{frame}{Twitter Example}
   $p < .001$:
     \begin{figure}[!ht]
@@ -295,6 +348,114 @@ series "
    \centering
    \includegraphics[scale=.4]{pres7.pdf}
  \end{figure}
+\end{frame}
+
+\begin{frame}{Image Data (Cars)}
+  Caltech 101 Object Categories \cite{fei2007learning} \\
+  The cars are $300\times 197$ grayscale.
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=.4]{car-image_0001.jpg}
+    \includegraphics[scale=.4]{car-image_0002.jpg} \\
+    \includegraphics[scale=.4]{car-image_0003.jpg}
+    \includegraphics[scale=.4]{car-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Planes Before}
+  The planes aren't.
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.4]{airplane-image_0001.jpg}
+    \includegraphics[scale=.4]{airplane-image_0002.jpg} \\
+    \includegraphics[scale=.4]{airplane-image_0003.jpg}
+    \includegraphics[scale=.4]{airplane-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Planes After}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.4]{airplaners-image_0001.jpg}
+    \includegraphics[scale=.4]{airplaners-image_0002.jpg} \\
+    \includegraphics[scale=.4]{airplaners-image_0003.jpg}
+    \includegraphics[scale=.4]{airplaners-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Polynomial Kernel}
+  Each $m \times n$ grayscale image is converted to a vector of
+  length $p=mn$.  \pause
+  Given $X \in \mathbb{R}^{n \times p}$, the linear kernel is given by
+  $$
+  K(x, x') = \langle x, x'\rangle = \langle \Phi(x), \Phi(x')\rangle.
+  $$
+  The kernel matrix is given simply by $XX^T  \succeq 0$.  This
+  corresponds to the identity mapping: $\Phi(x) = x$. \pause
+
+  The homogeneous polynomial kernel,
+  $$
+  K(x, x') = \langle \Phi(x), \Phi(x')\rangle = \langle x, x' \rangle^d,
+  $$
+  corresponds to the mapping $\Phi(x) = [x_1^d, \ldots, x_p^d,
+  x_1^{d-1}x_2, \ldots, x_p^{d-1}x_{p-1}]^T \in \mathbb{R}^{d'},
+  \text{ where } d'=\binom{d+N-1}{d}$.
+\end{frame}
+
+\begin{frame}{Standardization}
+  In order to mitigate the effects of global differences
+  in illumination, each vector is scaled so that it has mean zero and
+  unit norm.  \pause
+
+  Unscaled linear kernel matrix, left; scaled, right
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.2]{car-plane-unscaled-1.png}
+    \includegraphics[scale=.2]{car-plane-scaled-1.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Car/Airplane Example (Linear Kernel)}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.6]{car-airplane-twosamp.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Roosters}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.4]{roosterrs-image_0001.jpg}
+    \includegraphics[scale=.4]{roosterrs-image_0002.jpg} \\
+    \includegraphics[scale=.4]{roosterrs-image_0003.jpg}
+    \includegraphics[scale=.4]{roosterrs-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Pigeons}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.4]{pigeonrs-image_0001.jpg}
+    \includegraphics[scale=.4]{pigeonrs-image_0002.jpg} \\
+    \includegraphics[scale=.4]{pigeonrs-image_0003.jpg}
+    \includegraphics[scale=.4]{pigeonrs-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Rooster/Pigeon Example (Linear Kernel)}
+  $p = .138$
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.6]{rooster-pigeon-twosamp.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Rooster/Pigeon Example (Inhomogeneous Degree 4)}
+  $p < .001$
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.6]{rooster-pigeon-twosamp-4-1.png}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Future Work}
