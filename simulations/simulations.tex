@@ -3,33 +3,39 @@
 This chapter is a computational companion to chapter~\ref{C:stein-proof}.
 
 \section{Preliminaries}
-First, we provide simulations accompanying section~\ref{S:stein-proof-preliminaries}.  We generate 
-i.i.d. samples $\{u_i\}_{i=1}^{N} \sim \Normal(-1, 1)$ and $\{u_i\}_{i=N+1}^{2N} \sim \Normal(1, 1)$
-for exponentially spaced values of $N \in \{\text{floor}(10^{.5+.5i})\}_{i=1}^7$.  The $u_i$ are scaled
-and centered, and for each $N$, we perform $10,000$ permutations.  
+First, we provide simulations accompanying
+section~\ref{S:stein-proof-preliminaries}.  We generate i.i.d. samples
+$\{u_i\}_{i=1}^{N} \sim \Normal(-1, 1)$ and
+$\{u_i\}_{i=N+1}^{2N} \sim \Normal(1, 1)$ for exponentially-spaced values of
+$N \in \{\text{floor}(10^{.5+.5i})\}_{i=1}^7$.  The $u_i$ are scaled and
+centered, and for each $N$, we perform $10,000$ permutations.
 
-We plot Monte Carlo estimates of the means of each term, scaled by the rate of our bound, along with
-95\%ile bootstrap confidence intervals for different values of $p \in \{2, 4, 6, 8\}$.
+We plot Monte Carlo estimates of the means of each term, scaled by the
+rate of our bound, along with 95\%ile bootstrap confidence intervals
+for different values of $p \in \{2, 4, 6, 8\}$.
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/sim1.tex}
+  \input{./simulations/img/sim1.tex}
   \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
-Due to the flatness of the curves, we conclude that the bounds we have proved are of the correct
-rate.  In addition, we can observe the behavior of the constants as functions of $p$.  For instance,
-our $f_{c_3}(p)$ constant for $\E [h_{\Pi}^p]$ appears to be an exponential function of $p$.
+Due to the flatness of the curves, we conclude that the bounds we have
+proved are of the correct rate.  In addition, we can observe the
+behavior of the constants as functions of $p$.  For instance, our
+$f_{c_3}(p)$ constant for $\E h_{\Pi}^p$ appears to be an exponential
+function of $p$.
 \clearpage
 
-Here, to compute the corresponding ``prime'' random variables, in each permutation we pick a
-transposition uniformly at random among transpositions that switch groups.
+Here, to compute the corresponding ``prime'' random variables in the
+coupled pair, in each permutation we pick a transposition uniformly at
+random among transpositions that switch groups.
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/sim2.tex}
+  \input{./simulations/img/sim2.tex}
   \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
-It is possible that the bound of rate $N^{-p/2}$ on 
+It is possible that the bound of rate $N^{-p/2}$ on
 $\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
 \clearpage
 
@@ -47,11 +53,12 @@ $(1-\lambda) T_{\Pi}$ with a small perturbation of order $1 / N$ (recall that $\
 
 For various values of $N$, we compute 20 permutations that correspond with 20 values of $T_{\Pi}$.
 For each $T_{\Pi}$, we draw a transposition $(I, J)$ uniformly at random from the space of our
-allowable transpositions, repeating this 100 times.  
+allowable transpositions, repeating this 100 times.
 \begin{figure}[!ht]
   \centering
-  %\input{./simulations/sim7.tex}
-  \includegraphics[scale = .75]{./simulations/sim7.png}
+  %lualatex thesis
+  \resizebox{12.0cm}{!}{\input{./simulations/img/sim7.tex}}
+  %\includegraphics[scale = .75]{./simulations/sim7.png}
   \caption{Faceted on per-group sample size, $N$.}
 \end{figure}
 
@@ -59,33 +66,42 @@ The approximate regression condition appears to hold visually.
 \clearpage
 
 \section{Main Bounds}
-Here we simulate the main bounds under the same setting as the previous section.  
+Here we simulate the main bounds under the same setting as the previous section.
 \subsection{Failure of Monte Carlo}
 Again, we simulate the conditional expectations of the form $\E[f(T'_{\Pi}, T_{\Pi}) | T_{\Pi}]$
 with 1,000 draws from the uniform distribution on all group-switching transpositions $(I, J)$.
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/sim6.tex}
-  \caption{Log-log plot of values for each term in the bound, simulating the conditional expectation
-    by Monte Carlo (1,000 MC draws, 100 permutations each).}
+  \input{./simulations/img/sim7.tex}
+  \caption{Log-log plot of values for each term in the bound,
+    simulating the conditional by Monte Carlo.}
 \end{figure}
 The MC error is too large, and we see some scaled bounds actually increase.
 \clearpage
 
 \subsection{Exact Conditional Expectation Calculations}
-Here we $T'$ for all $N^2$ group-switching transpositions $(I, J)$:
+Here we plot $T'$ for all $N^2$ group-switching transpositions $(I, J)$:
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/sim3.tex}
+  \input{./simulations/img/sim3.tex}
   \caption{Log-log plot of values for each term in the bound, calculating the conditional
-    expectation exactly (200,000 permutations each).}
+    expectation exactly ($10N$ permutations each).}
 \end{figure}
 
 Our bounds appear to be of the correct order or slightly conservative in some cases.  The bounds on
 the remainder terms ($\E |R_{\Pi}|$ and $\E |T_{\Pi}R_{\Pi}|$) are of order $N^{1/2}$, but the true
 rates are probably lower.
 \clearpage
+
+\subsection{Better Rate}
+\begin{figure}[!ht]
+  \centering
+  \input{./simulations/img/sim6.tex}
+  \caption{Log-log plot of values for each term in the bound, calculating the conditional
+    expectation exactly ($10N$ permutations each).}
+\end{figure}
+
 
 \section{True Rate}
 To assess the true rate of convergence, we consider two settings: the earlier Normal setting and
@@ -99,7 +115,7 @@ understand the differences between these two models, we simulate the minimum and
 \end{figure}
 
 For $N=1000$, the Normal model typically has $u_{\Delta}$ values around 6.  In contrast, the Cauchy
-model has $u_{\Delta}$ values closer to 40.  
+model has $u_{\Delta}$ values closer to 40.
 \clearpage
 
 Here, we plot the empirical Kolmogorov-Smirnov test statistic in the following three settings:
@@ -137,7 +153,7 @@ Instead of conditioning on the value of $T_{\Pi}$, we condition on the
 observed permutation $\pi$.  For $N$ observations in each group, there
 are $N^2 \: T_{\Pi}'$ values that come from swapping one value in the first
 group with one value in the second.  $T_{\Pi}'$ should not differ much from
-$T_{\Pi}$, and calculating the $t$-statistics from scratch is inefficient.  
+$T_{\Pi}$, and calculating the $t$-statistics from scratch is inefficient.
 
 We use an efficient $t$-statistic update rule to easily calculate
 millions of $t$-statistics.  The two sample $t$-statistic is given by
@@ -203,14 +219,14 @@ computeAllCond <- function(T, N, u, l, x, y){
 \end{verbatim}
 
 We observe roughly a 2,000 times increase in speed on a problem instance of size $N=100$.  With
-byte-compilation and additional tuning, a four order of magnitude increase is possible.  
+byte-compilation and additional tuning, a four order of magnitude increase is possible.
 \begin{verbatim}
 > system.time(computeAllCond2(T, N, u, l, x, y))
-   user  system elapsed 
-  7.333   0.000   7.334 
+   user  system elapsed
+  7.333   0.000   7.334
 > system.time(computeAllCond(T, N, u, l, x, y))
-   user  system elapsed 
-  0.005   0.000   0.004 
+   user  system elapsed
+  0.005   0.000   0.004
 > sum((sort(computeAllCond(T, N, u, l, x, y)$Tprime) - sort(computeAllCond2(T, N, u, l, x, y)$Tprime))^2)
 [1] 3.137579e-27
 dat <- ldply(rep(floor(10^(seq(1, 3.5, by=.5))), each = 8),
@@ -229,7 +245,7 @@ these does not change the $t$-statistic.  We previously only
 considered the $N^2$ transpositions where $I < J$.  There are another
 $N^2$ with $I > J$.  These transpositions have exactly the same effect
 as the previous group $(I, J) = (J, I)$, and all within-group
-transpositions have no effect.  
+transpositions have no effect.
 
 The only changes should be to adjust the weights when taking
 conditional expectations (the weights should be $1/2$) and to divide
@@ -249,7 +265,7 @@ It is natural to consider generalizations from the univariate data, linear
 kernel setting.  We explore whether the randomization distribution is
 still Normal with multivariate data and/or a non-linear kernel.
 Should the null distribution be non-Normal, we further attempt to determine
-whether the approximate regression condition holds.  
+whether the approximate regression condition holds.
 
 We generate 100 observations with dimensionality 1, 10, 100, and
 1000.  For each set of data, we permute 100 times and plot the
@@ -316,20 +332,20 @@ inhomogeneous polynomial kernel degrees (rows) of 1, 2, and 5.
 \end{figure}
 
 We again observe an approximately linear plus noise relationship
-between $T'$ and $T$ with the noise decreasing in sample size.  
+between $T'$ and $T$ with the noise decreasing in sample size.
 
 \section{Better Rate}
 We observe two samples with equal sample size: $S_1 = \{u_i\}_{i=1}^N$ and $S_2 =
-\{u_i\}_{i=N+1}^{2N}$.  
+\{u_i\}_{i=N+1}^{2N}$.
 Student's two-sample $t$-statistic is given by
 \begin{align*}
-T_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N}) 
+T_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N})
 &= \frac{\bar{u}_{1,\Pi} - \bar{u}_{2,\Pi}}{\sqrt{\frac{\frac{1}{N-1}
       \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2}{N} + \frac{\frac{1}{N-1}
       \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}{N}}} \\
 \end{align*}
 
-We need to set $\delta = \max_{\pi, i, j} |T_{\pi} - T_{\pi \circ (i, j)}|$ 
+We need to set $\delta = \max_{\pi, i, j} |T_{\pi} - T_{\pi \circ (i, j)}|$
 so that the bound is tight.  This appears to be a daunting
 optimization problem.  There are $(2N)!$ permutations and $N^2$
 possible transpositions $(i, j)$ for each permutation.  Well, because the
@@ -354,18 +370,18 @@ $-T$ (2 swaps) and $T'$ with $T$ (2 swaps).
 \end{figure}
 
 Unfortunately, we can't make $N$ much bigger than 7 using the current
-technique.  
+technique.
 \clearpage
 
 \section{Shortcut}
 It always seems to be the case that, say, the minimum (equivalently,
 the maximum due to symmetry) value of $T_{\pi}$ maximizes $|T - T'|$.
 Knowing the permutation $\pi$ that maximizes $|T - T'|$, we can try to
-figure out the corresponding transposition $(i, j)$.  
+figure out the corresponding transposition $(i, j)$.
 
 It seems reasonable that sorting the data into its order statistics
 $\{u_{(i)}\}_{i=1}^{2N}$ will minimize $T$.  That is, let the $N$
-smallest be in the first group and the next $N$ in the second.  
+smallest be in the first group and the next $N$ in the second.
 
 Another thing that seems reasonable to find the $(i, j)$ that maximizes
 $|T - T'|$ is to swap the ``most different'' sample of the first group
@@ -401,6 +417,6 @@ Finally, $\sigma = \frac{1}{\sqrt{N}}$:
 The last situation is one of those pathological cases that we were
 trying to avoid, where the within-group variance vanishes so the
 distributions tend toward point masses.  But the other reasonable
-cases look good.  That is, if the shortcut works, it appears that 
+cases look good.  That is, if the shortcut works, it appears that
 $\delta = \max_{\pi, i, j} |T_{\pi} - T_{\pi \circ (i, j)}|$ is
 $O(N^{-1/2})$ for these reasonable cases.

@@ -1,32 +1,64 @@
 \chapter{Stein's method}
-\label{C:steins-method}
-In this chapter we present an introduction to Stein's method of exchangeable pairs which we use to
-prove the core theoretical result of this thesis: a rate of convergence bound for the randomization
-distribution.
+\label{C:steins-method} In this chapter, we present an introduction to
+Stein's method of exchangeable pairs, which we use to prove the core
+theoretical result of this thesis: a rate of convergence bound for the
+randomization distribution of the $t$-statistic.
+
+We also include other results that will be useful for our proof.
 
 \section{Introduction}
-\label{S:steins-method-introduction}
-Stein's method provides a means of bounding the distance between two probability distributions in a
-given probability metric.  When applied with the normal distribution as the target, this results in
-central limit type theorems.  Several flavors of Stein's method (e.g. the method of exchangeable
-pairs) proceed via auxiliary randomization.  We reproduce Stein's proof of the Hoeffding
-combinatorial central limit theorem (HCCLT) with explicit calculation of various constants.  It will
-be instructive to follow the proof of the HCCLT because our proof proceeds in a similar fashion but
-with the following generalizations: an approximate contraction property, less cancellation of terms
-due to separate estimation of various denominators, and non-unit variance of an r.v. in the
-exchangeable pair.
+\label{S:steins-method-introduction} Stein's method provides a means
+of bounding the distance between two probability distributions in a
+given probability metric.  When applied with the normal distribution
+as the target, this results in central-limit-type theorems.  Several
+flavors of Stein's method (e.g. the method of exchangeable pairs)
+proceed via auxiliary randomization.  We reproduce Stein's
+\cite{stein1986approximate} proof of the Hoeffding combinatorial
+central limit theorem (HCCLT) with explicit calculation of various
+constants.  It will be instructive to follow the proof of the HCCLT
+because our proof proceeds in a similar fashion but with the following
+generalizations: an approximate contraction property, less
+cancellation of terms due to separate estimation of various
+denominators, and non-unit variance of an r.v. in the exchangeable
+pair.
 
-\section{Hoeffding combinatorial CLT}
+The $c_r$-inequality and following corollary will provide useful
+bounds to come.
+\begin{theorem}[The $c_r$-inequality]
+  \label{T:c_r-inequality}
+  Let $X$ and $Y$ be random variables and $r > 0$.  Suppose that
+  $\E|X|^r < \infty$ and $\E|Y|^r < \infty$.  Then
+  \begin{equation}
+    \E|X + Y|^r < c_r(\E|X|^r+\E|Y|^r),
+  \end{equation}
+  where $c_r = 1$ when $r \leq 1$ and $c_r = 2^{r-1}$ when $r \geq 1$.
+\end{theorem}
+
+\begin{corollary}
+  \label{C:sum_variance}
+  Suppose that $\var(X) < \infty$ and $\var(Y) < \infty$.  Then
+  \begin{equation}
+    \var(X + Y) < 2(\var(X)+\var(Y)).
+  \end{equation}
+\end{corollary}
+\begin{proof}
+  This follows immediately by applying Theorem~\ref{T:c_r-inequality}
+  to the centered random variables $X' = X - \E X$ and $Y' = Y -
+  \E Y$.
+\end{proof}
+
+\section{Hoeffding's Combinatorial CLT}
 \begin{theorem}
-  Let $\{a_{ij}\}_{i,j}$ be an $n \times n$ matrix of real-valued entries that is row- and
-  column-centered and scaled such that the sums of the squares of its elements equals $n-1$:
+  Let $\{a_{ij}\}_{i,j}$ be an $n \times n$ matrix of real-valued
+  entries that is row- and column-centered and scaled such that the sums
+  of the squares of its elements equals $n-1$:
   \begin{align}
     \sum_{j=1}^n a_{ij} &= 0 \\
     \sum_{i=1}^n a_{ij} &= 0 \\
     \sum_{i=1, j=1}^n a_{ij}^2 &= n-1
   \end{align}
-  Let $\Pi$ be a random permutation of $\{1, \ldots, n\}$ drawn uniformly at random from the set of
-  all permutations:
+  Let $\Pi$ be a random permutation of $\{1, \ldots, n\}$ drawn
+  uniformly at random from the set of all permutations:
   \begin{equation}
     P(\Pi = \pi) = \frac{1}{n!}.
   \end{equation}
@@ -36,22 +68,23 @@ exchangeable pair.
   \end{equation}
   to be the sum of a random diagonal.  Then
   \begin{equation}
-    |P(W \leq w) - \Phi(w)| \leq 
+    |P(W \leq w) - \Phi(w)| \leq
     \frac{C}{\sqrt{n}} \left [
-      \sqrt{\sum_{i, j = 1}^n a_{ij}^4} + 
-      \sqrt{\sum_{i, j = 1}^n |a_{ij}|^3} 
+      \sqrt{\sum_{i, j = 1}^n a_{ij}^4} +
+      \sqrt{\sum_{i, j = 1}^n |a_{ij}|^3}
     \right ].
   \end{equation}
   \begin{proof}
-    In order to construct our exchangeable pair, we introduce the ordered pair of random variables
-    $(I, J)$ independent of $\Pi$ that represents a uniformly at random draw from the set of all
-    non-null transpositions:
+    In order to construct our exchangeable pair, we introduce the
+    ordered pair of random variables $(I, J)$ independent of $\Pi$ that
+    represents a uniformly at random draw from the set of all non-null
+    transpositions:
     \begin{equation}
       P(I = i, J = j) = \frac{1}{n(n-1)} \quad i, j \in \{1, \ldots, n\}, i \neq j.
     \end{equation}
     Define the random permutation $\Pi'$ by
     \begin{equation}
-      \Pi'(i) = \Pi \circ (I, J) = 
+      \Pi'(i) = \Pi \circ (I, J) =
       \begin{cases}
         \Pi(J) \quad i = I \\
         \Pi(I) \quad i = J \\
@@ -60,98 +93,77 @@ exchangeable pair.
     \end{equation}
     We construct our exchangeable pair by defining
     \begin{equation}
-      W' = \sum_{i=1}^n a_{i\Pi'(i)} = W 
+      W' = \sum_{i=1}^n a_{i\Pi'(i)} = W
       - a_{I \Pi(I)} + a_{I \Pi(J)} - a_{J \Pi(J)} + a_{J \Pi(I)}.
     \end{equation}
     We now verify the contraction property:
     \begin{align*}
       \E[W - W' | \Pi] &=
       \E[a_{I \Pi(I)} - a_{I \Pi(J)} + a_{J \Pi(J)} - a_{J \Pi(I)} | \Pi] \\
-      & = \frac{2}{n}\sum_{i=1}^n a_{i\Pi(i)} - 
+      & = \frac{2}{n}\sum_{i=1}^n a_{i\Pi(i)} -
       \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i \neq j}^n a_{i\Pi(j)} \\
-      &= \frac{2}{n} W - 
-      \frac{2}{n}\frac{1}{n-1} 
-      \left [ 
+      &= \frac{2}{n} W -
+      \frac{2}{n}\frac{1}{n-1}
+      \left [
         \sum_{i,j=1}^n a_{i\Pi(j)} - \sum_{i}^n a_{i\Pi(i)}
       \right ] \\
-      &= \frac{2}{n} W + \frac{2}{n}\frac{1}{n-1}W - 
+      &= \frac{2}{n} W + \frac{2}{n}\frac{1}{n-1}W -
       \frac{2}{n}\frac{1}{n-1}
-      \left [ 
+      \left [
         \sum_{i=1}^n \sum_{j=1}^n a_{i\Pi(j)}
       \right ] \\
       &= \frac{2}{n} W \left (1 + \frac{1}{n-1} \right ) - 0 \\
       &= \frac{2}{n-1} W
     \end{align*}
-    This satisfies our contraction property with 
+    This satisfies our contraction property with
     \begin{equation}
       \lambda = \frac{2}{n-1}.
     \end{equation}
-    
+
     To bound the variance component, compute
     \begin{equation}
       \label{E:condexp-diff-sq}
       \begin{split}
-        \E [(W-W')^2 | \Pi] 
+        \E [(W-W')^2 | \Pi]
         &= \E[(a_{I \Pi(I)} - a_{I \Pi(J)} + a_{J \Pi(J)} - a_{J \Pi(I)})^2 | \Pi] \\
         &= \E[ a_{I \Pi(I)}^2 + a_{J \Pi(J)}^2 + a_{I \Pi(J)}^2 + a_{J \Pi(I)}^2 \\
         &\quad - 2a_{I \Pi(I)} a_{I \Pi(J)} - 2a_{J \Pi(J)} a_{J \Pi(I)}
         - 2a_{I \Pi(I)} a_{J \Pi(I)} - 2a_{J \Pi(J)} a_{I \Pi(J)} \\
         &\quad + 2a_{I \Pi(I)} a_{J \Pi(J)} + 2a_{I \Pi(J)} a_{J \Pi(I)} | \Pi ] \\
-        &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2 
+        &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2
         + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}^2 \\
         &\quad - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{i \Pi(j)}
         - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(i)} \\
         &\quad + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(j)}
         + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}a_{j \Pi(i)} \\
-        &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2 
-        + \frac{2}{n}\frac{1}{n-1} \left ( 
+        &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2
+        + \frac{2}{n}\frac{1}{n-1} \left (
           \sum_{i,j=1}^n a_{i \Pi(j)}^2 - \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) \\
-        &\quad - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n \left ( a_{i\Pi(i)} 
-          \sum_{j=1}^n \left ( a_{i\Pi(j)} + a_{j\Pi(i)} \right ) - 2 a_{i \Pi(i)}^2 
+        &\quad - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n \left ( a_{i\Pi(i)}
+          \sum_{j=1}^n \left ( a_{i\Pi(j)} + a_{j\Pi(i)} \right ) - 2 a_{i \Pi(i)}^2
         \right ) \\
         &\quad + \frac{2}{n}\frac{1}{n-1} \left ( \sum_{i,j=1, i\neq j}^n
             a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}  \right ) \\
-        &= \frac{2}{n}\left ( 1 - \frac{1}{n-1} \right )  \sum_{i=1}^n a_{i \Pi(i)}^2 
+        &= \frac{2}{n}\left ( 1 - \frac{1}{n-1} \right )  \sum_{i=1}^n a_{i \Pi(i)}^2
         + \frac{2}{n} \\
         &\quad + \frac{8}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
-        &\quad + \frac{2}{n}\frac{1}{n-1} \sum_{i=1}^n \sum_{j=1}^n \left ( 
+        &\quad + \frac{2}{n}\frac{1}{n-1} \sum_{i=1}^n \sum_{j=1}^n \left (
           a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}
         \right ) - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
         &= \frac{2}{n} + \frac{2(n+2)}{n(n-1)}\sum_{i=1}^n a_{i \Pi(i)}^2 + \frac{2}{n(n-1)}
-        \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}) 
+        \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)})
       \end{split}
     \end{equation}
 
-    \begin{theorem}[The $c_r$-inequality]
-      \label{T:c_r-inequality}
-      Let $r > 0$.  Suppose that $\E|X|^r < \infty$ and $\E|Y|^r < \infty$.  Then
-      \begin{equation}
-        \E|X + Y|^r < c_r(\E|X|^r+\E|Y|^r),
-      \end{equation}
-      where $c_r = 1$ when $r \leq 1$ and $c_r = 2^{r-1}$ when $r \geq 1$.
-    \end{theorem}
-
-    \begin{corollary}
-      \label{C:sum_variance}
-      Suppose that $\var(X) < \infty$ and $\var(Y) < \infty$.  Then
-      \begin{equation}
-        \var(X + Y) < 2(\var(X)+\var(Y)).
-      \end{equation}
-    \end{corollary}
-    \begin{proof}
-      This follows immediately by applying Theorem~\ref{T:c_r-inequality} to the centered random
-      variables $X' = X - \E[X]$ and $Y' = Y - \E[Y]$.
-    \end{proof}
-    
     From (\ref{E:condexp-diff-sq}) and corollary~\ref{C:sum_variance},
     \begin{equation}
       \label{E:condexp-diff-sq2}
       \begin{split}
-        \E [(W-W')^2 | \Pi] &= \var \left ( \frac{2(n+2)}{n(n-1)}\sum_{i=1}^n a_{i \Pi(i)}^2 
+        \E [(W-W')^2 | \Pi] &= \var \left ( \frac{2(n+2)}{n(n-1)}\sum_{i=1}^n a_{i \Pi(i)}^2
         \right . \\
         &\quad \left . + \frac{2}{n(n-1)}\sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} +
           a_{i\Pi(j)}a_{j\Pi(i)}) \right ) \\
-        &\leq 2 \left ( \frac{4(n+2)^2}{n^2(n-1)^2} \var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2 
+        &\leq 2 \left ( \frac{4(n+2)^2}{n^2(n-1)^2} \var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2
           \right ) + \right . \\
         &\quad \left .\frac{4}{n^2(n-1)^2} \var \left ( \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} +
             a_{i\Pi(j)}a_{j\Pi(i)}) \right ) \right ) \\
@@ -167,7 +179,7 @@ exchangeable pair.
         \var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) = \sum_{i=1}^n \var(a_{i \Pi(i)}^2) +
         \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2),
     \end{equation*}
-    with 
+    with
     \begin{align*}
       \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2)
       &= \sum_{i,j=1, i\neq j}^n \left ( \frac{1}{n(n-1)} \sum_{k,l=1, k\neq l}^n a_{ik}^2 a_{jl}^2 -
@@ -181,17 +193,17 @@ exchangeable pair.
       &\leq \frac{(n-1)^2}{n^2(n-1)} \\
       &\leq \frac{1}{n}
     \end{align*}
-    
+
     It will be convenient to express our bound as a multiple of $\sum_{i,j=1}^n a_{i,j}^4$, so we
     establish a lower bound on that quantity.  Our scaling is such that $\sum_{i,j=1}^n a_{i,j}^2 =
     n-1$, so if we write ${\bf a} := [a_{11}^2 \; a_{12}^2 \ldots a_{nn}^2]^T$ out as a vector,
-    ${\bf a}^T{\bf 1} = n-1$.  By Cauchy-Schwarz, 
+    ${\bf a}^T{\bf 1} = n-1$.  By Cauchy-Schwarz,
     \begin{align*}
       (n - 1)^2 &= ({\bf a}^T{\bf 1})^2 \\
       &\leq ||{\bf a}||_2^2 ||{\bf 1}||_2^2 \\
       &= n^2 \sum_{i,j=1}^n a_{i,j}^4.
     \end{align*}
-    Therefore, $\sum_{i,j=1}^n a_{i,j}^4 \geq 1$, so 
+    Therefore, $\sum_{i,j=1}^n a_{i,j}^4 \geq 1$, so
     \begin{equation}
       \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2) \leq \frac{1}{n} \sum_{i,j=1}^n a_{i,j}^4.
     \end{equation}
@@ -199,26 +211,32 @@ exchangeable pair.
     For the second term in (\ref{E:condexp-diff-sq2}) we again apply corollary~\ref{C:sum_variance}:
     \begin{equation*}
       \var \left ( \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}) \right )
-      < 2 \var \left ( X \right ) + 
+      < 2 \var \left ( X \right ) +
       2 \var \left ( Y \right ),
     \end{equation*}
     where $X = \sum_{i,j=1, i\neq j}^n a_{i\Pi(i)}a_{j\Pi(j)}$ and $Y = \sum_{i,j=1, i\neq j}^n
     a_{i\Pi(j)}a_{j\Pi(i)}$.
-    We note that 
+    We note that
     \begin{equation}
       X = \sum_{i=1}^n a_{i\Pi(i)} \sum_{j=1, j\neq i}^n a_{j\Pi(j)} = W^2 - \sum_{i=1}^n a_{i\Pi(i)}^2.
     \end{equation}
-    TODO: $\ldots$ Maybe finish this up later?  
+
+    TODO: Finish including proof of Hoeffing's Combinatorial Central
+    Limit Theorem.  There's still that one bound that I cannot
+    rederive.  Well, I can just cite Stein.
   \end{proof}
 \end{theorem}
 
 \section{Exchangeable Pairs}
-TODO: Add a lot of development for exchangeable pairs.  For now, focusing on generalizing the theorems
-in ``Normal Approximation by Stein's Method.''
+TODO: Add a lot of development for exchangeable pairs.  For now,
+focusing on generalizing the theorems in ``Normal Approximation by
+Stein's Method.'' \cite{chen2010normal}
 
-Theorem 5.5 in ``Normal Approximation by Stein's Method'' concerns variance 1 exchangeable
-random variables.  Our setting has the variance tending to 1, so we first prove a slight
-generalization of the theorem.  Large parts of the proof are copied verbatim from the book.
+Theorem 5.5 in ``Normal Approximation by Stein's Method'' concerns
+variance 1 exchangeable random variables.  Our setting has the
+variance tending to 1, so we first prove a slight generalization of
+the theorem.  Large parts of the proof are copied verbatim from the
+book.
 
 \section{Preliminaries}
 \begin{definition}[Approximate Stein Pair]
@@ -234,97 +252,97 @@ generalization of the theorem.  Large parts of the proof are copied verbatim fro
 
 \begin{lemma}
   \label{L:antisymmetric}
-  If $(W, W')$ is an exchangeable pair, then $\E [g(W, W')] = 0$ for all antisymmetric
+  If $(W, W')$ is an exchangeable pair, then $\E g(W, W') = 0$ for all antisymmetric
   measurable functions such that the expected value exists.
 \end{lemma}
 
-Here is a slight generalization of Lemma 2.7:
+Here is a slight generalization of Lemma 2.7 from \cite{chen2010normal}:
 \begin{lemma}
-  Let $(W, W')$ be an approximate Stein pair and $\Delta = W - W'$.  Then 
+  Let $(W, W')$ be an approximate Stein pair and $\Delta = W - W'$.  Then
   \begin{equation}
-    \E [W] = \E [R] \quad \text{ and } \quad \E [\Delta^2] = 2 \lambda \E [W^2] - 2\lambda \E [WR]
-    \quad \text{ if } \E [W^2] < \infty.
+    \E W = \E R \quad \text{ and } \quad \E \Delta^2 = 2 \lambda \E W^2 - 2\lambda \E WR
+    \quad \text{ if } \E W^2 < \infty.
   \end{equation}
-  Furthermore, when $\E [W^2] < \infty$, for every absolutely continuous function $f$ satisfying 
+  Furthermore, when $\E W^2 < \infty$, for every absolutely continuous function $f$ satisfying
   $|f(w)| \leq C(1 + |w|)$, we have
   \begin{equation}
     \label{eq:expectation-w-f(w)}
-    \E [Wf(W)] = \frac{1}{2\lambda} \E [(W-W')(f(W)-f(W'))] + \E [f(W)R].
+    \E Wf(W) = \frac{1}{2\lambda} \E (W-W')(f(W)-f(W')) + \E f(W)R.
   \end{equation}
 \end{lemma}
 \begin{proof}
   From (\ref{D:approx-stein-pair}) we have
   \begin{equation*}
-    \E [\E [W-W'|W]] = \E [\lambda (W - R)] = \lambda \E [W] - \lambda \E [R].
+    \E [\E [W-W'|W]] = \E \lambda (W - R) = \lambda \E W - \lambda \E R.
   \end{equation*}
-  We also have 
+  We also have
   \begin{equation*}
-    \E [\E [W-W'|W]] = \E [W] - \E [\E [W' | W]] = \E [W] - \E [W'] = 0
+    \E [\E [W-W'|W]] = \E W - \E [\E [W' | W]] = \E W - \E W' = 0
   \end{equation*}
   using exchangeability.  Equating the two expressions yields
   \begin{equation*}
-    \E [W] = \E [R]
+    \E W = \E R
   \end{equation*}
-  
+
   As an intermediate computation,
   \begin{equation}
     \label{E:EW'W}
     \begin{split}
-      \E [W'W] &= \E [\E [W'W|W]] \\
+      \E W'W &= \E [\E [W'W|W]] \\
       &= \E [W \E [W'|W]] \\
       &= \E [W ((1-\lambda)W+\lambda R)] \quad \text{ from } \eqref{D:approx-stein-pair} \\
-      &= (1-\lambda)\E [W^2] + \lambda \E [WR].
+      &= (1-\lambda)\E W^2 + \lambda \E WR.
     \end{split}
   \end{equation}
-  Then 
+  Then
   \begin{equation}
     \begin{split}
-      \E [\Delta^2] &= \E [(W-W')^2] \\
-      &= \E [W^2] + \E [W'^2] - 2\E [W'W] \\
-      &= 2 \E [W^2] - 2 ((1-\lambda)\E [W^2] + \lambda \E [WR]) \quad \text{ from } \eqref{E:EW'W}\\
-      &= 2 \lambda \E [W^2] - 2\lambda \E [WR].
+      \E \Delta^2 &= \E (W-W')^2 \\
+      &= \E W^2 + \E W'^2 - 2\E W'W \\
+      &= 2 \E W^2 - 2 ((1-\lambda)\E W^2 + \lambda \E WR) \quad \text{ from } \eqref{E:EW'W}\\
+      &= 2 \lambda \E W^2 - 2\lambda \E WR.
     \end{split}
   \end{equation}
-  
-  By the linear growth assumption on $f$, $\E [g(W, W')]$ exists for the antisymmetric function
+
+  By the linear growth assumption on $f$, $\E g(W, W')$ exists for the antisymmetric function
   $g(x,y) = (x-y)(f(y)+f(x))$.  By Lemma~\ref{L:antisymmetric},
   \begin{equation*}
     \begin{split}
-      0 &= \E [(W-W')(f(W')+f(W))] \\
-      &= \E [(W-W')(f(W')-f(W))] + 2\E [f(W)(W-W')] \\
-      &= \E [(W-W')(f(W')-f(W))] + 2\E [f(W)\E [(W-W')|W]] \\
-      &= \E [(W-W')(f(W')-f(W))] + 2\E [f(W)(\lambda (W-R))].
+      0 &= \E (W-W')(f(W')+f(W)) \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E f(W)(W-W') \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E [f(W)\E [(W-W')|W]] \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E f(W)(\lambda (W-R)).
     \end{split}
   \end{equation*}
   Rearranging the expression yields
   \begin{equation}
-    \E [Wf(W)] = \frac{1}{2\lambda} \E [(W-W')(f(W)-f(W'))] + \E[f(W)R].
+    \E Wf(W) = \frac{1}{2\lambda} \E (W-W')(f(W)-f(W')) + \E f(W)R.
   \end{equation}
 \end{proof}
 
-This is just a small part of Lemma 2.4:
+This is just a small part of Lemma 2.4 from \cite{chen2010normal}:
 \begin{lemma}
   \label{L:stein-eq-sol-bound}
   For a given function $h: \mathbb{R} \to \mathbb{R}$, let $f_h$ be the solution to the Stein
   equation.  If $h$ is absolutely continuous, then
   \begin{equation}
-    ||f_h|| \leq 2 ||h'||.    
+    ||f_h|| \leq 2 ||h'||.
   \end{equation}
 \end{lemma}
 
-Lemma 2.2:
+Lemma 2.2 from \cite{chen2010normal}:
 \begin{lemma}
   \label{L:stein-eq-sol}
-  For fixed $z \in \mathbb{R}$ and $\Phi(z) = P(Z \leq z)$, the unique bounded solution 
+  For fixed $z \in \mathbb{R}$ and $\Phi(z) = P(Z \leq z)$, the unique bounded solution
 $f_z(w)$ of the equation
   \begin{equation}
     \label{eq:stein-eq}
     f'(w) - wf(w) = \mathbf{1}_{\{w \leq z\}} - \Phi(z)
   \end{equation}
-  is given by 
+  is given by
   \begin{equation}
     \label{eq:fz}
-    f_z(w) = 
+    f_z(w) =
     \begin{cases}
       \sqrt{2 \pi} e^{w^2/2} \Phi(w)[1-\Phi(z)] \quad \text{if } w \leq z \\
       \sqrt{2 \pi} e^{w^2/2} \Phi(z)[1-\Phi(w)] \quad \text{if } w > z. \\
@@ -332,41 +350,42 @@ $f_z(w)$ of the equation
   \end{equation}
 \end{lemma}
 
-Part of Lemma 2.3:
+Part of Lemma 2.3 from \cite{chen2010normal}:
 \begin{lemma}
   \label{L:stein-eq-sol-bound2}
   Let $z \in \mathbb{R}$ and let $f_z$ as in (\ref{eq:fz})
-    Then 
+    Then
     \begin{equation*}
       |(w + u)f_z(w + u) - (w + v)f_z(w + v)| \leq
       (|w| + \sqrt{2 \pi} / 4)(|u| + |v|).
     \end{equation*}
 \end{lemma}
 
-Generalization of Lemma 5.3:
+Generalization of Lemma 5.3 from \cite{chen2010normal}:
 \begin{lemma}
   \label{L:stein-difference-second-moment-generalization-bound}
-  If $W$, $W'$ are mean 0 exchangeable random variables with variance $\E[W^2]$
+  If $W$, $W'$ are mean 0 exchangeable random variables with variance
+  $\E W^2$
   satisfying
   \begin{equation*}
-    \E[W'-W|W] = -\lambda(W-R)    
+    \E[W'-W|W] = -\lambda(W-R)
   \end{equation*}
-  for some $\lambda \in (0,1)$ and some random variable $R$, then for any 
-  $z \in \mathbb{R}$ and $a > 0$, 
+  for some $\lambda \in (0,1)$ and some random variable $R$, then for any
+  $z \in \mathbb{R}$ and $a > 0$,
   \begin{equation*}
-    \E [(W'-W)^2 \mathbf{1}_{\{-a \leq W' - W \leq 0\}} \mathbf{1}_{\{z-a \leq W \leq z\}}] \leq 
+    \E [(W'-W)^2 \mathbf{1}_{\{-a \leq W' - W \leq 0\}} \mathbf{1}_{\{z-a \leq W \leq z\}}] \leq
     3a \lambda (\sqrt{\E W^2} + \E |R|)
   \end{equation*}
   and
   \begin{equation*}
-    \E [(W'-W)^2 \mathbf{1}_{\{0 \leq W' - W \leq a\}} \mathbf{1}_{\{z-a \leq W \leq z\}}] \leq 
+    \E [(W'-W)^2 \mathbf{1}_{\{0 \leq W' - W \leq a\}} \mathbf{1}_{\{z-a \leq W \leq z\}}] \leq
         3a \lambda (\sqrt{\E W^2} + \E |R|).
   \end{equation*}
 \end{lemma}
 \begin{proof}
   Let
   \begin{equation*}
-    f(w) = 
+    f(w) =
     \begin{cases}
       -3a / 2 &\quad w \leq w \leq z - 2a, \\
       w - z + a / 2 &\quad z - 2a \leq w \leq z + a, \\
@@ -375,32 +394,32 @@ Generalization of Lemma 5.3:
   \end{equation*}
   Since
   \begin{equation*}
-    \E [W f(W)] \leq \E [|W| |f(W)|] \leq \frac{3a}{2} \E |W| \leq \frac{3a}{2} \sqrt{\E W^2},
+    \E W f(W) \leq \E [|W| |f(W)|] \leq \frac{3a}{2} \E |W| \leq \frac{3a}{2} \sqrt{\E W^2},
   \end{equation*}
-  we have 
+  we have
   \begin{align*}
-    3a \lambda \sqrt{\E W^2} &\geq 2\lambda \E[WF(W)] \\
-    &= \E [(W-W')(f(W)-f(W'))] + 2 \lambda \E [f(W)R] \quad \text{by } (\ref{eq:expectation-w-f(w)})
+    3a \lambda \sqrt{\E W^2} &\geq 2\lambda \E WF(W) \\
+    &= \E [(W-W')(f(W)-f(W'))] + 2 \lambda \E f(W)R \quad \text{by } (\ref{eq:expectation-w-f(w)})
   \end{align*}
   We also bound the term involving the remainder
   \begin{equation*}
-    -2 \lambda \E[f(W) R ] \leq 2 \lambda \E|f(W)||R| \leq 3a\lambda \E |R|
+    -2 \lambda \E f(W)R  \leq 2 \lambda \E |f(W)| |R| \leq 3a \lambda \E |R|
   \end{equation*}
-  so that 
+  so that
   \begin{align*}
-    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E [(W-W')(f(W)-f(W'))] \\
-    &= \E \left ( (W-W') \int_{W'-W}^{0} f'(W+t)dt \right ) \\ 
-    &\geq \E \left( (W-W') \int_{W'-W}^0 \mathbf{1}_{\{|t| \leq a\}} 
+    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E (W-W')(f(W)-f(W')) \\
+    &= \E \left ( (W-W') \int_{W'-W}^{0} f'(W+t)dt \right ) \\
+    &\geq \E \left( (W-W') \int_{W'-W}^0 \mathbf{1}_{\{|t| \leq a\}}
     \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) dt \right ).
   \end{align*}
   Since $f'(W + t) = \mathbf{1}_{\{z - 2a \leq W + t \leq z + a \}}$,
   \begin{equation*}
-    \mathbf{1}_{\{|t| \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) = 
+    \mathbf{1}_{\{|t| \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) =
     \mathbf{1}_{\{|t| \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}}.
   \end{equation*}
   Therefore,
   \begin{align*}
-    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq 
+    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq
     \E \left( (W-W') \int_{W'-W}^0 \mathbf{1}_{\{|t| \leq a\}} dt
     \mathbf{1}_{\{z - a \leq W \leq z\}} \right ) \\
     &= \E(|W-W'| \min (a, |W-W'|) \mathbf{1}_{\{z - a \leq W \leq z\}}) \\
@@ -409,10 +428,10 @@ Generalization of Lemma 5.3:
   \end{align*}
   The proof of the second claim proceeds similarly:
     \begin{align*}
-      3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E [(W-W')(f(W)-f(W'))] \\
-      &= \E [(W'-W)(f(W')-f(W))] \\
-      &= \E \left ( (W'-W) \int_{0}^{W'-W} f'(W+t)dt \right ) \\ 
-      &\geq \E \left( (W'-W) \int_{0}^{W'-W} \mathbf{1}_{\{|t| \leq a\}} 
+      3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E (W-W')(f(W)-f(W')) \\
+      &= \E (W'-W)(f(W')-f(W)) \\
+      &= \E \left ( (W'-W) \int_{0}^{W'-W} f'(W+t)dt \right ) \\
+      &\geq \E \left( (W'-W) \int_{0}^{W'-W} \mathbf{1}_{\{|t| \leq a\}}
       \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) dt \right ) \\
       &= \E \left( (W'-W) \int_{0}^{W'-W} \mathbf{1}_{\{|t| \leq a\}} dt
       \mathbf{1}_{\{z - a \leq W \leq z\}} \right ) \\
@@ -422,27 +441,33 @@ Generalization of Lemma 5.3:
 \end{proof}
 
 \section{Main Theorem}
-Generalization of Theorem 5.5:
+This theorem will allow us to get the $\mathcal{O}N^{-1/4}$ rate under
+mild conditions.
+
+Generalization of Theorem 5.5 from \cite{chen2010normal}:
 \begin{theorem}
   \label{T:main}
-  If $T$, $T'$ are mean 0 exchangeable random variables with variance $\E[T^2]$
+  If $W$, $W'$ are mean 0 exchangeable random variables with variance
+  $\E W^2$
   satisfying
   \begin{equation*}
     \label{eq:13}
-    \E[T'-T|T] = -\lambda(T-R)    
+    \E[W'-W|W] = -\lambda(W-R)
   \end{equation*}
-  for some $\lambda \in (0,1)$ and some random variable $R$, then 
+  for some $\lambda \in (0,1)$ and some random variable $R$, then
   \begin{equation*}
     \begin{split}
-      \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|
-      &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|T'-T|^3]}{\lambda}}
-      + \frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])} \\
-      &\quad + |\E [T^2] - 1| + \E |TR| + \E [|R|]
+      \sup_{z \in \mathbb{R}} |P(W \leq z) - \Phi(z)|
+      &\leq (2\pi)^{-1/4} \sqrt{\frac{\E |W'-W|^3}{\lambda}}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation*}
 \end{theorem}
+
 \begin{proof}
-  For $z \in \mathbb{R}$ and $\alpha > 0$ let $f$ be the solution to the Stein equation 
+  For $z \in \mathbb{R}$ and $\alpha > 0$ let $f$ be the solution to
+  the Stein equation
   \begin{equation}
     f'(w) - wf(w) = h_{z,\alpha}(w) - \Phi(z)
   \end{equation}
@@ -461,57 +486,57 @@ Generalization of Theorem 5.5:
     \label{eq:triple-bound}
     \begin{split}
       |P(W \leq z) - \Phi(z)| &= |\E [(f'(W)-Wf(W))] | \\
-      &= \left | \E \left [ 
+      &= \left | \E \left [
           f'(W) - \frac{(W'-W)(f(W')-f(W))}{2\lambda} +f(W)R
         \right ]\right | \\
       &= \left | \E \left [f'(W)\left (1-\frac{(W'-W)^2}{2\lambda}\right) \right . \right . \\
-      &\quad + \left . \left . 
+      &\quad + \left . \left .
           \frac{f'(W)(W'-W)^2-(f(W')-f(W))(W'-W)}{2\lambda} + f(W)R
         \right ] \right | \\
       &:= | \E [J_1 + J_2 + J_3] | \\
-      &\leq |\E [J_1]| + |\E [J_2]| + |\E [J_3]|.
+      &\leq |\E J_1| + |\E J_2| + |\E J_3|.
     \end{split}
   \end{equation}
 
   It is known from Chen and Shao (2004) that for all $w \in \mathbb{R}, 0 \leq f(w) \leq 1$ and
   $|f'(w)| \leq 1$.  Then
   \begin{equation}
-    |\E [J_3]| \leq \E [|J_3|] = \E [|f(W)R|] \leq \E [|R|]
+    |\E J_3| \leq \E |J_3| = \E |f(W)R| \leq \E |R|
   \end{equation}
   and
   \begin{equation}
     \label{E:J1}
     \begin{split}
-      |\E [J_1] | &= \left | \E \left [f'(W)\left (1-\frac{(W'-W)^2}{2\lambda} \right ) \right ]
+      |\E J_1 | &= \left | \E \left [f'(W)\left (1-\frac{(W'-W)^2}{2\lambda} \right ) \right ]
       \right | \\
       &\leq \E \left [\left | f'(W)\left (1-\frac{(W'-W)^2}{2\lambda} \right ) \right | \right ] \\
       &\leq \E \left [ \left | \left (1-\frac{(W'-W)^2}{2\lambda} \right )  \right | \right ] \\
       &= \frac{1}{2\lambda} \E [|2\lambda - \E [(W'-W)^2|W]|] \\
-      &= \frac{1}{2\lambda} \E [|2\lambda (\E [W^2] - \E [WR]) - \E [(W'-W)^2|W] + 
-      2\lambda (1 - \E [W^2] + \E [WR])|] \\
-      &\leq \frac{1}{2\lambda} \E [|2\lambda (\E [W^2] - \E [WR]) - \E [(W'-W)^2|W]|] + 
-      \E [|(1 - \E [W^2] + \E [WR])|]
+      &= \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W] +
+      2\lambda (1 - \E W^2 + \E WR)|] \\
+      &\leq \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W]|] +
+      \E |1 - \E W^2 + \E WR|
     \end{split}
   \end{equation}
-  Note that 
+  Note that
   \begin{equation}
-    \E [\E [(W'-W)^2|W]] = \E [\Delta^2] = 2 \lambda (\E [W^2] - \E [WR]),
+    \E [\E [(W'-W)^2|W]] = \E \Delta^2 = 2 \lambda (\E W^2 - \E WR),
   \end{equation}
   so
   \begin{equation}
-    \frac{1}{2\lambda} \E [|2\lambda (\E [W^2] - \E [WR]) - \E [(W'-W)^2|W]|] \leq
+    \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W]|] \leq
     \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])}.
   \end{equation}
   Combining with \eqref{E:J1},
   \begin{equation}
     \begin{split}
-      |\E [J_1] | &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} +
-      \E [|1 - \E [W^2] + \E [WR]|] \\
-      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E [|1 - \E W^2|] + \E |WR| \\
+      |\E J_1 | &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} +
+      \E |1 - \E W^2 + \E WR| \\
+      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E |1 - \E W^2| + \E |WR| \\
     \end{split}
   \end{equation}
-  
-  Lastly, we bound the second term, 
+
+  Lastly, we bound the second term,
   \begin{equation}
     \begin{split}
       J_2 &= \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (f'(W)-f'(t)) dt \\
@@ -521,7 +546,7 @@ Generalization of Theorem 5.5:
   \end{equation}
 
   To show the final equality, consider separately the cases $W \leq W'$ and $W' \leq W$.  For the
-  former, 
+  former,
   \begin{equation*}
     \begin{split}
       -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_W^t f''(u) du dt
@@ -538,19 +563,19 @@ Generalization of Theorem 5.5:
       &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}(u-W')f''(u) du.
     \end{split}
   \end{equation*}
-  
+
   Since $W$ and $W'$ are exchangeable,
   \begin{equation}
     \begin{split}
-      |\E [J_2]| &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (W'-u)f''(u) du 
+      |\E J_2| &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (W'-u)f''(u) du
         \right ] \right | \\
       &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} \left ( \frac{W+W'}{2}-u \right )
         f''(u) du \right ] \right | \\
-    &\leq \left | \E \left [ ||f''|| \frac{1}{2\lambda}|W'-W|\int_{\min(W,W')}^{\max(W,W')} \left | 
+    &\leq \left | \E \left [ ||f''|| \frac{1}{2\lambda}|W'-W|\int_{\min(W,W')}^{\max(W,W')} \left |
           \frac{W+W'}{2} -u \right | du \right ] \right | \\
     &= \left | \E \left [ ||f''|| \frac{1}{2\lambda}\frac{|W'-W|^3}{4}
       \right ] \right | \\
-    &\leq \frac{\E [|W'-W|^3]}{4 \alpha \lambda},
+    &\leq \frac{\E |W'-W|^3}{4 \alpha \lambda},
     \end{split}
   \end{equation}
   where the final inequality follows from the fact that $|h'_{z,\alpha}(x)|\leq 1/\alpha$ for all $x
@@ -559,34 +584,37 @@ Generalization of Theorem 5.5:
   Collecting the bounds, we obtain
   \begin{equation}
     \begin{split}
-      P(W \leq z) &\leq \E [h_{z,\alpha}(W)] \\
-      &\leq Nh_{z,\alpha} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
+      P(W \leq z) &\leq \E h_{z,\alpha}(W) \\
+      &\leq Nh_{z,\alpha} + \frac{\E |W'-W|^3}{4 \alpha \lambda}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |1 - \E [W^2]| + \E |WR| + \E |R| \\
-      &\leq \Phi (z) + \frac{\alpha}{\sqrt{2\pi}} + \frac{\E [|W'-W|^3]}{4 \alpha \lambda}
+      &\quad + |1 - \E W^2| + \E |WR| + \E |R| \\
+      &\leq \Phi (z) + \frac{\alpha}{\sqrt{2\pi}} + \frac{\E |W'-W|^3}{4 \alpha \lambda}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |\E [W^2] - 1| + \E |WR| + \E |R|
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation}
   The minimizer of the expression is
   \begin{equation}
-    \alpha = \frac{(2\pi)^{1/4}}{2}\sqrt{\frac{\E [|W'-W|^3]}{\lambda}}.
+    \alpha = \frac{(2\pi)^{1/4}}{2}\sqrt{\frac{\E |W'-W|^3}{\lambda}}.
   \end{equation}
   Plugging this in, we get the upper bound
   \begin{equation}
     \begin{split}
-      P(W \leq z) - \Phi(z) &\leq (2\pi)^{-1/4} \sqrt{\frac{\E [|W'-W|^3]}{\lambda}}
+      P(W \leq z) - \Phi(z) &\leq (2\pi)^{-1/4} \sqrt{\frac{\E |W'-W|^3}{\lambda}}
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |\E [W^2] - 1| + \E |WR| + \E |R|
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation}
   Proving the corresponding lower bound in a similar manner completes the proof of the theorem.
 \end{proof}
 
-Generalization of part of Theorem 5.3:
+The following result will let us achieve a rate of $\mathcal{O}N^{-1/2}$ subject to an
+additional constraint on the data.
+Generalization of part of Theorem 5.3 from \cite{chen2010normal}:
 \begin{theorem}
   \label{T:better-rate}
-  If $W$, $W'$ are mean 0 exchangeable random variables with variance $\E[W^2]$
+  If $W$, $W'$ are mean 0 exchangeable random variables with variance
+  $\E W^2$
   satisfying
   \begin{equation*}
     \E[W'-W|W] = -\lambda(W-R)
@@ -597,7 +625,7 @@ Generalization of part of Theorem 5.3:
       \sup_{z \in \mathbb{R}} |P(W \leq z) - \Phi(z)|
       &\leq \frac{.41 \delta^3}{\lambda} + 3 \delta (\sqrt{\E W^2} + \E |R|)
       + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
-      &\quad + |\E [W^2] - 1| + \E |WR| + \E [|R|]
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
     \end{split}
   \end{equation*}
 \end{theorem}
@@ -609,7 +637,7 @@ Generalization of part of Theorem 5.3:
     &= (W'-W) \int_0^{W'-W}(f'(W) - f'(W+t)) dt \\
     &= (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W}(f'(W)-f'(W+t)) dt.
   \end{align*}
-  Using (\ref{eq:stein-eq}), $f'(W) = Wf(W) + \mathbf{1}_{\{w \leq z\}} - \Phi(z)$ and 
+  Using (\ref{eq:stein-eq}), $f'(W) = Wf(W) + \mathbf{1}_{\{w \leq z\}} - \Phi(z)$ and
   $f'(W + t) = (W + t)f(W + t) + \mathbf{1}_{\{w + t \leq z\}} - \Phi(z)$. Therefore,
   \begin{align*}
     2 \lambda J_2 &= (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W}(Wf(W)-(W+t)f(W+t)) dt \\
@@ -618,40 +646,40 @@ Generalization of part of Theorem 5.3:
   \end{align*}
   We apply (\ref{L:stein-eq-sol-bound2}) with $w = W$, $u = 0$, and $v = t$ to get
   \begin{align*}
-    |\E J_{21}| &\leq \left | 
+    |\E J_{21}| &\leq \left |
     (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W} \left( |W| + \frac{\sqrt{2 pi}}{4} \right ) |t| dt
     \right | \\
-    &\leq \E \left [ 
+    &\leq \E \left [
       \frac{1}{2} |W' - W|^3 \mathbf{1}_{|W'-W| \leq \delta} \left( |W| + \frac{\sqrt{2 pi}}{4} \right )
     \right ] \\
     &\leq \frac{1}{2} \delta^3 \left ( 1 + \frac{\sqrt{2 \pi}}{4} \right ) \\
     &\leq .82 \delta^3.
   \end{align*}
-  
+
   Now for $J_{22}$, we consider the two cases according to the sign of $W'-W$.  When $W' - W \leq 0$, we have
   \begin{align*}
-    \E J_{22}\mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} &= \E \left [ 
-      (W'-W) \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} - 
+    \E J_{22}\mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} &= \E \left [
+      (W'-W) \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} -
       \mathbf{1}_{\{W + t \leq z\}}) dt \right ] \\
-    &= \E \left [ 
+    &= \E \left [
       (W-W') \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \int_{W'-W}^0 (\mathbf{1}_{\{z \leq W \leq z - t\}})
       dt \right ] \\
-    &\leq \E \left [ 
+    &\leq \E \left [
       (W-W')^2 \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \mathbf{1}_{\{ z - \delta \leq W \leq z \}} \right ] \\
     &\leq 3 \delta \lambda (\sqrt{\E W^2} + \E |R|) \quad \text{by (\ref{L:stein-difference-second-moment-generalization-bound})}
   \end{align*}
-  Similarly, when $W' - W > 0$, 
+  Similarly, when $W' - W > 0$,
   \begin{align*}
-    \E J_{22}\mathbf{1}_{\{ 0 < W'-W \leq \delta \}} &= \E \left [ 
-      (W'-W) \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} - 
+    \E J_{22}\mathbf{1}_{\{ 0 < W'-W \leq \delta \}} &= \E \left [
+      (W'-W) \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} -
       \mathbf{1}_{\{W + t \leq z\}}) dt \right ] \\
-    &= \E \left [ 
+    &= \E \left [
       (W'-W) \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \int_0^{W'-W} \mathbf{1}_{\{ z - t < W \leq z\}} dt \right ] \\
-    &\leq \E \left [ 
+    &\leq \E \left [
       (W'-W)^2 \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \mathbf{1}_{\{ z - \delta \leq W \leq z \}} \right ] \\
     &\leq 3 \delta \lambda (\sqrt{\E W^2} + \E |R|) \quad \text{by (\ref{L:stein-difference-second-moment-generalization-bound})}
   \end{align*}
-  Therefore, 
+  Therefore,
   \begin{align*}
     |\E J_{2}| &\leq \frac{1}{2\lambda}(|\E J_{21}| + |\E J_{22}|) \\
     &\leq \frac{.41\delta^3}{\lambda} + 3\delta (\sqrt{\E W^2} + \E |R|).

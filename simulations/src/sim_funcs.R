@@ -1,5 +1,12 @@
+myTikz <- function(filename, plot){
+  tikz(paste(imgDir, filename, sep = ""), width = 6, height = 4.5)
+  print(plot)
+  dev.off()
+}
+
 getData <- function(N){
   u <- c(rnorm(N, -1), rnorm(N, 1))
+  u <- 1:(2*N)
   l <- c(rep(-1, N), rep(1, N))
   u <- u - mean(u)
   u <- u * sqrt(1 / sum(u^2) * 2 * N)
@@ -70,16 +77,16 @@ sim <- function(N, p, funcs, labels){
 #simOne <- function(...)  sim(..., funcs = each(u2BarP, dMinusP, hP), labels = c("u2BarP", "dMinusP", "hP"))
 simOne <- function(...)  sim(...,
                              funcs = each(u2BarP, dMinusP, hP),
-                             labels = c("$N^{p/2}\\mathbb{E}[\\bar{u}_{2, \\Pi}^p]\\;$",
+                             labels = c("$N^{p/2}\\mathbb{E} \\bar{u}_{2, \\Pi}^p \\;$",
                                "$N^{p/2}(d_{\\Pi})^{-p}\\;$",
                                "$N^{p/2}h_{\\Pi}\\;$")
                              )
 #simTwo <- function(...)  sim(..., funcs = each(dDiffP, qP, qddP), labels = c("dDiffP", "qP", "qddP"))
 simTwo <- function(...)  sim(...,
                              funcs = each(dDiffP, qP, qddP),
-                             labels = c("$N^{p}\\mathbb{E}|d_{\\Pi}-d'_{\\Pi}|^p\\;$",
-                               "$N^{-p/2}\\mathbb{E}[q_{\\Pi}^p]\\;$",
-                               "$N^{p/2}\\mathbb{E}\\left [ \\left ( \\frac{q'_{\\Pi}}{d_{\\Pi}d'_{\\Pi}} \\right ) ^p \\right ]\\;$")
+                             labels = c("$N^{p}\\mathbb{E}|d_{\\Pi}-d'_{\\Pi}|^p\\;\\;$",
+                               "$N^{-p/2}\\mathbb{E} q_{\\Pi}^p \\;\\;$",
+                               "$N^{p/2}\\mathbb{E}\\left [ \\left ( \\frac{q'_{\\Pi}}{d_{\\Pi}d'_{\\Pi}} \\right ) ^p \\right ]\\;\\;$")
                              )
 
 computeT <- function(u, l) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
@@ -117,7 +124,7 @@ simVar <- function(N){
   data.frame(N, "value" = f3(res), "lower" = bounds[1], "upper" = bounds[2], group = 1)
 }
 
-simOrig <- function(N){
+simOrig <- function(N, exact = TRUE){
   dat <- getData(N)
   u <- dat$u
   u <- 1:(2 * N)
@@ -126,8 +133,11 @@ simOrig <- function(N){
   res <- llply(1:nperm, function(i){
     u <- sample(u)
     T <- computeT(u, l)
-    diff <- getTpminusT(u, l, N, p)
-#    diff <- getTpminusTMC(u, l, N, p)
+    if(exact){
+      diff <- getTpminusT(u, l, N, p)
+    } else {
+      diff <- getTpminusTMC(u, l, N, p)
+    }
     R <- N / 2 * diff + T
     c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
   }, .parallel = TRUE)
@@ -163,7 +173,7 @@ getDelta <- function(u){
   abs(T - Tprime)
 }
 
-simBetterBound <- function(N){
+simBetterBound <- function(N, exact = TRUE){
   dat <- getData(N)
   u <- dat$u
   u <- 1:(2 * N)
@@ -173,8 +183,11 @@ simBetterBound <- function(N){
   res <- llply(1:nperm, function(i){
     u <- sample(u)
     T <- computeT(u, l)
-    diff <- getTpminusT(u, l, N, p)
-#    diff <- getTpminusTMC(u, l, N, p)
+    if(exact){
+      diff <- getTpminusT(u, l, N, p)
+    } else {
+      diff <- getTpminusTMC(u, l, N, p)
+    }
     R <- N / 2 * diff + T
     c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
   }, .parallel = TRUE)

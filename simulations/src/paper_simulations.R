@@ -33,19 +33,47 @@ p1
 
 p2 <- p1 %+% dat2
 
-myTikz <- function(filename, plot){
-  tikz(paste(imgDir, filename, sep = ""), width = 6, height = 4.5)
-  print(plot)
-  dev.off()
-}
-
 myTikz("sim1.tex", p1)
 myTikz("sim2.tex", p2)
 getOption("tikzLatexPackages")
 
+##Approximate regression condition
+sim <- function(N){
+  dat <- getData(N)
+  u <- dat$u
+  l <- dat$l
+  nperm <- 20
+  res <- ldply(1:nperm, function(i){
+    u <- sample(u)
+    T <- computeT(u, l)
+    ##diff <- getTpminusT(u, l, N, p)
+    diff <- getTpminusTMC(u, l, 50, p)
+    R <- N / 2 * diff + T
+    data.frame("N" = N, "T" = T, "Tprime" = T + diff)
+  }, .parallel = TRUE)
+  res
+}
+dat <- ldply(10^(1:4), sim)
+
+p7 <- ggplot(dat, aes(T, Tprime)) +
+  geom_point(alpha = .1) +
+  geom_line(aes(y = (1 - 2 / N) * T)) +
+  xlab("$T_{\\Pi}$") +
+  ylab("$T'_{\\Pi}$") +
+  ggtitle("Approximate Regression Condition with $(1-\\lambda)T_{\\Pi}$ Line") +
+  facet_wrap(~ N)
+
+myTikz("sim7.tex", p7)
+
+## tikz('sim7.tex', width = 6, height = 4.5)
+## png('sim7.png', width = 6, height = 4.5, units = "in", res = 300)
+## p7
+## dev.off()
+
 
 xbreaks <- floor(10^(seq(1, 2.5, by = .25)))
 system.time(dat3 <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
+system.time(dat3MC <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
 system.time(dat4 <- ldply(xbreaks, simBetterBound, .progress = "text"))
 #save(dat3, file = "dat3")
 ##system.time(dat <- ldply(floor(10^(seq(1, 3, by = .5))), simVar, .parallel = TRUE, .progress = "text"))
@@ -54,18 +82,14 @@ p3 <- ggplot(dat3, aes(x = N, y = value, color = group)) +
   geom_line() + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
   xlab("$N$") +
-  #ylab("$\\log_{10}(\\mathrm{value})$") + 
   theme(legend.position = "bottom", legend.direction = "vertical") +
-  #coord_trans(ytrans = "log10")
   scale_y_log10(breaks = round(10^seq(-2.5, 2.5, .5), 3)) +
   scale_x_log10(breaks = xbreaks)
 p3
 
-p4 <- p3 %+% dat4
-p4
-
 myTikz("sim3.tex", p3)
-myTikz("sim6.tex", p4)
+myTikz("sim6.tex", p3 %+% dat4)
+myTikz("sim7.tex", p3 %+% dat3MC)
 
 rescale <- function(df){
   if(df$group[[1]] == levels(dat3$group)[1]) df[, 2:4] <- df[, 2:4] / df$N^(1/4)
@@ -79,33 +103,6 @@ dat3.rs <- ddply(dat3, .(group), rescale)
 p3 %+% dat3.rs
 dat3.sum <- data.frame(ddply(dat3.rs[, -5], .(N), function(df) colSums(df[, -1])), group = "Sum of Bounds")
 
-##Approximate regression condition
-sim <- function(N){
-  dat <- getData(N)
-  u <- dat$u
-  l <- dat$l
-  nperm <- 20
-  res <- ldply(1:nperm, function(i){
-    u <- sample(u)
-    T <- computeT(u, l)
-#    diff <- getTpminusT(u, l, N, p)
-    diff <- getTpminusTMC(u, l, 100, p)    
-    R <- N / 2 * diff + T
-    data.frame("N" = N, "T" = T, "Tprime" = T + diff)
-  }, .parallel = TRUE)
-  res
-}
-dat <- ldply(10^(1:4), sim)
-tikz('sim7.tex', width = 6, height = 4.5)
-png('sim7.png', width = 6, height = 4.5, units = "in", res = 300)
-ggplot(dat, aes(T, Tprime)) +
-  geom_point(alpha = .1) +
-  geom_line(aes(y = (1 - 2 / N) * T)) +
-  xlab("$T_{\\Pi}$") +
-  ylab("$T'_{\\Pi}$") +
-  opts(title = "Approximate Regression Condition with $(1-\\lambda)T_{\\Pi} Line$") +
-  facet_wrap(~ N)
-dev.off()
 
 
 ###KS DISTANCE###
