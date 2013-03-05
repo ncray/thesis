@@ -11,17 +11,17 @@ library(tikzDevice)
 registerDoMC(4)
 options(tikzLatexPackages = c(getOption("tikzLatexPackages"),
           "\\usepackage{amsfonts}"))
+getOption("tikzLatexPackages")
 
-xbreaks <- floor(10^seq(1, 4, .5))
+xbreaks <- floor(10^(seq(1, 2.5, by = .25)))
+
+
 params <- expand.grid(xbreaks, seq(2, 8, 2))
 names(params) <- c("N", "p")
-system.time(dat <- mdply(params, simOne, .parallel = TRUE, .progress = "text"))
-save(dat, file = "dat")
+system.time(sideRatesDF <- mdply(params, simOne, .parallel = TRUE, .progress = "text"))
+system.time(sideRates2DF <- mdply(params, simTwo, .parallel = TRUE, .progress = "text"))
 
-system.time(dat2 <- mdply(params, simTwo, .parallel = TRUE, .progress = "text"))
-save(dat2, file = "dat2")
-
-p1 <- ggplot(dat, aes(x = N, y = value, color = group)) +
+sideRatesPlot <- ggplot(sideRatesDF, aes(x = N, y = value, color = group)) +
   geom_line() + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .2)) +
   facet_wrap(~ p) +
@@ -29,13 +29,11 @@ p1 <- ggplot(dat, aes(x = N, y = value, color = group)) +
   scale_x_log10(breaks = xbreaks) + 
   xlab("$N$") +
   theme(legend.position = "bottom")
-p1
+sideRatesPlot
+sideRatesPlot2 <- sideRatesPlot %+% sideRates2DF
 
-p2 <- p1 %+% dat2
-
-myTikz("sim1.tex", p1)
-myTikz("sim2.tex", p2)
-getOption("tikzLatexPackages")
+myTikz("siderates_1.tex", sideRatesPlot)
+myTikz("siderates_2.tex", sideRatesPlot2)
 
 ##Approximate regression condition
 sim <- function(N){
@@ -53,9 +51,9 @@ sim <- function(N){
   }, .parallel = TRUE)
   res
 }
-dat <- ldply(10^(1:4), sim)
+ARCDF <- ldply(10^(1:4), sim)
 
-p7 <- ggplot(dat, aes(T, Tprime)) +
+ARCPlot <- ggplot(ARCDF, aes(T, Tprime)) +
   geom_point(alpha = .1) +
   geom_line(aes(y = (1 - 2 / N) * T)) +
   xlab("$T_{\\Pi}$") +
@@ -63,50 +61,56 @@ p7 <- ggplot(dat, aes(T, Tprime)) +
   ggtitle("Approximate Regression Condition with $(1-\\lambda)T_{\\Pi}$ Line") +
   facet_wrap(~ N)
 
-myTikz("sim7.tex", p7)
-
-## tikz('sim7.tex', width = 6, height = 4.5)
-## png('sim7.png', width = 6, height = 4.5, units = "in", res = 300)
-## p7
-## dev.off()
+myTikz("ARC.tex", ARCPlot)
 
 
-xbreaks <- floor(10^(seq(1, 2.5, by = .25)))
-system.time(dat3 <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
-system.time(dat3MC <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
-system.time(dat4 <- ldply(xbreaks, simBetterBound, .progress = "text"))
-#save(dat3, file = "dat3")
-##system.time(dat <- ldply(floor(10^(seq(1, 3, by = .5))), simVar, .parallel = TRUE, .progress = "text"))
 
-p3 <- ggplot(dat3, aes(x = N, y = value, color = group)) +
+
+system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
+system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
+system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text"))
+
+ratesPlot <- ggplot(origRateDF, aes(x = N, y = value, color = group)) +
   geom_line() + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
   xlab("$N$") +
   theme(legend.position = "bottom", legend.direction = "vertical") +
   scale_y_log10(breaks = round(10^seq(-2.5, 2.5, .5), 3)) +
   scale_x_log10(breaks = xbreaks)
-p3
+ratesPlot
 
-myTikz("sim3.tex", p3)
-myTikz("sim6.tex", p3 %+% dat4)
-myTikz("sim7.tex", p3 %+% dat3MC)
+myTikz("orig_rate.tex", ratesPlot)
+myTikz("better_rate.tex", ratesPlot %+% betterRateDF)
+myTikz("orig_rate_mc.tex", ratesPlot %+% origRateMCDF)
 
-rescale <- function(df){
-  if(df$group[[1]] == levels(dat3$group)[1]) df[, 2:4] <- df[, 2:4] / df$N^(1/4)
-  if(df$group[[1]] == levels(dat3$group)[2]) df[, 2:4] <- df[, 2:4] / df$N
-  if(df$group[[1]] == levels(dat3$group)[3]) df[, 2:4] <- df[, 2:4] / df$N^(1/2)
-  if(df$group[[1]] == levels(dat3$group)[4]) df[, 2:4] <- df[, 2:4] / df$N
-  if(df$group[[1]] == levels(dat3$group)[5]) df[, 2:4] <- df[, 2:4] / df$N^(1/2)
-  df
+
+
+simDelta <- function(N){
+  calc <- function(x) .41 / 2 * N^(3/2) * getDelta(x)^3
+  c("integer" = calc(1:(2 * N)),
+    "normal" = calc(rnorm(2 * N)),
+    "cauchy" = calc(rcauchy(2 * N)),
+    "N" = N
+    )
 }
-dat3.rs <- ddply(dat3, .(group), rescale)
-p3 %+% dat3.rs
-dat3.sum <- data.frame(ddply(dat3.rs[, -5], .(N), function(df) colSums(df[, -1])), group = "Sum of Bounds")
+
+xbreaks <- floor(10^seq(1, 6, .5))
+system.time(dat <- ldply(rep(xbreaks, 5), simDelta, .parallel = TRUE))
+dat.m <- melt(dat, id.vars = "N")
+qplot(x = N, y = value, data = dat.m, geom = "point", color = variable) +
+  scale_x_log10(breaks = xbreaks) +
+  scale_y_log10()
+
+
+
+laply(floor(10^seq(1, 5, .5)), function(N) .41 / 2 * N^(3/2) * getDelta(1:(2*N))^3)
+plot(laply(floor(10^seq(1, 6, .5)), function(N) .41 / 2 * N^(3/2) * getDelta(rnorm(N))^3))
+
 
 
 
 ###KS DISTANCE###
-getStat <- function(vec, ind = 1:length(vec)) ks.test(vec[ind], "pnorm")$statistic
+getKSStat <- function(vec, ind = 1:length(vec)) ks.test(vec[ind], "pnorm")$statistic
 
 permTVar <- function(u){
   u.perm <- sample(u)
@@ -123,24 +127,6 @@ permT <- function(N){
 
 oneSim <- function(N){
   c(getStat(rnorm(N)), permT(N), N)
-}
-
-sim <- function(N){
-  dat <- getDataSpike(N)
-  u <- dat$u
-  l <- dat$l
-  resT <- laply(1:N, function(i){computeT(sample(u), l)})
-  resN <- rnorm(N)
-  lims <- c(.025, .975)
-  bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
-  bootT <- bootf(resT, getStat)
-  bootN <- bootf(resN, getStat)
-  bounds <- rbind(bootT, bootN)
-  data.frame(N,
-             "value" = c(getStat(resT), getStat(resN)),
-             "lower" = bounds[, 1],
-             "upper" = bounds[, 2],
-             group = c("perm.t", "normal"))
 }
 
 sim <- function(N){
@@ -161,6 +147,71 @@ sim <- function(N){
              group = c("Permutation-T (Normal)", "Permutation-T (Cauchy)", "Normal"))
 }
 
+###
+library(combinat)
+getT <- function(u, l) as.vector(t.test(u[l], u[-l], var.equal = TRUE)$statistic)
+N <- 5
+foo <- function(N){
+  ##u <- 1:(2*N)
+  ##u <- c(rnorm(N, mean = -1, sd = 1 / (5 * N)), rnorm(N, mean = 1, sd = 1 / (5 * N)))
+  u <- c(1:(2*N-1), 10^N)
+  combs <- combinat::combn(1:(2*N), N, simplify = FALSE)
+  c(N = N, stat = getKSStat(laply(combs, function(l) getT(u, l))))
+}
+system.time(truedat <- ldply(2:10, foo, .parallel = TRUE))
+system.time(dat <- ldply(2:8, foo, .parallel = TRUE))
+system.time(dat <- ldply(1:5, function(i) ldply(2:8, foo, .parallel = TRUE)))
+qplot(x = N, y = stat.D, data = dat, geom = "point")
+qplot(x = N, y = stat.D * sqrt(N), data = dat, geom = "point")
+ggplot(dat, aes(x = N, y = stat.D)) +
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ 1 + I(1/x^(1/2)), color = "blue") +
+  geom_smooth(method = "lm", formula = y ~ 1 + I(1/x^(1/4)), color = "black")
+###
+
+getData <- function(N){
+  u <- c(rnorm(N, -1, 1/N), rnorm(N, 1, 1/N))
+  ##u <- 1:(2*N)
+  u <- c(1:(2*N-1), 10^N)
+  l <- c(rep(-1, N), rep(1, N))
+  u <- u - mean(u)
+  u <- u * sqrt(1 / sum(u^2) * 2 * N)
+  list("u" = u, "l" = l)
+}
+
+KSSim <- function(N, getData, name, n1 = 100, n2 = 100){
+  KSStats <- laply(1:n1, function(i){
+    dat <- getData(N)
+    u <- dat$u
+    #u <- 1:(2*N)
+    l <- dat$l
+    getKSStat(laply(1:n2, function(i) computeT(sample(u), l)))
+  }, .parallel = TRUE)
+  qs <- as.numeric(quantile(KSStats, probs = c(.025, .5, .975)))
+  data.frame(group = name,
+             "value" = qs[2],
+             "lower" = qs[1],
+             "upper" = qs[3],
+             "N" = N)
+}
+
+system.time(dat <- ldply(2:10, function(N) KSSim(N, getData, "integer", 1, 1000), .parallel = TRUE))
+system.time(dat <- ldply(2:10, function(N) KSSim(N, getData, "integer", 1, 1000 * N), .parallel = TRUE))
+plot(truedat$stat.D, dat$value)
+##MC always overestimates the KS statistic
+(truedat$stat.D - dat$value) / truedat$stat.D
+
+
+KSSim(10, getData, "normal")
+
+system.time(dat <- ldply(xbreaks, function(N) KSSim(N, getData, "normal", 1, 10000)))
+system.time(dat <- ldply(xbreaks, function(N) KSSim(N, getData, "normal", 100, 100)))
+p4 <- ggplot(dat, aes(x = N, y = value, color = group)) +
+  geom_line() +
+  geom_point() + 
+  geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) 
+p4
+
 #sim(10)
 dat4 <- ldply(xbreaks, sim, .progress = "text")
 dat4 <- rbind(dat4, dat3.sum)
@@ -174,7 +225,7 @@ p4 <- ggplot(dat4, aes(x = N, y = value, color = group)) +
   scale_y_log10(breaks = c(.03, .05, .1, .5, 1, 2.5)) +
   geom_line(aes(y = 1 / sqrt(N)), color = "black", linetype = 2) +
   geom_line(aes(y = 1 / N^(1/4)), color = "black") +
-  opts(title = "Log/Log Plot of Rates")
+  ggitle("Log/Log Plot of Rates")
 p4
 
 tikz('sim4.tex', width = 6, height = 4.5)
@@ -192,7 +243,7 @@ dat5 <- melt(dat5, id.vars = "N")
 p5 <- ggplot(dat5, aes(x = value, fill = variable)) +
   geom_density(size = .7, alpha = .5) +
   facet_grid(N~.) +
-  opts(title = "Densities of Min/Max Values Faceted on N")
+  ggtitle("Densities of Min/Max Values Faceted on N")
 p5
 ggsave('sim5.png', width = 6, height = 4.5)
 

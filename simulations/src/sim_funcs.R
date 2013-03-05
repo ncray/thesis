@@ -6,7 +6,7 @@ myTikz <- function(filename, plot){
 
 getData <- function(N){
   u <- c(rnorm(N, -1), rnorm(N, 1))
-  u <- 1:(2*N)
+  ##u <- 1:(2*N)
   l <- c(rep(-1, N), rep(1, N))
   u <- u - mean(u)
   u <- u * sqrt(1 / sum(u^2) * 2 * N)
@@ -124,7 +124,7 @@ simVar <- function(N){
   data.frame(N, "value" = f3(res), "lower" = bounds[1], "upper" = bounds[2], group = 1)
 }
 
-simOrig <- function(N, exact = TRUE){
+simOrig <- function(N, exact = TRUE, scaled = TRUE){
   dat <- getData(N)
   u <- dat$u
   u <- 1:(2 * N)
@@ -142,25 +142,29 @@ simOrig <- function(N, exact = TRUE){
     c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
   }, .parallel = TRUE)
   res <- do.call(rbind, res)
-  f1 <- function(x, ind = 1:length(x)) (2 * pi)^(-1 / 4) * sqrt(mean(x[ind]) * N / 2) * N^(1 / 4)
-  f2 <- function(x, ind = 1:length(x)) 4 * N * sqrt(var(x[ind])) * N
-  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * N
-  f4 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
-  f5 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
+  f1 <- function(x, ind = 1:length(x)) (2 * pi)^(-1 / 4) * sqrt(mean(x[ind]) * N / 2) * if(scaled) N^(1 / 4) else 1
+  f2 <- function(x, ind = 1:length(x)) 4 * N * sqrt(var(x[ind])) * if(scaled) N else 1
+  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * if(scaled) N else 1
+  f4 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * if(scaled) N^(1 / 2) else 1
+  f5 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * if(scaled) N^(1 / 2) else 1
+  allF <- function(df, ind = 1:nrow(df)) f1(df[, 1], ind) + f2(df[, 2], ind) + f3(df[, 3], ind) +
+    f4(df[, 4], ind) + f5(df[, 5], ind)
 
-  means <- c(f1(res[, 1]), f2(res[, 2]), f3(res[, 3]), f4(res[, 4]), f5(res[, 5]))
+  means <- c(f1(res[, 1]), f2(res[, 2]), f3(res[, 3]), f4(res[, 4]), f5(res[, 5]), allF(res))
   lims <- c(.025, .975)
   bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
   bounds <- rbind(bootf(res[, 1], f1),
                   bootf(res[, 2], f2),
                   bootf(res[, 3], f3),
                   bootf(res[, 4], f4),
-                  bootf(res[, 5], f5))
+                  bootf(res[, 5], f5),
+                  bootf(res, allF))
   labels <- c("$(2\\pi)^{-1/4}\\sqrt{\\frac{\\mathbb{E}|T\'_{\\Pi}-T_{\\Pi}|^3}{\\lambda}}N^{1/4}\\quad $",
               "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}N\\quad $",
               "$|\\mathbb{E}T_{\\Pi}^2-1|N\\quad $",
               "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
-              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $")
+              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
+              "Sum of Bounds")
   data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = factor(labels, levels = labels))
 }
 
@@ -173,7 +177,7 @@ getDelta <- function(u){
   abs(T - Tprime)
 }
 
-simBetterBound <- function(N, exact = TRUE){
+simBetterBound <- function(N, exact = TRUE, scaled = TRUE){
   dat <- getData(N)
   u <- dat$u
   u <- 1:(2 * N)
@@ -192,14 +196,16 @@ simBetterBound <- function(N, exact = TRUE){
     c(mean(abs(diff))^3, mean(diff^2), T, mean(T * R), mean(R))
   }, .parallel = TRUE)
   res <- do.call(rbind, res)
-  f0 <- function(x, ind = 1:length(x)) N / 2 * .41 * delta^3 * N^(1 / 2)
-  f1 <- function(x, ind = 1:nrow(x)) 3 * delta * (sqrt(var(x[, 1][ind])) + mean(abs(x[, 2][ind]))) * N
-  f2 <- function(x, ind = 1:length(x)) 4 * N * sqrt(var(x[ind])) * N
-  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * N
-  f4 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
-  f5 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * N^(1 / 2)
+  f0 <- function(x, ind = 1:length(x)) N / 2 * .41 * delta^3 * if(scaled) N^(1 / 2) else 1
+  f1 <- function(x, ind = 1:nrow(x)) 3 * delta * (sqrt(var(x[, 1][ind])) + mean(abs(x[, 2][ind]))) * if(scaled) N else 1
+  f2 <- function(x, ind = 1:length(x)) 4 * N * sqrt(var(x[ind])) * if(scaled) N else 1
+  f3 <- function(x, ind = 1:length(x)) abs(var(x[ind]) - 1) * if(scaled) N else 1
+  f4 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * if(scaled) N^(1 / 2) else 1
+  f5 <- function(x, ind = 1:length(x)) mean(abs(x[ind])) * if(scaled) N^(1 / 2) else 1
+  allF <- function(df, ind = 1:nrow(df)) f0(0, ind) + f1(df[, c(2, 4)], ind) + f2(df[, 2], ind) + f3(df[, 3], ind) +
+    f4(df[, 4], ind) + f5(df[, 5], ind)
   
-  means <- c(f0(0), f1(res[, c(2, 4)]), f2(res[, 2]), f3(res[, 3]), f4(res[, 4]), f5(res[, 5]))
+  means <- c(f0(0), f1(res[, c(2, 4)]), f2(res[, 2]), f3(res[, 3]), f4(res[, 4]), f5(res[, 5]), allF(res))
   lims <- c(.025, .975)
   bootf <- function(x, f) quantile(as.vector(boot(x, f, 1000)$t), lims)
   bounds <- rbind(bootf(0, f0),
@@ -207,13 +213,15 @@ simBetterBound <- function(N, exact = TRUE){
                   bootf(res[, 2], f2),
                   bootf(res[, 3], f3),
                   bootf(res[, 4], f4),
-                  bootf(res[, 5], f5))
+                  bootf(res[, 5], f5),
+                  bootf(res, allF))
   labels <- c("$\\frac{.41\\delta^3}{\\lambda}N^{1/2}\\quad $",
               "$3\\delta(\\sqrt{\\mathbb{E}T^2}+\\mathbb{E}|R|)N\\quad $",
               "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}N\\quad $",
               "$|\\mathbb{E}T_{\\Pi}^2-1|N\\quad $",
               "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
-              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $")
+              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
+              "Sum of Bounds")
   data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = factor(labels, levels = labels))
 }
 

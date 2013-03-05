@@ -16,7 +16,7 @@ for different values of $p \in \{2, 4, 6, 8\}$.
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/img/sim1.tex}
+  \input{./simulations/img/siderates_1.tex}
   \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
 Due to the flatness of the curves, we conclude that the bounds we have
@@ -32,7 +32,7 @@ random among transpositions that switch groups.
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/img/sim2.tex}
+  \input{./simulations/img/siderates_2.tex}
   \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
 It is possible that the bound of rate $N^{-p/2}$ on
@@ -57,7 +57,7 @@ allowable transpositions, repeating this 100 times.
 \begin{figure}[!ht]
   \centering
   %lualatex thesis
-  \resizebox{12.0cm}{!}{\input{./simulations/img/sim7.tex}}
+  \resizebox{12.0cm}{!}{\input{./simulations/img/ARC.tex}}
   %\includegraphics[scale = .75]{./simulations/sim7.png}
   \caption{Faceted on per-group sample size, $N$.}
 \end{figure}
@@ -73,7 +73,7 @@ with 1,000 draws from the uniform distribution on all group-switching transposit
 
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/img/sim7.tex}
+  \input{./simulations/img/orig_rate_mc.tex}
   \caption{Log-log plot of values for each term in the bound,
     simulating the conditional by Monte Carlo.}
 \end{figure}
@@ -84,7 +84,7 @@ The MC error is too large, and we see some scaled bounds actually increase.
 Here we plot $T'$ for all $N^2$ group-switching transpositions $(I, J)$:
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/img/sim3.tex}
+  \input{./simulations/img/orig_rate.tex}
   \caption{Log-log plot of values for each term in the bound, calculating the conditional
     expectation exactly ($10N$ permutations each).}
 \end{figure}
@@ -97,25 +97,27 @@ rates are probably lower.
 \subsection{Better Rate}
 \begin{figure}[!ht]
   \centering
-  \input{./simulations/img/sim6.tex}
+  \input{./simulations/img/better_rate.tex}
   \caption{Log-log plot of values for each term in the bound, calculating the conditional
     expectation exactly ($10N$ permutations each).}
 \end{figure}
 
-
 \section{True Rate}
-To assess the true rate of convergence, we consider two settings: the earlier Normal setting and
-group draws from a Cauchy distribution with location parameters $-1$ and $1$ depending on the
-group.  Our bounds include a dependence on $u_{\Delta} = \max_i u_{i} - \min_i u_{i}$.  To better
-understand the differences between these two models, we simulate the minimum and maximum scaled
-(mean $0$ and sum of squares $2N$) values:
+To assess the true rate of convergence, we consider two settings: the
+earlier Normal setting and group draws from a Cauchy distribution with
+location parameters $-1$ and $1$ depending on the group.  Our bounds
+include a dependence on $u_{\Delta} = \max_i u_{i} - \min_i u_{i}$.
+To better understand the differences between these two models, we
+simulate the minimum and maximum scaled (mean $0$ and sum of squares
+$2N$) values:
 \begin{figure}[!ht]
   \centering
   \includegraphics{./simulations/sim5.png}
 \end{figure}
 
-For $N=1000$, the Normal model typically has $u_{\Delta}$ values around 6.  In contrast, the Cauchy
-model has $u_{\Delta}$ values closer to 40.
+For $N=1000$, the Normal model typically has $u_{\Delta}$ values
+around 6.  In contrast, the Cauchy model has $u_{\Delta}$ values
+closer to 40.
 \clearpage
 
 Here, we plot the empirical Kolmogorov-Smirnov test statistic in the following three settings:
@@ -259,80 +261,6 @@ the simulations.
 It's nice that the calculations are invariant to change in the
 exchangeable pair.  Whether that holds true for more drastic changes
 (e.g. swapping more than 2 elements) is not known.
-
-\section{Generalizations (Null Distribution)}
-It is natural to consider generalizations from the univariate data, linear
-kernel setting.  We explore whether the randomization distribution is
-still Normal with multivariate data and/or a non-linear kernel.
-Should the null distribution be non-Normal, we further attempt to determine
-whether the approximate regression condition holds.
-
-We generate 100 observations with dimensionality 1, 10, 100, and
-1000.  For each set of data, we permute 100 times and plot the
-Friedman statistic ($t$-statistic on SVM fitted values) with a linear
-kernel against the standard Normal quantiles.  Note that we take the
-sign of the Friedman statistic to be positive or negative with equal
-probability for ease of comparing distributions.
-\begin{figure}[!ht]
-  \centering
-  \includegraphics{./simulations/ARC/multivar_qq.png}
-\end{figure}
-
-At a sample size of 100 and with univariate data, the standard Normal
-is a close fit.  With increasing dimensionality, the Friedman
-statistic gets more and more extreme.  One possible explanation is
-that it becomes easier to separate two sets of points as the
-dimensionality increases.
-\clearpage
-
-Here we look at univariate data but with an inhomogeneous kernel
-($k(x, x') = (<x,x'>+1)^d$) of degree $d$:
-\begin{figure}[!ht]
-  \centering
-  \includegraphics{./simulations/ARC/poly_ker_qq.png}
-\end{figure}
-
-The polynomial kernel for degrees greater than 1 yields null
-distributions with fatter tails than the standard Normal.
-\clearpage
-
-Here we look at the effects of both dimension of the underlying data
-and degree of the inhomogeneous kernel:
-\begin{figure}[!ht]
-  \centering
-  \includegraphics{./simulations/ARC/multivar_poly_ker_qq.png}
-\end{figure}
-\clearpage
-
-\section{Generalizations (Approximate Regression Condition)}
-Here we plot $T'$ on $T$, where $T'$ results from swapping labels and
-refitting the SVM.  Note that here we don't assign the statistics
-random signs because there is no clear way to maintain the coupling
-between $T$ and $T'$.
-
-The dimensions (rows) are 1, 10, and 100, and the sample sizes
-(columns) are 10, 100, and 1000.
-\begin{figure}[!ht]
-  \centering
-  \includegraphics{./simulations/ARC/multivar_ARC.png}
-\end{figure}
-
-Across a row, it is clear that a larger sample size decreases the
-variability of $T'$ about $T$.  And down a column, it is clear that
-increasing dimensionality results in a greater departure from (folded)
-Normality.  It is not clear whether the reduction in variability is of
-order $1/N$.
-\clearpage
-
-Here we look at sample sizes (columns) of 10, 100, and 200 and
-inhomogeneous polynomial kernel degrees (rows) of 1, 2, and 5.
-\begin{figure}[!ht]
-  \centering
-  \includegraphics{./simulations/ARC/poly_ker_ARC.png}
-\end{figure}
-
-We again observe an approximately linear plus noise relationship
-between $T'$ and $T$ with the noise decreasing in sample size.
 
 \section{Better Rate}
 We observe two samples with equal sample size: $S_1 = \{u_i\}_{i=1}^N$ and $S_2 =
