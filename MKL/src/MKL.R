@@ -12,6 +12,19 @@ parallel <- TRUE
 Npwr <- 200
 Nwts <- 100
 
+plotStar <- function(){
+  r.v <- c(4, 6, 8)
+  dat <- ldply(r.v, function(r){
+    dat <- generateStar(r, r, 400)
+    data.frame(cbind(t(dat$u), r))
+  })
+  names(dat) <- c("x", "y", "radius")
+  dat$radius <- factor(dat$radius)
+  p1 <- qplot(x =  x, y = y, data = dat, geom = "point", color = radius)
+  p1
+}
+
+
 testShogunKernlab <- function(){
   dat <- ldply(1:20, function(D){
     dat <- getDataNormal(200, D)
@@ -349,7 +362,6 @@ powerStar <- function(r1, n, C){
 }
 
 powerStarPlot <- function(){
-  Npwr <- 1000
   system.time(res <- mdply(expand.grid(r1 = seq(4, 7, .5), n = 50, C = 1), powerStar))
 
   res2 <- ddply(res, .(r1, n, C), function(df){
@@ -365,7 +377,7 @@ powerStarPlot <- function(){
   p2 <- ggplot(res2, aes(x = r1, y = value, color = group, linetype = group)) +
     geom_line() + 
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .05)) +
-        ##facet_grid(self~.) +
+        ##facet_grid(p~.) +
         ggtitle("Power (Christmas Star Example)") +
           xlab("Radius of Outer Star (Inner is 4)") +
             ylab("Power")
@@ -374,11 +386,11 @@ powerStarPlot <- function(){
 }
 
 
-MKLwtsDNAStar <- function(r1, self, n, C){
+MKLwtsDNAStar <- function(r1, p, n, C){
   print(unlist(as.list(environment())))
   RBF.v <- round(10^(seq(.5, 2, .5)), 1)
   string.v <- 1:2
-  dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+  dat <- getDataDNAStar(r1 = r1, p = p, n = n)
   trainMKL(u1 = dat$u1, u2 = dat$u2, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
   wts <- getMKLWeights()
   df1 <- cbind(data.frame("r1" = r1, "n" = n, "C" = C, "perm" = 0, "mkl_norm" = 1), matrix(wts, nrow = 1))
@@ -405,15 +417,15 @@ MKLwtsDNAStar <- function(r1, self, n, C){
 
 MKLwtsDNAStarPlot <- function(){
   Nwts <- 100
-  system.time(res <- mdply(expand.grid(r1 = 4.5, self = seq(.25, .4, .05), n = 200, C = .1), MKLwtsDNAStar))
+  system.time(res <- mdply(expand.grid(r1 = 4.5, p = seq(.25, .4, .05), n = 200, C = .1), MKLwtsDNAStar))
 
   res.m <- melt(res, id.vars = c(1:6))
   p1 <- qplot(variable, value, data = subset(res.m, perm == 1), geom = "boxplot") +
-    facet_grid(mkl_norm~self) +
+    facet_grid(mkl_norm~p) +
       geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
         xlab("Kernels") +
           ylab("Kernel Weights") +
-            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and MKL Norm")
+            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Transition Probability and MKL Norm")
   p1
   myTikz("mkl_weights_star_dna.tex", p1)
   myplot(p1, "mkl_weights_star_dna.png")
@@ -421,7 +433,7 @@ MKLwtsDNAStarPlot <- function(){
 
 MKLwtsDNAStarPlot2 <- function(){
   Nwts <- 100
-  system.time(res <- mdply(expand.grid(r1 = seq(4, 16, 3), self = .3, n = 200, C = .1), MKLwtsDNAStar))
+  system.time(res <- mdply(expand.grid(r1 = seq(4, 16, 3), p = .3, n = 200, C = .1), MKLwtsDNAStar))
 
   res.m <- melt(res, id.vars = c(1:6))
   p1 <- qplot(variable, value, data = subset(res.m, perm == 1), geom = "boxplot") +
@@ -435,19 +447,19 @@ MKLwtsDNAStarPlot2 <- function(){
   myplot(p1, "mkl_weights_star_dna2.png")
 }
 
-powerDNAStar <- function(r1, self, n, C){
+powerDNAStar <- function(r1, p, n, C){
   print(unlist(as.list(environment())))
   ##RBF.v <- round(10^(seq(.5, 2, .5)), 2)
   RBF.v <- c(5, 10, 100)
   string.v <- 1:2
   ldply(1:Npwr, function(x){
     print(x)
-    dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+    dat <- getDataDNAStar(r1 = r1, p = p, n = n)
     l <- dat$l
     u1 <- dat$u1
     u2 <- dat$u2
 
-    dfMKL <- data.frame("r1" = r1, "self" = self, "n" = n, "C" = C,
+    dfMKL <- data.frame("r1" = r1, "p" = p, "n" = n, "C" = C,
                         "FSMKL: 1" = reject(compute(trainMKL), parametric = TRUE)
                         (u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE),
                         "FSMKL: 2" = reject(compute(trainMKL), parametric = TRUE)
@@ -465,9 +477,9 @@ powerDNAStar <- function(r1, self, n, C){
 test <- function(){
   C <- .1
   r1 <- 4
-  self <- .45
+  p <- .45
   n <- 50
-  dat <- getDataDNAStar(r1 = r1, self = self, n = n)
+  dat <- getDataDNAStar(r1 = r1, p = p, n = n)
   l <- dat$l
   u1 <- dat$u1
   u2 <- dat$u2
@@ -494,16 +506,15 @@ test <- function(){
 }
 
 powerDNAStarPlot <- function(){
-  Npwr <- 500
-  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
-  system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = seq(.25, .45, .05), n = 50, C = .1), powerDNAStar))
+  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), p = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
+  system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), p = seq(.25, .45, .05), n = 50, C = .1), powerDNAStar))
 
-  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = 1), powerDNAStar))
+  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), p = c(.25, .35, .45), n = 50, C = 1), powerDNAStar))
   
-  ##system.time(res <- mdply(expand.grid(r1 = c(4.3), self = c(.335), n = 50, C = .1), powerDNAStar))
+  ##system.time(res <- mdply(expand.grid(r1 = c(4.3), p = c(.335), n = 50, C = .1), powerDNAStar))
   ##colMeans(res)
   
-  res2 <- ddply(res, .(r1, self, n, C), function(df){
+  res2 <- ddply(res, .(r1, p, n, C), function(df){
     ldply(names(df)[-(1:4)], function(name){
       dat <- df[, name]
       lims <- c(.025, .975)
@@ -513,12 +524,12 @@ powerDNAStarPlot <- function(){
     })
   })
 
-  p2 <- ggplot(res2, aes(x = self, y = value, color = group, linetype = group)) +
-    geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005)) +
+  p2 <- ggplot(res2, aes(x = p, y = value, color = group, linetype = group)) +
+    geom_line(size = I(1)) + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005), size = I(1)) +
         facet_grid(r1~.) +
           ggtitle("Power (Christmas Star + DNA Example), Faceted on Outer Radius") +
-            xlab("Self Transition Probability") +
+            xlab("Transition Probability") +
               ylab("Power")
   p2
   myTikz("dna_star_power.tex", p2)

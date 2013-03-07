@@ -392,6 +392,22 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b$.
   \end{center}
 \end{frame}
 
+\begin{frame}{Simulated Data}
+  Generate independent DNA sequences of length $N \sim \text{Pois}(100)$ according to the transition matrix
+  \begin{equation*}
+    M(p^*) = \bordermatrix{
+      ~ & A & C & T & G \cr
+      A & \frac{1-p^*}{3} & p^* & \frac{1-p^*}{3} & \frac{1-p^*}{3} \cr
+      C & \frac{1-p^*}{3} & \frac{1-p^*}{3} & p^* & \frac{1-p^*}{3} \cr
+      T & \frac{1-p^*}{3} & \frac{1-p^*}{3} & \frac{1-p^*}{3} & p^* \cr
+      G & p^* & \frac{1-p^*}{3} & \frac{1-p^*}{3} & \frac{1-p^*}{3} \cr
+    }
+  \end{equation*}
+  with stationary distribution $\begin{pmatrix}.25 & .25 & .25 & .25\end{pmatrix}$. \\ \pause
+  $p$ takes $p^* = .25$, and $q$ takes $p^* > .25$. \\ \pause
+  $p$ and $q$ generate similar numbers of $1$-mers, but $q$ can generate more AC, CT, TG, GA $2$-mers.
+\end{frame}
+
 \begin{frame}{MKL}
   \begin{center}
     \resizebox{10.0cm}{!}{

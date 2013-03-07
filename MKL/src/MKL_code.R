@@ -116,39 +116,6 @@ compute <- function(train){
   }
 }
 
-getTransMat <- function(self = .25){
-  m <- matrix((1 - self) / 3, nrow = 4, ncol = 4)
-  m[1, 2] <- self
-  m[2, 3] <- self
-  m[3, 4] <- self
-  m[4, 1] <- self
-  ## diag(m) <- self
-  m
-}
-
-generateMC <- function(self){
-  alphabet <- c("A", "G", "T", "C")
-  lambda <- 100 ##was 100
-  N <- rpois(1, lambda)
-  trans.mat <- getTransMat(self)
-  stat.dist <- Re(eigen(t(trans.mat))$vectors[,1])
-  stat.dist <- stat.dist / sum(stat.dist)
-  res <- rep(0, N)
-  res[1] <- sample(x = 1:length(alphabet), size = 1, prob = stat.dist)
-  for(i in 2:N){
-    res[i] <- sample(x = 1:length(alphabet), size = 1, prob = trans.mat[res[i - 1], ])
-  }
-  paste(alphabet[res], sep = "", collapse = "")
-}
-
-getDataDNAStar <- function(r1, self, n){
-  u2 <- c(laply(rep(.25, n), generateMC),
-          laply(rep(self, n), generateMC))
-  dat <- generateStar(r1 = r1, r2 = 4, n)
-  u1 <- dat$u
-  l <- dat$l
-  list(u1 = u1, u2 = u2, l = l)
-}
 
 ## MKLwts <- function(r1, self, C){
 ##   print(paste("r1:", r1, "self:", self, "C:", C))
