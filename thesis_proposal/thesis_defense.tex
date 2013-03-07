@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \mode<presentation> { \setbeamercovered{transparent} }
 \setbeamertemplate{navigation symbols}{}
+%\setbeamerfont{frametitle}{size=\tiny}
 \usetheme{CambridgeUS}
 \DeclareGraphicsExtensions{.pdf, .jpg, .gif, .bmp}
 \usepackage{amsmath,amsthm}
@@ -16,6 +17,7 @@
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\law}{\overset{D}{\rightarrow}}
 \newcommand{\prob}{\overset{P}{\rightarrow}}
+\providecommand{\norm}[1]{\lVert#1\rVert}
 \makeatletter
 \def\beamerorig@set@color{%
   \pdfliteral{\current@color}%
@@ -251,7 +253,7 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 \begin{frame}{Simulated Bounds}
   \begin{center}
     \resizebox{12.0cm}{!}{
-      \input{../simulations/img/sim3.tex}
+      \input{../simulations/img/orig_rate.tex}
     }
   \end{center}
 \end{frame}
@@ -259,11 +261,19 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 \begin{frame}{Simulated Bounds (Improved Rate)}
   \begin{center}
     \resizebox{10.0cm}{!}{
-      \input{../simulations/img/sim6.tex}
+      \input{../simulations/img/better_rate.tex}
     }
   \end{center}
   \pause
   When ${\bf u} = \{i\}_{i=1}^{i=2N}, \frac{.41 \delta^3}{\lambda}N^{1/2} \to .205(16\sqrt{6}))^3$
+\end{frame}
+
+\begin{frame}{Behavior of $\delta$}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../simulations/img/delta_plot.tex}
+    }
+  \end{center}
 \end{frame}
 
 \begin{frame}{Twitter Example}
@@ -311,75 +321,47 @@ series "
 \end{frame}
 
 \begin{frame}{Support Vector Machines for Regression}
-  $$
-  f(x) = \sum_{m=1}^M \beta_m h_m(x) + \beta_0, \quad {h_m(x)} \:
-\text{basis functions}
-  $$
-  \pause
-  To estimate $\beta$ and $\beta_0$, minimize
-  $$
-  H(\beta,\beta_0) = \sum_{i=1}^N V(y_i-f(x_i)) +
-  \frac{\lambda}{2}\sum_{m=1}^M \beta_m^2.
-  $$
-  \pause
-  $V$ is taken to be $\epsilon$-insensitive loss:
-  \[
-  V_\epsilon(r) = \left\{
-    \begin{array}{l l}
-      0 & \quad \text{if } |r| < \epsilon,\\
-      |r|-\epsilon & \quad \text{otherwise.}\\
-    \end{array} \right.
-  \]
-  \pause
-  The solution has the form $\hat{f}(x)=\sum_{i=1}^N \hat\alpha_i
-  K(x,x_i)$, where $K(x,y)=\langle h(x),h(y) \rangle$.
+Consider the $\ell_1$-regularized (soft-margin) support vector classification problem:
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
+& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
+& \text{subject to}
+& & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
+&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
+\end{aligned}
+\end{equation*}
+For the Friedman Test, our scoring function is the margin
+$f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{Twitter Example}
-  $p < .001$:
-    \begin{figure}[!ht]
-   \centering
-   \includegraphics[scale=.4]{pres6.pdf}
- \end{figure}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../friedman-test/img/power_string.tex}
+    }
+  \end{center}
 \end{frame}
 
-\begin{frame}{Power Simulations at .05 Level}
-   \begin{figure}[!ht]
-   \centering
-   \includegraphics[scale=.4]{pres7.pdf}
- \end{figure}
-\end{frame}
-
-\begin{frame}{Image Data (Cars)}
-  Caltech 101 Object Categories \cite{fei2007learning} \\
-  The cars are $300\times 197$ grayscale.
-  \begin{figure}[!ht]
+\begin{frame}{Image Data (Roosters)}
+  Caltech 101 Object Categories \cite{fei2007learning} ($297 \times
+  300$ grayscale)
+  \begin{figure}
     \centering
-    \includegraphics[scale=.4]{car-image_0001.jpg}
-    \includegraphics[scale=.4]{car-image_0002.jpg} \\
-    \includegraphics[scale=.4]{car-image_0003.jpg}
-    \includegraphics[scale=.4]{car-image_0004.jpg}
+    \includegraphics[scale=.35]{roosterrs-image_0001.jpg}
+    \includegraphics[scale=.35]{roosterrs-image_0002.jpg} \\
+    \includegraphics[scale=.35]{roosterrs-image_0003.jpg}
+    \includegraphics[scale=.35]{roosterrs-image_0004.jpg}
   \end{figure}
 \end{frame}
 
-\begin{frame}{Planes Before}
-  The planes aren't.
+\begin{frame}{Image Data (Pigeons)}
   \begin{figure}
     \centering
-    \includegraphics[scale=.4]{airplane-image_0001.jpg}
-    \includegraphics[scale=.4]{airplane-image_0002.jpg} \\
-    \includegraphics[scale=.4]{airplane-image_0003.jpg}
-    \includegraphics[scale=.4]{airplane-image_0004.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Planes After}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.4]{airplaners-image_0001.jpg}
-    \includegraphics[scale=.4]{airplaners-image_0002.jpg} \\
-    \includegraphics[scale=.4]{airplaners-image_0003.jpg}
-    \includegraphics[scale=.4]{airplaners-image_0004.jpg}
+    \includegraphics[scale=.35]{pigeonrs-image_0001.jpg}
+    \includegraphics[scale=.35]{pigeonrs-image_0002.jpg} \\
+    \includegraphics[scale=.35]{pigeonrs-image_0003.jpg}
+    \includegraphics[scale=.35]{pigeonrs-image_0004.jpg}
   \end{figure}
 \end{frame}
 
@@ -402,60 +384,36 @@ series "
   \text{ where } d'=\binom{d+N-1}{d}$.
 \end{frame}
 
-\begin{frame}{Standardization}
-  In order to mitigate the effects of global differences
-  in illumination, each vector is scaled so that it has mean zero and
-  unit norm.  \pause
-
-  Unscaled linear kernel matrix, left; scaled, right
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.2]{car-plane-unscaled-1.png}
-    \includegraphics[scale=.2]{car-plane-scaled-1.png}
-  \end{figure}
+\begin{frame}{Rooster/Pigeon Example}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../friedman-test/img/power_birds.tex}
+    }
+  \end{center}
 \end{frame}
 
-\begin{frame}{Car/Airplane Example (Linear Kernel)}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.6]{car-airplane-twosamp.png}
-  \end{figure}
+\begin{frame}{MKL}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_weights_star_dna.tex}
+    }
+  \end{center}
 \end{frame}
 
-\begin{frame}{Roosters}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.4]{roosterrs-image_0001.jpg}
-    \includegraphics[scale=.4]{roosterrs-image_0002.jpg} \\
-    \includegraphics[scale=.4]{roosterrs-image_0003.jpg}
-    \includegraphics[scale=.4]{roosterrs-image_0004.jpg}
-  \end{figure}
+\begin{frame}{MKL}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_weights_star_dna2.tex}
+    }
+  \end{center}
 \end{frame}
 
-\begin{frame}{Pigeons}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.4]{pigeonrs-image_0001.jpg}
-    \includegraphics[scale=.4]{pigeonrs-image_0002.jpg} \\
-    \includegraphics[scale=.4]{pigeonrs-image_0003.jpg}
-    \includegraphics[scale=.4]{pigeonrs-image_0004.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Rooster/Pigeon Example (Linear Kernel)}
-  $p = .138$
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.6]{rooster-pigeon-twosamp.png}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Rooster/Pigeon Example (Inhomogeneous Degree 4)}
-  $p < .001$
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.6]{rooster-pigeon-twosamp-4-1.png}
-  \end{figure}
+\begin{frame}{MKL}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/dna_star_power.tex}
+    }
+  \end{center}
 \end{frame}
 
 \begin{frame}{Future Work}

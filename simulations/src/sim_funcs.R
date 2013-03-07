@@ -4,13 +4,12 @@ myTikz <- function(filename, plot){
   dev.off()
 }
 
-getData <- function(N){
-  u <- c(rnorm(N, -1), rnorm(N, 1))
-  ##u <- 1:(2*N)
+getData <- function(N, u = function(N) c(rnorm(N, -1), rnorm(N, 1)), name = "Normal"){
   l <- c(rep(-1, N), rep(1, N))
+  u <- u(N)
   u <- u - mean(u)
   u <- u * sqrt(1 / sum(u^2) * 2 * N)
-  list("u" = u, "l" = l)
+  list("u" = u, "l" = l, "name" = name)
 }
 
 getDataSpike <- function(N){
@@ -91,6 +90,22 @@ simTwo <- function(...)  sim(...,
 
 computeT <- function(u, l) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
 
+simARC <- function(N){
+  dat <- getData(N)
+  u <- dat$u
+  l <- dat$l
+  nperm <- 20
+  res <- ldply(1:nperm, function(i){
+    u <- sample(u)
+    T <- computeT(u, l)
+    ##diff <- getTpminusT(u, l, N, p)
+    diff <- getTpminusTMC(u, l, 50, p)
+    R <- N / 2 * diff + T
+    data.frame("N" = N, "T" = T, "Tprime" = T + diff)
+  }, .parallel = TRUE)
+  res
+}
+
 getTpminusT <- function(u, l, N, p){
   x <- u[l == -1]
   y <- u[l == 1]
@@ -124,10 +139,10 @@ simVar <- function(N){
   data.frame(N, "value" = f3(res), "lower" = bounds[1], "upper" = bounds[2], group = 1)
 }
 
-simOrig <- function(N, exact = TRUE, scaled = TRUE){
-  dat <- getData(N)
+simOrig <- function(N, exact = TRUE, scaled = TRUE, ...){
+  dat <- getData(N, ...)
   u <- dat$u
-  u <- 1:(2 * N)
+  ##u <- 1:(2 * N)
   l <- dat$l
   nperm <- 10 * N
   res <- llply(1:nperm, function(i){
@@ -165,7 +180,12 @@ simOrig <- function(N, exact = TRUE, scaled = TRUE){
               "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
               "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
               "Sum of Bounds")
-  data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = factor(labels, levels = labels))
+  data.frame(N,
+             "value" = means,
+             "lower" = bounds[, 1],
+             "upper" = bounds[, 2],
+             group = factor(labels, levels = labels),
+             distribution = dat$name)
 }
 
 getDelta <- function(u){

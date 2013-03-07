@@ -3,6 +3,13 @@ library(kernlab)
 library(ICSNP)
 library(plyr)
 
+myTikz <- function(filename, plot){
+  ##tikz(paste(imgDir, filename, sep = ""), width = 6, height = 4.5)
+  tikz(paste(imgDir, filename, sep = ""), width = 12, height = 8)
+  print(plot)
+  dev.off()
+}
+
 computeT <- function(u, km = NULL, l, ...) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
 
 computeT2 <- function(u, km, l, ...) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$statistic)
@@ -45,13 +52,13 @@ computeFS <- function(u, km, l, C = 1, ...){
 reject <- function(compute, verbose = FALSE, parametric = FALSE){
   function(u, km, l, ...){
     val <- compute(u = u, km = km, l = l, ...)
+    if(verbose) print(paste("value:", val))
     ##perms <- laply(1:19, function(i) compute(u, km, sample(l), ...))
     if(parametric){
       abs(val) > qnorm(.975)
     } else {
       perms <- laply(1:39, function(i) compute(u, km, sample(l), ...))
       if(verbose){
-        print(paste("value:", val))
         print("permuted: ")
         print(round(sort(perms), 3))
       }

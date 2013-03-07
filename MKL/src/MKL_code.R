@@ -15,9 +15,10 @@ trainString <- function(u, km = NULL, l, order, C){
   gap <- 0
   reverse <- 'n'
   use_sign <- FALSE
-  ##normalization <- 'FULL' #NO,SQRT,LEN,SQLEN,FULL
   normalization <- 'NO' #NO,SQRT,LEN,SQLEN,FULL
+  ##normalization <- 'NO' #NO,SQRT,LEN,SQLEN,FULL
   sg('clean_kernel')
+  sg('clean_preproc')
   sg('clean_features', 'TRAIN')
   sg('set_features', 'TRAIN', u, 'RAW')
   sg('convert', 'TRAIN', 'STRING', 'CHAR', 'STRING', 'ULONG', order, order-1, gap, reverse)
@@ -31,6 +32,7 @@ trainString <- function(u, km = NULL, l, order, C){
   ##sg('get_kernel_matrix', 'TRAIN')
   sg('train_classifier')
 }
+
 trainRBF <- function(u, km = NULL, l, r, C){
   sg('clean_kernel')
   sg('clean_features', 'TRAIN')
@@ -59,6 +61,7 @@ trainLinear <- function(u, km = NULL, l, r, C){
 trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE, ...){
   dump <- sg('clean_kernel')
   dump <- sg('clean_features', 'TRAIN')
+  sg('clean_preproc')
   if(linear) dump <- sg('add_features','TRAIN', u1)
   if(length(RBF.v) > 0){
     for(i in RBF.v){dump <- sg('add_features','TRAIN', u1)}
@@ -75,7 +78,7 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
   dump <- sg('new_classifier', 'MKL_CLASSIFICATION')
   dump <- sg('mkl_parameters', mkl_eps, mkl_C, mkl_norm)
   dump <- sg('svm_epsilon', svm_eps)
-  dump <- sg('set_kernel', 'COMBINED', 0)
+  dump <- sg('set_kernel', 'COMBINED', 100)
   if(linear) dump <- sg('add_kernel', 1, 'LINEAR', 'REAL', cache_size)
   if(length(RBF.v) > 0){
     for(width in RBF.v){dump <- sg('add_kernel', 1, 'GAUSSIAN', 'REAL', cache_size, width)}
@@ -115,13 +118,17 @@ compute <- function(train){
 
 getTransMat <- function(self = .25){
   m <- matrix((1 - self) / 3, nrow = 4, ncol = 4)
-  diag(m) <- self
+  m[1, 2] <- self
+  m[2, 3] <- self
+  m[3, 4] <- self
+  m[4, 1] <- self
+  ## diag(m) <- self
   m
 }
 
 generateMC <- function(self){
   alphabet <- c("A", "G", "T", "C")
-  lambda <- 100
+  lambda <- 100 ##was 100
   N <- rpois(1, lambda)
   trans.mat <- getTransMat(self)
   stat.dist <- Re(eigen(t(trans.mat))$vectors[,1])

@@ -36,22 +36,7 @@ myTikz("siderates_1.tex", sideRatesPlot)
 myTikz("siderates_2.tex", sideRatesPlot2)
 
 ##Approximate regression condition
-sim <- function(N){
-  dat <- getData(N)
-  u <- dat$u
-  l <- dat$l
-  nperm <- 20
-  res <- ldply(1:nperm, function(i){
-    u <- sample(u)
-    T <- computeT(u, l)
-    ##diff <- getTpminusT(u, l, N, p)
-    diff <- getTpminusTMC(u, l, 50, p)
-    R <- N / 2 * diff + T
-    data.frame("N" = N, "T" = T, "Tprime" = T + diff)
-  }, .parallel = TRUE)
-  res
-}
-ARCDF <- ldply(10^(1:4), sim)
+ARCDF <- ldply(10^(1:4), simARC)
 
 ARCPlot <- ggplot(ARCDF, aes(T, Tprime)) +
   geom_point(alpha = .1) +
@@ -65,7 +50,7 @@ myTikz("ARC.tex", ARCPlot)
 
 
 
-
+##system.time(origRateDF <- ldply(c(100, 200), simOrig, u = function(N) 1:(2*N), name = "integer", .progress = "text"))
 system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
 system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
 system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text"))
@@ -88,23 +73,27 @@ myTikz("orig_rate_mc.tex", ratesPlot %+% origRateMCDF)
 simDelta <- function(N){
   calc <- function(x) .41 / 2 * N^(3/2) * getDelta(x)^3
   c("integer" = calc(1:(2 * N)),
-    "normal" = calc(rnorm(2 * N)),
-    "cauchy" = calc(rcauchy(2 * N)),
+    "big" = calc(c(1:(2 * N - 1), 2 * N)),
     "N" = N
     )
 }
 
-xbreaks <- floor(10^seq(1, 6, .5))
-system.time(dat <- ldply(rep(xbreaks, 5), simDelta, .parallel = TRUE))
+xbreaks <- floor(10^seq(1, 5, .5))
+system.time(dat <- ldply(rep(xbreaks, 1), simDelta, .parallel = TRUE))
 dat.m <- melt(dat, id.vars = "N")
 qplot(x = N, y = value, data = dat.m, geom = "point", color = variable) +
   scale_x_log10(breaks = xbreaks) +
   scale_y_log10()
 
 
+dat <- ldply(xbreaks, function(N) c(N = N, y = .41 / 2 * N^(3/2) * getDelta(1:(2*N))^3))
+deltaplot <- qplot(x = N, y = y, data = dat, geom = "line") +
+  scale_x_log10(breaks = xbreaks) +
+  scale_y_log10() +
+  ggtitle("$\\frac{.41\\delta^3}{\\lambda}N^{1/2}\\quad $")
+myTikz("delta_plot.tex", deltaplot)
 
-laply(floor(10^seq(1, 5, .5)), function(N) .41 / 2 * N^(3/2) * getDelta(1:(2*N))^3)
-plot(laply(floor(10^seq(1, 6, .5)), function(N) .41 / 2 * N^(3/2) * getDelta(rnorm(N))^3))
+plot(laply(xbreaks, function(N) .41 / 2 * N^(3/2) * getDelta(rnorm(N))^3))
 
 
 

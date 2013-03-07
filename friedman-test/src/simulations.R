@@ -1,6 +1,7 @@
 setwd("~/Dropbox/VMshare/thesis/friedman-test/src")
 imgDir <- "../img/"
 source("./twosample.R")
+library(tikzDevice)
 library(ggplot2)
 library(reshape)
 library(boot)
@@ -163,10 +164,11 @@ twitter <- function(){
 
   p2 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
     geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2)) +
         xlab(expression(Delta)) +
           facet_grid(C~len) +
-            opts(title = "Power (Faceted by Length and C)")
+            ggtitle("Power (Faceted by K and C)")
+  myTikz("power_string.tex", p2)
   myplot(p2, "power_string.png")
 }
 
@@ -201,7 +203,7 @@ birds <- function(){
     }, .parallel = parallel)
   }
 
-  system.time(res <- mdply(expand.grid("N" = seq(5, 40, 5), "C" = c(.1, 1, 10), "deg" = 1:4), powerBirds))
+  system.time(res <- mdply(expand.grid("N" = seq(5, 30, 5), "C" = c(.1, 1, 10), "deg" = 1:4), powerBirds))
   res2 <- ddply(res, .(N, C, deg), function(df){
     ldply(names(df)[-(1:3)], function(name){
       dat <- df[, name]
@@ -214,9 +216,11 @@ birds <- function(){
 
   p3 <- ggplot(res2, aes(x = N, y = value, color = group)) +
     geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
-        xlab(expression(Delta)) +
-          facet_grid(C~deg) +
-            opts(title = "Power (Faceted by C and Degree)")
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2)) +
+        ylab("power") +
+          xlab("n") +
+            facet_grid(C~deg) +
+              ggtitle("Power (Faceted by C and Degree)")
+  myTikz("power_birds.tex", p3)
   myplot(p3, "power_birds.png")
 }

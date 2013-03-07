@@ -5,6 +5,7 @@ source("./MKL_code.R")
 source("../../friedman-test/src/twosample.R")
 library(ggplot2)
 library(doMC)
+library(tikzDevice)
 registerDoMC(4)
 parallel <- TRUE
 ##http://www.shogun-toolbox.org/doc/en/2.0.1/staticr.html
@@ -375,8 +376,8 @@ powerStarPlot <- function(){
 
 MKLwtsDNAStar <- function(r1, self, n, C){
   print(unlist(as.list(environment())))
-  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  string.v <- 1:3
+  RBF.v <- round(10^(seq(.5, 2, .5)), 1)
+  string.v <- 1:2
   dat <- getDataDNAStar(r1 = r1, self = self, n = n)
   trainMKL(u1 = dat$u1, u2 = dat$u2, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
   wts <- getMKLWeights()
@@ -397,8 +398,8 @@ MKLwtsDNAStar <- function(r1, self, n, C){
   })
   df1 <- rbind(df1, df2, dfperm)
   len <- ncol(df1)
-  names(df1)[6:(6 + length(RBF.v) - 1)] <- paste("rbf: ", RBF.v, sep = "")
-  names(df1)[(6 + length(RBF.v)):len] <- paste("sk: ", string.v, sep = "")
+  names(df1)[6:(6 + length(RBF.v) - 1)] <- paste("R", RBF.v, sep = "")
+  names(df1)[(6 + length(RBF.v)):len] <- paste("S", string.v, sep = "")
   df1
 }
 
@@ -414,13 +415,31 @@ MKLwtsDNAStarPlot <- function(){
           ylab("Kernel Weights") +
             ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and MKL Norm")
   p1
+  myTikz("mkl_weights_star_dna.tex", p1)
   myplot(p1, "mkl_weights_star_dna.png")
+}
+
+MKLwtsDNAStarPlot2 <- function(){
+  Nwts <- 100
+  system.time(res <- mdply(expand.grid(r1 = seq(4, 16, 3), self = .3, n = 200, C = .1), MKLwtsDNAStar))
+
+  res.m <- melt(res, id.vars = c(1:6))
+  p1 <- qplot(variable, value, data = subset(res.m, perm == 1), geom = "boxplot") +
+    facet_grid(mkl_norm~r1) +
+      geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
+        xlab("Kernels") +
+          ylab("Kernel Weights") +
+            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Outer Radius and MKL Norm")
+  p1
+  myTikz("mkl_weights_star_dna2.tex", p1)
+  myplot(p1, "mkl_weights_star_dna2.png")
 }
 
 powerDNAStar <- function(r1, self, n, C){
   print(unlist(as.list(environment())))
-  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  string.v <- 1:3
+  ##RBF.v <- round(10^(seq(.5, 2, .5)), 2)
+  RBF.v <- c(5, 10, 100)
+  string.v <- 1:2
   ldply(1:Npwr, function(x){
     print(x)
     dat <- getDataDNAStar(r1 = r1, self = self, n = n)
@@ -445,20 +464,23 @@ powerDNAStar <- function(r1, self, n, C){
 
 test <- function(){
   C <- .1
-  r1 <- 4.3
-  self <- .35
-  n <- 75
+  r1 <- 4
+  self <- .45
+  n <- 50
   dat <- getDataDNAStar(r1 = r1, self = self, n = n)
   l <- dat$l
   u1 <- dat$u1
   u2 <- dat$u2
-  RBF.v <- 100
+  RBF.v <- 30
   string.v <- 3
 
+  RBF.v <- c(5, 10, 100)
+  string.v <- 1:2
+
   ##change kernel normalization from SQRTDIAG to IDENTITY
-  reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
+  reject(compute(trainMKL), parametric = TRUE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
   getMKLWeights()
-  reject(compute(trainMKL), parametric = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
+  reject(compute(trainMKL), parametric = TRUE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE)
   getMKLWeights()
   
   reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE)
@@ -472,10 +494,12 @@ test <- function(){
 }
 
 powerDNAStarPlot <- function(){
-  Npwr <- 1000
+  Npwr <- 500
   ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
-  system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
+  system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = seq(.25, .45, .05), n = 50, C = .1), powerDNAStar))
 
+  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3, 4.6), self = c(.25, .35, .45), n = 50, C = 1), powerDNAStar))
+  
   ##system.time(res <- mdply(expand.grid(r1 = c(4.3), self = c(.335), n = 50, C = .1), powerDNAStar))
   ##colMeans(res)
   
@@ -497,6 +521,7 @@ powerDNAStarPlot <- function(){
             xlab("Self Transition Probability") +
               ylab("Power")
   p2
+  myTikz("dna_star_power.tex", p2)
   myplot(p2, "dna_star_power.png")
 }
 
@@ -509,4 +534,7 @@ RBF.v <- round(10^(seq(.5, 2, .5)), 2)
 MKLwtShiftStar()
 powerStarPlot()
 MKLwtsDNAStarPlot()
+MKLwtsDNAStarPlot2()
 powerDNAStarPlot()
+
+##sg('loglevel', 'ALL')
