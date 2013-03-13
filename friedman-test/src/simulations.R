@@ -224,3 +224,6 @@ birds <- function(){
   myTikz("power_birds.tex", p3)
   myplot(p3, "power_birds.png")
 }
+
+twitter()
+birds()

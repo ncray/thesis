@@ -21,7 +21,7 @@ plotStar <- function(){
   names(dat) <- c("x", "y", "radius")
   dat$radius <- factor(dat$radius)
   p1 <- qplot(x =  x, y = y, data = dat, geom = "point", color = radius)
-  p1
+  myTikz("star.tex", p1)
 }
 
 
@@ -271,13 +271,13 @@ getPowerNormal <- function(){
 }
 
 
-plotStar <- function(){
-  star <- generateStar(r1 = 10, r2 = 4, n = 1000)
-  star.df <- data.frame(t(do.call(rbind, star)))
-  names(star.df) <- c("x", "y", "label")
-  star.df$label <- factor(star.df$label)
-  qplot(x, y, data = star.df, geom = "point", color = label)
-}
+## plotStar <- function(){
+##   star <- generateStar(r1 = 10, r2 = 4, n = 1000)
+##   star.df <- data.frame(t(do.call(rbind, star)))
+##   names(star.df) <- c("x", "y", "label")
+##   star.df$label <- factor(star.df$label)
+##   qplot(x, y, data = star.df, geom = "point", color = label)
+## }
 
 starTest <- function(){
   dat <- generateStar(r1 = 6, r2 = 4, n = 50)
@@ -536,9 +536,55 @@ powerDNAStarPlot <- function(){
   myplot(p2, "dna_star_power.png")
 }
 
+nullDistDNAStar <- function(r1, p, n, C, Nperm = 200){
+  print(unlist(as.list(environment())))
+  RBF.v <- c(5, 10, 100)
+  string.v <- 1:2
+  dat <- getDataDNAStar(r1 = r1, p = p, n = n)
+  l <- dat$l
+  u1 <- dat$u1
+  u2 <- dat$u2  
+  ldply(1:Nperm, function(x){
+    print(x)
+    l <- sample(dat$l)
+
+    dfMKL <- data.frame("r1" = r1, "p" = p, "n" = n, "C" = C,
+                        "FSMKL: 1" = compute(trainMKL)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE),
+                        "FSMKL: 2" = compute(trainMKL)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE))
+    dfRBF <- as.data.frame(matrix(laply(RBF.v, function(r) compute(trainRBF)(u = u1, l = l, r = r, C = C)), nrow = 1))
+    names(dfRBF) <- paste("RBF: ", RBF.v, sep = "")
+    dfSK <- as.data.frame(matrix(laply(string.v, function(order) compute(trainString)(u = u2, l = l, order = order, C = C)), nrow = 1))
+    names(dfSK) <- paste("SK: ", string.v, sep = "")
+    cbind(dfMKL, dfRBF, dfSK)
+  }, .parallel = parallel)
+}
+
+nullDistDNAStarPlot <- function(){
+  library(nortest)
+  system.time(dat <- ldply(c(.1, 1, 10), function(C) nullDistDNAStar(4, .25, 50, C, 2000)))
+  dat.m <- melt(dat, id.vars = c("r1", "p", "n", "C"))
+  datNorm <- data.frame(x = seq(-4, 4, .01), y = dnorm(seq(-4, 4, .01)))
+  pvals <- ddply(dat, .(C), function(df) laply(setdiff(1:ncol(dat), 1:4), function(i) ad.test(df[, i])$p.value))
+  names(pvals) <- c("C", names(dat)[-(1:4)])
+  pvals.m <- melt(pvals, id.vars = "C")
+  pvals.m <- transform(pvals.m, y = rep(seq(.4, .05, length.out = 7), each = 3))
+  p1 <- ggplot(data = dat.m, aes(x = value, color = variable)) +
+    geom_density() +
+      geom_line(data = datNorm, aes(x = x, y = y), color = 1) +
+        ##geom_line(aes(x = seq(-4, 4, .01), y = dnorm(seq(-4, 4, .01)))) +
+        facet_grid(C ~ .) +
+          geom_text(data = pvals.m, aes(x = -3.5, y = y, label = round(value, 3), hjust = 0)) + 
+            ggtitle("Null Distributions (Faceted by C); Standard Normal in Black")
+  p1
+  myTikz("mkl_null_dist.tex", p1)
+}
+
+testNullManyKernels <- function(){
+  
+}
 
 
-
+plotStar()
 getNullDistPlot()
 getPowerNormal()
 RBF.v <- round(10^(seq(.5, 2, .5)), 2)
@@ -547,5 +593,5 @@ powerStarPlot()
 MKLwtsDNAStarPlot()
 MKLwtsDNAStarPlot2()
 powerDNAStarPlot()
-
+nullDistDNAStarPlot()
 ##sg('loglevel', 'ALL')

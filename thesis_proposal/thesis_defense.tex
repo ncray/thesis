@@ -44,19 +44,16 @@
 %   \end{figure}
 % \end{frame}
 
+\section{Introduction}
 \begin{frame}{Outline}
   \begin{itemize}
   \item Motivation: breast cancer study with heterogeneous data \pause
-  \item Friedman's two-sample test \cite{friedman30908multivariate}:
+  \item Friedman's two-sample test:
     leverage regression and classification techniques \pause
+  \item Kernel methods for non-vectorial and heterogeneous data \pause
   \item Univariate data and linear scoring functions: permutation
     $t$-test \pause
-  \item Permutation dependence: Stein's method for rates of
-    convergence bounds \pause
-  \item Simulations to verify bounds in proof (experimental
-    mathematics) \pause
-  \item Kernel-based two sample tests for non-vectorial data \pause
-  \item Multiple Kernel Learning for heterogeneous data
+  \item Stein's method of exchangeable pairs for Berry--Esseen-type bound
   \end{itemize}
 \end{frame}
 
@@ -81,10 +78,10 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Breast Cancer Study}
+\begin{frame}{Breast Cancer Study Questions}
   \begin{itemize}
   \item How do you deal with the data integration problem? \pause
-  \item Kernel methods \pause
+  \item Kernel methods via Friedman's procedure \pause
   \item Are there any differences (spatial, medical) between women who
     relapse and those who remain disease free? \pause
   \item Two-sample tests
@@ -92,45 +89,283 @@
 \end{frame}
 
 \begin{frame}{Friedman's Two-Sample Test}
-  $\{\mathbf{x}_i\}_1^N$ from $p(\mathbf{x})$ and
-  $\{\mathbf{z}_i\}_1^M$ from $q(\mathbf{z})$ testing \\
+  Friedman (2003) \\
+  $\{\mathbf{x}_i\}_{i=1}^N$ from $p(\mathbf{x})$ and
+  $\{\mathbf{x}_i\}_{i=N+1}^{N+M}$ from $q(\mathbf{x})$ testing \\
   $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$ \pause
   \begin{enumerate}
-  \item Pool the two samples $\{\mathbf{u}_i\}_1^{N+M} =
-    \{\mathbf{x}_i\}_1^{N} \cup \{\mathbf{z}_i\}_1^{M}$. \pause
   \item Assign label $y_i = 1$ to the first group and $y_i = -1$ to
     the second group. \pause
   \item Apply a binary classification learning machine $f$ to the training
-    data to score the observations $\{s_i = f(\mathbf{u}_i)\}_1^{N+M}$. \pause
+    data to score the observations $\{s_i = f(\mathbf{x}_i)\}_1^{N+M}$. \pause
   \item Calculate a univariate two-sample test statistic
     $T = T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$. \pause
-  \item Determine the permutation null distribution of the above
-    statistic to yield a p-value.
+  \item Conduct statistical inference based on the permutation null distribution of the above
+    statistic.
   \end{enumerate}
 \end{frame}
 
-\begin{frame}{Permutation $t$-test Connection}
-  With univariate data and linear scoring functions/kernels, Friedman's test reduces
-  to the permutation $t$-test (normal convergence result).  \pause
-  With multivariate/non-vectorial/heterogeneous data and arbitrary kernels, null distribution
-  is consistent with the Normal.
+\begin{frame}{Twitter Example}
+  \begin{figure}[!ht]
+   \centering
+   \includegraphics[scale=.3]{pres3.png}
+   \includegraphics[scale=.3]{pres4.png}
+ \end{figure}
 \end{frame}
+
+\begin{frame}[fragile]{Non-vectorial Data}
+\begin{verbatim}
+"BarackObama: We need to reward education reforms that are
+driven not by Washington, but by principals and teachers and
+parents. http://OFA.BO/6p2EMy"
+\end{verbatim}
+\pause
+
+$\bar{x} = $ ? \\ \pause
+$\hat{\sigma}_x = $ ? \\ \pause
+Kernel methods allow us to lift ourselves up into an inner product space, where we can perform geometric calculations.
+\end{frame}
+
+\section{Kernel-based Tests}
+\begin{frame}{Kernel Methods}
+  The Kernel Trick (Aizerman et al. 1964)
+  \begin{itemize}
+  \item Data $x_i$ in a general set $\mathcal{X}$. \pause
+  \item Define a feature map $\phi : \mathcal{X} \to V$, where $V$ is an inner product space. \pause
+  \item $K(u_i, u_j) = \langle \phi(u_i), \phi(u_j) \rangle$ \pause
+  \item Use learning algorithms that only require inner products between vectors in $\mathcal{X}$. \pause
+  \item The inner products can be done implicitly, by a kernel function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Twitter Data}
+  Raw:
+\begin{verbatim}
+"BarackObama: We need to reward education reforms that are
+driven not by Washington, but by principals and teachers and
+parents. http://OFA.BO/6p2EMy"
+"SarahPalinUSA: You betcha!! MT \"@AlaskaAces: Alaska Aces
+are 2011 Kelly Cup Champs w/ 5-3 win over Kalamazoo Wings!
+Aces win  ECHL Championship series 4-1\""
+\end{verbatim}
+  After pre-processing:
+\begin{verbatim}
+"we need to reward education reforms that are driven not by
+washington but by principals and teachers and parents "
+"you betcha mt alaskaaces alaska aces are  kelly cup champs
+w  win over kalamazoo wings aces win  echl championship
+series "
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{The Spectrum Kernel}
+  The Spectrum Kernel (Leslie 2002) \\
+  Compares two strings based on the their length $k$ contiguous
+  subsequences ($k$-mers). \pause
+  \begin{itemize}
+    \item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$. \pause
+    \item $\phi_2(x) = [\#_{\text{aa}}(x) \;\; \#_{\text{ab}}(x) \;\; \#_{\text{ac}}(x) \;\; \ldots ]$ \pause
+    \item $\mathcal{V} = \mathbb{N}^{|\mathcal{A}|^k}$ \pause
+    \item $K_k(x,y) = \langle \phi_k(x), \phi_k(y) \rangle$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Support Vector Machines}
+$\ell_1$-regularized (soft-margin) support vector classification problem
+(Vapnik and Cortes, 1995):
+\begin{equation*}
+\begin{aligned}
+& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
+& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
+& \text{subject to}
+& & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
+&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m. \pause
+\end{aligned}
+\end{equation*}
+For the Friedman Test, our scoring function is the margin
+$f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
+\end{frame}
+
+\begin{frame}{KMMD}
+  Kernel Maximum Mean Discrepancy Test: (Gretton et al. 2006) \\ \pause
+  $\mathfrak{F}$ a class of functions (unit ball in RKHS), $f:\mathcal{X} \to \mathbb{R}$,
+  $p$ and $q$ probability distributions, and $X \sim p$ and $Z \sim q$ random variables \\ \pause
+
+  MMD statistic:
+  \begin{equation*}
+    \text{MMD}[\mathfrak{F},p,q] := \sup_{f\in
+      \mathfrak{F}}(\mathbb{E}_{x\sim p}[f(x)] - \mathbb{E}_{z\sim q}[f(z)]) \pause
+  \end{equation*}
+
+  Empirical Estimate:
+  \begin{equation*}
+    \text{MMD}[\mathfrak{F},X,Z] := \sup_{f\in
+      \mathfrak{F}}\left (\frac{1}{N}\sum_{i=1}^Nf(x_i) -
+    \frac{1}{M}\sum_{i=1}^M f(z_i) \right )
+  \end{equation*}
+\end{frame}
+
+\begin{frame}{Twitter Example}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../friedman-test/img/power_string.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Image Data (Roosters)}
+  Caltech 101 Object Categories (Li et al. 2007) ($297 \times
+  300$ grayscale)
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.35]{roosterrs-image_0001.jpg}
+    \includegraphics[scale=.35]{roosterrs-image_0002.jpg} \\
+    \includegraphics[scale=.35]{roosterrs-image_0003.jpg}
+    \includegraphics[scale=.35]{roosterrs-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Image Data (Pigeons)}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.35]{pigeonrs-image_0001.jpg}
+    \includegraphics[scale=.35]{pigeonrs-image_0002.jpg} \\
+    \includegraphics[scale=.35]{pigeonrs-image_0003.jpg}
+    \includegraphics[scale=.35]{pigeonrs-image_0004.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Polynomial Kernel}
+  Compares 2 vectors (images) on products of elements (pixel intensities)
+  up to a certain order.
+  \begin{itemize}
+    \item $\mathcal{X} = \mathbb{R}^{n}$ \pause
+    \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$ \pause
+    \item $\langle \phi(x), \phi(y) \rangle$ is $\mathcal{O}(n^2)$ \pause
+    \item $\mathcal{V} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$ \pause
+    \item $K_d(x,y) = (x^T y  + c)^d$ is $\mathcal{O}(n)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Rooster/Pigeon Example}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../friedman-test/img/power_birds.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Regression and MKL}
+  Regularized regression \pause
+  \begin{itemize}
+    \item Feature engineering/extraction: ${\bf x}_i$ \pause
+    \item Feature normalization: ${\bf x}_i \leftarrow \frac{{\bf x}_i - \hat{\mu}_i}{\hat{\sigma}_i}$ \pause
+    \item Regularization/feature selection: $\inf_{{\boldsymbol \beta}} \sum_{i=1}^n V(\beta_0 + \tilde{{\bf x}}_i^T {\boldsymbol \beta}, y_i) \text{ s.t. } || {\boldsymbol \beta} ||_p \leq t$ \pause
+  \end{itemize}
+  MKL \pause
+  \begin{itemize}
+    \item feature engineering/extraction: $K_i$ \pause
+    \item feature normalization: $K_i(x, x') \leftarrow \frac{K_i(x, x')}{\sqrt{K_i(x, x)}\sqrt{K_i(x', x')}}$ \pause
+    \item Regularization/feature selection: $\inf_{{\bf w}, b, {\boldsymbol \theta} : {\boldsymbol \theta} \succeq 0}
+      C \sum_{i=1}^n V( \sum_{m=1}^M \sqrt{\theta_m} \langle {\bf w}_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i) $ \\
+      $\qquad \qquad \; \; \; + \frac{1}{2} \sum_{m=1}^M || {\bf w}_m ||^2_{\mathcal{H}_m}
+      \text{ s.t. } || {\boldsymbol \theta} ||_p \leq 1$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Simulated Data (DNA)}
+  Generate independent DNA sequences of length $N \sim \text{Pois}(100)$ according to the transition matrix
+  \begin{equation*}
+    M(p^{\star}) = \bordermatrix{
+      ~ & A & C & T & G \cr
+      A & \frac{1-p^{\star}}{3} & p^{\star} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} \cr
+      C & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & p^{\star} & \frac{1-p^{\star}}{3} \cr
+      T & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & p^{\star} \cr
+      G & p^{\star} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} \cr
+    }
+  \end{equation*}
+  with stationary distribution $[.25, .25, .25, .25]$. \\ \pause
+  $p$ takes $p^{\star} = .25$, and $q$ takes $p^{\star} > .25$. \\ \pause
+  $p$ and $q$ generate similar numbers of $1$-mers, but $q$ can generate more AC, CT, TG, GA $2$-mers.
+\end{frame}
+
+\begin{frame}{Simulated Data (Star)}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/star.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Two-Sample Tests}
+  Two-sample tests typically provide 1 bit of information: accept or reject. \\ \pause
+
+  The MKL-based two-sample test generates the observed kernel weight vector ${\boldsymbol \theta}$ and
+  its permuted values ${\boldsymbol \theta}^{(i)}$.
+\end{frame}
+
+\begin{frame}{MKL Weights}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_weights_star_dna.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{MKL Weights}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_weights_star_dna2.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{MKL Power}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/dna_star_power.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{MKL Null Distribution}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_null_dist.tex}
+    }
+  \end{center}
+\end{frame}
+
+\begin{frame}{Permutation $t$-test Connection}
+  The $t$-statistic is (up to sign) invariant to affine transformations of the data. \\ \pause
+
+  For what kernels $K$ do we have
+  \begin{equation*}
+    \sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
+  \end{equation*} \\ \pause
+
+  Sufficient condition: $K(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
+  f(x_i) x$ \\ \pause
+
+  Linear Kernel: $f(x_i) = x_i$ \\ \pause
+
+  Permutation $t$-test: normal convergence result (Lehmann)
+\end{frame}
+
+\section{Rate of Convergence Bounds}
 
 \begin{frame}{Other Work}
   \begin{itemize}
-  \item Fisher (1935) \cite{fisher1935design} proposed distribution-free
+  \item Fisher (1935) proposed distribution-free
     randomization test.  \pause
-  \item Lehmann \cite{lehmann1999elements} proved a normal convergence
+  \item Lehmann proved a normal convergence
     result for the randomization distribution. \pause
-  \item Bentkus et al. \cite{bentkus1996berry}, Shao
-    \cite{shao2005explicit} proved Berry-Esseen bounds for
+  \item Bentkus et al. (1996), Shao (2005) proved Berry--Esseen bounds for
     Student's $t$-statistic in independent case.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Stein's Method and the Randomization Distribution}
-  Let $\Phi(t)$ denote the standard normal CDF.
-
   Can we get a bound on
   \begin{equation*}
     \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|?
@@ -142,7 +377,7 @@
 \end{frame}
 
 \begin{frame}{Other Results}
-  \begin{theorem}[Berry-Esseen]
+  \begin{theorem}[Berry--Esseen (1941, 1942)]
   Suppose $X_1, \ldots, X_n$ are i.i.d. random variables with
   $\E X_i = 0$, $\E X_i^2 = \sigma^2 > 0$, and $\E |X_i|^3 = \rho
   < \infty$.  Let $F_n(x)$ denote the CDF of standardized sample mean
@@ -156,7 +391,7 @@
 \end{frame}
 
 \begin{frame}{Other Results}
-  \begin{theorem}[Hoeffding, Stein]
+  \begin{theorem}[Hoeffding (1951), Stein (1986)]
     Let $A = \{a_{ij}\}_{i, j \in \{1, \ldots, n\}}$ be a square array of
       numbers such that $\sum_j a_{ij} = 0$ for all $i$, $\sum_i
       a_{ij} = 0$ for all $j$, and $\sum_i \sum_j a_{ij}^2 = n - 1$.
@@ -276,177 +511,19 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
   \end{center}
 \end{frame}
 
-\begin{frame}{Twitter Example}
-  \begin{figure}[!ht]
-   \centering
-   \includegraphics[scale=.3]{pres3.png}
-   \includegraphics[scale=.3]{pres4.png}
- \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Twitter Data}
-  Raw:
-\begin{verbatim}
-"BarackObama: We need to reward education reforms that are
-driven not by Washington, but by principals and teachers and
-parents. http://OFA.BO/6p2EMy"
-"SarahPalinUSA: You betcha!! MT \"@AlaskaAces: Alaska Aces
-are 2011 Kelly Cup Champs w/ 5-3 win over Kalamazoo Wings!
-Aces win  ECHL Championship series 4-1\""
-\end{verbatim}
-  After pre-processing:
-\begin{verbatim}
-"we need to reward education reforms that are driven not by
-washington but by principals and teachers and parents "
-"you betcha mt alaskaaces alaska aces are  kelly cup champs
-w  win over kalamazoo wings aces win  echl championship
-series "
-\end{verbatim}
-\end{frame}
-
-\begin{frame}{The Spectrum Kernel}
-  Compares two strings based on the their length $k$ contiguous
-  subsequences. \pause
+\begin{frame}{Conclusion}
   \begin{itemize}
-  \item $\mathcal{X}$ is our input space, built up from an alphabet
-    $\mathcal{A} = \{a,b,\ldots,z,$ $\}$ with $|\mathcal{A}|=27$. \pause
-  \item The $k$-spectrum ($k \geq 1$) of an input sequence is the set
-    of all length $k$ contiguous subsequences it contains. \pause
-  \item Define the feature map from $\mathcal{X}$ to
-    $\mathbb{R}^{|\mathcal{A}|^k}$ by $\Phi_k(x) = (\phi_a(x))_{a \in
-      \mathcal{A}^k}$ where $\phi_a(x)$ is the number of times $a$
-    occurs in $x$: $\{\#aaa,\#aab,\#aac,\ldots,\}$. \pause
-  \item $K_k(x,y) = \langle \Phi_k(x),\Phi_k(y) \rangle$.
+  \item Friedman's test for non-vectorial and heterogeneous data. \pause
+  \item MKL power competitive with best-performing kernel. \pause
+  \item MKL can learn structure of data. \pause
+  \item Normal-like null distributions. \pause
+  \item Berry--Esseen-type convergence result via Stein's method of exchangeable pairs.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Support Vector Machines for Regression}
-Consider the $\ell_1$-regularized (soft-margin) support vector classification problem:
-\begin{equation*}
-\begin{aligned}
-& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
-& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
-& \text{subject to}
-& & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
-&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
-\end{aligned}
-\end{equation*}
-For the Friedman Test, our scoring function is the margin
-$f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b$.
-\end{frame}
-
-\begin{frame}{Twitter Example}
-  \begin{center}
-    \resizebox{10.0cm}{!}{
-      \input{../friedman-test/img/power_string.tex}
-    }
-  \end{center}
-\end{frame}
-
-\begin{frame}{Image Data (Roosters)}
-  Caltech 101 Object Categories \cite{fei2007learning} ($297 \times
-  300$ grayscale)
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.35]{roosterrs-image_0001.jpg}
-    \includegraphics[scale=.35]{roosterrs-image_0002.jpg} \\
-    \includegraphics[scale=.35]{roosterrs-image_0003.jpg}
-    \includegraphics[scale=.35]{roosterrs-image_0004.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Image Data (Pigeons)}
-  \begin{figure}
-    \centering
-    \includegraphics[scale=.35]{pigeonrs-image_0001.jpg}
-    \includegraphics[scale=.35]{pigeonrs-image_0002.jpg} \\
-    \includegraphics[scale=.35]{pigeonrs-image_0003.jpg}
-    \includegraphics[scale=.35]{pigeonrs-image_0004.jpg}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{Polynomial Kernel}
-  Each $m \times n$ grayscale image is converted to a vector of
-  length $p=mn$.  \pause
-  Given $X \in \mathbb{R}^{n \times p}$, the linear kernel is given by
-  $$
-  K(x, x') = \langle x, x'\rangle = \langle \Phi(x), \Phi(x')\rangle.
-  $$
-  The kernel matrix is given simply by $XX^T  \succeq 0$.  This
-  corresponds to the identity mapping: $\Phi(x) = x$. \pause
-
-  The homogeneous polynomial kernel,
-  $$
-  K(x, x') = \langle \Phi(x), \Phi(x')\rangle = \langle x, x' \rangle^d,
-  $$
-  corresponds to the mapping $\Phi(x) = [x_1^d, \ldots, x_p^d,
-  x_1^{d-1}x_2, \ldots, x_p^{d-1}x_{p-1}]^T \in \mathbb{R}^{d'},
-  \text{ where } d'=\binom{d+N-1}{d}$.
-\end{frame}
-
-\begin{frame}{Rooster/Pigeon Example}
-  \begin{center}
-    \resizebox{10.0cm}{!}{
-      \input{../friedman-test/img/power_birds.tex}
-    }
-  \end{center}
-\end{frame}
-
-\begin{frame}{Simulated Data}
-  Generate independent DNA sequences of length $N \sim \text{Pois}(100)$ according to the transition matrix
-  \begin{equation*}
-    M(p^*) = \bordermatrix{
-      ~ & A & C & T & G \cr
-      A & \frac{1-p^*}{3} & p^* & \frac{1-p^*}{3} & \frac{1-p^*}{3} \cr
-      C & \frac{1-p^*}{3} & \frac{1-p^*}{3} & p^* & \frac{1-p^*}{3} \cr
-      T & \frac{1-p^*}{3} & \frac{1-p^*}{3} & \frac{1-p^*}{3} & p^* \cr
-      G & p^* & \frac{1-p^*}{3} & \frac{1-p^*}{3} & \frac{1-p^*}{3} \cr
-    }
-  \end{equation*}
-  with stationary distribution $\begin{pmatrix}.25 & .25 & .25 & .25\end{pmatrix}$. \\ \pause
-  $p$ takes $p^* = .25$, and $q$ takes $p^* > .25$. \\ \pause
-  $p$ and $q$ generate similar numbers of $1$-mers, but $q$ can generate more AC, CT, TG, GA $2$-mers.
-\end{frame}
-
-\begin{frame}{MKL}
-  \begin{center}
-    \resizebox{10.0cm}{!}{
-      \input{../MKL/img/mkl_weights_star_dna.tex}
-    }
-  \end{center}
-\end{frame}
-
-\begin{frame}{MKL}
-  \begin{center}
-    \resizebox{10.0cm}{!}{
-      \input{../MKL/img/mkl_weights_star_dna2.tex}
-    }
-  \end{center}
-\end{frame}
-
-\begin{frame}{MKL}
-  \begin{center}
-    \resizebox{10.0cm}{!}{
-      \input{../MKL/img/dna_star_power.tex}
-    }
-  \end{center}
-\end{frame}
-
-\begin{frame}{Future Work}
-  \begin{itemize}
-  \item Generalize theory for higher dimensional settings and/or
-    non-linear scoring functions \pause
-  \item Develop similarities with Hotelling's $T^2$-test \pause
-  \item Explore performance on different types of data, in particular,
-    unstructured data such as images \pause
-  \item Heterogeneous data: optimal combinations of kernels
-    via SDPs, KL divergence \pause
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{References}
-  \bibliographystyle{ieeetr}
-  \bibliography{ncray}
-\end{frame}
+% \begin{frame}[allowframebreaks]{References}
+%   \bibliographystyle{ieeetr}
+%   \bibliography{ncray}
+% \end{frame}
 
 \end{document}
