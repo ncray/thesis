@@ -579,8 +579,39 @@ nullDistDNAStarPlot <- function(){
   myTikz("mkl_null_dist.tex", p1)
 }
 
-testNullManyKernels <- function(){
-  
+nullManyKernels <- function(r1, p, n, C, nKernels = 200){
+  Nperm <- 100
+  print(unlist(as.list(environment())))
+  RBF.v <- as.numeric(1:nKernels)
+  dat <- getDataDNAStar(r1 = r1, p = p, n = n)
+  l <- dat$l
+  u1 <- dat$u1
+  u2 <- dat$u2  
+  ldply(1:Nperm, function(x){
+    print(x)
+    l <- sample(dat$l)
+    dfMKL <- data.frame("r1" = r1, "p" = p, "n" = n, "C" = C, "nKernels" = nKernels,
+                        "FSMKL: 1" = compute(trainMKL)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = c(), mkl_norm = 1, C = C, linear = FALSE),
+                        "FSMKL: 2" = compute(trainMKL)(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = c(), mkl_norm = 2, C = C, linear = FALSE))
+    dfMKL
+  }, .parallel = parallel)
+}
+
+nullDistDNAStarPlot <- function(){
+  library(nortest)
+  system.time(dat <- mdply(expand.grid(C = c(.1, 1, 10), nKernels = c(5, 50, 500)), function(C, nKernels) nullManyKernels(4, .25, 50, C, nKernels)))
+  pvals <- ddply(dat, .(C, nKernels), function(df) laply(setdiff(1:ncol(dat), 1:5), function(i) ad.test(df[, i])$p.value))
+  pvals
+##        C nKernels          V1         V2
+## 1  0.1        5 0.589284134 0.57250013
+## 2  0.1       50 0.908121340 0.03866435
+## 3  0.1      500 0.572161172 0.37092784
+## 4  1.0        5 0.759093439 0.79377134
+## 5  1.0       50 0.684692807 0.39042774
+## 6  1.0      500 0.858306075 0.46772753
+## 7 10.0        5 0.645156688 0.72176043
+## 8 10.0       50 0.232147316 0.48075552
+## 9 10.0      500 0.006173857 0.13705019
 }
 
 

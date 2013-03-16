@@ -29,7 +29,7 @@
 
 \begin{document}
 \title[Topics in Two-Sample Testing]{Topics in Two-Sample Testing}
-\author[N. Ray with S. Holmes]{Nelson Ray \\
+\author[N. Ray]{Nelson Ray \\
   (joint work with Susan Holmes)}
 \institute[Stanford]{Stanford University}
 \date{\today}
@@ -51,7 +51,7 @@
   \item Friedman's two-sample test:
     leverage regression and classification techniques \pause
   \item Kernel methods for non-vectorial and heterogeneous data \pause
-  \item Univariate data and linear scoring functions: permutation
+  \item Univariate data and affine scoring functions: permutation
     $t$-test \pause
   \item Stein's method of exchangeable pairs for Berry--Esseen-type bound
   \end{itemize}
@@ -81,10 +81,10 @@
 \begin{frame}{Breast Cancer Study Questions}
   \begin{itemize}
   \item How do you deal with the data integration problem? \pause
-  \item Kernel methods via Friedman's procedure \pause
+  \item kernel methods via Friedman's procedure \pause
   \item Are there any differences (spatial, medical) between women who
     relapse and those who remain disease free? \pause
-  \item Two-sample tests
+  \item two-sample tests
   \end{itemize}
 \end{frame}
 
@@ -94,10 +94,8 @@
   $\{\mathbf{x}_i\}_{i=N+1}^{N+M}$ from $q(\mathbf{x})$ testing \\
   $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$ \pause
   \begin{enumerate}
-  \item Assign label $y_i = 1$ to the first group and $y_i = -1$ to
-    the second group. \pause
-  \item Apply a binary classification learning machine $f$ to the training
-    data to score the observations $\{s_i = f(\mathbf{x}_i)\}_1^{N+M}$. \pause
+  \item Label the first group $y_i = 1$ and the second group $y_i = -1$ . \pause
+  \item Score the observations $\{s_i := f(\mathbf{x}_i)\}_1^{N+M}$ with a learning machine $f$. \pause
   \item Calculate a univariate two-sample test statistic
     $T = T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$. \pause
   \item Conduct statistical inference based on the permutation null distribution of the above
@@ -128,7 +126,7 @@ Kernel methods allow us to lift ourselves up into an inner product space, where 
 
 \section{Kernel-based Tests}
 \begin{frame}{Kernel Methods}
-  The Kernel Trick (Aizerman et al. 1964)
+  The Kernel Trick (Aizerman et al. 1964) \pause
   \begin{itemize}
   \item Data $x_i$ in a general set $\mathcal{X}$. \pause
   \item Define a feature map $\phi : \mathcal{X} \to V$, where $V$ is an inner product space. \pause
@@ -159,12 +157,12 @@ series "
 \end{frame}
 
 \begin{frame}{The Spectrum Kernel}
-  The Spectrum Kernel (Leslie 2002) \\
+  The Spectrum Kernel (Leslie 2002) \\ \pause
   Compares two strings based on the their length $k$ contiguous
   subsequences ($k$-mers). \pause
   \begin{itemize}
     \item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$. \pause
-    \item $\phi_2(x) = [\#_{\text{aa}}(x) \;\; \#_{\text{ab}}(x) \;\; \#_{\text{ac}}(x) \;\; \ldots ]$ \pause
+    \item $\phi_2(x) = [\#_{\text{aa}}(x), \#_{\text{ab}}(x), \#_{\text{ac}}(x), \ldots ]$ \pause
     \item $\mathcal{V} = \mathbb{N}^{|\mathcal{A}|^k}$ \pause
     \item $K_k(x,y) = \langle \phi_k(x), \phi_k(y) \rangle$
   \end{itemize}
@@ -172,7 +170,7 @@ series "
 
 \begin{frame}{Support Vector Machines}
 $\ell_1$-regularized (soft-margin) support vector classification problem
-(Vapnik and Cortes, 1995):
+(Vapnik and Cortes, 1995): \pause
 \begin{equation*}
 \begin{aligned}
 & \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
@@ -241,7 +239,7 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   \begin{itemize}
     \item $\mathcal{X} = \mathbb{R}^{n}$ \pause
     \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$ \pause
-    \item $\langle \phi(x), \phi(y) \rangle$ is $\mathcal{O}(n^2)$ \pause
+    \item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$ \pause
     \item $\mathcal{V} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$ \pause
     \item $K_d(x,y) = (x^T y  + c)^d$ is $\mathcal{O}(n)$
   \end{itemize}
@@ -341,7 +339,7 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 
   For what kernels $K$ do we have
   \begin{equation*}
-    \sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
+    \sum_{i=1}^m y_i \alpha_i K(x, x_i) + b = cx + d?
   \end{equation*} \\ \pause
 
   Sufficient condition: $K(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
@@ -377,7 +375,7 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{Other Results}
-  \begin{theorem}[Berry--Esseen (1941, 1942)]
+  \begin{theorem}[Berry--Esseen 1941, 1942]
   Suppose $X_1, \ldots, X_n$ are i.i.d. random variables with
   $\E X_i = 0$, $\E X_i^2 = \sigma^2 > 0$, and $\E |X_i|^3 = \rho
   < \infty$.  Let $F_n(x)$ denote the CDF of standardized sample mean
@@ -391,7 +389,7 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{Other Results}
-  \begin{theorem}[Hoeffding (1951), Stein (1986)]
+  \begin{theorem}[Hoeffding 1951, Stein 1986]
     Let $A = \{a_{ij}\}_{i, j \in \{1, \ldots, n\}}$ be a square array of
       numbers such that $\sum_j a_{ij} = 0$ for all $i$, $\sum_i
       a_{ij} = 0$ for all $j$, and $\sum_i \sum_j a_{ij}^2 = n - 1$.
@@ -487,7 +485,7 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 
 \begin{frame}{Simulated Bounds}
   \begin{center}
-    \resizebox{12.0cm}{!}{
+    \resizebox{9.0cm}{!}{
       \input{../simulations/img/orig_rate.tex}
     }
   \end{center}
@@ -495,17 +493,17 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 
 \begin{frame}{Simulated Bounds (Improved Rate)}
   \begin{center}
-    \resizebox{10.0cm}{!}{
+    \resizebox{9.0cm}{!}{
       \input{../simulations/img/better_rate.tex}
     }
   \end{center}
   \pause
-  When ${\bf u} = \{i\}_{i=1}^{i=2N}, \frac{.41 \delta^3}{\lambda}N^{1/2} \to .205(16\sqrt{6}))^3$
+  When ${\bf u} = \{i\}_{i=1}^{i=2N}, \frac{.41 \delta^3}{\lambda}N^{1/2} \to .205(16\sqrt{6})^3$
 \end{frame}
 
 \begin{frame}{Behavior of $\delta$}
   \begin{center}
-    \resizebox{10.0cm}{!}{
+    \resizebox{9.0cm}{!}{
       \input{../simulations/img/delta_plot.tex}
     }
   \end{center}
