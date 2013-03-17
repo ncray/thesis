@@ -1,0 +1,416 @@
+\chapter{Stein's Method Proofs}
+\label{A:steins-method-app}
+\subsection{Proof of Theorem~\ref{T:HCCLT}}
+
+\begin{proof}
+  In order to construct our exchangeable pair, we introduce the
+  ordered pair of random variables $(I, J)$ independent of $\Pi$ that
+  represents a uniformly at random draw from the set of all non-null
+  transpositions:
+  \begin{equation}
+    P(I = i, J = j) = \frac{1}{n(n-1)} \quad i, j \in \{1, \ldots, n\}, i \neq j.
+  \end{equation}
+  Define the random permutation $\Pi'$ by
+  \begin{equation}
+    \Pi'(i) = \Pi \circ (I, J) =
+    \begin{cases}
+      \Pi(J) \quad i = I \\
+      \Pi(I) \quad i = J \\
+      \Pi(i) \quad \text{else}.
+    \end{cases}
+  \end{equation}
+  We construct our exchangeable pair by defining
+  \begin{equation}
+    W' = \sum_{i=1}^n a_{i\Pi'(i)} = W
+    - a_{I \Pi(I)} + a_{I \Pi(J)} - a_{J \Pi(J)} + a_{J \Pi(I)}.
+  \end{equation}
+  We now verify the contraction property:
+  \begin{align*}
+    \E[W - W' | \Pi] &=
+    \E[a_{I \Pi(I)} - a_{I \Pi(J)} + a_{J \Pi(J)} - a_{J \Pi(I)} | \Pi] \\
+    & = \frac{2}{n}\sum_{i=1}^n a_{i\Pi(i)} -
+    \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i \neq j}^n a_{i\Pi(j)} \\
+    &= \frac{2}{n} W -
+    \frac{2}{n}\frac{1}{n-1}
+    \left [
+      \sum_{i,j=1}^n a_{i\Pi(j)} - \sum_{i}^n a_{i\Pi(i)}
+    \right ] \\
+    &= \frac{2}{n} W + \frac{2}{n}\frac{1}{n-1}W -
+    \frac{2}{n}\frac{1}{n-1}
+    \left [
+      \sum_{i=1}^n \sum_{j=1}^n a_{i\Pi(j)}
+    \right ] \\
+    &= \frac{2}{n} W \left (1 + \frac{1}{n-1} \right ) - 0 \\
+    &= \frac{2}{n-1} W
+  \end{align*}
+  This satisfies our contraction property with
+  \begin{equation}
+    \lambda = \frac{2}{n-1}.
+  \end{equation}
+
+  To bound the variance component, compute
+  \begin{equation}
+    \label{E:condexp-diff-sq}
+    \begin{split}
+      \E [(W-W')^2 | \Pi]
+      &= \E[(a_{I \Pi(I)} - a_{I \Pi(J)} + a_{J \Pi(J)} - a_{J \Pi(I)})^2 | \Pi] \\
+      &= \E[ a_{I \Pi(I)}^2 + a_{J \Pi(J)}^2 + a_{I \Pi(J)}^2 + a_{J \Pi(I)}^2 \\
+      &\quad - 2a_{I \Pi(I)} a_{I \Pi(J)} - 2a_{J \Pi(J)} a_{J \Pi(I)}
+      - 2a_{I \Pi(I)} a_{J \Pi(I)} - 2a_{J \Pi(J)} a_{I \Pi(J)} \\
+      &\quad + 2a_{I \Pi(I)} a_{J \Pi(J)} + 2a_{I \Pi(J)} a_{J \Pi(I)} | \Pi ] \\
+      &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2
+      + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}^2 \\
+      &\quad - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{i \Pi(j)}
+      - \frac{4}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(i)} \\
+      &\quad + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(i)}a_{j \Pi(j)}
+      + \frac{2}{n}\frac{1}{n-1}\sum_{i,j=1, i\neq j}^n a_{i \Pi(j)}a_{j \Pi(i)} \\
+      &= \frac{2}{n} \sum_{i=1}^n a_{i \Pi(i)}^2
+      + \frac{2}{n}\frac{1}{n-1} \left (
+        \sum_{i,j=1}^n a_{i \Pi(j)}^2 - \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) \\
+      &\quad - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n \left ( a_{i\Pi(i)}
+        \sum_{j=1}^n \left ( a_{i\Pi(j)} + a_{j\Pi(i)} \right ) - 2 a_{i \Pi(i)}^2
+      \right ) \\
+      &\quad + \frac{2}{n}\frac{1}{n-1} \left ( \sum_{i,j=1, i\neq j}^n
+        a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}  \right ) \\
+      &= \frac{2}{n}\left ( 1 - \frac{1}{n-1} \right )  \sum_{i=1}^n a_{i \Pi(i)}^2
+      + \frac{2}{n} \\
+      &\quad + \frac{8}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
+      &\quad + \frac{2}{n}\frac{1}{n-1} \sum_{i=1}^n \sum_{j=1}^n \left (
+        a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}
+      \right ) - \frac{4}{n}\frac{1}{n-1} \sum_{i=1}^n a_{i \Pi(i)}^2 \\
+      &= \frac{2}{n} + \frac{2(n+2)}{n(n-1)}\sum_{i=1}^n a_{i \Pi(i)}^2 + \frac{2}{n(n-1)}
+      \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)})
+    \end{split}
+  \end{equation}
+
+  From (\ref{E:condexp-diff-sq}) and corollary~\ref{C:sum_variance},
+  \begin{equation}
+    \label{E:condexp-diff-sq2}
+    \begin{split}
+      \E [(W-W')^2 | \Pi] &= \var \left ( \frac{2(n+2)}{n(n-1)}\sum_{i=1}^n a_{i \Pi(i)}^2
+      \right . \\
+      &\quad \left . + \frac{2}{n(n-1)}\sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} +
+        a_{i\Pi(j)}a_{j\Pi(i)}) \right ) \\
+      &\leq 2 \left ( \frac{4(n+2)^2}{n^2(n-1)^2} \var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2
+        \right ) + \right . \\
+      &\quad \left .\frac{4}{n^2(n-1)^2} \var \left ( \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} +
+          a_{i\Pi(j)}a_{j\Pi(i)}) \right ) \right ) \\
+      &\leq \frac{32}{n^2}\var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) +
+      \frac{32}{n^4} \var \left ( \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} +
+        a_{i\Pi(j)}a_{j\Pi(i)}) \right )
+    \end{split}
+  \end{equation}
+  for $n \geq 2$ since $n-1 \geq n/2 \implies \frac{1}{(n-1)^2} \leq \frac{4}{n^2}$ for $n \geq 2$.
+
+  First, we address the first term in (\ref{E:condexp-diff-sq2}):
+  \begin{equation*}
+    \var \left ( \sum_{i=1}^n a_{i \Pi(i)}^2 \right ) = \sum_{i=1}^n \var(a_{i \Pi(i)}^2) +
+    \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2),
+  \end{equation*}
+  with
+  \begin{align*}
+    \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2)
+    &= \sum_{i,j=1, i\neq j}^n \left ( \frac{1}{n(n-1)} \sum_{k,l=1, k\neq l}^n a_{ik}^2 a_{jl}^2 -
+      \left ( \frac{1}{n} \sum_k a_{ik}^2 \right ) \left ( \frac{1}{n} \sum_l a_{jl}^2 \right )
+    \right ) \\
+    &= \sum_{i,j=1, i\neq j}^n \left ( \frac{1}{n(n-1)} \sum_{k,l=1}^n a_{ik}^2 a_{jl}^2
+      - \frac{1}{n^2} \sum_k \sum_l a_{ik}^2 a_{jl}^2
+      - \frac{1}{n(n-1)} \sum_k a_{ik}^2 a_{jk}^2 \right ) \\
+    &= \frac{1}{n^2(n-1)} \sum_{i,j=1, i\neq j}^n \sum_{k,l=1}^n a_{ik}^2 a_{jl}^2
+    - \frac{1}{n(n-1)} \sum_{i,j=1, i\neq j}^n \sum_k a_{ik}^2 a_{jk}^2 \\
+    &\leq \frac{(n-1)^2}{n^2(n-1)} \\
+    &\leq \frac{1}{n}
+  \end{align*}
+
+  It will be convenient to express our bound as a multiple of $\sum_{i,j=1}^n a_{i,j}^4$, so we
+  establish a lower bound on that quantity.  Our scaling is such that $\sum_{i,j=1}^n a_{i,j}^2 =
+  n-1$, so if we write ${\bf a} := [a_{11}^2 \; a_{12}^2 \ldots a_{nn}^2]^T$ out as a vector,
+  ${\bf a}^T{\bf 1} = n-1$.  By Cauchy-Schwarz,
+  \begin{align*}
+    (n - 1)^2 &= ({\bf a}^T{\bf 1})^2 \\
+    &\leq ||{\bf a}||_2^2 ||{\bf 1}||_2^2 \\
+    &= n^2 \sum_{i,j=1}^n a_{i,j}^4.
+  \end{align*}
+  Therefore, $\sum_{i,j=1}^n a_{i,j}^4 \geq 1$, so
+  \begin{equation}
+    \sum_{i,j=1, i\neq j}^n \cov(a_{i \Pi(i)}^2, a_{j \Pi(j)}^2) \leq \frac{1}{n} \sum_{i,j=1}^n a_{i,j}^4.
+  \end{equation}
+
+  For the second term in (\ref{E:condexp-diff-sq2}) we again apply corollary~\ref{C:sum_variance}:
+  \begin{equation*}
+    \var \left ( \sum_{i,j=1, i\neq j}^n (a_{i\Pi(i)}a_{j\Pi(j)} + a_{i\Pi(j)}a_{j\Pi(i)}) \right )
+    < 2 \var \left ( X \right ) +
+    2 \var \left ( Y \right ),
+  \end{equation*}
+  where $X = \sum_{i,j=1, i\neq j}^n a_{i\Pi(i)}a_{j\Pi(j)}$ and $Y = \sum_{i,j=1, i\neq j}^n
+  a_{i\Pi(j)}a_{j\Pi(i)}$.
+  We note that
+  \begin{equation}
+    X = \sum_{i=1}^n a_{i\Pi(i)} \sum_{j=1, j\neq i}^n a_{j\Pi(j)} = W^2 - \sum_{i=1}^n a_{i\Pi(i)}^2.
+  \end{equation}
+
+  TODO: Finish including proof of Hoeffing's Combinatorial Central
+  Limit Theorem.  There's still that one bound that I cannot
+  rederive.  Well, I can just cite Stein.
+\end{proof}
+
+\subsection{Proof of  Lemma~\ref{L:stein-difference-second-moment-generalization-bound}}
+\begin{proof}
+  Let
+  \begin{equation*}
+    f(w) =
+    \begin{cases}
+      -3a / 2 &\quad w \leq w \leq z - 2a, \\
+      w - z + a / 2 &\quad z - 2a \leq w \leq z + a, \\
+      3a / 2 &\quad w \geq z + a.
+    \end{cases}
+  \end{equation*}
+  Since
+  \begin{equation*}
+    \E W f(W) \leq \E [|W| |f(W)|] \leq \frac{3a}{2} \E |W| \leq \frac{3a}{2} \sqrt{\E W^2},
+  \end{equation*}
+  we have
+  \begin{align*}
+    3a \lambda \sqrt{\E W^2} &\geq 2\lambda \E WF(W) \\
+    &= \E [(W-W')(f(W)-f(W'))] + 2 \lambda \E f(W)R \quad \text{by } (\ref{eq:expectation-w-f(w)})
+  \end{align*}
+  We also bound the term involving the remainder
+  \begin{equation*}
+    -2 \lambda \E f(W)R  \leq 2 \lambda \E |f(W)| |R| \leq 3a \lambda \E |R|
+  \end{equation*}
+  so that
+  \begin{align*}
+    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E (W-W')(f(W)-f(W')) \\
+    &= \E \left ( (W-W') \int_{W'-W}^{0} f'(W+t)dt \right ) \\
+    &\geq \E \left( (W-W') \int_{W'-W}^0 \mathbf{1}_{\{|t| \leq a\}}
+    \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) dt \right ).
+  \end{align*}
+  Since $f'(W + t) = \mathbf{1}_{\{z - 2a \leq W + t \leq z + a \}}$,
+  \begin{equation*}
+    \mathbf{1}_{\{|t| \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) =
+    \mathbf{1}_{\{|t| \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}}.
+  \end{equation*}
+  Therefore,
+  \begin{align*}
+    3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq
+    \E \left( (W-W') \int_{W'-W}^0 \mathbf{1}_{\{|t| \leq a\}} dt
+    \mathbf{1}_{\{z - a \leq W \leq z\}} \right ) \\
+    &= \E(|W-W'| \min (a, |W-W'|) \mathbf{1}_{\{z - a \leq W \leq z\}}) \\
+    &\geq \E((W-W')^2 \mathbf{1}_{\{0 \leq W - W' \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}}) \\
+    &= \E((W-W')^2 \mathbf{1}_{\{-a \leq W' - W \leq 0\}} \mathbf{1}_{\{z - a \leq W \leq z\}}).
+  \end{align*}
+  The proof of the second claim proceeds similarly:
+    \begin{align*}
+      3a \lambda (\sqrt{\E W^2} + \E |R|) &\geq \E (W-W')(f(W)-f(W')) \\
+      &= \E (W'-W)(f(W')-f(W)) \\
+      &= \E \left ( (W'-W) \int_{0}^{W'-W} f'(W+t)dt \right ) \\
+      &\geq \E \left( (W'-W) \int_{0}^{W'-W} \mathbf{1}_{\{|t| \leq a\}}
+      \mathbf{1}_{\{z - a \leq W \leq z\}} f'(W + t) dt \right ) \\
+      &= \E \left( (W'-W) \int_{0}^{W'-W} \mathbf{1}_{\{|t| \leq a\}} dt
+      \mathbf{1}_{\{z - a \leq W \leq z\}} \right ) \\
+      &= \E(|W'-W| \min (a, |W'-W|) \mathbf{1}_{\{z - a \leq W \leq z\}}) \\
+      &\geq \E((W'-W)^2 \mathbf{1}_{\{0 \leq W - W' \leq a\}} \mathbf{1}_{\{z - a \leq W \leq z\}}).
+  \end{align*}
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{T:main}}
+\begin{proof}
+  For $z \in \mathbb{R}$ and $\alpha > 0$ let $f$ be the solution to
+  the Stein equation
+  \begin{equation}
+    f'(w) - wf(w) = h_{z,\alpha}(w) - \Phi(z)
+  \end{equation}
+  for the smoothed indicator
+  \begin{equation}
+    h_{z,\alpha}(w) =
+    \begin{cases}
+      1 & w \leq z \\
+      1 + \frac{z-w}{\alpha} & z < w \leq z + \alpha \\
+      0 & w > z + \alpha.
+    \end{cases}
+  \end{equation}
+
+  Therefore,
+  \begin{equation}
+    \label{eq:triple-bound}
+    \begin{split}
+      |P(W \leq z) - \Phi(z)| &= |\E [(f'(W)-Wf(W))] | \\
+      &= \left | \E \left [
+          f'(W) - \frac{(W'-W)(f(W')-f(W))}{2\lambda} +f(W)R
+        \right ]\right | \\
+      &= \left | \E \left [f'(W)\left (1-\frac{(W'-W)^2}{2\lambda}\right) \right . \right . \\
+      &\quad + \left . \left .
+          \frac{f'(W)(W'-W)^2-(f(W')-f(W))(W'-W)}{2\lambda} + f(W)R
+        \right ] \right | \\
+      &:= | \E [J_1 + J_2 + J_3] | \\
+      &\leq |\E J_1| + |\E J_2| + |\E J_3|.
+    \end{split}
+  \end{equation}
+
+  It is known from Chen and Shao (2004) that for all $w \in \mathbb{R}, 0 \leq f(w) \leq 1$ and
+  $|f'(w)| \leq 1$.  Then
+  \begin{equation}
+    |\E J_3| \leq \E |J_3| = \E |f(W)R| \leq \E |R|
+  \end{equation}
+  and
+  \begin{equation}
+    \label{E:J1}
+    \begin{split}
+      |\E J_1 | &= \left | \E \left [f'(W)\left (1-\frac{(W'-W)^2}{2\lambda} \right ) \right ]
+      \right | \\
+      &\leq \E \left [\left | f'(W)\left (1-\frac{(W'-W)^2}{2\lambda} \right ) \right | \right ] \\
+      &\leq \E \left [ \left | \left (1-\frac{(W'-W)^2}{2\lambda} \right )  \right | \right ] \\
+      &= \frac{1}{2\lambda} \E [|2\lambda - \E [(W'-W)^2|W]|] \\
+      &= \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W] +
+      2\lambda (1 - \E W^2 + \E WR)|] \\
+      &\leq \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W]|] +
+      \E |1 - \E W^2 + \E WR|
+    \end{split}
+  \end{equation}
+  Note that
+  \begin{equation}
+    \E [\E [(W'-W)^2|W]] = \E \Delta^2 = 2 \lambda (\E W^2 - \E WR),
+  \end{equation}
+  so
+  \begin{equation}
+    \frac{1}{2\lambda} \E [|2\lambda (\E W^2 - \E WR) - \E [(W'-W)^2|W]|] \leq
+    \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])}.
+  \end{equation}
+  Combining with \eqref{E:J1},
+  \begin{equation}
+    \begin{split}
+      |\E J_1 | &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} +
+      \E |1 - \E W^2 + \E WR| \\
+      &\leq \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} + \E |1 - \E W^2| + \E |WR| \\
+    \end{split}
+  \end{equation}
+
+  Lastly, we bound the second term,
+  \begin{equation}
+    \begin{split}
+      J_2 &= \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (f'(W)-f'(t)) dt \\
+      &= \frac{1}{2 \lambda}(W'-W)\int_W^{W'}\int_t^Wf''(u) du dt \\
+      &= \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (W'-u)f''(u) du.
+    \end{split}
+  \end{equation}
+
+  To show the final equality, consider separately the cases $W \leq W'$ and $W' \leq W$.  For the
+  former,
+  \begin{equation*}
+    \begin{split}
+      -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_W^t f''(u) du dt
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_u^{W'} f''(u) dt du \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W}^{W'} (W'-u)f''(u) du.
+    \end{split}
+  \end{equation*}
+  For the latter,
+  \begin{equation*}
+    \begin{split}
+      \frac{1}{2 \lambda}(W'-W)\int_{W}^{W'}\int_t^W f''(u) du dt
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}\int_t^{W} f''(u) du dt \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}\int_{W'}^{u} f''(u) dt du \\
+      &= -\frac{1}{2 \lambda}(W'-W)\int_{W'}^{W}(u-W')f''(u) du.
+    \end{split}
+  \end{equation*}
+
+  Since $W$ and $W'$ are exchangeable,
+  \begin{equation}
+    \begin{split}
+      |\E J_2| &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} (W'-u)f''(u) du
+        \right ] \right | \\
+      &= \left | \E \left [ \frac{1}{2 \lambda}(W'-W)\int_W^{W'} \left ( \frac{W+W'}{2}-u \right )
+        f''(u) du \right ] \right | \\
+    &\leq \left | \E \left [ ||f''|| \frac{1}{2\lambda}|W'-W|\int_{\min(W,W')}^{\max(W,W')} \left |
+          \frac{W+W'}{2} -u \right | du \right ] \right | \\
+    &= \left | \E \left [ ||f''|| \frac{1}{2\lambda}\frac{|W'-W|^3}{4}
+      \right ] \right | \\
+    &\leq \frac{\E |W'-W|^3}{4 \alpha \lambda},
+    \end{split}
+  \end{equation}
+  where the final inequality follows from the fact that $|h'_{z,\alpha}(x)|\leq 1/\alpha$ for all $x
+  \in \mathbb{R}$ and Lemma~\ref{L:stein-eq-sol-bound}.
+
+  Collecting the bounds, we obtain
+  \begin{equation}
+    \begin{split}
+      P(W \leq z) &\leq \E h_{z,\alpha}(W) \\
+      &\leq Nh_{z,\alpha} + \frac{\E |W'-W|^3}{4 \alpha \lambda}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |1 - \E W^2| + \E |WR| + \E |R| \\
+      &\leq \Phi (z) + \frac{\alpha}{\sqrt{2\pi}} + \frac{\E |W'-W|^3}{4 \alpha \lambda}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
+    \end{split}
+  \end{equation}
+  The minimizer of the expression is
+  \begin{equation}
+    \alpha = \frac{(2\pi)^{1/4}}{2}\sqrt{\frac{\E |W'-W|^3}{\lambda}}.
+  \end{equation}
+  Plugging this in, we get the upper bound
+  \begin{equation}
+    \begin{split}
+      P(W \leq z) - \Phi(z) &\leq (2\pi)^{-1/4} \sqrt{\frac{\E |W'-W|^3}{\lambda}}
+      + \frac{1}{2\lambda} \sqrt{\var (\E [(W'-W)^2|W])} \\
+      &\quad + |\E W^2 - 1| + \E |WR| + \E |R|
+    \end{split}
+  \end{equation}
+  Proving the corresponding lower bound in a similar manner completes the proof of the theorem.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{T:better-rate}}
+\begin{proof}
+  Now we bound $|\E J_2|$ with $\delta \geq 0$.  From (\ref{eq:triple-bound}),
+  \begin{align*}
+    2 \lambda J_2 &= f'(W)(W'-W)^2-(f(W')-f(W))(W'-W) \\
+    &= (W'-W) \int_0^{W'-W}(f'(W) - f'(W+t)) dt \\
+    &= (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W}(f'(W)-f'(W+t)) dt.
+  \end{align*}
+  Using (\ref{eq:stein-eq}), $f'(W) = Wf(W) + \mathbf{1}_{\{w \leq z\}} - \Phi(z)$ and
+  $f'(W + t) = (W + t)f(W + t) + \mathbf{1}_{\{w + t \leq z\}} - \Phi(z)$. Therefore,
+  \begin{align*}
+    2 \lambda J_2 &= (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W}(Wf(W)-(W+t)f(W+t)) dt \\
+    &\quad + (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} - \mathbf{1}_{\{W + t \leq z\}}) dt \\
+    &\equiv J_{21} + J_{22}.
+  \end{align*}
+  We apply (\ref{L:stein-eq-sol-bound2}) with $w = W$, $u = 0$, and $v = t$ to get
+  \begin{align*}
+    |\E J_{21}| &\leq \left |
+    (W'-W) \mathbf{1}_{|W'-W| \leq \delta} \int_0^{W'-W} \left( |W| + \frac{\sqrt{2 pi}}{4} \right ) |t| dt
+    \right | \\
+    &\leq \E \left [
+      \frac{1}{2} |W' - W|^3 \mathbf{1}_{|W'-W| \leq \delta} \left( |W| + \frac{\sqrt{2 pi}}{4} \right )
+    \right ] \\
+    &\leq \frac{1}{2} \delta^3 \left ( 1 + \frac{\sqrt{2 \pi}}{4} \right ) \\
+    &\leq .82 \delta^3.
+  \end{align*}
+
+  Now for $J_{22}$, we consider the two cases according to the sign of $W'-W$.  When $W' - W \leq 0$, we have
+  \begin{align*}
+    \E J_{22}\mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} &= \E \left [
+      (W'-W) \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} -
+      \mathbf{1}_{\{W + t \leq z\}}) dt \right ] \\
+    &= \E \left [
+      (W-W') \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \int_{W'-W}^0 (\mathbf{1}_{\{z \leq W \leq z - t\}})
+      dt \right ] \\
+    &\leq \E \left [
+      (W-W')^2 \mathbf{1}_{\{ \delta \leq W'-W \leq 0 \}} \mathbf{1}_{\{ z - \delta \leq W \leq z \}} \right ] \\
+    &\leq 3 \delta \lambda (\sqrt{\E W^2} + \E |R|) \quad \text{by (\ref{L:stein-difference-second-moment-generalization-bound})}
+  \end{align*}
+  Similarly, when $W' - W > 0$,
+  \begin{align*}
+    \E J_{22}\mathbf{1}_{\{ 0 < W'-W \leq \delta \}} &= \E \left [
+      (W'-W) \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \int_0^{W'-W}(\mathbf{1}_{\{W \leq z\}} -
+      \mathbf{1}_{\{W + t \leq z\}}) dt \right ] \\
+    &= \E \left [
+      (W'-W) \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \int_0^{W'-W} \mathbf{1}_{\{ z - t < W \leq z\}} dt \right ] \\
+    &\leq \E \left [
+      (W'-W)^2 \mathbf{1}_{\{ 0 < W'-W \leq \delta \}} \mathbf{1}_{\{ z - \delta \leq W \leq z \}} \right ] \\
+    &\leq 3 \delta \lambda (\sqrt{\E W^2} + \E |R|) \quad \text{by (\ref{L:stein-difference-second-moment-generalization-bound})}
+  \end{align*}
+  Therefore,
+  \begin{align*}
+    |\E J_{2}| &\leq \frac{1}{2\lambda}(|\E J_{21}| + |\E J_{22}|) \\
+    &\leq \frac{.41\delta^3}{\lambda} + 3\delta (\sqrt{\E W^2} + \E |R|).
+  \end{align*}
+  The result follows from (\ref{eq:triple-bound}), noting that $J_1$ and $J_3$ stay the same.
+\end{proof}

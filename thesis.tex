@@ -18,6 +18,7 @@
 \usepackage{perry-thesis-macros}
 \usepackage{tikz}
 \usepackage{mathrsfs}
+\usepackage{unicode-math} %to fix lualatex black bug http://tex.stackexchange.com/questions/61952/problem-compiling-some-math-using-lualatex
 %\usepackage{breqn} %because \left and \right can't go on multiple lines
 
 \DeclareGraphicsExtensions{.png,.pdf,.tex}
@@ -62,6 +63,8 @@
   {\thesischapter{simulations}},
   {\thesischapter{friedman-test}},
   {\thesischapter{MKL}},
+  {\thesischapter{auxiliary-app}},
+  {\thesischapter{steins-method-app}},
   bibliography
 }
 
@@ -79,10 +82,15 @@
 \tablespagefalse
 \afterpreface
 
-%\includechapter{steins-method}
+\includechapter{steins-method}
 %\includechapter{stein-proof}
 %\includechapter{simulations}
-\includechapter{friedman-test}
-\includechapter{MKL}
+%\includechapter{friedman-test}
+%\includechapter{MKL}
+
+\appendix
+\includechapter{auxiliary-app}
+\includechapter{steins-method-app}
+
 \include{bibliography}
 \end{document}

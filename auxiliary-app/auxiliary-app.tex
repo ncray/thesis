@@ -1,0 +1,138 @@
+\chapter{Auxiliary Results}
+\label{A:auxiliary-app}
+
+The $c_r$-inequality and following corollary will provide useful
+bounds to come.
+\begin{theorem}[The $c_r$-inequality]
+  \label{T:c_r-inequality}
+  Let $X$ and $Y$ be random variables and $r > 0$.  Suppose that
+  $\E|X|^r < \infty$ and $\E|Y|^r < \infty$.  Then
+  \begin{equation}
+    \E|X + Y|^r < c_r(\E|X|^r+\E|Y|^r),
+  \end{equation}
+  where $c_r = 1$ when $r \leq 1$ and $c_r = 2^{r-1}$ when $r \geq 1$.
+\end{theorem}
+
+\begin{corollary}
+  \label{C:sum_variance}
+  Suppose that $\var(X) < \infty$ and $\var(Y) < \infty$.  Then
+  \begin{equation}
+    \var(X + Y) < 2(\var(X)+\var(Y)).
+  \end{equation}
+\end{corollary}
+\begin{proof}
+  This follows immediately by applying Theorem~\ref{T:c_r-inequality}
+  to the centered random variables $X' = X - \E X$ and $Y' = Y -
+  \E Y$.
+\end{proof}
+
+\begin{lemma}
+  \label{L:antisymmetric}
+  If $(W, W')$ is an exchangeable pair, then $\E g(W, W') = 0$ for all antisymmetric
+  measurable functions such that the expected value exists.
+\end{lemma}
+
+Here is a slight generalization of Lemma 2.7 from \cite{chen2010normal}:
+\begin{lemma}
+  Let $(W, W')$ be an approximate Stein pair and $\Delta = W - W'$.  Then
+  \begin{equation}
+    \E W = \E R \quad \text{ and } \quad \E \Delta^2 = 2 \lambda \E W^2 - 2\lambda \E WR
+    \quad \text{ if } \E W^2 < \infty.
+  \end{equation}
+  Furthermore, when $\E W^2 < \infty$, for every absolutely continuous function $f$ satisfying
+  $|f(w)| \leq C(1 + |w|)$, we have
+  \begin{equation}
+    \label{eq:expectation-w-f(w)}
+    \E Wf(W) = \frac{1}{2\lambda} \E (W-W')(f(W)-f(W')) + \E f(W)R.
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  From (\ref{D:approx-stein-pair}) we have
+  \begin{equation*}
+    \E [\E [W-W'|W]] = \E \lambda (W - R) = \lambda \E W - \lambda \E R.
+  \end{equation*}
+  We also have
+  \begin{equation*}
+    \E [\E [W-W'|W]] = \E W - \E [\E [W' | W]] = \E W - \E W' = 0
+  \end{equation*}
+  using exchangeability.  Equating the two expressions yields
+  \begin{equation*}
+    \E W = \E R
+  \end{equation*}
+
+  As an intermediate computation,
+  \begin{equation}
+    \label{E:EW'W}
+    \begin{split}
+      \E W'W &= \E [\E [W'W|W]] \\
+      &= \E [W \E [W'|W]] \\
+      &= \E [W ((1-\lambda)W+\lambda R)] \quad \text{ from } \eqref{D:approx-stein-pair} \\
+      &= (1-\lambda)\E W^2 + \lambda \E WR.
+    \end{split}
+  \end{equation}
+  Then
+  \begin{equation}
+    \begin{split}
+      \E \Delta^2 &= \E (W-W')^2 \\
+      &= \E W^2 + \E W'^2 - 2\E W'W \\
+      &= 2 \E W^2 - 2 ((1-\lambda)\E W^2 + \lambda \E WR) \quad \text{ from } \eqref{E:EW'W}\\
+      &= 2 \lambda \E W^2 - 2\lambda \E WR.
+    \end{split}
+  \end{equation}
+
+  By the linear growth assumption on $f$, $\E g(W, W')$ exists for the antisymmetric function
+  $g(x,y) = (x-y)(f(y)+f(x))$.  By Lemma~\ref{L:antisymmetric},
+  \begin{equation*}
+    \begin{split}
+      0 &= \E (W-W')(f(W')+f(W)) \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E f(W)(W-W') \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E [f(W)\E [(W-W')|W]] \\
+      &= \E (W-W')(f(W')-f(W)) + 2\E f(W)(\lambda (W-R)).
+    \end{split}
+  \end{equation*}
+  Rearranging the expression yields
+  \begin{equation}
+    \E Wf(W) = \frac{1}{2\lambda} \E (W-W')(f(W)-f(W')) + \E f(W)R.
+  \end{equation}
+\end{proof}
+
+This is just a small part of Lemma 2.4 from \cite{chen2010normal}:
+\begin{lemma}
+  \label{L:stein-eq-sol-bound}
+  For a given function $h: \mathbb{R} \to \mathbb{R}$, let $f_h$ be the solution to the Stein
+  equation.  If $h$ is absolutely continuous, then
+  \begin{equation}
+    ||f_h|| \leq 2 ||h'||.
+  \end{equation}
+\end{lemma}
+
+Lemma 2.2 from \cite{chen2010normal}:
+\begin{lemma}
+  \label{L:stein-eq-sol}
+  For fixed $z \in \mathbb{R}$ and $\Phi(z) = P(Z \leq z)$, the unique bounded solution
+$f_z(w)$ of the equation
+  \begin{equation}
+    \label{eq:stein-eq}
+    f'(w) - wf(w) = \mathbf{1}_{\{w \leq z\}} - \Phi(z)
+  \end{equation}
+  is given by
+  \begin{equation}
+    \label{eq:fz}
+    f_z(w) =
+    \begin{cases}
+      \sqrt{2 \pi} e^{w^2/2} \Phi(w)[1-\Phi(z)] \quad \text{if } w \leq z \\
+      \sqrt{2 \pi} e^{w^2/2} \Phi(z)[1-\Phi(w)] \quad \text{if } w > z. \\
+    \end{cases}
+  \end{equation}
+\end{lemma}
+
+Part of Lemma 2.3 from \cite{chen2010normal}:
+\begin{lemma}
+  \label{L:stein-eq-sol-bound2}
+  Let $z \in \mathbb{R}$ and let $f_z$ as in (\ref{eq:fz})
+    Then
+    \begin{equation*}
+      |(w + u)f_z(w + u) - (w + v)f_z(w + v)| \leq
+      (|w| + \sqrt{2 \pi} / 4)(|u| + |v|).
+    \end{equation*}
+\end{lemma}
