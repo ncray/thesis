@@ -43,7 +43,7 @@ ARCPlot <- ggplot(ARCDF, aes(T, Tprime)) +
   geom_line(aes(y = (1 - 2 / N) * T)) +
   xlab("$T_{\\Pi}$") +
   ylab("$T'_{\\Pi}$") +
-  ggtitle("Approximate Regression Condition with $(1-\\lambda)T_{\\Pi}$ Line") +
+  ggtitle("Approximate Regression Condition: $(1-\\lambda)T_{\\Pi}$ Line") +
   facet_wrap(~ N)
 
 myTikz("ARC.tex", ARCPlot)
@@ -54,6 +54,11 @@ myTikz("ARC.tex", ARCPlot)
 system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
 system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
 system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text"))
+system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) 1:(2*N), name = "integer"))
+
+## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) c(rnorm(2*N-1,sd=.01), 1), name = "bad"))
+## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) c(rnorm(N, -1, 1/N), rnorm(N, 1, 1/N)), name = "bad"))
+## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) rcauchy(2*N), name = "cauchy"))
 
 ratesPlot <- ggplot(origRateDF, aes(x = N, y = value, color = group)) +
   geom_line() + 
@@ -68,6 +73,9 @@ myTikz("orig_rate.tex", ratesPlot)
 myTikz("better_rate.tex", ratesPlot %+% betterRateDF)
 myTikz("orig_rate_mc.tex", ratesPlot %+% origRateMCDF)
 
+## df <- ldply(xbreaks, tDist, u = function(N) 1:(2*N), name = "integer", .parallel = TRUE)
+## df <- ldply(xbreaks, tDist, u = function(N) c(rnorm(2*N-1,sd=.01), 1), name = "bad", .parallel = TRUE)
+## df <- ldply(xbreaks, tDist, u = function(N) rcauchy(2*N), name = "cauchy", .parallel = TRUE)
 
 
 simDelta <- function(N){

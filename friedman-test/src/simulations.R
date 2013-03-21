@@ -189,14 +189,14 @@ birds <- function(){
     list(u = u, l = l)
   }
 
-  powerBirds <- function(N = 10, C = 1, deg = 3){
+  powerBirds <- function(N = 10, C = 1, deg = 3, offset = 1){
     print(unlist(as.list(environment())))
     ldply(1:Npwr, function(x){
       print(x)
       dat <- getImageSamp(rooster, pigeon, N)
       l <- dat$l
       u <- dat$u
-      kmp <- kernelMatrix(polydot(degree = deg, offset = 1), x = u)
+      kmp <- kernelMatrix(polydot(degree = deg, offset = offset), x = u)
       data.frame("N" = N, "C" = C, "deg" = deg,
                  "KMMD" = reject(computeKMMD)(u, kmp, l, C),
                  "FS" = reject(computeFS)(u, kmp, l, C))

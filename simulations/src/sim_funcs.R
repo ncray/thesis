@@ -197,10 +197,9 @@ getDelta <- function(u){
   abs(T - Tprime)
 }
 
-simBetterBound <- function(N, exact = TRUE, scaled = TRUE){
-  dat <- getData(N)
+simBetterBound <- function(N, exact = TRUE, scaled = TRUE, ...){
+  dat <- getData(N, ...)
   u <- dat$u
-  u <- 1:(2 * N)
   l <- dat$l
   delta <- getDelta(u)
   nperm <- 10 * N
@@ -243,5 +242,15 @@ simBetterBound <- function(N, exact = TRUE, scaled = TRUE){
               "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
               "Sum of Bounds")
   data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = factor(labels, levels = labels))
+}
+
+library(nortest)
+tDist <- function(N, exact = TRUE, scaled = TRUE, ...){
+  dat <- getData(N, ...)
+  u <- dat$u
+  l <- dat$l
+  nperm <- 1000
+  samps <- laply(1:nperm, function(i) computeT(sample(u), l))
+  c("N" = N, "pval" = ad.test(samps)$p.value, "ks" = ks.test(samps, "pnorm")$statistic)
 }
 

@@ -35,7 +35,7 @@ will always reject when $p \neq q$ for any non-zero significance level
 $\alpha$.
 
 There are many two-sample tests in the literature, as
-table~\ref{tab:twosampletests} illustrates.
+Table~\ref{tab:twosampletests} illustrates.
 
 \begin{table}
 \centering
@@ -119,17 +119,108 @@ inference.  This is especially true when computation of the kernel
 matrix is expensive relative to finding the SVM parameters via
 quadratic programming.
 
-\section{SVM}
-Consider the $\ell_1$-regularized support vector classification problem:
+The exact randomization distribution will be a complicated, discrete distribution
+parametrized by the observed data.  If, however, we can approximate this
+distribution with a simpler one and derive error bounds on the difference
+between the two distributions in some probability metric, then we can
+use the target distribution as a basis for inference.  We will gain in
+computational efficiency by only having to compute the test statistic once.
+
+\section{Kernel Methods}
+There exist many two-sample tests for vectorial data $\mathbf{x}_i \in \mathbb{R}^p$.
+Increasingly, data collected for many applications is heterogeneous in nature
+and include non-vectorial components such as text, audio, or graph structures
+for which the mathematical and geometric operations required of many learning
+algorithms are not defined.  Kernel methods allow us to identify a mapping
+of the data from a general set into a Hilbert space in which we can apply
+certain classes of algorithms.  There is much literature on kernel methods,
+but one particularly comprehensive treatment is the monograph by Sch{\"o}lkopf
+and Smola \cite{scholkopf2002learning}.
+
+Given $n$ observed datapoints in some general set, $x_1, \ldots, x_n \in \mathcal{X}$,
+kernelized learning algorithms depend only on the pairwise ``similarities'' between
+any two observations by way of the kernel function.  Thus, kernel methods effectively
+decouple the algorithm (e.g. a support vector machine) from the representation
+of the data (e.g. a particular kernel).
+\begin{definition}[Positive Semidefinite Kernel]
+\label{D:kernel}
+A function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is called a positive
+semidefinite kernel iff it is symmetric ($K(x, x') = K(x', x)$ for any
+$x, x' \in \mathcal{X}$) and positive semidefinite:
 \begin{equation*}
+  \sum_{i=1}^n\sum_{j=1}^nc_ic_jK(x_i, x_j) \geq 0
+\end{equation*}
+for any $n > 0$, any choice of $n$ objects $x_1, \ldots, x_n \in \mathcal{X}$,
+and any $c_1, \ldots, c_n \in \mathbb{R}$.
+\end{definition}
+
+Because inner products are symmetric, positive semidefinite functions, they
+satisfy Definition~\ref{D:kernel} and are valid kernels.  When $\mathcal{X} = \mathbb{R}^p$,
+the linear kernel is defined as
+\begin{equation*}
+  K(\mathbf{x}, \mathbf{x'}) = \langle \mathbf{x}, \mathbf{x'} \rangle
+\end{equation*}
+for $\mathbf{x}, \mathbf{x'} \in \mathcal{X}$.
+
+For objects in general sets $\mathcal{X}$, we can define a mapping $\phi$ into a
+Hilbert space $\mathcal{H}$ for which an inner product exists.  As there are
+many such mappings, one challenge is to choose a one that is maximally
+useful in exploiting the structure of the data for the task at hand.  In
+Chapter~\ref{C:MKL}, we shall explore a technique to identify the most useful
+mapping given some parametrized space of mappings.
+
+In fact, for every kernel $K$ we can identify a feature mapping into a Hilbert
+space, where the kernel can be expressed as the inner product of the mapped
+features \cite{scholkopf2004kernel}:
+\begin{theorem}
+  For any kernel $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$, there
+  exists a Hilbert space $\mathcal{H}$ and a feature mapping
+  $\phi: \mathcal{X} \to \mathcal{H}$ such that
+  \begin{equation*}
+    K(x, x') = \langle \phi(x), \phi(x') \rangle_{\mathcal{H}}
+  \end{equation*}
+  for any $x, x' \in \mathcal{X}$, where $\langle u, v \rangle_{\mathcal{H}}$
+  represents the inner product in $\mathcal{H}$.
+\end{theorem}
+
+In the coming sections and in Chapter~\ref{C:MKL}, we shall see examples of
+nonvectorial spaces $\mathcal{X}$, kernels $K$, feature mappings $\phi$, and
+Hilbert spaces $\mathcal{H}$.
+
+\section{Support Vector Machines}
+Support Vector Machines (SVM) \cite{cortes1995support} are a supervised learning
+technique that seeks to find a hyperplane that maximizes the margin between
+points of different classes.  In the case that there exists no separating
+hyperplane, a regularization term can be added that controls the effect of
+misclassified points.
+
+Although SVMs find linear decision boundaries,
+the algorithm depends only on inner products between its datapoints.  The
+``kernel trick'' \cite{aizerman1964theoretical} allows us to replace the
+inner products with kernel function evaluations, thus effectively identifying
+a linear decision boundary in the Hilbert space $\mathcal{H}$ identified by
+the feature mapping $\phi(x): \mathcal{X} \to \mathcal{H}$.  Although linear
+in the typically-higher-dimensional space $\mathcal{H}$, the decision boundary
+can be nonlinear in $\mathcal{X}$.
+
+Since kernel methods divorce the representation of the data with the learning
+algorithm, development on both fronts can proceed independently.  For instance,
+faster optimization algorithms for solving the general SVM problem can proceed
+in parallel with the problem-specific designing of new kernels to more efficiently
+or effectively exploit the structure of the data.
+
+Consider the $\ell_1$-regularized (soft margin) support vector classification
+problem \cite{scholkopf2002learning} in its primal form:
+\begin{equation}
+\label{eq:l1-svm-primal}
 \begin{aligned}
-& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
-& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
+& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}, {\boldsymbol \xi} \in \mathbb{R}^m}{\text{minimize}}
+& &\frac{1}{2}\norm{\mathbf{w}}_2^2+C\sum_{i=1}^m \xi_i \\
 & \text{subject to}
 & & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
 &&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
 \end{aligned}
-\end{equation*}
+\end{equation}
 
 There are three obvious possibilities for the Friedman scoring
 function $f$:
@@ -167,10 +258,84 @@ on the scores $\{f_3(x_i)\}$ agrees with that on the raw data
 $\{x_i\}$ depends on $\text{sign}(w)$.  Due to symmetry, in the
 permutation null distribution, $w$ is negative with probability $.5$
 and positive with probability $.5$.  Thus, the permutation null in
-both settings appears to be $t$ (and hence asymptotically Normal).
+both settings appears to be $t$ (and hence asymptotically normal).
 
 \subsection{Kernelized Form}
-After applying the kernel trick,
+It is advantageous to treat the dual \cite{boyd2004convex} of
+Problem~(\ref{eq:l1-svm-primal}).  Because of strong duality,
+the primal and dual solutions are equivalent.
+Although both optimization problems
+are quadratic programs, there exist fast algorithms such as the
+sequential minimal optimization algorithm \cite{platt199912} that
+exploit the special structure of the dual problem.
+
+In addition, the dual problem is expressed only in terms of inner
+products, $\langle \mathbf{x_i}, \mathbf{x_j} \rangle$.  The kernel trick
+\cite{aizerman1964theoretical} amounts to replacing these inner products
+with kernel function evaluations, $K(\mathbf{x_i}, \mathbf{x_j})$.  The
+dual optimization problem is given by
+\begin{equation}
+\label{eq:l1-svm-dual}
+\begin{aligned}
+& \underset{{\boldsymbol \alpha} \in \mathbb{R}^m}{\text{minimize}}
+& & \sum_{i=1}^m \alpha_i - \frac{1}{2} \sum_{i,j=1}^m \alpha_i \alpha_j y_i y_j K(\mathbf{x_i}, \mathbf{x_j})  \\
+& \text{subject to}
+& & 0 \leq \alpha_i \leq C \quad \text{for all } i=1,\ldots,m \\
+& \text{and}
+& & \sum_{i=1}^m \alpha_i y_i = 0.
+\end{aligned}
+\end{equation}
+
+The Karush--Kuhn--Tucker (KKT) conditions for optimality imply that
+\begin{equation*}
+  \mathbf{w} = \sum_{i=1}^m \alpha_i y_i \mathbf{x}_i.
+\end{equation*}
+Therefore,
+\begin{equation*}
+  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^m \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b.
+\end{equation*}
+
+In fact, there is another view of the SVM problem in the framework of regularized
+empirical risk minimization that will be useful for Chapter~\ref{C:MKL}.
+Define the hinge loss function
+\begin{equation*}
+  L(y, f(x)) := (1 - yf(x))_+ := \max(0, 1 - yf(x)).
+\end{equation*}
+Then the following optimization problem is equivalent to Problem~(\ref{eq:l1-svm-primal}):
+\begin{equation}
+  \label{eq:hinge-svm}
+  \min_{b \in \mathbb{R}, \mathbf{w} \in \mathcal{H}} \sum_{i=1}^m (1 - y_i(\mathbf{w}^T\mathbf{x}_i + b))_+ +
+  \frac{1}{2C} \norm{\mathbf{w}}_2^2.
+\end{equation}
+
+It turns out that regularized risk minimization problems admit particularly elegant
+solutions, a result owing to Kimeldorf and Wahba \cite{kimeldorf1971some}.  We
+present a slightly generalized representer theorem from \cite{scholkopf2002learning}:
+\begin{theorem}[Representer Theorem]
+  \label{T:representer}
+  Let $\Omega:[0, \infty] \to \mathbb{R}$ be a strictly monotonic increasing function,
+  $\mathcal{X}$ be a set, and $c: (\mathcal{X} \times \mathbb{R}^2)^m \to \mathbb{R} \cup \{\infty\}$
+  be an arbitrary loss function.  Then each minimizer $f \in \mathcal{H}$ of the regularized risk
+  \begin{equation*}
+    c((\mathbf{x_1}, y_1, f(\mathbf{x_1})), \ldots, (\mathbf{x_m}, y_m, f(\mathbf{x_m}))) + \Omega(\norm{f}_{\mathcal{H}})
+  \end{equation*}
+  admits a representation of the form
+  \begin{equation*}
+    f'(\mathbf{x}) = \sum_{i=1}^m \alpha'_i k(\mathbf{x}_i, \mathbf{x}).
+  \end{equation*}
+\end{theorem}
+
+We apply Theorem~\ref{T:representer} to Problem~(\ref{eq:hinge-svm}), noting that it holds
+for all fixed $b$, to conclude that
+\begin{equation*}
+  f'(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{i=1}^m \alpha'_i k(\mathbf{x}_i, \mathbf{x}).
+\end{equation*}
+Thus, setting $\alpha'_i = y_i \alpha_i$, we again find
+\begin{equation*}
+  f(\mathbf{x}) = f'(\mathbf{x}) + b = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b.
+\end{equation*}
+
+We list the kernelized representations of possible Friedman scoring functions:
 \begin{enumerate}
 \item The predicted class label $f_1(\mathbf{x}_i)
 = \text{sign}(\sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b)$.
@@ -183,7 +348,7 @@ $f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i k(\math
 \end{enumerate}
 
 We know that in the univariate setting, we have an equivalence to the
-permutation-$t$ test as long as the margin is an affine function of
+permutation $t$-test as long as the margin is an affine function of
 the data.  So, for what kernels $k$ do we have
 \begin{equation}
 \sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
@@ -202,7 +367,7 @@ We use Support Vector Machine (SVM) classification
 as implemented in the {\bf ksvm} function of the {\bf R}
 \cite{cran} package {\bf kernlab} \cite{kernlab}.
 
-SVM regression scores also generalize the permutation-$t$ test.
+SVM regression scores also generalize the permutation $t$-test.
 Recall that SVM regression solves the following problem \cite{scholkopf2002learning}:
 \begin{equation*}
 \begin{aligned}
@@ -456,7 +621,7 @@ ineffective or the RBF kernel is unsuitable for these data (probably the former)
 \label{twitter_data}
 For a string data comparison, we consider Twitter data and look at the
 latest 1,000 tweets from Barack Obama (@BarackObama) and Sarah Palin
-(@SarahPalinUSA) obtained from the {\bf R} package {\bf twitteR}
+(@SarahPalinUSA) obtained from the \bf{R} package \bf{twitteR}
 \cite{twitteR}.  We pre-process each tweet by removing all
 hyperlinks and anything that is neither a letter nor a space.
 Finally, we convert all letters to lowercase.  For simplicity, we
