@@ -2,9 +2,9 @@
 \chapter{Friedman's Test}
 \label{C:friedman-test}
 In this chapter we describe Friedman's approach to the two-sample
-problem, give examples using a kernel support vector machine (KSVM), and
+problem, provide examples using a kernel support vector machine (KSVM), and
 explain the connection between the KSVMs and the theory developed in
-chapter~\ref{C:stein-proof}.
+Chapter~\ref{C:stein-proof}.
 
 \section{Motivation}
 The two-sample problem addresses the issue of comparing samples from
@@ -85,7 +85,7 @@ test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
   if $p < \alpha$.
 \end{enumerate}
 
-Note that in step~\ref{item:friedman-score}, for a given learning
+Note that in Step~\ref{item:friedman-score}, for a given learning
 machine, there can still be some choice in the scoring function
 $f(\mathbf{u})$.
 
@@ -164,7 +164,7 @@ for $\mathbf{x}, \mathbf{x'} \in \mathcal{X}$.
 
 For objects in general sets $\mathcal{X}$, we can define a mapping $\phi$ into a
 Hilbert space $\mathcal{H}$ for which an inner product exists.  As there are
-many such mappings, one challenge is to choose a one that is maximally
+many such mappings, one challenge is to choose one that is maximally
 useful in exploiting the structure of the data for the task at hand.  In
 Chapter~\ref{C:MKL}, we shall explore a technique to identify the most useful
 mapping given some parametrized space of mappings.
@@ -188,7 +188,7 @@ nonvectorial spaces $\mathcal{X}$, kernels $K$, feature mappings $\phi$, and
 Hilbert spaces $\mathcal{H}$.
 
 \section{Support Vector Machines}
-Support Vector Machines (SVM) \cite{cortes1995support} are a supervised learning
+A Support Vector Machine (SVM) \cite{cortes1995support} is a supervised learning
 technique that seeks to find a hyperplane that maximizes the margin between
 points of different classes.  In the case that there exists no separating
 hyperplane, a regularization term can be added that controls the effect of
@@ -292,14 +292,15 @@ The Karush--Kuhn--Tucker (KKT) conditions for optimality imply that
 \end{equation*}
 Therefore,
 \begin{equation*}
-  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^m \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b.
+  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^m \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b,
 \end{equation*}
+where $\alpha_i$ are the dual variables.
 
 In fact, there is another view of the SVM problem in the framework of regularized
 empirical risk minimization that will be useful for Chapter~\ref{C:MKL}.
 Define the hinge loss function
 \begin{equation*}
-  L(y, f(x)) := (1 - yf(x))_+ := \max(0, 1 - yf(x)).
+  L(y, f(\mathbf{x})) := (1 - yf(\mathbf{x}))_+ := \max(0, 1 - yf(\mathbf{x})).
 \end{equation*}
 Then the following optimization problem is equivalent to Problem~(\ref{eq:l1-svm-primal}):
 \begin{equation}
@@ -315,95 +316,42 @@ present a slightly generalized representer theorem from \cite{scholkopf2002learn
   \label{T:representer}
   Let $\Omega:[0, \infty] \to \mathbb{R}$ be a strictly monotonic increasing function,
   $\mathcal{X}$ be a set, and $c: (\mathcal{X} \times \mathbb{R}^2)^m \to \mathbb{R} \cup \{\infty\}$
-  be an arbitrary loss function.  Then each minimizer $f \in \mathcal{H}$ of the regularized risk
-  \begin{equation*}
-    c((\mathbf{x_1}, y_1, f(\mathbf{x_1})), \ldots, (\mathbf{x_m}, y_m, f(\mathbf{x_m}))) + \Omega(\norm{f}_{\mathcal{H}})
-  \end{equation*}
+  be an arbitrary loss function.  Then each minimizer $f' \in \mathcal{H}$ of the regularized risk
+  \begin{equation}
+    \label{eq:representer}
+    c((\mathbf{x_1}, y_1, f'(\mathbf{x_1})), \ldots, (\mathbf{x_m}, y_m, f'(\mathbf{x_m}))) + \Omega(\norm{f'}_{\mathcal{H}})
+  \end{equation}
   admits a representation of the form
   \begin{equation*}
-    f'(\mathbf{x}) = \sum_{i=1}^m \alpha'_i k(\mathbf{x}_i, \mathbf{x}).
+    f'(\mathbf{x}) = \sum_{i=1}^m \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
   \end{equation*}
 \end{theorem}
+Although Problem (\ref{eq:representer}) has a feasible set $\mathcal{H}$
+that is possibly infinite dimensional, Theorem~\ref{T:representer} guarantees
+that the solution lies in the span of the $m$ particular kernels centered
+on the observations $\mathbf{x}_i$.
 
 We apply Theorem~\ref{T:representer} to Problem~(\ref{eq:hinge-svm}), noting that it holds
 for all fixed $b$, to conclude that
 \begin{equation*}
-  f'(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{i=1}^m \alpha'_i k(\mathbf{x}_i, \mathbf{x}).
+  f'(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{i=1}^m \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
 \end{equation*}
 Thus, setting $\alpha'_i = y_i \alpha_i$, we again find
 \begin{equation*}
-  f(\mathbf{x}) = f'(\mathbf{x}) + b = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b.
+  f(\mathbf{x}) = f'(\mathbf{x}) + b = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b.
 \end{equation*}
 
 We list the kernelized representations of possible Friedman scoring functions:
 \begin{enumerate}
 \item The predicted class label $f_1(\mathbf{x}_i)
-= \text{sign}(\sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b)$.
+= \text{sign}(\sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)$.
 \item An estimate of the posterior class probability, such as by a
 sigmoid (Platt \cite{platt1999probabilistic, lin2007note}) or a
 logistic link function (Wahba \cite{wahba1992multivariate,
 wahba1999support})
-$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b)}$.
-\item The margin $f_3(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b$.
+$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)}$.
+\item The margin $f_3(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{enumerate}
-
-We know that in the univariate setting, we have an equivalence to the
-permutation $t$-test as long as the margin is an affine function of
-the data.  So, for what kernels $k$ do we have
-\begin{equation}
-\sum_{i=1}^m y_i \alpha_i k(x, x_i) + b = cx + d?
-\end{equation}
-
-A sufficient condition is for $k(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
-f(x_i) x$.  The linear kernel satisfies this condition with $f(x_i) =
-x_i$.  The RBF kernel $k(x, x_i) = \text{exp}(-\sigma (x-x_i)^2)$ does
-not yield an affine function of the data:
-\begin{equation}
-\sum_{i=1}^m y_i \alpha_i \text{exp}(-\sigma (x-x_i)^2) + b
-\end{equation}
-cannot be written as $cx + d$.
-
-We use Support Vector Machine (SVM) classification
-as implemented in the {\bf ksvm} function of the {\bf R}
-\cite{cran} package {\bf kernlab} \cite{kernlab}.
-
-SVM regression scores also generalize the permutation $t$-test.
-Recall that SVM regression solves the following problem \cite{scholkopf2002learning}:
-\begin{equation*}
-\begin{aligned}
-& \underset{\mathbf{w}\in\mathcal{H},\mathbf{\xi}^{(*)}\in\mathbb{R}^m,b\in\mathbb{R}}{\text{minimize}}
-& &\tau(\mathbf{w},\mathbf{\xi}^{(*)})=\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M(\xi_i+\xi_i^*) \\
-& \text{subject to}
-& & f(\mathbf{x}_i)-y_i \leq \epsilon +\xi_i\\
-&&& y_i-f(\mathbf{x}_i) \leq \epsilon+\xi_i^* \\
-&&& \xi_i,\xi_i^*\geq0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
-\end{aligned}
-\end{equation*}
-with solution is given by
-\begin{equation*}
-  f(x)=\sum_{i=1}^m(\alpha_i^*-\alpha_i)k(x_i,x)+b.
-\end{equation*}
-\subsection{Tuning Parameters}
-
-The cost parameter $C$ controls the complexity of the prediction
-function, and $\epsilon$ controls the leniency of the loss function.
-These parameters are typically chosen via cross-validation over a grid
-of choices.  In subsection~\ref{twitter_data}, we describe a sample of
-string data from Twitter.  In figure~\ref{fig:power_kpar} we
-demonstrate the statistical power of the test for the Twitter data
-over a grid of SVM parameters.  It is clear that these parameters play
-a \emph{crucial} role in the operating characteristics of the
-resultant test.
-
-We emphasize that the proper strategy is to conduct the search anew
-for each statistic calculation in each permutation.  That is, use cross-validation to
-find the best performing pair $(C_0, \epsilon_0)$ in terms of the
-Friedman Statistic.  For each permutation $i$, use cross-validation
-over the same grid to find the $i$th pair $(C_i, \epsilon_i)$.  This
-ensures symmetry of protocol and enforces that the test have level
-$\alpha$.  The grid search likely maximizes the power over the set of
-tuning parameters: it is hoped that the search benefits the actual
-labeling of values by at least as much as it does permuted labels.
 
 \subsection{Equivalence to the Permutation $t$-test}
 \begin{theorem}
@@ -411,17 +359,17 @@ labeling of values by at least as much as it does permuted labels.
   The Friedman Test paired with support vector regression
   or support vector classification (using the margin as a score)
   with the appropriate kernel generalizes
-  the two-sample permutation $t$-test. Namely, the two procedures are
+  the two-sample permutation $t$-test. In particular, the two procedures are
   equivalent with univariate data and a linear kernel.
 \end{theorem}
 
 \begin{proof}
   \begin{equation*}
-    f(x)=\sum_{i=1}^m(\alpha_i^*-\alpha_i)k(x_i,x)+b =
-    \sum_{i=1}^m(\alpha_i^*-\alpha_i)x_ix+b = wx+b
+    f(x)=\sum_{i=1}^m y_i \alpha_iK(x_i,x)+b =
+    \left ( \sum_{i=1}^m y_i \alpha_i x_i \right )x+b = wx+b
   \end{equation*}
-  since we have univariate data and a linear kernel.
-  Therefore, the SVM score is simply a linear transformation of the
+  since we have univariate data and an affine kernel.
+  Therefore, the SVM score is simply an affine transformation of the
   data.  Welch's $t$-statistic is given by
   \begin{equation*}
     T(\{x_i\}_1^N,\{z_i\}_1^M) = \frac{\bar{x}-\bar{z}}{\sqrt{\frac{s_X^2}{N}+\frac{s_z^2}{M}}}
@@ -452,24 +400,59 @@ labeling of values by at least as much as it does permuted labels.
   \end{equation*}
   Thus, the $t$-statistics are identical, and since the permutation
   procedure is the same, the tests are equivalent.
+
+  To see the result for support vector regression,
+  recall that support vector regression solves the following problem \cite{scholkopf2002learning}:
+  \begin{equation*}
+    \begin{aligned}
+      & \underset{\mathbf{w}\in\mathcal{H},\mathbf{\xi}^{(*)}\in\mathbb{R}^m,b\in\mathbb{R}}{\text{minimize}}
+      & &\tau(\mathbf{w},\mathbf{\xi}^{(*)})=\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M(\xi_i+\xi_i^*) \\
+      & \text{subject to}
+      & & f(\mathbf{x}_i)-y_i \leq \epsilon +\xi_i\\
+      &&& y_i-f(\mathbf{x}_i) \leq \epsilon+\xi_i^* \\
+      &&& \xi_i,\xi_i^*\geq0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
+    \end{aligned}
+  \end{equation*}
+  with solution is given by
+  \begin{equation*}
+    f(x)=\sum_{i=1}^m(\alpha_i^*-\alpha_i)K(x_i,x)+b.
+  \end{equation*}
 \end{proof}
 
-Despite the slight dependence, the randomization distribution of the
-$t$-statistic converges weakly to the normal distribution
-\cite{lehmann1999elements}.  Anonymous and Anonymous \cite{rayholmes2012} use
-Stein's Method of exchangeable pairs \cite{chen2010normal,
-  stein1986approximate} to prove a conservative
-$\mathcal{O}(N^{-1/4})$ rate of convergence in Kolmogorov-Smirnov
-distance between the two distributions.  The problem is not as
-straightforward as in the i.i.d. case because the permutation
-structure induces a global---though mild and diminishing in sample
-size---negative dependence in the data.  This dependence thwarts
-traditional Fourier-analytic techniques yet can be managed via Stein's
-eponymous method of proof.
+Using the bounds derived in Chapter~\ref{C:stein-proof}, we can
+conduct statistical inference with the normal distribution rather than
+trying to compute the randomization distribution.
+
+We have shown that for univariate data, some kernels generalize the
+permutation $t$-test.  Is it possible to characterize all such kernels?
+For what kernels $K$ do we have
+\begin{equation}
+\sum_{i=1}^m y_i \alpha_i K(x, x_i) + b = cx + d?
+\end{equation}
+
+A sufficient condition is for $K(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
+f(x_i) x$.  The linear kernel satisfies this condition with $f(x_i) =
+x_i$.  The RBF kernel $K(x, x_i) = \text{exp}(-\sigma (x-x_i)^2)$ does
+not yield an affine function of the data:
+\begin{equation}
+\sum_{i=1}^m y_i \alpha_i \text{exp}(-\sigma (x-x_i)^2) + b
+\end{equation}
+cannot be written as $cx + d$.
+
+We use Support Vector Machine (SVM) classification
+as implemented in the {\bf ksvm} function of the {\bf R}
+\cite{cran} package {\bf kernlab} \cite{kernlab}.
+
+The cost parameter $C$ controls the complexity of the prediction
+function. It is typically chosen via cross-validation over a grid
+of choices.  In Subsection~\ref{twitter_data}, we describe a sample of
+string data from Twitter.  In Figure~\ref{fig:power_kpar} we
+demonstrate the statistical power of the test for the Twitter data
+over a grid of SVM parameters.
 
 \section{Maximum Mean Discrepancy}
 Gretton et al.\ \cite{gretton19m, gretton2010fast, gretton2012kernel,
-  borgwardt2006integrating} introduce a kernel based approach for
+  borgwardt2006integrating} introduce a kernel-based approach for
 the two-sample problem based on the Maximum Mean Discrepancy (MMD)
 statistic, an integral probability metric.  MMD provides good
 performance in practice, strong theoretical guarantees, and is the
@@ -479,7 +462,7 @@ first two-sample test for comparing distributions over graphs.
   With $\mathfrak{F}$ a class of functions $f:\mathcal{X} \to
   \mathbb{R}$, $p$ and $q$ probability distributions, and $X \sim p$
   and $Z \sim q$ random variables, the maximum mean discrepancy (MMD)
-  and its empirical estimate are defined as
+  and an empirical estimate are defined as
   \begin{equation*}
     \text{MMD}[\mathfrak{F},p,q] := \sup_{f\in
       \mathfrak{F}}(\mathbb{E}_{x\sim p}[f(x)] - \mathbb{E}_{z\sim q}[f(z)]),
@@ -504,6 +487,11 @@ our real datasets to ensure low error in theoretical approximations.
 Even if we did, the power for the tests would be very nearly one,
 making comparisons on non-simulated data difficult.
 
+The Kernel MMD (KMMD) test seeks ``smooth'' functions that maximize
+the difference between the two classes of points, where smoothness
+is defined in terms of the Hilbert norm.  This allows for nonlinear
+functions $f$ in the feature space, as opposed to SVMs.
+
 \section{Null Distributions}
 The null distribution plays a fundamental role in frequentist statistical
 inference.  Hotelling's $T^2$-statistic has null distribution that
@@ -513,70 +501,41 @@ of the two groups.  As its name suggests, the $T^2$-test is a
 generalization of Student's $t$-test, and for $T \sim t(n+m-2)$, we
 have that $T^2 \sim F_{(1, n+m-2)}$.  As a consequence of
 Theorem~\ref{friedman_equiv}, the Friedman Statistic in the univariate
-data, linear kernel setting is equal to the $|T|$.  In figure~\ref{fig:null_dist} we simulate
+data, linear kernel setting is equal to the $|T|$.  In Figure~\ref{fig:null_dist} we simulate
 200 standard multivariate normal draws from each class with dimension
 $D \in \{1, 5, 10\}$.  We compare the null distributions of the
 $T^2$-statistic, KMMD, and Friedman statistics with a linear kernel
 and RBF kernel with width parameter 1.  We draw 5,000 samples from
 each permutation null distribution and apply a kernel density smoother
 to the results.  It appears that many of the null distributions are
-very close to Normal (or, $t(398)$, rather).
-
-Observe the Anderson-Darling test for normality $p$-values for each
-statistic:
-\begin{verbatim}
-    D variable            p-value
-1   1       T2           NaN
-2   1   sqrtT2 1.152257e-157
-3   1   KMMD.l 2.659966e-156
-4   1     FS.l  9.210211e-01
-5   1 KMMD.rbf  2.220671e-84
-6   1   FS.rbf  7.945208e-01
-7   5       T2 1.750434e-156
-8   5   sqrtT2  1.320034e-14
-9   5   KMMD.l  4.955331e-39
-10  5     FS.l  2.908307e-03
-11  5 KMMD.rbf  1.475365e-15
-12  5   FS.rbf  5.837144e-01
-13 10       T2 5.660731e-105
-14 10   sqrtT2  4.132584e-11
-15 10   KMMD.l  4.087932e-38
-16 10     FS.l  7.618190e-01
-17 10 KMMD.rbf  3.778002e-01
-18 10   FS.rbf  8.071885e-01
-\end{verbatim}
-
-Now only $p$-values $> .001$:
-\begin{verbatim}
-    D variable            p-value
-4   1     FS.l 0.921021148
-6   1   FS.rbf 0.794520826
-10  5     FS.l 0.002908307
-12  5   FS.rbf 0.583714415
-16 10     FS.l 0.761819040
-17 10 KMMD.rbf 0.377800181
-18 10   FS.rbf 0.807188534
-\end{verbatim}
+very close to normal (or, $t(398)$, rather).
 
 The Friedman Statistic null distributions appear to be consistent with
-a standard Normal distribution.
+a standard normal distribution.
 
-Note that in one dimension, the $t$-statistic is independent of the
-regularization parameter $C$.  This relationship does not hold in
-higher dimensions:
-\begin{verbatim}
-laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 1 dimension
-> [1] 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212 0.6438212
-laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 2 dimensions
-> [1] 3.172028 3.172028 3.174125 3.168278 3.172856 3.169756 3.169530
-laply(10^seq(-3, 3, 1), function(C) computeFS(u, km, l, C)) ## 10 dimensions
-> [1] 6.830184 6.850385 6.034328 6.619036 6.619036 6.619036 6.619036
-\end{verbatim}
-This suggests that $C$ actually has an influence in higher dimensions.
+In Figure~\ref{fig:c_param} we examine the relationship between the Friedman
+Statistic and the regularization parameter, $C$.  We have proven that in
+the univariate setting with a linear kernel, the statistic is independent of
+$C$.  Empirically, it appears that the for higher dimensional data, $C$ has a
+miniscule effect on the Friedman statistic for the linear kernel.  With an RBF
+kernel (width 1), it appears that $C$ has a small effect.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{friedman-test/img/c_param.tex}
+    }
+  \end{center}
+\caption{FS.l: FS with a linear kernel; FS.rbf: FS with RBF kernel. We vary
+the dimension of the data: 1, 2, 5, 10.}
+\label{fig:c_param}
+\end{figure}
 
 \begin{figure}
-\centering
-\includegraphics[width=.8\linewidth]{null_dist.png}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{friedman-test/img/null_dist.tex}
+    }
+  \end{center}
 \caption{T2: Hotelling's $T^2$-statistic; sqrtT2: $|T|$;
 KMMD.l: kernel MMD with a linear kernel; FS.l: FS with a
 linear kernel; KMMD.rbf: kernel MMD with a radial basis function (RBF) kernel;
@@ -591,7 +550,8 @@ dimension: the higher dimensionality affords the function in the RKHS
 to better find discrepancies between the two empirical distributions.
 The same rationale holds true for the FS when thinking of separating
 hyperplanes.  Interestingly, there are marked differences between the
-MMD and FS for the RBF kernel.
+MMD and FS for the RBF kernel.  Note also that the support of the KMMD
+statistic is $\mathbb{R}^+$.
 
 \section{Experiments}
 \subsection{Vectorial Data}
@@ -599,12 +559,15 @@ We consider $\{x_i\}_{i=1}^{20} \sim \mathrm{MVN}_d(\mathbf{0},
 \mathbf{I})$ and $\{y_i\}_{i=1}^{20} \sim
 \mathrm{MVN}_d(\Delta \mathbf{1}, \mathbf{I})$ where our
 dimensionality $d \in \{1, 5, 10, 20\}$ and mean difference $\Delta \in
-\{0, .5, \ldots, 1.5\}$ in figure~\ref{fig:power_normal}.  The width
+\{0, .5, \ldots, 1.5\}$ in Figure~\ref{fig:power_normal}.  The width
 parameter in the RBF kernel is fixed at 1.
 
 \begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_normal.png}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{friedman-test/img/power_normal.tex}
+    }
+  \end{center}
   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
     Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
     95\% bootstrap confidence intervals.  The tests perform similarly,
@@ -621,22 +584,36 @@ ineffective or the RBF kernel is unsuitable for these data (probably the former)
 \label{twitter_data}
 For a string data comparison, we consider Twitter data and look at the
 latest 1,000 tweets from Barack Obama (@BarackObama) and Sarah Palin
-(@SarahPalinUSA) obtained from the \bf{R} package \bf{twitteR}
+(@SarahPalinUSA) obtained from the {\bf R} package {\bf twitteR}
 \cite{twitteR}.  We pre-process each tweet by removing all
 hyperlinks and anything that is neither a letter nor a space.
 Finally, we convert all letters to lowercase.  For simplicity, we
 choose the $k$-spectrum kernel \cite{leslie2002spectrum} with
 $k \in \{1, 2, 3 \}$
-as our kernels for both the FT and MMD.  Thus, each string is mapped to
-a $27^k$ dimensional feature vector of counts of the number of $k$
-letter and space combinations.  We draw samples of various sizes from
+as our kernels for both the FT and MMD.
+
+For the $k$-spectrum kernel,
+\begin{itemize}
+\item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$.
+\item $\phi(x) = $ the number of length $k$ contiguous subsequences ($k$-mers) in $x$.
+\item $\mathcal{H} = \mathbb{N}^{|\mathcal{A}|^k}$.
+\item $K_k(x,y) = \langle \phi_k(x), \phi_k(y) \rangle$.
+\end{itemize}
+
+Suffix trees allow for efficient kernel calculations, computing $K_k(x, y)$ in
+$\mathcal{O}(kn)$ time.
+
+We draw samples of various sizes from
 both the Barack Obama tweets and Sarah Palin tweets in order to
 empirically determine the power, with results detailed in
-figure~\ref{fig:power_string}.
+Figure~\ref{fig:power_string}.
 
 \begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_string.png}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{friedman-test/img/power_string.tex}
+    }
+  \end{center}
   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
     Discrepancy; Error bars indicate 95\% bootstrap confidence
     intervals.}
@@ -646,7 +623,10 @@ figure~\ref{fig:power_string}.
 The MMD test outperforms the Friedman test on this task for $k < 3$.  Power
 increases as a function of $k$ for both tests, and it is somewhat
 surprising to see the strong performance from considering only
-frequencies of unigrams.
+frequencies of unigrams.  The KMMD's strong performance is likely
+due to the greater flexibility in being able to learn a nonlinear function
+in the smaller feature spaces corresponding to $k = 1$ and $2$.  We see
+that the advantage largely disappears for $k = 3$.
 
 \subsection{Image Data}
 \begin{figure}
@@ -664,89 +644,99 @@ frequencies of unigrams.
 
 We consider the task of discriminating between images of roosters and
 pigeons from the Caltech 101 Object Categories dataset
-\cite{fei2007learning}.  Samples of the birds are in figure~\ref{fig:birds}.
+\cite{fei2007learning}.  Samples of the birds are in Figure~\ref{fig:birds}.
 We resize images to a common resolution of $300 \times
 297$ and convert to a vector of 8 bit grayscale values.
 To correct for global differences in illumination and ensure
 that only local patterns would be used for discrimination, we center and
-scale each vector.  Power comparisons can be seen in figure~\ref{fig:power_birds}.
+scale each vector.  Power comparisons can be seen in Figure~\ref{fig:power_birds}.
+
+For the polynomial kernel,
+\begin{itemize}
+\item $\mathcal{X} = \mathbb{R}^{n}$.
+\item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$.
+\item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$.
+\item $\mathcal{H} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$.
+\item $K_d(x,y) = (x^T y  + c)^d$ is $\mathcal{O}(n)$.
+\end{itemize}
 
 \begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{power_birds.png}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{friedman-test/img/power_birds.tex}
+    }
+  \end{center}
   \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
     kernel; rbf: radial basis function kernel; Error bars indicate
     95\% bootstrap confidence intervals.}
   \label{fig:power_birds}
 \end{figure}
 
-Again, MMD performs better.  However, it appears that the linear
-kernel performs significantly worse for the MMD than for the FS.
-This could reflect a difference in the function classes over which
-each technique operates.
+Again, MMD performs better.  However, the Friedman Test's performance
+certainly improves when considering higher degree polynomials.
 
-\section{Extensions}
-\subsection{Heterogeneous Data}
-This procedure extends naturally to the heterogeneous data setting via
-multiple kernel learning (MKL) \cite{lanckriet2004learning,
-  gonen2011multiple}.  Qiu et al.\ \cite{qiu2005multiple} develop MKL
-for support vector regression.  Given $j$ different data modalities,
-it suffices to match a kernel $K_i$ to each---or perhaps more than one
-kernel for each data source, so as to better target specific features.
-The semidefinite programming approach (SDP) to MKL finds the best
-linear combination $K = \sum_{i=1}^j \mu_i K_i$ for some relevant
-objective function.  For computational reasons, the best non-negative
-linear combination is frequently sought, as this yields a simpler quadratically
-constrained quadratic program (QCQP).
+% \section{Extensions}
+% \subsection{Heterogeneous Data}
+% This procedure extends naturally to the heterogeneous data setting via
+% multiple kernel learning (MKL) \cite{lanckriet2004learning,
+%   gonen2011multiple}.  Qiu et al.\ \cite{qiu2005multiple} develop MKL
+% for support vector regression.  Given $j$ different data modalities,
+% it suffices to match a kernel $K_i$ to each---or perhaps more than one
+% kernel for each data source, so as to better target specific features.
+% The semidefinite programming approach (SDP) to MKL finds the best
+% linear combination $K = \sum_{i=1}^j \mu_i K_i$ for some relevant
+% objective function.  For computational reasons, the best non-negative
+% linear combination is frequently sought, as this yields a simpler quadratically
+% constrained quadratic program (QCQP).
 
-\subsection{Missing Data}
-If we further consider entire missing modalities (e.g. one sample is
-missing some biometric reading), Poh et al.\ \cite{poh2010addressing}
-develop the \emph{neutral point substitution} technique to allow
-substitution of the missing modality with a new kernel that is
-\emph{unbiased} with regard to the classification at hand.  This
-allows for full use of both modalities that are present for all
-samples as well as those that are present only for a subset of the
-samples and effective utilization of all the data in the training set.
-Panov et al.\ \cite{panov2011modified} modify the NPS method to allow
-for missing modalities in the test set.
+% \subsection{Missing Data}
+% If we further consider entire missing modalities (e.g. one sample is
+% missing some biometric reading), Poh et al.\ \cite{poh2010addressing}
+% develop the \emph{neutral point substitution} technique to allow
+% substitution of the missing modality with a new kernel that is
+% \emph{unbiased} with regard to the classification at hand.  This
+% allows for full use of both modalities that are present for all
+% samples as well as those that are present only for a subset of the
+% samples and effective utilization of all the data in the training set.
+% Panov et al.\ \cite{panov2011modified} modify the NPS method to allow
+% for missing modalities in the test set.
 
-\subsection{Theoretical Guarantees}
-Having proved a bound in the univariate data, linear kernel case by
-constructing an exchangeable pair, Anonymous and Anonymous
-\cite{rayholmes2012} use simulations to suggest
-that the same pair is likely to yield success in more general
-settings: the key \emph{approximate regression condition} holds more
-universally for multivariate data, a non-linear kernel, and a
-combination of the two settings.  Further simulations demonstrate that
-the $\mathcal{O}(N^{-1/4})$ rate of convergence does not appear to be
-tight and a more typical $\mathcal{O}(N^{-1/2})$ is within reach.
+% \subsection{Theoretical Guarantees}
+% Having proved a bound in the univariate data, linear kernel case by
+% constructing an exchangeable pair, Anonymous and Anonymous
+% \cite{rayholmes2012} use simulations to suggest
+% that the same pair is likely to yield success in more general
+% settings: the key \emph{approximate regression condition} holds more
+% universally for multivariate data, a non-linear kernel, and a
+% combination of the two settings.  Further simulations demonstrate that
+% the $\mathcal{O}(N^{-1/4})$ rate of convergence does not appear to be
+% tight and a more typical $\mathcal{O}(N^{-1/2})$ is within reach.
 
-A rate of convergence result with known constant allows
-for a single calculation of the Friedman statistic---rather than the
-$N_{\mathrm{perm}}$ required for randomization-based inference.
-Theoretical inference could be done on the limiting distribution, with
-error characterized by the proven bound.  This large savings in
-computation comes only at the known cost of the limiting distribution
-approximation, which falls rapidly in sample size.
+% A rate of convergence result with known constant allows
+% for a single calculation of the Friedman statistic---rather than the
+% $N_{\mathrm{perm}}$ required for randomization-based inference.
+% Theoretical inference could be done on the limiting distribution, with
+% error characterized by the proven bound.  This large savings in
+% computation comes only at the known cost of the limiting distribution
+% approximation, which falls rapidly in sample size.
 
-\section{Discussion}
-We have tested a two-sample testing method of Friedman's
-\cite{friedman30908multivariate} with a particular choice of learning
-algorithm---support vector regression.  This Friedman Test can be seen
-as a generalization of the celebrated permutation $t$-test, or
-randomization test.  Without tuning, performance is competitive in
-some settings with the MMD test.  Simulations suggest that more
-powerful tests may be achieved with the added complexity of
-tuning---at some computational cost.  Further work is required to
-determine a good set of heuristic choices for the SVM tuning parameters.
+% \section{Discussion}
+% We have tested a two-sample testing method of Friedman's
+% \cite{friedman30908multivariate} with a particular choice of learning
+% algorithm---support vector regression.  This Friedman Test can be seen
+% as a generalization of the celebrated permutation $t$-test, or
+% randomization test.  Without tuning, performance is competitive in
+% some settings with the MMD test.  Simulations suggest that more
+% powerful tests may be achieved with the added complexity of
+% tuning---at some computational cost.  Further work is required to
+% determine a good set of heuristic choices for the SVM tuning parameters.
 
-Modern data sources often consist of different modalities.  Wireless
-sensor networks (including cellular phones) are deployed to collect
-large quantities of \emph{diverse} data.  These networks may be
-heterogeneous, with newer and upgraded hardware logging novel sources
-of data.  Because Friedman's idea leverages \emph{any} learning algorithm, we
-can at present easily incorporate extensions such as both the treatment of
-heterogeneous data \emph{and} an allowance for missing data
-modalities.  Future developments in regression and classification can
-be incorporated to advance the state-of-the-art in two-sample testing.
+% Modern data sources often consist of different modalities.  Wireless
+% sensor networks (including cellular phones) are deployed to collect
+% large quantities of \emph{diverse} data.  These networks may be
+% heterogeneous, with newer and upgraded hardware logging novel sources
+% of data.  Because Friedman's idea leverages \emph{any} learning algorithm, we
+% can at present easily incorporate extensions such as both the treatment of
+% heterogeneous data \emph{and} an allowance for missing data
+% modalities.  Future developments in regression and classification can
+% be incorporated to advance the state-of-the-art in two-sample testing.

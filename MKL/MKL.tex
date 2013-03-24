@@ -5,8 +5,100 @@ In this chapter we introduce a framework for two sample testing based
 on heterogeneous data based on multiple kernel learning (MKL).
 
 \section{Introduction}
-Introduction to MKL, theory of MKL, and optimization problems/tuning
-parameters.  
+Given a set of kernels, it is possible to combine them in order to produce new
+kernels.  This is a starting point for heterogeneous data analysis: we
+can define a kernel $K_i$ for each data domain and develop a kernel $K$ that operates
+on the union of the domains.  Rather, we typically shall produce a parametrized
+family of kernels $K_{{\boldsymbol \theta}}$ and seek the ``best'' choice of
+parameters ${\boldsymbol \theta}$.
+
+For example, the class of kernel functions on $\mathcal{X}$ is closed under pointwise products
+(also known as Schur products) of kernels,
+\begin{equation*}
+  K(x,x') = (K_1K_2)(x,x')=K_1(x,x')K_2(x,x'),
+\end{equation*}
+tensor products of kernels,
+\begin{equation*}
+ K(x, x') = (K_1 \otimes  K_2)(x_1,x_2,x_1',x_2')=K_1(x_1,x_1')K_2(x_2,x_2'),
+\end{equation*}
+and conic combinations of kernels,
+\begin{equation*}
+  K_{{\boldsymbol \theta}}(x, x') = (\theta_1 K_1 + \ldots + \theta_m K_m)(x,x')=
+  \theta_1 K_1(x,x') + \ldots + \theta_m K_m(x,x').
+\end{equation*}
+
+An unweighted sum of kernels is equivalent to concatenating the individual
+feature spaces.
+
+\section{Multiple Kernel Learning}
+In a landmark paper, Lanckriet et al.\ \cite{lanckriet2004learning} showed
+that for various SVM objective functions, the problem of finding the optimal
+conic combination of kernels could be posed as a convex optimization problem.
+Although the initial approach involved solving a computationally expensive
+semidefinite program, this sparked a flurry of research on similar convex
+approaches to MKL.
+
+Kloft et al.\ \cite{kloft2011lp} conceived a general $\ell_p$-norm approach
+to MKL, unifying many special cases and further proposed a highly efficient
+algorithm.  This can be seen as generalizing Problem~(\ref{eq:hinge-svm})
+of Chapter~\ref{C:friedman-test}.
+
+Let $L: \mathbb{R} \times \mathbb{R} \to \mathbb{R}$ be a loss function,
+$\Omega : \mathcal{H} \to \mathbb{R}$ be a regularizer, and $\lambda > 0$
+be a tradeoff parameter.
+
+Kloft et al.\ consider linear models of the form
+\begin{equation*}
+  h_{\tilde{w},b,\theta}(x) = \sum_{i=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m (x) \rangle_{\mathcal{H}_m} + b
+  = \langle \tilde{w}, \phi_{\theta}(x) \rangle_{\mathcal{H}} + b,
+\end{equation*}
+where $\tilde{w} = [\tilde{w}_1^T,\ldots,\tilde{w}_m^T]^T$ and
+$\phi_{\theta} = \sqrt{\theta_1} \phi_1 \times \ldots \times \sqrt{\theta_m} \phi_m$.
+
+The regularized risk minimization problem is the following:
+\begin{equation}
+  \label{eq:mkl-rrm-1}
+  \min_{\tilde{w}, b, \theta : \theta \succeq 0} \frac{1}{n} \sum_{i=1}^n L \left (
+  \sum_{m=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+  \right) + \frac{\lambda}{2}\sum_{m=1}^M \norm{\tilde{w}_m}_{\mathcal{H}_m}^2 +
+  \tilde{\mu} \tilde{\Omega}(\theta),
+\end{equation}
+for $\tilde{\mu} > 0$.
+
+Problem~(\ref{eq:mkl-rrm-1}) is not convex but can be transformed into a convex
+problem via the substitution
+\begin{equation*}
+  w_m \leftarrow \sqrt{\theta_m} \tilde{w}_m.
+\end{equation*}
+
+Decoupling the regularization parameter from the sample size by letting
+$\tilde{C} = \frac{1}{n \lambda}$ and $\mu \leftarrow \frac{\tilde{\mu}}{\lambda}$,
+and using convex regularizers of the form $\tilde{\Omega}(\theta) = \norm{\theta}_p^2$,
+we get
+\begin{equation}
+  \label{eq:mkl-rrm-2}
+  \min_{w, b, \theta : \theta \succeq 0} \tilde{C} \sum_{i=1}^n L \left (
+  \sum_{m=1}^M \langle w_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+  \right) + \frac{1}{2} \sum_{m=1}^M \frac{\norm{w_m}_{\mathcal{H}_m}^2}{\theta_m} +
+  \mu\norm{\theta}_p^2,
+\end{equation}
+where $\frac{t}{0} = 0$ if $t=0$ and $\infty$ otherwise.
+
+Kloft et al.\ prove that the Tikhonov-regularized Problem (\ref{eq:mkl-rrm-2})
+with two parameters is in fact equivalent to the following Ivanov-regularized
+problem with one regularization parameter, $C$:
+\begin{equation}
+\label{eq:mkl-ivanov}
+\begin{aligned}
+& \underset{w, b, \theta : \theta \succeq 0}{\text{minimize}}
+& & C \sum_{i=1}^n L \left (\sum_{m=1}^M \langle w_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+\right) + \frac{1}{2} \sum_{m=1}^M \frac{\norm{w_m}_{\mathcal{H}_m}^2}{\theta_m} \\
+& \text{subject to}
+& & \norm{\theta}_p^2 \leq 1.
+\end{aligned}
+\end{equation}
+
+We use Problem~(\ref{eq:mkl-ivanov}) as implemented in SHOGUN \cite{sonnenburg2010shogun}.
 
 \section{Simulations}
 \subsection{Vectorial Data Mixture Distribution}
@@ -40,7 +132,7 @@ probability $p = .5$ unless otherwise specified.
 Here is a plot of the 95\% confidence ellipses of the mixture distributions:
 \begin{figure}[!ht]
   \centering
-  \includegraphics[scale=.3]{vectorial_distributions.png}  
+  \includegraphics[scale=.3]{vectorial_distributions.png}
 \end{figure}
 
 Here we plot the average power and bootstrap 95\% confidence intervals
@@ -62,7 +154,7 @@ Both outperform the mixed setting.
 Here are the null distributions of the weights and the observed weights:
 \begin{figure}[!ht]
   \centering
-  \includegraphics[scale=.3]{vectorial_weights.png}  
+  \includegraphics[scale=.3]{vectorial_weights.png}
 \end{figure}
 
 \subsection{Heterogeneous Data}
@@ -117,13 +209,13 @@ self transition probability) and $M_{i,j} = \frac{(1 - s)}{3}$ for $i \neq j$.
 Here are the MKL weights:
 \begin{figure}[!ht]
   \centering
-    \includegraphics[scale=.3]{mkl_weight_boxplot_christmas_star_DNA.png}  
+    \includegraphics[scale=.3]{mkl_weight_boxplot_christmas_star_DNA.png}
 \end{figure}
 
 And the power:
 \begin{figure}[!ht]
   \centering
-    \includegraphics[scale=.3]{power_christmas_star_DNA_facet4.png}  
+    \includegraphics[scale=.3]{power_christmas_star_DNA_facet4.png}
 \end{figure}
 
 The effect of $C$:

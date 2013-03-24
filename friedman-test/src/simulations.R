@@ -42,6 +42,32 @@ checkComputeReject <- function(){
   plot(dat$t, dat$fs)
 }
 
+regularizationDimension <- function(D){
+  dat <- getDataNormal(N = 50, D = D)
+  u <- dat$u
+  km <- kernelMatrix(vanilladot(), x = u)
+  kmRBF <- kernelMatrix(rbfdot(sigma = 1), x = u)
+  l <- sample(dat$l)
+
+  ldply(10^(seq(-3, 3, .25)), function(C) c("D" = D,
+                       "C" = C,
+                       "FS.l" = computeFS(u, km, l, C),
+                       "FS.rbf" = computeFS(u, kmRBF, l, C)))
+}
+
+regularizationDimensionPlot <- function(){
+  system.time(dat <- ldply(c(1, 2, 5, 10), regularizationDimension, .parallel = TRUE))
+  dat.m <- melt(dat, id.vars = c("D", "C"))
+  p1 <- ggplot(data = dat.m, aes(x = C, y = value, color = variable)) +
+    geom_point() +
+      geom_line() + 
+        facet_grid(D~., scales = "free") +
+          scale_x_log10() +
+            ggtitle("Effect of C on t-statistic") +
+              ylab("t-statistic")
+  myTikz("c_param.tex", p1)
+}
+
 nullDist <- function(D = 1, N = 100, C = 1){
   print(unlist(as.list(environment())))
   dat <- getDataNormal(200, D)
@@ -63,7 +89,7 @@ nullDist <- function(D = 1, N = 100, C = 1){
 }
 
 nullDistSim <- function(){
-  res <- mdply(expand.grid(D = c(1, 5, 10), N = 5000), nullDist)
+  system.time(res <- mdply(expand.grid(D = c(1, 5, 10), N = 5000), nullDist))
   res$D <- factor(res$D)
   res.m <- melt(res, id.vars = c("D", "N"))
 
@@ -76,7 +102,8 @@ nullDistSim <- function(){
   p1 <- ggplot(data = res.m, aes(x = value, fill = D)) +
     geom_density(alpha = .4) +
       facet_wrap(~variable, scales = "free") +
-        opts(title = "Null Distributions (Faceted by Statistic)")
+        ggtitle("Null Distributions (Faceted by Statistic)")
+  myTikz("null_dist.tex", p1)
   myplot(p1, "null_dist.png")
 }
 
@@ -119,8 +146,8 @@ powerSim <- function(){
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
         xlab(expression(Delta)) +
           facet_grid(C~D) +
-            opts(title = "Power (Faceted by Dimension and C)")
-  ##ggsave(p2, "power_normal.png")
+            ggtitle("Power (Faceted by Dimension and C)")
+  myTikz("power_normal.tex", p2)
   myplot(p2, "power_normal.png")
 }
 
