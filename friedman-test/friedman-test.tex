@@ -197,7 +197,7 @@ misclassified points.
 Although SVMs find linear decision boundaries,
 the algorithm depends only on inner products between its datapoints.  The
 ``kernel trick'' \cite{aizerman1964theoretical} allows us to replace the
-inner products with kernel function evaluations, thus effectively identifying
+inner products with kernel function evaluations, thus effectively finding
 a linear decision boundary in the Hilbert space $\mathcal{H}$ identified by
 the feature mapping $\phi(x): \mathcal{X} \to \mathcal{H}$.  Although linear
 in the typically-higher-dimensional space $\mathcal{H}$, the decision boundary
@@ -445,10 +445,7 @@ as implemented in the {\bf ksvm} function of the {\bf R}
 
 The cost parameter $C$ controls the complexity of the prediction
 function. It is typically chosen via cross-validation over a grid
-of choices.  In Subsection~\ref{twitter_data}, we describe a sample of
-string data from Twitter.  In Figure~\ref{fig:power_kpar} we
-demonstrate the statistical power of the test for the Twitter data
-over a grid of SVM parameters.
+of choices.
 
 \section{Maximum Mean Discrepancy}
 Gretton et al.\ \cite{gretton19m, gretton2010fast, gretton2012kernel,
@@ -490,7 +487,8 @@ making comparisons on non-simulated data difficult.
 The Kernel MMD (KMMD) test seeks ``smooth'' functions that maximize
 the difference between the two classes of points, where smoothness
 is defined in terms of the Hilbert norm.  This allows for nonlinear
-functions $f$ in the feature space, as opposed to SVMs.
+functions $f$ in the feature space, as opposed to the hyperplanes
+learned by the SVM algorithm.
 
 \section{Null Distributions}
 The null distribution plays a fundamental role in frequentist statistical

@@ -1,14 +1,14 @@
 \graphicspath{{./MKL/img/}}
 \chapter{Multiple Kernels}
 \label{C:MKL}
-In this chapter we introduce a framework for two sample testing based
-on heterogeneous data based on multiple kernel learning (MKL).
+In this chapter we introduce a framework for two-sample testing
+of heterogeneous data via multiple kernel learning (MKL).
 
 \section{Introduction}
 Given a set of kernels, it is possible to combine them in order to produce new
 kernels.  This is a starting point for heterogeneous data analysis: we
 can define a kernel $K_i$ for each data domain and develop a kernel $K$ that operates
-on the union of the domains.  Rather, we typically shall produce a parametrized
+on the union of the domains.  We typically shall produce a parametrized
 family of kernels $K_{{\boldsymbol \theta}}$ and seek the ``best'' choice of
 parameters ${\boldsymbol \theta}$.
 
@@ -86,7 +86,7 @@ where $\frac{t}{0} = 0$ if $t=0$ and $\infty$ otherwise.
 
 Kloft et al.\ prove that the Tikhonov-regularized Problem (\ref{eq:mkl-rrm-2})
 with two parameters is in fact equivalent to the following Ivanov-regularized
-problem with one regularization parameter, $C$:
+formulation with one regularization parameter, $C$:
 \begin{equation}
 \label{eq:mkl-ivanov}
 \begin{aligned}
@@ -100,144 +100,152 @@ problem with one regularization parameter, $C$:
 
 We use Problem~(\ref{eq:mkl-ivanov}) as implemented in SHOGUN \cite{sonnenburg2010shogun}.
 
-\section{Simulations}
-\subsection{Vectorial Data Mixture Distribution}
-Let's look at mixtures of MVN.  Let
-\begin{align*}
-  \Sigma_1 &=
-  \begin{bmatrix}
-    1^2 & 0   \\
-    0   & 1^2 \\
-  \end{bmatrix} \\
-  \Sigma_2 &=
-  \begin{bmatrix}
-    10^2 & 0   \\
-    0    & 10^2 \\
-  \end{bmatrix} \\
-  \mu_1(\delta_1) &= [\delta_1, 0]^T \\
-  \mu_2(\delta_2) &= [\delta_2, 100]^T. \\
-\end{align*}
-
-Let $d_1$ be a mixture distribution of $\mathcal{N}_2([0, 0]^T, \Sigma_1)$ with
-probability $p$ and $\mathcal{N}_2([0, 100]^T, \Sigma_2)$ with
-probability $1-p$.  Let $d_2$ be a mixture distribution of
-$\mathcal{N}_2([1, 0]^T, \Sigma_1)$ with probability $p$ and
-$\mathcal{N}_2([10, 100]^T, \Sigma_2)$ with probability $1-p$.  Note
-that $\delta_1 = 1$ and $\delta_2 = 10$ were chosen to be one standard
-deviation away (on the x-axis, see $(\Sigma_1)_{1,1}$ and
-$(\Sigma_2)_{1,1}$).  In all the simulations, we draw $n = 50$ samples
-from each mixture distribution, $d_1$ and $d_2$.  We take the mixture
-probability $p = .5$ unless otherwise specified.
-
-Here is a plot of the 95\% confidence ellipses of the mixture distributions:
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=.3]{vectorial_distributions.png}
+\section{Simulation}
+We generate heterogeneous data triplets $(\mathbf{x}_i, s_i, y_i)$, where
+$\mathbf{x}_i \in \mathbb{R}^2$, $s_i \in \mathcal{S}$, the set of finite
+length sequences of \{A, C, T, G\}, and $y_i \in \{-1, 1\}$.
+$\mathbf{x}_i$ are drawn independently from the star example from \cite{sonnenburg2006large}.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/star.tex}
+    }
+  \end{center}
+\caption{Star Distribution: radius 4 versus radius > 4.}
+\label{fig:star}
 \end{figure}
 
-Here we plot the average power and bootstrap 95\% confidence intervals
-(100 simulations) for each RBF kernel individually and MKL on all of
-them, faceted on the mixture probability.  So for $p = 0$, we have all
-the weight on $\mathcal{N}_2(\mu_2, \Sigma_2)$, and for $p = 1$, we
-have all the weight on $\mathcal{N}_2(\mu_1, \Sigma_1)$.  Since the
-latter is on a smaller scale, we expect the smaller width RBF kernels
-to do better.  We take $C = 1$, and the widths to be from the middle
-run of the last section:
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=.3]{vectorial_power.png}
-\end{figure}
-The smaller distribution ($p=1$) has higher power for smaller kernels,
-but the MKL power is about the same as compared with the $p=0$ case.
-Both outperform the mixed setting.
+The star has a single radius parameter, $r$.  $p_{\mathbb{R}^2}$ takes $r = 4$,
+and $q_{\mathbb{R}^2}$ takes $r > 4$.
 
-Here are the null distributions of the weights and the observed weights:
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=.3]{vectorial_weights.png}
-\end{figure}
+Each $s_i$ has independent length $N \sim \text{Pois}(100)$ and is generated via
+a Markov chain.  The start of the sequence is drawn from the stationary distribution
+$[.25, .25, .25, .25]$, and the following $N-1$ elements are drawn according to the transition
+probabilities
+\begin{equation*}
+  M(p^{\star}) = \bordermatrix{
+    ~ & A & C & T & G \cr
+    A & \frac{1-p^{\star}}{3} & p^{\star} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} \cr
+    C & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & p^{\star} & \frac{1-p^{\star}}{3} \cr
+    T & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & p^{\star} \cr
+    G & p^{\star} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} & \frac{1-p^{\star}}{3} \cr
+  }
+\end{equation*}
 
-\subsection{Heterogeneous Data}
-I created a test
-heterogeneous dataset that has two components to it: DNA string and
-univariate.  I created the DNA data via a Markov chain because I
-wanted the joint distribution of 2-grams to be different from the
-product of two 1-grams.  I wanted this dependence so that I could
-later pick out differences between two groups with a 2-spectrum kernel
-instead of a 1-spectrum kernel.  For the first group, I randomly
-picked a starting string according to the stationary distribution and
-then proceeded via the transition probabilities.  For the second
-group, I had independent draws from the stationary distribution.
+$p_{\mathcal{S}}$ takes $p_{\mathcal{S}}^{\star} = .25$ and
+$q_{\mathcal{S}}$ takes $p_{\mathcal{S}}^{\star} > .25$.  Note that
+$p_{\mathcal{S}}$ and $q_{\mathcal{S}}$ generate similar numbers of
+$1$-mers, but $q_{\mathcal{S}}$ can generate more AC, CT, TG, GA
+$2$-mers.
 
-The univariate data is simply $\mathcal{N}(\{-\mu, \mu\}, 1)$, and there are 20
-samples in each group.  I fixed the kernel training parameter values
-and trained a convex combination of 5 kernels on the data via MKL:
-Gaussian RBF kernels with parameter .1, .2, .5, and 1, and a
-2-spectrum kernel (later I do want to test that the 2-spectrum is
-required in this case over the 1-spectrum because of the Markov chain
-construction of the data, but I had to add pre-processors and I'm
-still not too familiar with shogun yet).
+\section{Kernel Normalization}
+Kernel normalization can have a large effect on the performance of kernel- and MKL-based
+algorithms.  In the regularized regression setting, it is common to standardize variables to have
+mean zero and unit variance so that the results are invariant to differences in
+the unit of measurement.  Normalization plays a similar role in MKL.  For instance,
+the Gaussian RBF kernel has $K(x, x) = 1$.  When considering long strings, it is
+common for the $k$-spectrum kernel to take on large values.
 
-I looked at the kernel weights (so no Friedman test yet) over $\mu = .5,
-.6, \ldots, 2.9, 3$.  The weights on, say, the 2-spectrum kernel aren't
-monotonically decreasing because of sampling variance: I only ran each
-of these once.  I have attached MKL1.png to show that the signal in
-the DNA data outweighs (in the sense of yielding a higher MKL weight)
-the signal in the univariate part of the data until $\mu = 1.5$ or so.
-At that point, the RBF1 kernel takes over.
+We pre-process all kernels used in MKL by ensuring that the vectors in the feature
+space lie on the unit hypersphere:
+\begin{equation*}
+  K_i(x, x') \leftarrow \frac{K_i(x, x')}{\sqrt{K_i(x, x)}\sqrt{K_i(x', x')}}
+\end{equation*}
 
-The pictures from our meeting weren't that compelling, so I've been
-looking for better examples.  I decided a reasonable one was the
-Christmas star example on page 1548 of
-http://eprints.pascal-network.org/archive/00002269/01/sonnenburg06a.pdf
+\section{MKL Weights}
+Typically, two-sample tests provide a single bit of information: accept or reject the null hypothesis
+that the two samples arose from the same distribution.
+The MKL algorithm--or any other learning procedure that generates interpretable
+weights--provides useful ancillary information in the kernel weights.  Here we
+investigate the degree to which MKL is able to learn the structure of the data
+and identify the data domains with the highest signal in discrimininating between
+the two samples.
 
-Imagine an outer star (radius 4, 5, 6, 7, 8) with an inner star
-(radius 4) inside.  The different stars correspond to different
-labelings in the classification problem.  I looked at 5 kernels
-individually (RBF with width .01, .1, 1, 10, 1000) and the MKL
-combination of all of them).
+We include 4 Gaussian RBF kernels with widths $\{3.2, 10, 31.6, 100\}$ and $1$- and
+$2$-spectrum kernels.  By design, only the $2$-spectrum kernel should be discriminatory
+on the DNA string data.  We perform both $1$- and $2$- norm MKL.
 
-Here's a heterogeneous data example.  I added string (DNA) data to the
-Christmas star example from last week.  So each point is $(l_i, x_i,
-y_i, s_i)$ = (label, Christmas star x-coordinate, Christmas star
-y-coordinate, DNA sequence).  I generated the DNA by first picking a
-random (Poisson) length, sampling the starting point from the
-stationary distribution (all 1/4) of the Markov chain, and then
-picking according to the transition matrix $M$, where $M_{i,i} = s$ (for
-self transition probability) and $M_{i,j} = \frac{(1 - s)}{3}$ for $i \neq j$.
+In Figure~\ref{fig:mkl_weights1}, we fix the radius of the inner star to be $r = 4$
+and the outer star to be $r = 4.5$.  We draw 200 samples from each distribution and
+vary the signal on the DNA string data by letting $p^{\star}$ vary in $\{.25, .3, .35, .4\}$.
+We fix the regularization parameter $C = 0.1$, and perform 100 permutations of the labels.
+The unpermuted weights are shown as red points, and the permuted labels give rise to
+boxplots of weights for both the $1$-norm and $2$-norm MKL.
 
-Here are the MKL weights:
-\begin{figure}[!ht]
-  \centering
-    \includegraphics[scale=.3]{mkl_weight_boxplot_christmas_star_DNA.png}
+We see that as we increase the difference between $p_{\mathcal{S}}$ and $q_{\mathcal{S}}$,
+more weight is being assigned to the $2$-spectrum kernel.  $1$-norm MKL yields sparse weight
+vectors.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_weights_star_dna.tex}
+    }
+  \end{center}
+\caption{The MKL weights in the 1- (upper row) and 2-norm (lower row) cases shift progressively more to
+  the $2$-spectrum kernel as the DNA signal is increased.}
+\label{fig:mkl_weights1}
 \end{figure}
 
-And the power:
-\begin{figure}[!ht]
-  \centering
-    \includegraphics[scale=.3]{power_christmas_star_DNA_facet4.png}
+In Figure~\ref{fig:mkl_weights2} we vary the radius of the outer star in $\{4, 7, 10, 13, 16\}$,
+while fixing the radius of the inner star to be $4$ and the transition probability $p^{\star} = .3$.
+We see the dominant weight for the unpermuted case shift to higher-width kernels as we increase
+the radius of the outer star.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_weights_star_dna2.tex}
+    }
+  \end{center}
+\caption{The MKL weights in the 1- (upper row) and 2-norm (lower row) cases shift progressively more to
+  the higher-width RBF kernels as we increase the distance between the two stars.}
+\label{fig:mkl_weights2}
 \end{figure}
 
-The effect of $C$:
-\begin{figure}[!ht]
-  \centering
-      \includegraphics[scale=.1]{tstat_on_c.png}
+\section{Power}
+Given that we have successfully learned the structure of the data, we now
+investigate the statistical power of these methods.  For each simulation, we take
+$50$ samples from each distribution and fix $C = 1$.
+
+In Figure~\ref{fig:mkl_power} we vary the radius of the outer star in the rows of the plot,
+taking values in $\{4, 4.3, 4.6\}$, and the $x$-axis sees the transition probability
+take values in $\{.25, .3, .35, .4, .45\}$.  We compare the power of three RBF kernels
+with widths 5, 10, and 100, the $1$- and $2$-spectrum kernels, and $1$- and $2$-norm MKL
+taking convex combinations of these five kernels.
+
+We see that for a radius of 4 and transition probability of .25, $p=q$, and the power
+is equal to the level of the test, $\alpha = .05$.  The MKL-based tests consistently
+perform second best, just behind the top-performing kernel in each setting.  It appears
+that there is a minor penalty in performance to be paid for selecting the kernel
+weights versus a priori placing all weight on the best kernel for the job.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/dna_star_power.tex}
+    }
+  \end{center}
+\caption{The MKL weights in the 1- (upper row) and 2-norm (lower row) cases shift progressively more to
+  the higher-width RBF kernels as we increase the distance between the two stars.}
+\label{fig:mkl_power}
 \end{figure}
 
-$C$ clearly has an effect, especially if you get it very wrong (>.8).
-I'm a little disappointed in the performance of MKL but pleased that
-it does pick out the right structure in the data.  I'd like to say
-that if you know the structure of the data a priori and use that in
-the kernel, you will obviously get the best performance.  It seems
-like you give up a lot of performance using MKL (maybe too much to
-justify its convenience), only doing better than the worst choices of
-kernels given.
+\section{Null Distribution}
+Permutation-based tests exact an onerous computational burden, requiring computation
+proportional to the number of permutations in order to conduct meaningful statistical
+inference.  Thus, distributional approximations to these discrete, permutation null
+distributions are of great interest.
 
-MKL can pick out the structure of the data:
-\begin{figure}[!ht]
-  \centering
-      \includegraphics[scale=.5]{MKL1.png}
+Here we compare the null distributions over 2000 permutations of the labels in each scenario,
+adjusting the regularization parameter $C \in \{.1, 1, 10\}$.  We report $p$-values
+from the Anderson--Darling test for normality in Figure~\ref{fig:mkl_null}.  Except for
+the situation with the highest emphasis on the loss function ($C=10$), the
+permutation null samples are consistent with the standard normal distribution for all kernels
+and MKL statistics.
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_null_dist.tex}
+    }
+  \end{center}
+\caption{Except for $C=10$, permutation null samples are consistent with the standard normal distribution.}
+\label{fig:mkl_null}
 \end{figure}
-
-\section{Wine Example}
-TODO
