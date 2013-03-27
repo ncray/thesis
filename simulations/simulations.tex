@@ -165,28 +165,3 @@ Then
       -\frac{2\bar{u}}{n})+\frac{2}{n^2}\Delta^2)]}}.
 \end{align*}
 Only the terms involving $\Delta$ need to be recomputed for each of the $N^2$ swaps.
-
-\section{A Different Exchangeable Pair}
-Rather than only consider transpositions that swap one element of the
-first group with one from the second group, we have a few different
-choices.  Let's take the other extreme, where we consider all $(2N)^2$
-transpositions, including null transpositions.  There are $N^2$
-transpositions within each group, for a total of $2N^2$.  Each of
-these does not change the $t$-statistic.  We previously only
-considered the $N^2$ transpositions where $I < J$.  There are another
-$N^2$ with $I > J$.  These transpositions have exactly the same effect
-as the previous group $(I, J) = (J, I)$, and all within-group
-transpositions have no effect.
-
-The only changes should be to adjust the weights when taking
-conditional expectations (the weights should be $1/2$) and to divide
-$\lambda$ by 2.  The new $\lambda$ is $N^{-1}$.
-
-However, every term involving the conditional expectation also has a
-division by lambda, so any decrease in the c.e. is cancelled out by a
-corresponding decrease in $\lambda$, so there is no change in any of
-the simulations.
-
-It's nice that the calculations are invariant to change in the
-exchangeable pair.  Whether that holds true for more drastic changes
-(e.g. swapping more than 2 elements) is not known.
