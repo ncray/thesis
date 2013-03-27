@@ -116,6 +116,27 @@ compute <- function(train){
   }
 }
 
+trainMKLRBF <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE, ...){
+  dump <- sg('clean_kernel')
+  dump <- sg('clean_features', 'TRAIN')
+  sg('clean_preproc')
+  if(length(RBF.v) > 0){
+    for(i in 1:length(RBF.v)){dump <- sg('add_features','TRAIN', u1)}
+  }
+  dump <- sg('set_labels','TRAIN', as.numeric(as.character(l)))
+  dump <- sg('new_classifier', 'MKL_CLASSIFICATION')
+  dump <- sg('mkl_parameters', mkl_eps, mkl_C, mkl_norm)
+  dump <- sg('svm_epsilon', svm_eps)
+  dump <- sg('set_kernel', 'COMBINED', 100)
+  if(length(RBF.v) > 0){
+    for(width in RBF.v){dump <- sg('add_kernel', 1, 'GAUSSIAN', 'REAL', cache_size, width)}
+  }
+  dump <- sg('c', C)
+  dump <- sg('set_kernel_normalization', 'SQRTDIAG') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
+  ##dump <- sg('set_kernel_normalization', 'IDENTITY') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
+  dump <- sg('train_classifier')
+}
+
 
 ## MKLwts <- function(r1, self, C){
 ##   print(paste("r1:", r1, "self:", self, "C:", C))

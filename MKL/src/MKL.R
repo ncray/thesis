@@ -611,7 +611,74 @@ nullDistDNAStarPlot <- function(){
 ## 6  1.0      500 0.858306075 0.46772753
 ## 7 10.0        5 0.645156688 0.72176043
 ## 8 10.0       50 0.232147316 0.48075552
-b## 9 10.0      500 0.006173857 0.13705019
+## 9 10.0      500 0.006173857 0.13705019
+}
+
+simARC <- function(n){
+  swap <- function(l){
+    minus <- which(l == -1)
+    plus <- which(l == 1)
+    l[sample(minus, 1)] = 1
+    l[sample(plus, 1)] = -1
+    l
+  }
+  print(unlist(as.list(environment())))
+  RBF.v <- c(5, 10, 100)
+  string.v <- 1:2
+  dat <- getDataDNAStar(r1 = 4, p = .25, n = n)
+  l <- dat$l
+  u1 <- dat$u1
+  u2 <- dat$u2
+  ldply(c(.1, 1, 10), function(C){
+    ret <- ldply(1:31, function(x){
+      swap <- FALSE
+      lswap <- l
+      if (x != 1){
+        lswap <- swap(l)
+        swap <- TRUE
+      }
+      print(x)
+      dfMKL <- data.frame("n" = n, "C" = C,
+                          "FSMKL1" = compute(trainMKL)
+                          (u1 = u1, u2 = u2, l = lswap, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE),
+                          "FSMKL2" = compute(trainMKL)
+                          (u1 = u1, u2 = u2, l = lswap, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE))
+      dfRBF <- as.data.frame(matrix(laply(RBF.v, function(r) compute(trainRBF)
+                                          (u = u1, l = lswap, r = r, C = C)), nrow = 1))
+      names(dfRBF) <- paste("RBF", RBF.v, sep = "")
+      dfSK <- as.data.frame(matrix(laply(string.v, function(order) compute(trainString)
+                                         (u = u2, l = lswap, order = order, C = C)), nrow = 1))
+      names(dfSK) <- paste("SK", string.v, sep = "")
+      ret <- cbind(dfMKL, dfRBF, dfSK)
+      ret$swap <- swap
+      ret
+      
+    }, .parallel = parallel)
+    merge(ret[1, ], ret[-1, ], by = "C")
+  })
+}
+
+ARC <- function(){
+  library(stringr)
+  system.time(dat <- ldply(rep(c(10, 50, 100), 10), function(n) simARC(n)))
+  dat2 <- ldply(3:9, function(i) ddply(dat, .(C, n.x), function(df){
+    dat <- df[, c(1, 2, i, i + 9)]
+    dat$group <- str_replace(names(dat)[3], ".x", "")
+    names(dat) <- c("C", "n", "T", "Tprime", "group")
+    dat
+  }))
+
+  ARCPlot <- ggplot(dat2, aes(T, Tprime, color = factor(C))) +
+    geom_point(alpha = .2) +
+      xlim(c(-3, 3)) + 
+        geom_abline(aes(intercept = 0, slope = (1 - 2 / n)), color = "black") + 
+          xlab("$T_{\\Pi}$") +
+            ylab("$T'_{\\Pi}$") +
+              ggtitle("Approximate Regression Condition: $(1-\\lambda)T_{\\Pi}$ Line") +
+                facet_grid(n.x ~ group) +
+                  scale_color_discrete(guide = guide_legend(title = "C", override.aes = list(alpha = 1)))
+  ARCPlot
+  myTikz(filename = "mkl_arc.tex", plot = ARCPlot)
 }
 
 
