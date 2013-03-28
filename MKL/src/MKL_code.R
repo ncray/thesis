@@ -121,7 +121,7 @@ trainMKLRBF <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl
   dump <- sg('clean_features', 'TRAIN')
   sg('clean_preproc')
   if(length(RBF.v) > 0){
-    for(i in 1:length(RBF.v)){dump <- sg('add_features','TRAIN', u1)}
+    for(i in 1:length(RBF.v)){dump <- sg('add_features','TRAIN', u1[i, , drop = FALSE])}
   }
   dump <- sg('set_labels','TRAIN', as.numeric(as.character(l)))
   dump <- sg('new_classifier', 'MKL_CLASSIFICATION')

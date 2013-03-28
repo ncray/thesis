@@ -10,7 +10,13 @@ myTikz <- function(filename, plot){
   dev.off()
 }
 
-computeT <- function(u, km = NULL, l, ...) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
+myTStat <- function(...) {
+  obj <- try(t.test(...), silent = TRUE)
+  if (is(obj, "try-error")) return(NA) else return(obj$statistic)
+}
+
+##computeT <- function(u, km = NULL, l, ...) t.test(u[l == 1], u[l == -1], var.equal = TRUE)$statistic
+computeT <- function(u, km = NULL, l, ...) myTStat(u[l == 1], u[l == -1], var.equal = TRUE)
 
 computeT2 <- function(u, km, l, ...) as.numeric(HotellingsT2(X = data.frame(u[l == 1, ]), Y = data.frame(u[l == -1, ]))$statistic)
 

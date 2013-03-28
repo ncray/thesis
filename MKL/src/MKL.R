@@ -681,6 +681,100 @@ ARC <- function(){
   myTikz(filename = "mkl_arc.tex", plot = ARCPlot)
 }
 
+simOverFitKernel <- function(C, D){
+  dat <- getDataNormal(20, D = D)
+  l <- dat$l
+  u <- t(dat$u)
+  RBF.v <- rep(1, D)
+  ldply(1:200, function(i){
+    data.frame("D" = D, "C" = C,
+               "FSMKL1" = compute(trainMKLRBF)
+               (u1 = u, u2 = NULL, l = sample(l), RBF.v = RBF.v, string.v = NULL, mkl_norm = 1, C = C, linear = FALSE),
+               "FSMKL2" = compute(trainMKLRBF)
+               (u1 = u, u2 = NULL, l = sample(l), RBF.v = RBF.v, string.v = NULL, mkl_norm = 2, C = C, linear = FALSE))
+  }, .parallel = TRUE)
+}
+
+overFitKernel <- function(){
+  library(nortest)
+  library(ADGofTest)
+  system.time(dat <- simOverFitKernel(C = 1, D = 50))
+  system.time(dat <- mdply(expand.grid(C = c(.1, 1, 10), D = c(1, 10, 100)),  simOverFitKernel))
+
+  dat.m <- melt(dat, id.vars = c(1, 2))
+  ##pvals <- ddply(dat.m, .(C, variable, D), function(df) c("pval" = nortest::ad.test(df$value)$p.value))
+  ##pvals <- ddply(dat.m, .(C, variable, D), function(df) c("pval" = ad.test(df$value, distr.fun = pnorm)$p.value))
+  pvals <- ddply(dat.m, .(C, variable, D), function(df) c("pval" = ADGofTest::ad.test(df$value, distr.fun = pnorm, 0, 1)$p.value))
+  ##pvals <- ddply(dat.m, .(C, variable, D), function(df) c("pval" = ks.test(df$value, "pnorm")$p.value))
+  names(pvals)[4] <- "pval"
+  p1 <- ggplot(data = dat.m, aes(sample = value, color = variable)) +
+    stat_qq() +
+      facet_grid(D ~ C) +
+        geom_abline(aes(intercept = 0, slope = 1), color = "black") +
+          geom_text(data = pvals, aes(x = 0, y = 1 + .6 * as.numeric(variable), sample = 0, label = round(pval, 4)), alpha = 1)
+  p1
+  myTikz(filename = "overfit_mkl.tex", p1)
+}
+
+simARCOverfit <- function(n, D){
+  swap <- function(l){
+    minus <- which(l == -1)
+    plus <- which(l == 1)
+    l[sample(minus, 1)] = 1
+    l[sample(plus, 1)] = -1
+    l
+  }
+  print(unlist(as.list(environment())))
+  dat <- getDataNormal(n, D = D)
+  l <- dat$l
+  u1 <- t(dat$u)
+  RBF.v <- rep(1, D)
+  ldply(c(.1, 1, 10), function(C){
+    ret <- ldply(1:31, function(x){
+      swap <- FALSE
+      lswap <- l
+      if (x != 1){
+        lswap <- swap(l)
+        swap <- TRUE
+      }
+      print(x)
+      dfMKL <- data.frame("n" = n, "C" = C,
+                          "FSMKL1" = compute(trainMKLRBF)
+                          (u1 = u1, u2 = u2, l = lswap, RBF.v = RBF.v, string.v = NULL, mkl_norm = 1, C = C, linear = FALSE),
+                          "FSMKL2" = compute(trainMKLRBF)
+                          (u1 = u1, u2 = u2, l = lswap, RBF.v = RBF.v, string.v = NULL, mkl_norm = 2, C = C, linear = FALSE))
+      ret <- dfMKL
+      ret$swap <- swap
+      ret
+      
+    }, .parallel = parallel)
+    merge(ret[1, ], ret[-1, ], by = "C")
+  })
+}
+
+ARCOverfit <- function(){
+  library(stringr)
+  dat <- simARCOverfit(10, 100)
+  system.time(dat <- mdply(expand.grid(n = rep(c(10, 50, 100), 5), D = c(1, 10, 100)), simARCOverfit))
+  dat2 <- ldply(5:6, function(i) ddply(dat, .(n, D, C), function(df){
+    dat <- df[, c(1, 2, 3, i, i + 4)]
+    dat$group <- str_replace(names(dat)[4], ".x", "")
+    names(dat) <- c("n", "D", "C", "T", "Tprime", "group")
+    dat
+  }))
+
+  ARCPlot <- ggplot(dat2, aes(T, Tprime, color = factor(C))) +
+    geom_point(alpha = .2) +
+        geom_abline(aes(intercept = 0, slope = (1 - 2 / n)), color = "black") + 
+          xlab("$T_{\\Pi}$") +
+            ylab("$T'_{\\Pi}$") +
+              ggtitle("Approximate Regression Condition: $(1-\\lambda)T_{\\Pi}$ Line") +
+                facet_grid(n ~ D) +
+                  scale_color_discrete(guide = guide_legend(title = "C", override.aes = list(alpha = 1)))
+  ARCPlot
+  myTikz(filename = "mkl_arc_overfit.tex", plot = ARCPlot)
+}
+
 
 plotStar()
 getNullDistPlot()

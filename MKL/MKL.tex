@@ -249,3 +249,89 @@ and MKL statistics.
 \caption{Except for $C=10$, permutation null samples are consistent with the standard normal distribution.}
 \label{fig:mkl_null}
 \end{figure}
+
+\section{Approximate Regression Condition}
+Here we examine whether or not the approximate regression condition
+holds in the MKL setting.
+Taking the heterogeneous data example from before, we vary the
+per-group sample size $n \in \{10, 50, 100\}$.  For each value of $T$,
+we perform $30$ label swaps and compute the corresponding values $T'$
+in Figure~\ref{fig:mkl_arc}.  The approximate regression condition
+appears to hold in all settings, and this suggests that we may be able to derive
+an error bound using the techniques from
+Chapters~\ref{C:steins-method} and \ref{C:stein-proof}.
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_arc.tex}
+    }
+  \end{center}
+\caption{Different choices of kernels in the columns, and different
+  sample sizes in the rows.}
+\label{fig:mkl_arc}
+\end{figure}
+
+Given a large number of independent kernels, one worry is that our
+learning method may overfit to limited data.  In order to explore this
+possibility, we generate $X \sim \mathcal{MVN}_d({\bf 0}, {\boldsymbol I})$
+data and associate to each entry $X_i$ a Gaussian RBF kernel of width
+1.  Because the distribution is isotropic, we have $d$ independent
+kernels.  We estimate the randomization distribution over 200
+permutations with $Q$--$Q$ plots against the standard normal quantiles
+and in addition report the Anderson--Darling $p$-values
+in Figure~\ref{fig:overfit_mkl}.  It appears that the number of
+independent kernels has a large effect on the normality of the
+randomization distribution.
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/overfit_mkl.tex}
+    }
+  \end{center}
+\caption{The regularization parameter $C$ in the columns, and the
+  number of Gaussian RBF kernels in the rows.}
+\label{fig:overfit_mkl}
+\end{figure}
+
+We verify that the approximate regression condition fails to hold in
+Figure~\ref{fig:mkl_arc_overfit}.  Given 100 independent kernels, the
+remainder $R$ in Equation~(\ref{D:approx-stein-pair}) does not
+appear to be a random variable of small and decreasing order.
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_arc_overfit.tex}
+    }
+  \end{center}
+\caption{Sample size in the rows, and number of independent kernels in
+the columns.}
+\label{fig:mkl_arc_overfit}
+\end{figure}
+
+\section{Future Work}
+We hope to better understand the Friedman Test outside of the
+univariate data and linear kernel setting.  That is, we would like to
+characterize the kernels for which the Friedman Test generalizes the
+permutation $t$-test and understand the degree to which this
+relationship holds approximately given higher dimensional data and a
+wide range of kernels.  We further hope to extend the theory of
+Chapters~\ref{C:steins-method} and \ref{C:stein-proof} to prove rates
+of convergence bounds in these general settings.  As seen in
+Figures~\ref{fig:mkl_arc_overfit} and \ref{fig:overfit_mkl}, these bounds
+would likely incorporate some terms that represent the learning
+algorithm and numbers of independent kernels.
+
+We can also potentially treat various kinds of missing data.
+If we consider entire missing modalities (e.g. one sample is
+missing some biometric reading), Poh et al.\ \cite{poh2010addressing}
+develop the \emph{neutral point substitution} technique to allow
+substitution of the missing modality with a new kernel that is
+\emph{unbiased} with regard to the classification at hand.  This
+allows for full use of both modalities that are present for all
+samples as well as those that are present only for a subset of the
+samples and effective utilization of all the data in the training set.
+Panov et al.\ \cite{panov2011modified} modify the NPS method to allow
+for missing modalities in the test set.
