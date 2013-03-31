@@ -27,7 +27,7 @@ sideRatesPlot <- ggplot(sideRatesDF, aes(x = N, y = value, color = group)) +
   facet_wrap(~ p) +
   scale_y_log10(breaks = 10^seq(-1, 10, 2)) +
   scale_x_log10(breaks = xbreaks) + 
-  xlab("$N$") +
+  xlab("$n$") +
   theme(legend.position = "bottom")
 sideRatesPlot
 sideRatesPlot2 <- sideRatesPlot %+% sideRates2DF
@@ -53,6 +53,7 @@ myTikz("ARC.tex", ARCPlot)
 ##system.time(origRateDF <- ldply(c(100, 200), simOrig, u = function(N) 1:(2*N), name = "integer", .progress = "text"))
 system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
 system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
+system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text", u = function(N) 1:(2*N), name = "integer"))
 system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text"))
 system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) 1:(2*N), name = "integer"))
 
@@ -61,9 +62,9 @@ system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u
 ## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) rcauchy(2*N), name = "cauchy"))
 
 ratesPlot <- ggplot(origRateDF, aes(x = N, y = value, color = group)) +
-  geom_line() + 
-  geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
-  xlab("$N$") +
+  geom_line(size = 1.5) + 
+  geom_errorbar(aes(ymin = lower, ymax = upper, width = .07), size = 1.5) +
+  xlab("$n$") +
   theme(legend.position = "bottom", legend.direction = "vertical") +
   scale_y_log10(breaks = round(10^seq(-2.5, 2.5, .5), 3)) +
   scale_x_log10(breaks = xbreaks)
@@ -95,9 +96,10 @@ qplot(x = N, y = value, data = dat.m, geom = "point", color = variable) +
 
 
 dat <- ldply(xbreaks, function(N) c(N = N, y = .41 / 2 * N^(3/2) * getDelta(1:(2*N))^3))
-deltaplot <- qplot(x = N, y = y, data = dat, geom = "line") +
+deltaplot <- qplot(x = N, y = y, data = dat, geom = "line", size = I(1.5)) +
   scale_x_log10(breaks = xbreaks) +
   scale_y_log10() +
+  xlab("$n$") +
   ggtitle("$\\frac{.41\\delta^3}{\\lambda}N^{1/2}\\quad $")
 myTikz("delta_plot.tex", deltaplot)
 

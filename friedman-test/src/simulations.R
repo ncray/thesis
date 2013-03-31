@@ -190,9 +190,9 @@ twitter <- function(){
   })
 
   p2 <- ggplot(res2, aes(x = N, y = value, color = group, linetype = group)) +
-    geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2)) +
-        xlab(expression(Delta)) +
+    geom_line(size = 1.5) + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2), size = 1.5) +
+        xlab("$n$") +
           facet_grid(C~len) +
             ggtitle("Power (Faceted by K and C)")
   myTikz("power_string.tex", p2)
@@ -242,8 +242,8 @@ birds <- function(){
   })
 
   p3 <- ggplot(res2, aes(x = N, y = value, color = group)) +
-    geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2)) +
+    geom_line(size = 1.5) + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = 2), size = 1.5) +
         ylab("power") +
           xlab("n") +
             facet_grid(C~deg) +

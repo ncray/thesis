@@ -174,11 +174,11 @@ simOrig <- function(N, exact = TRUE, scaled = TRUE, ...){
                   bootf(res[, 4], f4),
                   bootf(res[, 5], f5),
                   bootf(res, allF))
-  labels <- c("$(2\\pi)^{-1/4}\\sqrt{\\frac{\\mathbb{E}|T\'_{\\Pi}-T_{\\Pi}|^3}{\\lambda}}N^{1/4}\\quad $",
-              "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}N\\quad $",
-              "$|\\mathbb{E}T_{\\Pi}^2-1|N\\quad $",
-              "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
-              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
+  labels <- c("$(2\\pi)^{-1/4}\\sqrt{\\frac{\\mathbb{E}|T\'_{\\Pi}-T_{\\Pi}|^3}{\\lambda}}n^{1/4}\\quad $",
+              "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}n\\quad $",
+              "$|\\mathbb{E}T_{\\Pi}^2-1|n\\quad $",
+              "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|n^{1/2}\\quad $",
+              "$\\mathbb{E}|R_{\\Pi}|n^{1/2}\\quad $",
               "Sum of Bounds")
   data.frame(N,
              "value" = means,
@@ -234,12 +234,12 @@ simBetterBound <- function(N, exact = TRUE, scaled = TRUE, ...){
                   bootf(res[, 4], f4),
                   bootf(res[, 5], f5),
                   bootf(res, allF))
-  labels <- c("$\\frac{.41\\delta^3}{\\lambda}N^{1/2}\\quad $",
-              "$3\\delta(\\sqrt{\\mathbb{E}T^2}+\\mathbb{E}|R|)N\\quad $",
-              "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}N\\quad $",
-              "$|\\mathbb{E}T_{\\Pi}^2-1|N\\quad $",
-              "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|N^{1/2}\\quad $",
-              "$\\mathbb{E}|R_{\\Pi}|N^{1/2}\\quad $",
+  labels <- c("$\\frac{.41\\delta^3}{\\lambda}n^{1/2}\\quad $",
+              "$3\\delta(\\sqrt{\\mathbb{E}T^2}+\\mathbb{E}|R|)n\\quad $",
+              "$\\frac{1}{2\\lambda}\\sqrt{\\mathrm{Var}(\\mathbb{E}[(T\'_{\\Pi}-T_{\\Pi})^2|T_{\\Pi}])}n\\quad $",
+              "$|\\mathbb{E}T_{\\Pi}^2-1|n\\quad $",
+              "$\\mathbb{E}|T_{\\Pi}R_{\\Pi}|n^{1/2}\\quad $",
+              "$\\mathbb{E}|R_{\\Pi}|n^{1/2}\\quad $",
               "Sum of Bounds")
   data.frame(N, "value" = means, "lower" = bounds[, 1], "upper" = bounds[, 2], group = factor(labels, levels = labels))
 }

@@ -10,6 +10,7 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{appendixnumberbeamer}
 %\def\newblock{} %this is needed for natbib
 \newcommand{\var}{\mathrm{var}}
 \newcommand{\cov}{\mathrm{cov}}
@@ -32,29 +33,19 @@
 \author[N. Ray]{Nelson Ray \\
   (joint work with Susan Holmes)}
 \institute[Stanford]{Stanford University}
-\date{\today}
+\date{April 1, 2013}
 
 \begin{frame}
   \titlepage
 \end{frame}
 
-% \begin{frame}{The paper}
-%   \begin{figure}
-%     \includegraphics[scale=.55]{title.png}
-%   \end{figure}
-% \end{frame}
-
 \section{Introduction}
-\begin{frame}{Outline}
-  \begin{itemize}
-  \item Motivation: breast cancer study with heterogeneous data \pause
-  \item Friedman's two-sample test:
-    leverage regression and classification techniques \pause
-  \item Kernel methods for non-vectorial and heterogeneous data \pause
-  \item Univariate data and affine scoring functions: permutation
-    $t$-test \pause
-  \item Stein's method of exchangeable pairs for Berry--Esseen-type bound
-  \end{itemize}
+\begin{frame}{Motivation}
+  American Gut Study: \url{www.indiegogo.com/americangut}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.5]{american_gut.png}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{Breast Cancer Data: Spatial}
@@ -78,26 +69,26 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Breast Cancer Study Questions}
+\begin{frame}{Outline}
   \begin{itemize}
-  \item How do you deal with the data integration problem? \pause
-  \item kernel methods via Friedman's procedure \pause
-  \item Are there any differences (spatial, medical) between women who
-    relapse and those who remain disease free? \pause
-  \item two-sample tests
+  \item Motivation: heterogeneous data are ubiquitous. \pause
+  \item Friedman's two-sample test: leverage regression and classification techniques. \pause
+  \item Kernel methods for non-vectorial and heterogeneous data. \pause
+  \item Generalizes permutation $t$-test! \pause
+  \item Stein's method of exchangeable pairs for Berry--Esseen-type bound.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Friedman's Two-Sample Test}
   Friedman (2003) \\
-  $\{\mathbf{x}_i\}_{i=1}^N$ from $p(\mathbf{x})$ and
-  $\{\mathbf{x}_i\}_{i=N+1}^{N+M}$ from $q(\mathbf{x})$ testing \\
+  $\{\mathbf{x}_i\}_{i=1}^n$ from $p(\mathbf{x})$ and
+  $\{\mathbf{x}_i\}_{i=n+1}^{n+m}$ from $q(\mathbf{x})$ testing \\
   $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$ \pause
   \begin{enumerate}
   \item Label the first group $y_i = 1$ and the second group $y_i = -1$ . \pause
-  \item Score the observations $\{s_i := f(\mathbf{x}_i)\}_1^{N+M}$ with a learning machine $f$. \pause
+  \item Score the observations $\{s_i := f(\mathbf{x}_i)\}_1^{n+m}$ with a learning machine $f$. \pause
   \item Calculate a univariate two-sample test statistic
-    $T = T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$. \pause
+    $T = T(\{s_i\}_1^n,\{s_i\}_{n+1}^{n+m})$. \pause
   \item Conduct statistical inference based on the permutation null distribution of the above
     statistic.
   \end{enumerate}
@@ -126,11 +117,11 @@ Kernel methods allow us to lift ourselves up into an inner product space, where 
 
 \section{Kernel-based Tests}
 \begin{frame}{Kernel Methods}
-  The Kernel Trick (Aizerman et al. 1964) \pause
+  The Kernel Trick (Aizerman et al.\ 1964) \pause
   \begin{itemize}
   \item Data $x_i$ in a general set $\mathcal{X}$. \pause
-  \item Define a feature map $\phi : \mathcal{X} \to V$, where $V$ is an inner product space. \pause
-  \item $K(u_i, u_j) = \langle \phi(u_i), \phi(u_j) \rangle$ \pause
+  \item Define a feature map $\phi : \mathcal{X} \to \mathcal{H}$, where $\mathcal{H}$ is a Hilbert space. \pause
+  \item $K({\bf x_i}, {\bf x_j}) = \langle \phi({\bf x_i}), \phi({\bf x_j}) \rangle_{\mathcal{H}}$ \pause
   \item Use learning algorithms that only require inner products between vectors in $\mathcal{X}$. \pause
   \item The inner products can be done implicitly, by a kernel function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$.
   \end{itemize}
@@ -162,9 +153,9 @@ series "
   subsequences ($k$-mers). \pause
   \begin{itemize}
     \item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$. \pause
-    \item $\phi_2(x) = [\#_{\text{aa}}(x), \#_{\text{ab}}(x), \#_{\text{ac}}(x), \ldots ]$ \pause
-    \item $\mathcal{V} = \mathbb{N}^{|\mathcal{A}|^k}$ \pause
-    \item $K_k(x,y) = \langle \phi_k(x), \phi_k(y) \rangle$
+    \item $\phi_2({\bf x}) = [\#_{\text{aa}}({\bf x}), \#_{\text{ab}}({\bf x}), \#_{\text{ac}}({\bf x}), \ldots ]$ \pause
+    \item $\mathcal{H} = \mathbb{R}^{|\mathcal{A}|^k}$ \pause
+    \item $K_k({\bf x_i}, {\bf x_j}) = \langle \phi_k({\bf x_i}), \phi_k({\bf x_j}) \rangle$
   \end{itemize}
 \end{frame}
 
@@ -174,14 +165,14 @@ $\ell_1$-regularized (soft-margin) support vector classification problem
 \begin{equation*}
 \begin{aligned}
 & \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}}{\text{minimize}}
-& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M \xi_i \\
+& &\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^{n+m} \xi_i \\
 & \text{subject to}
 & & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
-&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m. \pause
+&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,n+m. \pause
 \end{aligned}
 \end{equation*}
 For the Friedman Test, our scoring function is the margin
-$f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
+$f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{KMMD}
@@ -237,11 +228,11 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   Compares 2 vectors (images) on products of elements (pixel intensities)
   up to a certain order.
   \begin{itemize}
-    \item $\mathcal{X} = \mathbb{R}^{n}$ \pause
+    \item $\mathcal{X} = \mathbb{R}^{p}$ \pause
     \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$ \pause
     \item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$ \pause
-    \item $\mathcal{V} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$ \pause
-    \item $K_d(x,y) = (x^T y  + c)^d$ is $\mathcal{O}(n)$
+    \item $\mathcal{H} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$ \pause
+    \item $K_d({\bf x},{\bf y}) = ({\bf x}^T {\bf y}  + c)^d$ is $\mathcal{O}(n)$
   \end{itemize}
 \end{frame}
 
@@ -258,15 +249,15 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   \begin{itemize}
     \item Feature engineering/extraction: ${\bf x}_i$ \pause
     \item Feature normalization: ${\bf x}_i \leftarrow \frac{{\bf x}_i - \hat{\mu}_i}{\hat{\sigma}_i}$ \pause
-    \item Regularization/feature selection: $\inf_{{\boldsymbol \beta}} \sum_{i=1}^n V(\beta_0 + \tilde{{\bf x}}_i^T {\boldsymbol \beta}, y_i) \text{ s.t. } || {\boldsymbol \beta} ||_p \leq t$ \pause
+    \item Regularization/feature selection: $\inf_{{\boldsymbol \beta}} \sum_{i=1}^{m+n} L(\beta_0 + \tilde{{\bf x}}_i^T {\boldsymbol \beta}, y_i) \text{ s.t. } || {\boldsymbol \beta} ||_p \leq t$ \pause
   \end{itemize}
   MKL \pause
   \begin{itemize}
-    \item feature engineering/extraction: $K_i$ \pause
-    \item feature normalization: $K_i(x, x') \leftarrow \frac{K_i(x, x')}{\sqrt{K_i(x, x)}\sqrt{K_i(x', x')}}$ \pause
-    \item Regularization/feature selection: $\inf_{{\bf w}, b, {\boldsymbol \theta} : {\boldsymbol \theta} \succeq 0}
-      C \sum_{i=1}^n V( \sum_{m=1}^M \sqrt{\theta_m} \langle {\bf w}_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i) $ \\
-      $\qquad \qquad \; \; \; + \frac{1}{2} \sum_{m=1}^M || {\bf w}_m ||^2_{\mathcal{H}_m}
+    \item Feature engineering/extraction: $K_i$ \pause
+    \item Feature normalization: $K_i({\bf x}, {\bf x}') \leftarrow \frac{K_i({\bf x}, {\bf x}')}{\sqrt{K_i({\bf x}, {\bf x})}\sqrt{K_i({\bf x}', {\bf x}')}}$ \pause
+    \item Regularization/feature selection (Kloft et al.\ 2011)): $\inf_{{\bf w}, b, {\boldsymbol \theta} : {\boldsymbol \theta} \succeq 0}
+      C \sum_{i=1}^{m+n} L( \sum_{j=1}^M \sqrt{\theta_j} \langle {\bf w}_j, \phi_j({\bf x_i}) \rangle_{\mathcal{H}_j} + b, y_i) $ \\
+      $\qquad \qquad \; \; \; + \frac{1}{2} \sum_{j=1}^M || {\bf w}_j ||^2_{\mathcal{H}_j}
       \text{ s.t. } || {\boldsymbol \theta} ||_p \leq 1$
   \end{itemize}
 \end{frame}
@@ -335,23 +326,23 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{Permutation $t$-test Connection}
-  The $t$-statistic is (up to sign) invariant to affine transformations of the data. \\ \pause
+  Want to understand theoretically why the randomization null is normal-like. \pause
 
-  For what kernels $K$ do we have
+  And we wish to derive bounds on
   \begin{equation*}
-    \sum_{i=1}^m y_i \alpha_i K(x, x_i) + b = cx + d?
-  \end{equation*} \\ \pause
+    \sup_{t \in \mathbb{R}} |P(T_{\Pi} \leq t) - \Phi(t)|,
+  \end{equation*}
+  where
+  \begin{equation*}
+    T_{\Pi} = T_{\Pi} \left (\{f({\bf x}_{\Pi(i)})\}_{i=1}^{n}, \{f({\bf x}_{\Pi(i)})\}_{i=n+1}^{2n} \right). \pause
+  \end{equation*}
 
-  Sufficient condition: $K(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
-  f(x_i) x$ \\ \pause
+  If $f({\bf x})$ is affine, we recover the permutation $t$-test. \pause
 
-  Linear Kernel: $f(x_i) = x_i$ \\ \pause
-
-  Permutation $t$-test: normal convergence result (Lehmann)
+  SVM with linear kernel: $f(x) = \sum_{i=1}^{2n} y_i \alpha_i xx_i + b$.
 \end{frame}
 
 \section{Rate of Convergence Bounds}
-
 \begin{frame}{Other Work}
   \begin{itemize}
   \item Fisher (1935) proposed distribution-free
@@ -361,17 +352,6 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   \item Bentkus et al. (1996), Shao (2005) proved Berry--Esseen bounds for
     Student's $t$-statistic in independent case.
   \end{itemize}
-\end{frame}
-
-\begin{frame}{Stein's Method and the Randomization Distribution}
-  Can we get a bound on
-  \begin{equation*}
-    \sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|?
-  \end{equation*}
-  \pause
-
-  $\mathcal{O}(N^{-1/4})$ with mild conditions on the data
-  and $\mathcal{O}(N^{-1/2})$ with an additional condition
 \end{frame}
 
 \begin{frame}{Other Results}
@@ -395,7 +375,7 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
       a_{ij} = 0$ for all $j$, and $\sum_i \sum_j a_{ij}^2 = n - 1$.
       Then with $F_n(x) = P(\sum_i a_{i\Pi(i)} \leq x)$,
   \begin{align*}
-    |F_n(x) - \Phi(x)| &\leq \frac{C}{\sqrt{n}}
+    \sup_x |F_n(x) - \Phi(x)| &\leq \frac{C}{\sqrt{n}}
     \left (
       \sqrt{\sum_{i,j}a_{ij}^4} + \sqrt{\sum_{i,j}|a_{ij}|^3}
     \right ) \\ \pause
@@ -406,43 +386,23 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{frame}
 
 \begin{frame}{Exchangeable Pair}
-  Assume $M = N$.  Fix data $\{u_1, \ldots, u_N,
-  u_{N+1}, \ldots, u_{2N}\}$.  $\Pi$ is a uniformly random permutation, and let
+  Assume $m = n$.  Fix data $\{u_1, \ldots, u_n, u_{n+1}, \ldots, u_{2n}\}$.  $\Pi$ is a uniformly random permutation, and let
   \begin{equation*}
-    T = T \left (\{u_{\Pi(i)}\}_{i=1}^{N},
-      \{u_{\Pi(i)}\}_{i=N+1}^{2N} \right).
+    T_{\Pi} = T_{\Pi} \left (\{u_{\Pi(i)}\}_{i=1}^{n},
+      \{u_{\Pi(i)}\}_{i=n+1}^{2n} \right).
   \end{equation*}
   \pause
 
-  Let $(I, J) = (i, j)$ w.p. $\frac{1}{N^2}$ for $1 \leq i \leq N$ and
-  $N + 1 \leq j \leq 2N$.  Then
+  Let $(I, J) = (i, j)$ w.p. $\frac{1}{n^2}$ for $1 \leq i \leq n$ and
+  $n + 1 \leq j \leq 2n$.  Then
   \begin{equation*}
-    T' = T \left (\{u_{\Pi \circ (I, J) (i)}\}_{i=1}^{N},
-      \{u_{\Pi \circ (I, J) (i)}\}_{i=N+1}^{2N} \right).
+    T' = T \left (\{u_{\Pi \circ (I, J) (i)}\}_{i=1}^{n},
+      \{u_{\Pi \circ (I, J) (i)}\}_{i=n+1}^{2n} \right).
   \end{equation*}
   \pause
 
   $T$ and $T'$ form an exchangeable pair.
 \end{frame}
-
-% \begin{frame}{Main Theorem}
-% \begin{theorem}
-%   If $T$, $T'$ are mean 0, exchangeable random variables with variance
-%   $\E[T^2]$ satisfying
-%   \begin{equation*}
-%     \E[T'-T|T] = -\lambda(T-R)
-%   \end{equation*}
-%   for some $\lambda \in (0,1)$ and some random variable $R$, then
-%   $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
-%   \begin{equation*}
-%     \begin{split}
-%       &(2\pi)^{-1/4} \sqrt{\frac{\E |T'-T|^3}{\lambda}}
-%       + \frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])} \\
-%       &|\E T^2 - 1| + \E |TR| + \E |R|
-%     \end{split}
-%   \end{equation*}
-% \end{theorem}
-% \end{frame}
 
 \begin{frame}{Main Theorem}
 \begin{theorem}
@@ -454,13 +414,13 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   for some $\lambda \in (0,1)$ and some random variable $R$, then
   $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
   \begin{align*}
-    &\color{red}{\underbrace{(2\pi)^{-1/4} \sqrt{\frac{\E |T'-T|^3}{\lambda}}}_{\leq N^{-1/4} f_1({\bf u})}}
-    \onslide<2->{
-    \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq N^{-1} f_2({\bf u})}} \\
-      &\underbrace{|\E T^2 - 1|}_{\leq N^{-1} f_3({\bf u})} + \underbrace{\E |TR|}_{\leq N^{-1/2} f_4({\bf u})} +
-      \underbrace{\E |R|}_{\leq N^{-1/2} f_5({\bf u})}
+    \onslide<2->{&\color{red}{\underbrace{(2\pi)^{-1/4} \sqrt{\frac{\E |T'-T|^3}{\lambda}}}_{\leq n^{-1/4} f_1({\bf x})}}}
+    \onslide<3->{
+    \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq n^{-1} f_2({\bf x})}} \\
+      &\underbrace{|\E T^2 - 1|}_{\leq n^{-1} f_3({\bf x})} + \underbrace{\E |TR|}_{\leq n^{-1/2} f_4({\bf x})} +
+      \underbrace{\E |R|}_{\leq n^{-1/2} f_5({\bf x})}
     }
-    \onslide<3->{\leq N^{-1/4} f_6({\bf u})}
+    \onslide<3->{\leq n^{-1/4} f_6({\bf x})}
   \end{align*}
 \end{theorem}
 \end{frame}
@@ -470,17 +430,17 @@ $f(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   If in addition $|T'-T| \leq \delta$,
   $\sup_{t \in \mathbb{R}} |P(T \leq t) - \Phi(t)|$ is bounded by
   \begin{align*}
-    &\color{red}{\underbrace{\frac{.41 \delta^3}{\lambda}}_{\leq N^{-1/2} c''^\ast_1}} \color{black}{+} \,
-    \color{red}{\underbrace{3 \delta (\sqrt{\E T^2} + \E |R|)}_{\leq N^{-1} f'_1({\bf u})^\ast}} \,
-    \onslide<2->{
-      \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq N^{-1} f_2({\bf u})}} \\
-      &\underbrace{|\E T^2 - 1|}_{\leq N^{-1} f_3({\bf u})} + \underbrace{\E |TR|}_{\leq N^{-1/2} f_4({\bf u})} +
-      \underbrace{\E |R|}_{\leq N^{-1/2} f_5({\bf u})}
+    \onslide<2->{&\color{red}{\underbrace{\frac{.41 \delta^3}{\lambda}}_{\leq n^{-1/2} c''^\ast_1}} \color{black}{+} \,
+    \color{red}{\underbrace{3 \delta (\sqrt{\E T^2} + \E |R|)}_{\leq n^{-1} f'_1({\bf x})^\ast}} \,}
+    \onslide<3->{
+      \color{black}{+ \underbrace{\frac{1}{2\lambda} \sqrt{\var (\E [(T'-T)^2|T])}}_{\leq n^{-1} f_2({\bf x})}} \\
+      &\underbrace{|\E T^2 - 1|}_{\leq n^{-1} f_3({\bf x})} + \underbrace{\E |TR|}_{\leq n^{-1/2} f_4({\bf x})} +
+      \underbrace{\E |R|}_{\leq n^{-1/2} f_5({\bf x})}
     }
-    \onslide<3->{\leq N^{-1/2} f'_6({\bf u})^\ast}
+    \onslide<3->{\leq n^{-1/2} f'_6({\bf x})^\ast}
   \end{align*}
 \end{theorem}
-${}^\ast$ if $\delta < c'_1 N^{-1/2}$
+${}^\ast$ if $\delta < c'_1 n^{-1/2}$
 \end{frame}
 
 \begin{frame}{Simulated Bounds}
@@ -498,7 +458,7 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
     }
   \end{center}
   \pause
-  When ${\bf u} = \{i\}_{i=1}^{i=2N}, \frac{.41 \delta^3}{\lambda}N^{1/2} \to .205(16\sqrt{6})^3$
+  When ${\bf u} = \{i\}_{i=1}^{i=2n}, \frac{.41 \delta^3}{\lambda}n^{1/2} \to .205(16\sqrt{6})^3$
 \end{frame}
 
 \begin{frame}{Behavior of $\delta$}
@@ -512,16 +472,80 @@ ${}^\ast$ if $\delta < c'_1 N^{-1/2}$
 \begin{frame}{Conclusion}
   \begin{itemize}
   \item Friedman's test for non-vectorial and heterogeneous data. \pause
-  \item MKL power competitive with best-performing kernel. \pause
   \item MKL can learn structure of data. \pause
+  \item MKL power competitive with best-performing kernel and obviates multiple testing considerations. \pause
   \item Normal-like null distributions. \pause
   \item Berry--Esseen-type convergence result via Stein's method of exchangeable pairs.
   \end{itemize}
 \end{frame}
 
-% \begin{frame}[allowframebreaks]{References}
-%   \bibliographystyle{ieeetr}
-%   \bibliography{ncray}
-% \end{frame}
+\appendix
+
+\section{Acknowledgements}
+\begin{frame}{Acknowledgements}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.39]{susan_blackboard.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Acknowledgements}
+  \begin{figure}
+    \centering
+    \visible<1->{\includegraphics[scale=.5]{carlsson_blackboard.png}}
+    \visible<2->{\includegraphics[scale=.5]{diaconis_blackboard.png}} \\
+    \visible<3->{\includegraphics[scale=.5]{efron_blackboard.png}}
+    \visible<4->{\includegraphics[scale=.5]{friedman_blackboard.png}}
+  \end{figure}
+\end{frame}
+
+\section{Supplementary Slides}
+\begin{frame}{KMMD Function Example}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=.45]{kmmd.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Approximate Regression Condition}
+  \begin{figure}
+    \centering
+    \resizebox{9.0cm}{!}{
+      \input{../simulations/img/ARC.tex}
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}{ARC (MKL)}
+  \begin{figure}
+    \centering
+    \resizebox{9.0cm}{!}{
+      \input{../MKL/img/mkl_arc.tex}
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Overfitting on Kernels}
+  \begin{figure}
+    \centering
+    \resizebox{9.0cm}{!}{
+      \input{../MKL/img/overfit_mkl.tex}
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}{ARC (MKL, Overfit)}
+  \begin{figure}
+    \centering
+    \resizebox{9.0cm}{!}{
+      \input{../MKL/img/mkl_arc_overfit.tex}
+    }
+  \end{figure}
+\end{frame}
+
+ % \begin{frame}[allowframebreaks]{References}
+ %   \bibliographystyle{ieeetr}
+ %   \bibliography{ncray}
+ % \end{frame}
 
 \end{document}
