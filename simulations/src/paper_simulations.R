@@ -51,6 +51,7 @@ myTikz("ARC.tex", ARCPlot)
 
 
 ##system.time(origRateDF <- ldply(c(100, 200), simOrig, u = function(N) 1:(2*N), name = "integer", .progress = "text"))
+system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text", u = function(N) 1:(2*N), name = "integer") )
 system.time(origRateDF <- ldply(xbreaks, simOrig, .progress = "text")) ##2 mins for 1k perm, 3 ##2 mins for 10k perm, 2.5
 system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text"))
 system.time(origRateMCDF <- ldply(xbreaks, simOrig, exact = FALSE, .progress = "text", u = function(N) 1:(2*N), name = "integer"))
@@ -61,7 +62,7 @@ system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u
 ## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) c(rnorm(N, -1, 1/N), rnorm(N, 1, 1/N)), name = "bad"))
 ## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(N) rcauchy(2*N), name = "cauchy"))
 
-ratesPlot <- ggplot(origRateDF, aes(x = N, y = value, color = group)) +
+ratesPlot <- ggplot(subset(origRateDF, group != "Sum of Bounds"), aes(x = N, y = value, color = group)) +
   geom_line(size = 1.5) + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .07), size = 1.5) +
   xlab("$n$") +
@@ -71,8 +72,8 @@ ratesPlot <- ggplot(origRateDF, aes(x = N, y = value, color = group)) +
 ratesPlot
 
 myTikz("orig_rate.tex", ratesPlot)
-myTikz("better_rate.tex", ratesPlot %+% betterRateDF)
-myTikz("orig_rate_mc.tex", ratesPlot %+% origRateMCDF)
+myTikz("better_rate.tex", ratesPlot %+% subset(betterRateDF, group != "Sum of Bounds"))
+myTikz("orig_rate_mc.tex", ratesPlot %+% subset(origRateMCDF, group != "Sum of Bounds"))
 
 ## df <- ldply(xbreaks, tDist, u = function(N) 1:(2*N), name = "integer", .parallel = TRUE)
 ## df <- ldply(xbreaks, tDist, u = function(N) c(rnorm(2*N-1,sd=.01), 1), name = "bad", .parallel = TRUE)
@@ -100,7 +101,7 @@ deltaplot <- qplot(x = N, y = y, data = dat, geom = "line", size = I(1.5)) +
   scale_x_log10(breaks = xbreaks) +
   scale_y_log10() +
   xlab("$n$") +
-  ggtitle("$\\frac{.41\\delta^3}{\\lambda}N^{1/2}\\quad $")
+  ggtitle("$\\frac{.41\\delta^3}{\\lambda}n^{1/2}\\quad $")
 myTikz("delta_plot.tex", deltaplot)
 
 plot(laply(xbreaks, function(N) .41 / 2 * N^(3/2) * getDelta(rnorm(N))^3))

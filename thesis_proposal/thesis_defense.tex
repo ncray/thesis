@@ -183,14 +183,14 @@ $f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   MMD statistic:
   \begin{equation*}
     \text{MMD}[\mathfrak{F},p,q] := \sup_{f\in
-      \mathfrak{F}}(\mathbb{E}_{x\sim p}[f(x)] - \mathbb{E}_{z\sim q}[f(z)]) \pause
+      \mathfrak{F}}(\mathbb{E}_{{\bf x} \sim p}[f({\bf x})] - \mathbb{E}_{{\bf z} \sim q}[f({\bf z})]) \pause
   \end{equation*}
 
   Empirical Estimate:
   \begin{equation*}
     \text{MMD}[\mathfrak{F},X,Z] := \sup_{f\in
-      \mathfrak{F}}\left (\frac{1}{N}\sum_{i=1}^Nf(x_i) -
-    \frac{1}{M}\sum_{i=1}^M f(z_i) \right )
+      \mathfrak{F}}\left (\frac{1}{N}\sum_{i=1}^Nf({\bf x}_i) -
+    \frac{1}{M}\sum_{i=1}^M f({\bf z}_i) \right )
   \end{equation*}
 \end{frame}
 
@@ -231,7 +231,7 @@ $f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
     \item $\mathcal{X} = \mathbb{R}^{p}$ \pause
     \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$ \pause
     \item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$ \pause
-    \item $\mathcal{H} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$ \pause
+    \item $\mathcal{H} = \mathbb{R}^{p'}$, where $p' = \binom{n+d}{d}$ \pause
     \item $K_d({\bf x},{\bf y}) = ({\bf x}^T {\bf y}  + c)^d$ is $\mathcal{O}(n)$
   \end{itemize}
 \end{frame}
@@ -255,7 +255,7 @@ $f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   \begin{itemize}
     \item Feature engineering/extraction: $K_i$ \pause
     \item Feature normalization: $K_i({\bf x}, {\bf x}') \leftarrow \frac{K_i({\bf x}, {\bf x}')}{\sqrt{K_i({\bf x}, {\bf x})}\sqrt{K_i({\bf x}', {\bf x}')}}$ \pause
-    \item Regularization/feature selection (Kloft et al.\ 2011)): $\inf_{{\bf w}, b, {\boldsymbol \theta} : {\boldsymbol \theta} \succeq 0}
+    \item Regularization/feature selection (Kloft et al.\ 2011): $\inf_{{\bf w}, b, {\boldsymbol \theta} : {\boldsymbol \theta} \succeq 0}
       C \sum_{i=1}^{m+n} L( \sum_{j=1}^M \sqrt{\theta_j} \langle {\bf w}_j, \phi_j({\bf x_i}) \rangle_{\mathcal{H}_j} + b, y_i) $ \\
       $\qquad \qquad \; \; \; + \frac{1}{2} \sum_{j=1}^M || {\bf w}_j ||^2_{\mathcal{H}_j}
       \text{ s.t. } || {\boldsymbol \theta} ||_p \leq 1$
@@ -325,6 +325,14 @@ $f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
   \end{center}
 \end{frame}
 
+\begin{frame}{MKL Null Distribution}
+  \begin{center}
+    \resizebox{10.0cm}{!}{
+      \input{../MKL/img/mkl_null_dist_qq.tex}
+    }
+  \end{center}
+\end{frame}
+
 \begin{frame}{Permutation $t$-test Connection}
   Want to understand theoretically why the randomization null is normal-like. \pause
 
@@ -337,7 +345,7 @@ $f(\mathbf{x}) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
     T_{\Pi} = T_{\Pi} \left (\{f({\bf x}_{\Pi(i)})\}_{i=1}^{n}, \{f({\bf x}_{\Pi(i)})\}_{i=n+1}^{2n} \right). \pause
   \end{equation*}
 
-  If $f({\bf x})$ is affine, we recover the permutation $t$-test. \pause
+  If $f(x)$ is affine, we recover the permutation $t$-test. \pause
 
   SVM with linear kernel: $f(x) = \sum_{i=1}^{2n} y_i \alpha_i xx_i + b$.
 \end{frame}

@@ -525,10 +525,10 @@ powerDNAStarPlot <- function(){
   })
 
   p2 <- ggplot(res2, aes(x = p, y = value, color = group, linetype = group)) +
-    geom_line(size = I(1)) + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005), size = I(1)) +
+    geom_line(size = I(1.5)) + 
+      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005), size = I(1.5)) +
         facet_grid(r1~.) +
-          ggtitle("Power (Christmas Star + DNA Example), Faceted on Outer Radius") +
+          ggtitle("Power (Star + DNA Example), Faceted on Outer Radius") +
             xlab("Transition Probability") +
               ylab("Power")
   p2
@@ -560,11 +560,11 @@ nullDistDNAStar <- function(r1, p, n, C, Nperm = 200){
 }
 
 nullDistDNAStarPlot <- function(){
-  library(nortest)
-  system.time(dat <- ldply(c(.1, 1, 10), function(C) nullDistDNAStar(4, .25, 50, C, 2000)))
+  library(ADGofTest)
+  system.time(dat <- ldply(c(.1, 1, 10), function(C) nullDistDNAStar(4, .25, 50, C, 500)))
   dat.m <- melt(dat, id.vars = c("r1", "p", "n", "C"))
   datNorm <- data.frame(x = seq(-4, 4, .01), y = dnorm(seq(-4, 4, .01)))
-  pvals <- ddply(dat, .(C), function(df) laply(setdiff(1:ncol(dat), 1:4), function(i) ad.test(df[, i])$p.value))
+  pvals <- ddply(dat, .(C), function(df) laply(setdiff(1:ncol(dat), 1:4), function(i) ad.test(df[, i], distr.fun = pnorm, 0, 1)$p.value))
   names(pvals) <- c("C", names(dat)[-(1:4)])
   pvals.m <- melt(pvals, id.vars = "C")
   pvals.m <- transform(pvals.m, y = rep(seq(.4, .05, length.out = 7), each = 3))
@@ -577,6 +577,15 @@ nullDistDNAStarPlot <- function(){
             ggtitle("Null Distributions (Faceted by C); Standard Normal in Black")
   p1
   myTikz("mkl_null_dist.tex", p1)
+
+  pvals <- ddply(dat.m, .(C, variable), function(df) c("pval" = as.numeric(ADGofTest::ad.test(df$value, distr.fun = pnorm, 0, 1)$p.value)))
+  p2 <- ggplot(data = dat.m, aes(sample = value, color = variable)) +
+    stat_qq() +
+      facet_grid(C ~ .) +
+        geom_abline(aes(intercept = 0, slope = 1), color = "black") +
+          geom_text(data = pvals, aes(x = -2, y = 6 - 1 * as.numeric(variable), sample = 0, label = round(pval, 3)), alpha = 1)
+  p2
+  myTikz(filename = "mkl_null_dist_qq.tex", p2)
 }
 
 nullManyKernels <- function(r1, p, n, C, nKernels = 200){
