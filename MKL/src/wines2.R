@@ -8,7 +8,6 @@ library(stringr)
 load("wine.dat")
 
 sort(aaply(dat, 2, function(x) sum(is.na(x)))) / nrow(dat)
-
 sort(table(dat$info.Varietal), decreasing = TRUE)
 
 dat2 <- subset(dat, info.Varietal. == "Zinfandel" | info.Varietal. == "Shiraz/Syrah")
@@ -21,6 +20,8 @@ dat3 <- dat3[, names(which(aaply(dat3, 2, function(x) sum(is.na(x))) == 0))]
 dat3$ratings.RP <- as.numeric(str_match(dat3$ratings.RP, "[0-9]*"))
 dat3$price <- as.numeric(gsub(",", "", dat3$price))
 
+years <- as.numeric(str_extract(dat3$title, "[0-9]{4}"))
+t.test(years[which(dat3$info.Varietal. == "Zinfandel")], years[which(dat3$info.Varietal. == "Shiraz/Syrah")])
 
 getWineData <- function(n, dat){
   w1.ind <- sample(which(dat3$info.Varietal. == "Zinfandel"), size = n)
@@ -28,9 +29,9 @@ getWineData <- function(n, dat){
   inds <- c(w1.ind, w2.ind)
   l <- c(-matrix(1, 1, n), matrix(1, 1, n))
   price <- dat$price[inds]
-  desc <- dat$info.Sub.Region.[inds]
-  ##desc <- dat$desc[inds]
-  list(price = price, desc = desc, l = l)
+  subregion <- dat$info.Sub.Region.[inds]
+  desc <- dat$desc[inds]
+  list(price = price, desc = desc, subregion = subregion, l = l)
 }
 
 source("./generate_data.R")
@@ -43,17 +44,37 @@ parallel <- TRUE
 
 dat <- getWineData(100, dat3)
 t.test(dat3[which(dat3$info.Varietal. == "Zinfandel"), ]$price, dat3[which(dat3$info.Varietal. == "Shiraz/Syrah"), ]$price)
-t.test(dat[which(dat$l == -1)]$price, dat[which(dat$l == 1)]$price)
+t.test(dat$price[which(dat$l == -1)], dat$price[which(dat$l == 1)])
 trainMKL(u1 = t(dat$price), u2 = dat$desc, l = dat$l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = TRUE)
   wts <- getMKLWeights()
 
+RBF.v <- round(10^(seq(.5, 2, .5)), 2)
+string.v <- 1:3
 reject(compute(trainMKL), parametric = FALSE, verbose = TRUE)(u1 = t(dat$price), u2 = dat$desc, l = dat$l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = .01, linear = TRUE)
+getMKLWeights()
 
+library(stringr)
+string.v <- c(3, 6)
+dat$desc <- str_replace_all(tolower(iconv(dat$desc, "WINDOWS-1252", "UTF-8")), "[^a-z ]*", "")
+reject(compute(trainMKL), parametric = TRUE, verbose = TRUE)(u1 = matrix(rnorm(200), nrow = 1), u2 = dat$desc, l = dat$l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = .01, linear = TRUE)
 
+reject(compute(trainMKL), parametric = TRUE, verbose = TRUE)(u1 = matrix(rnorm(200), nrow = 1), u2 = dat$desc, subr = subr, l = dat$l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = .01, linear = TRUE)
+x <- rnorm(200)
+reject(compute(trainMKL), parametric = TRUE, verbose = TRUE)(u1 = matrix(rnorm(200), nrow = 1), u2 = dat$desc, subr = outer(x, x), l = dat$l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = .01, linear = TRUE)
+getMKLWeights()
 
-trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE, ...){
+library(proxy)
+x <- factor(dat$subregion)
+x <- c(1, 0, 1)
+subr <- as.matrix(dist(as.numeric(x), function(x, y) as.numeric(x == y), upper = TRUE, diag = TRUE))
+diag(subr) <- 1
+subr[99:101, 99:101]
+x[99:101]
+
+trainMKL <- function(u1, u2, subr, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_norm = 2, C = .1, linear = TRUE, ...){
   dump <- sg('clean_kernel')
   dump <- sg('clean_features', 'TRAIN')
+  sg('clean_preproc')
   if(linear) dump <- sg('add_features','TRAIN', u1)
   if(length(RBF.v) > 0){
     for(i in RBF.v){dump <- sg('add_features','TRAIN', u1)}
@@ -70,7 +91,7 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
   dump <- sg('new_classifier', 'MKL_CLASSIFICATION')
   dump <- sg('mkl_parameters', mkl_eps, mkl_C, mkl_norm)
   dump <- sg('svm_epsilon', svm_eps)
-  dump <- sg('set_kernel', 'COMBINED', 0)
+  dump <- sg('set_kernel', 'COMBINED', 100)
   if(linear) dump <- sg('add_kernel', 1, 'LINEAR', 'REAL', cache_size)
   if(length(RBF.v) > 0){
     for(width in RBF.v){dump <- sg('add_kernel', 1, 'GAUSSIAN', 'REAL', cache_size, width)}
@@ -80,11 +101,13 @@ trainMKL <- function(u1, u2, km = NULL, l, RBF.v = NULL, string.v = NULL, mkl_no
       dump <- sg('add_kernel', 1, 'COMMSTRING', 'ULONG', cache_size, FALSE, 'FULL') ###NO,SQRT,LEN,SQLEN,FULL
     }
   }
+  sg('add_kernel', 1, 'CUSTOM', subr, "FULL")
   dump <- sg('c', C)
   dump <- sg('set_kernel_normalization', 'SQRTDIAG') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
   ##dump <- sg('set_kernel_normalization', 'IDENTITY') ##IDENTITY|AVGDIAG|SQRTDIAG|FIRSTELEMENT|VARIANCE|ZEROMEANCENTER
   dump <- sg('train_classifier')
 }
+
 
 MKLwtsWine <- function(n, C){
   print(unlist(as.list(environment())))
@@ -187,4 +210,23 @@ powerWinePlot <- function(){
               ylab("Power")
   p2
   myplot(p2, "wine_power.png")
+}
+
+
+
+trainCustom <- function(){
+  l <- as.numeric(c(rep(-1, 5), rep(1, 5)))
+  ##x <- c((-5:-1), (1:5))
+  x <- 1:10
+  sg('clean_kernel')
+  sg('clean_features', 'TRAIN')
+  sg('set_kernel', 'CUSTOM', outer(x, x), "FULL")
+  sg('set_labels', 'TRAIN', l)
+  sg('new_classifier', 'LIBSVM')
+  sg('c', 1)
+  sg('svm_use_bias', TRUE) ##default is TRUE
+  ##sg('get_kernel_matrix', 'TRAIN')
+  sg('train_classifier')
+  mar <- getMargins(l)
+  (mar - mean(mar)) / 11 + 5.5
 }

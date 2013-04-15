@@ -101,7 +101,7 @@ getMargins <- function(l){
   inds <- svmparams[[2]][, 2] + 1 ## 0 indexing
   km <- sg('get_kernel_matrix')
   km.sub <- km[, inds]
-  mar <- as.numeric(km.sub %*% (aw * as.numeric(as.character(l))[inds]) + b)  
+  mar <- as.numeric(km.sub %*% (aw * as.numeric(as.character(l))[inds]) + b)
   ##print(all((mar < 0) == (sg('classify') == -1)))
   ##plot(mar, sg('classify'))
   ##sg('classify')
