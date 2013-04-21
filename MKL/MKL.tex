@@ -311,6 +311,122 @@ the columns.}
 \label{fig:mkl_arc_overfit}
 \end{figure}
 
+\section{Wine Example}
+In July 2012, we collected 78,443 descriptions of wine from the K\&L
+Wine Merchants' website: \url{http://www.klwines.com/}.  Each
+description includes characteristics about the wine such as its name,
+price, varietal, critics' ratings and reviews, and winery location.
+
+For example, here is the raw data for a 2002 Pinot Noir from Siduri Wines:
+\begin{verbatim}
+{"sku": "1011975",
+  "info": {
+    "Country:": "United States",
+    "Specific Appellation:": "Sonoma County",
+    "Sub-Region:": "California",
+    "Varietal:": "Pinot Noir"
+  },
+  "title": "2002 Siduri \"Hirsch Vineyard\" Sonoma Pinot Noir
+  (Previously $49.99)",
+  "price": "39.99",
+  "ratings": {
+    "ST": "90"
+  },
+  "desc": "90 points Stephen Tanzer's International Wine Cellar:
+  \"Full medium red. Sappy aromas of cherry, plum, raspberry and
+  minerals, with complicating floral and forest floor notes. Sweet, fat
+  and full of fruit; very smooth flavors of black cherry, licorice,
+  mocha and bitter chocolate. Nicely balanced pinot, and showing well
+  today.\" (May/Jun 04)"
+}
+\end{verbatim}
+
+We'd like to know if our two-sample test can discriminate between
+two different wine varietals on the basis of some of these features.
+Moreover, we are also interested in understanding which are the most
+influential features.  Because of the large number of samples of the
+two varietals, we focus on the set of Pinot Noir and Chardonnay wines.
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/wine_weights.tex}
+    }
+  \end{center}
+\caption{Boxplots of 2-norm MLK weights, in decreasing order of
+  highest variable weight for the corresponding model.}
+\label{fig:wine_weights}
+\end{figure}
+
+We extract the vintage (year) of the wine into a new field and only consider
+letters and spaces in the wine titles and descriptions.  After
+removing examples without a Robert Parker rating, we have 879
+Chardonnay and 1134 Pinot Noir examples remaining.  We use the
+4-spectrum kernel for the string fields, title and description; the
+Gaussian RBF kernel with width 1 for the numeric fields, price, Robert
+Parker rating, and vintage; and the identity kernel for the
+subregion.  Although simple, these kernel choices are also quite
+reasonable: the numeric fields are all roughly on the same scale,
+comparable with the RBF width.  The identity kernel takes on a value
+of 1 only when the subregions agree entirely.  Thus, we lose
+geographic information such as distances between subregions.
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/wine_power.tex}
+    }
+  \end{center}
+\caption{Power on sample size: MKL can make effective use of
+  additional information.}
+\label{fig:wine_power}
+\end{figure}
+
+We train a 2-norm MKL with regularization parameter $C=.01$, initially
+on all 6 kernels, with varying sample sizes in $\{50, 100, 150, 200,
+250\}$, repeating each test 200 times in order to estimate the
+distribution of the kernel weights and the statistical power of the
+tests.  In Figure~\ref{fig:wine_weights} we report boxplots of the
+kernel weights.  For the 6-kernel model on all the features, the dominant
+weight lies on the 4-spectrum kernel associated with the name (title)
+of the wine.  In Figure~\ref{fig:wine_power}, we see that this test
+has the highest power.  We then remove the kernel with the highest
+weight and fit a 5-kernel model on all of the features except for the
+name of the wine.  We have ordered the boxplot x-axis in order of
+the highest variable weight corresponding to the model under
+consideration.  Thus, the title of the wine has the highest weight
+for the 6-kernel model, the description of the wine has the highest
+weight for the 5-kernel model, and so on.
+
+The title of the wine sometimes contains information about the very
+thing we're trying to predict -- the wine varietal.  Additionally,
+many wineries specialize in particular varietals of wine.  For
+example, Siduri only produces single vineyard Pinot Noirs from
+vineyards located in California and Oregon.  Therefore, we should
+expect that models incorporating this information should perform very
+well.
+
+Pinot Noir wines are typically lighter-colored reds that have notes of
+red fruits such as cherries, strawberries, and raspberries.  The grape
+requires a cooler climate for best results and is associated with the
+Burgundy region of France and areas of California and Oregon.
+Chardonnay, by contrast, is a white wine with flavors of buttery oak
+and fruits such as apples and pears.  Chardonnay is also commonly
+grown in Burgundy and California as well as Australia and New
+Zealand.  The wine reviews use many adjectives and descriptors
+associated with each varietal, in addition to sometimes including the
+name of the varietal.  By constructing views of each data type through
+kernels, we can pick up on such differences between the two varietals.
+
+In Figure~\ref{fig:wine_power}, by repeatedly removing the
+most-informative feature, we monotonically decrease the statistical
+power of the test.  The final model including just the price and year
+of the wine has very poor performance.  In fact, the distributions of
+the weights of the two variables are very similar, indicating that
+both features are equally poor predictors of the type of wine.  For
+this wine example, MKL can effectively exploit additional data types
+for higher discriminatory power.
+
 \section{Future Work}
 We hope to better understand the Friedman Test outside of the
 univariate data and linear kernel setting.  That is, we would like to

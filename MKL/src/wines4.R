@@ -1,10 +1,10 @@
+setwd("~/Dropbox/VMshare/thesis/MKL/src")
+imgDir <- "../img/"
 library(RJSONIO)
 library(plyr)
 library(stringr)
+library(tikzDevice)
 
-## wines <- fromJSON("klwines.json")
-## dat <- ldply(wines, function(l) data.frame(t(unlist(l)), stringsAsFactors = FALSE))
-## save(dat, file = "wine.dat")
 load("wine.dat")
 
 getPercOkay <- function(dat) round(sort(aaply(dat, 2, function(x) sum(!is.na(x))), decreasing = TRUE) / nrow(dat) * 100, 2)
@@ -22,7 +22,6 @@ sum(!is.na(dat2$ratings.RP) | !is.na(dat2$ratings.ST) | !is.na(dat2$ratings.BH))
 dat3 <- subset(dat2, !is.na(ratings.RP) & !is.na(info.Sub.Region.))
 dat3 <- dat3[, names(which(aaply(dat3, 2, function(x) sum(is.na(x))) == 0))]
 
-##Sys.setlocale('LC_ALL','C') 
 dat3$ratings.RP <- as.numeric(str_match(dat3$ratings.RP, "[0-9]*"))
 dat3$price <- as.numeric(str_replace_all(dat3$price, ",", ""))
 dat3$desc <- str_replace_all(tolower(iconv(dat3$desc, "WINDOWS-1252", "UTF-8")), "[^a-z ]*", "")
@@ -244,9 +243,11 @@ lvls <- names(table(res.b$group))[order(laply(names(table(res.b$group)), str_len
 
 res.b$group <- factor(res.b$group, levels = lvls)
 p1 <- ggplot(res.b, aes(x = n, y = value, color = group, linetype = group)) +
-  geom_line() + 
-  geom_errorbar(aes(ymin = lower, ymax = upper, width = 7))
+  geom_line(size = I(1.5)) + 
+  geom_errorbar(aes(ymin = lower, ymax = upper, width = 7), size = I(1.5)) +
+  theme(legend.position = "bottom", legend.direction = "vertical")
 p1
+myTikz(filename = "wine_power.tex", plot = p1)
 ggsave("wine_power.png")
   ##facet_grid(p~.) +
   ##ggtitle("Power (Christmas Star Example)") +
@@ -261,7 +262,9 @@ res.m <- rbind(melt(res1[, -which(names(res1) %in% c("reject", "n", "C"))], id.v
                melt(res5[, -which(names(res5) %in% c("reject", "n", "C"))], id.vars = "group"))
 res.m$group <- factor(res.m$group, levels = lvls)
 res.m$variable <- factor(res.m$variable, levels = names(table(res.m$variable))[order(table(res.m$variable))])
-qplot(x = variable, y = value, data = res.m, geom = "boxplot", color = group)
+p2 <- qplot(x = variable, y = value, data = res.m, geom = "boxplot", color = group) +
+  theme(legend.position = "bottom", legend.direction = "vertical")
+myTikz(filename = "wine_weights.tex", plot = p2)
 ggsave("wine_weights.png")
 
 qplot(x = n, y = V1, data = ddply(res, .(n, group), function(df) mean(df$reject.t)), geom = "line", color = group)
@@ -280,124 +283,3 @@ qplot(x = variable, y = value, geom = "boxplot", data = res.m)
 
 
 
-MKLwtsWine <- function(n, C){
-  print(unlist(as.list(environment())))
-  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  string.v <- 1:3
-  dat <- getWineData(n = n, dat3)
-  l <- dat$l
-  u1 <- t(dat$price)
-  u2 <- dat$desc
-  
-  trainMKL(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
-  wts <- getMKLWeights()
-  df1 <- cbind(data.frame("n" = n, "C" = C, "perm" = 0, "mkl_norm" = 1), matrix(wts, nrow = 1))
-  trainMKL(u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 2, linear = FALSE)
-  wts <- getMKLWeights()
-  wts <- wts / sum(wts)
-  df2 <- cbind(data.frame("n" = n, "C" = C, "perm" = 0, "mkl_norm" = 2), matrix(wts, nrow = 1))
-  dfperm <- ldply(1:Nwts, function(x){
-    trainMKL(u1 = u1, u2 = u2, l = sample(l), RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 1, linear = FALSE)
-    wts <- getMKLWeights()
-    df1p <- cbind(data.frame("n" = n, "C" = C, "perm" = 1, "mkl_norm" = 1), matrix(wts, nrow = 1))
-    trainMKL(u1 = u1, u2 = u2, l = sample(l), RBF.v = RBF.v, string.v = string.v, C, mkl_norm = 2, linear = FALSE)
-    wts <- getMKLWeights()
-    wts <- wts / sum(wts)
-    df2p <- cbind(data.frame("n" = n, "C" = C, "perm" = 1, "mkl_norm" = 2), matrix(wts, nrow = 1))
-    rbind(df1p, df2p)
-  })
-  df1 <- rbind(df1, df2, dfperm)
-  len <- ncol(df1)
-  names(df1)[5:(5 + length(RBF.v) - 1)] <- paste("rbf: ", RBF.v, sep = "")
-  names(df1)[(5 + length(RBF.v)):len] <- paste("sk: ", string.v, sep = "")
-  df1
-}
-
-MKLwtsWinePlot <- function(){
-  Nwts <- 100
-  system.time(res <- mdply(expand.grid(n = c(10, 50, 200), C = .1), MKLwtsWine))
-
-  res.m <- melt(res, id.vars = c(1:4))
-  p1 <- qplot(variable, value, data = subset(res.m, perm == 1), geom = "boxplot") +
-    facet_grid(mkl_norm~n) +
-      geom_point(data = subset(res.m, perm == 0), color = "red", size = 3) +
-        xlab("Kernels") +
-          ylab("Kernel Weights") +
-            ggtitle("Boxplot of Null Distribution with Observed in Red Faceted by Self Transition Probability and MKL Norm")
-  p1
-  myplot(p1, "mkl_weights_wine.png")
-}
-
-powerWine <- function(n, C){
-  print(unlist(as.list(environment())))
-  RBF.v <- round(10^(seq(.5, 2, .5)), 2)
-  string.v <- 1:3
-  ldply(1:Npwr, function(x){
-    print(x)
-    dat <- getWineData(n = n, dat3)
-    l <- dat$l
-    u1 <- t(dat$price)
-    u2 <- dat$desc
-
-    dfMKL <- data.frame("n" = n, "C" = C,
-                        "FSMKL: 1" = reject(compute(trainMKL), parametric = TRUE)
-                        (u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 1, C = C, linear = FALSE),
-                        "FSMKL: 2" = reject(compute(trainMKL), parametric = TRUE)
-                        (u1 = u1, u2 = u2, l = l, RBF.v = RBF.v, string.v = string.v, mkl_norm = 2, C = C, linear = FALSE))
-    dfRBF <- as.data.frame(matrix(laply(RBF.v, function(r) reject(compute(trainRBF), parametric = TRUE)
-                                        (u = u1, l = l, r = r, C = C)), nrow = 1))
-    names(dfRBF) <- paste("RBF: ", RBF.v, sep = "")
-    dfSK <- as.data.frame(matrix(laply(string.v, function(order) reject(compute(trainString), parametric = TRUE)
-                                       (u = u2, l = l, order = order, C = C)), nrow = 1))
-    names(dfSK) <- paste("SK: ", string.v, sep = "")
-    cbind(dfMKL, dfRBF, dfSK)
-  }, .parallel = parallel)
-}
-
-powerWinePlot <- function(){
-  Npwr <- 100
-  ##system.time(res <- mdply(expand.grid(r1 = c(4, 4.3), self = c(.25, .35, .45), n = 50, C = .1), powerDNAStar))
-  system.time(res <- mdply(expand.grid(n = c(10, 20, 30), C = .1), powerWine))
-
-  ##system.time(res <- mdply(expand.grid(r1 = c(4.3), self = c(.335), n = 50, C = .1), powerDNAStar))
-  ##colMeans(res)
-  
-  res2 <- ddply(res, .(n, C), function(df){
-    ldply(names(df)[-(1:2)], function(name){
-      dat <- df[, name]
-      lims <- c(.025, .975)
-      bootM <- function(x) quantile(as.vector(boot(x, function(x, i) mean(x[i]), 1000)$t), lims)
-      boot <- bootM(dat)
-      data.frame("value" = mean(dat), "lower" = boot[1], "upper" = boot[2], "group" = name)
-    })
-  })
-
-  p2 <- ggplot(res2, aes(x = n, y = value, color = group, linetype = group)) +
-    geom_line() + 
-      geom_errorbar(aes(ymin = lower, ymax = upper, width = .005)) +
-        ##facet_grid(n~.) +
-          ggtitle("Power (Christmas Star + DNA Example), Faceted on Outer Radius") +
-            xlab("Self Transition Probability") +
-              ylab("Power")
-  p2
-  myplot(p2, "wine_power.png")
-}
-
-
-
-trainCustom <- function(){
-  l <- as.numeric(c(rep(-1, 5), rep(1, 5)))
-  ##x <- c((-5:-1), (1:5))
-  x <- 1:10
-  sg('clean_kernel')
-  sg('clean_features', 'TRAIN')
-  sg('set_kernel', 'CUSTOM', outer(x, x), "FULL")
-  sg('set_labels', 'TRAIN', l)
-  sg('new_classifier', 'LIBSVM')
-  sg('c', 1)
-  sg('svm_use_bias', TRUE) ##default is TRUE
-  ##sg('get_kernel_matrix', 'TRAIN')
-  sg('train_classifier')
-  mar <- getMargins(l)
-  (mar - mean(mar)) / 11 + 5.5
-}
