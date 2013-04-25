@@ -17,7 +17,9 @@ of bounding the distance between two probability distributions in a
 given probability metric.  When applied with the normal distribution
 as the target, this results in central-limit-type theorems.  Traditional
 results of this type typically make use of the complex-valued characteristic
-function.  Stein introduced a groundbreaking approach with a real characterizing
+function.  For an account of the early history and many variations of the
+Central Limit Theorem, see Le Cam \cite{cam1986central}.
+Stein introduced a groundbreaking approach with a real characterizing
 equation in order more effectively tame various forms of dependence in
 \cite{stein1972bound}.
 
@@ -95,6 +97,30 @@ Stein's proof of the HCCLT relies on an application of Theorem~\ref{T:stein-theo
     \right ].
   \end{equation*}
 \end{theorem}
+
+Originally proved by Hoeffding using the method of moments
+\cite{hoeffding1951combinatorial}, Theorem~\ref{T:HCCLT} generalizes
+the non-parametric measure of rank correlation known as Spearman's
+footrule \cite{spearman1904proof} \cite{salama1990note}
+\begin{equation*}
+  D(\pi, \sigma) = \sum_{i=1}^n |\pi(i) - \sigma(i)|,
+\end{equation*}
+where $\pi$ and $\sigma$ are elements of $S_n$, the set of
+permutations of $n$ letters.  Considering $D$ as a metric on $S_n$,
+Diaconis and Graham \cite{diaconis1977spearman} discuss its
+relationship with other common non-parametric measures and derive
+various asymptotic results.  In fact, Spearman's footrule has found
+contemporary applications such as in ranking search queries and microarray
+experiments \cite{sens2011spearman}, where consistency of the top
+$k$ out of $n$ objects is desired.
+
+Theorem~\ref{T:HCCLT} was extended by Motoo \cite{motoo1956hoeffding} and
+also generalizes the work on permutation-based
+tests of Wald and Wolfowitz \cite{wald1944statistical} and Noether
+\cite{noether1949theorem}.  These results build further on the problem of
+devising exact tests of significance when the underlying probability
+distribution is unknown, originating from Fisher
+\cite{fisher1935design, fisher1970statistical}.
 
 Given fixed data $a_{ij}$, the HCCLT provides a bound in terms of a
 universal constant $C$, a sample-size-dependent term
