@@ -49,12 +49,40 @@ $t$-distribution to the standard normal distribution.  With an
 additional condition on the data, we are able to obtain a
 $\mathcal{O}(n^{-1/2})$ rate.
 
+\section{Self-Normalized Sums}
+Student's one-sample $t$-statistic
+\begin{align*}
+  T_n &= \frac{1}{\sqrt{n}} \frac{\sum_{i=1}^n X_i}{\sqrt{\frac{1}{n-1} \sum_{i=1}^n(X_i - \bar{X})^2}} \\
+  &= S_n(2) \sqrt{\frac{n-1}{n-S_n^2(2)}}.
+\end{align*}
+is closely related to the self-normalized sum
+\begin{equation*}
+  S_n(p) = \frac{\sum_{i=1}^n X_i}{\left ( \sum_{i=1}^n|X_i|^p \right )^{1/p}},
+\end{equation*}
+for which many limiting results exist.  Logan et al.\
+\cite{logan1973limit} studied $S_n(p)$ for general $p$, and
+Efron \cite{efron1969student} showed that the limiting distributions of
+$T_n$ and $S_n(2)$ coincide and related the $t$-test to its
+non-parametric one-sample counterparts.
+
+More generally, self-normalized processes take the form $A_t/B_t$,
+where $B_t$ is a random variable that measures some form of dispersion
+of $A_t$ \cite{de2004self}.  For the one-sample $t$-statistic, $A_t$
+represents the standardized sample mean and $B_t$ the sample standard
+deviation.  Since they are unit free, they are invariant to changes of
+scale.  Importantly, by normalizing $A_t$ by nonrandom $b_t$, we
+obviate the requirement of moment conditions such as in Shao's \cite{shao1997self}
+self-normalized large deviations.
+
+
+
+
 \section{Set-up}
-We observe two samples with equal sample size: $S_1 = \{u_i\}_{i=1}^N$
-and $S_2 = \{u_i\}_{i=N+1}^{2N}$.  Since we consider the $t$-statistic
+We observe two samples with equal sample size: $\mathcal{S}_1 = \{u_i\}_{i=1}^N$
+and $\mathcal{S}_2 = \{u_i\}_{i=N+1}^{2N}$.  Since we consider the $t$-statistic
 under different permutations, it will be convenient to re-write the
-sample values relative to the null permutation $\pi_0$: $S_1 =
-\{u_{\pi_0(i)}\}_{i=1}^N$ and $S_2 = \{u_{\pi_0(i)}\}_{i=N+1}^{2N}$,
+sample values relative to the null permutation $\pi_0$: $\mathcal{S}_1 =
+\{u_{\pi_0(i)}\}_{i=1}^N$ and $\mathcal{S}_2 = \{u_{\pi_0(i)}\}_{i=N+1}^{2N}$,
 where $\pi_0(i) = i$.  Under the randomization distribution, where
 $\Pi$ is a uniformly chosen permutation, Student's two-sample
 $t$-statistic is given by
