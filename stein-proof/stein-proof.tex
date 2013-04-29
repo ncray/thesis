@@ -13,7 +13,7 @@ Also known as a permutation test, Fisher applied this novel test to
 Charles Darwin's \emph{Zea mays} data and noted that the achieved
 significance level was very similar to that observed in the parametric
 test.  Indeed, Diaconis and Holmes \cite{diaconis1994gray} used
-efficient Gray code based calculations to show that the randomization
+efficient Gray-code-based calculations to show that the randomization
 distribution looked remarkably normal.  For more history on the
 development of randomization procedures, see Zabell
 \cite{zabell2008student} or David \cite{david2008beginnings}.
@@ -24,9 +24,31 @@ randomization tests.
 Ludbrook and Dudley \cite{ludbrook1998permutation} have written about
 the advantages of permutation tests, especially in biomedical
 research, and outlined two models of statistical inference: the
-so-called population model, formally introduced by Newman and Pearson
+so-called population model, formally introduced by Neyman and Pearson
 \cite{neyman1928use}, and Fisher's randomization model
-\cite{fisher1935design}.  Add some more on these two models...
+\cite{fisher1935design}.
+
+Neyman and Pearson's population model, formally proposed in 1928
+\cite{neyman1928use}, assumes that there has been a random sampling
+from a population or populations, on which a statistical test has been
+performed.  The level of statistical significance corresponds to
+rejections of the null hypothesis under repeated random samplings from
+these populations.  Because it is typically unfeasible to repeatedly
+sample, the sampling distribution is taken to conform to a theoretical
+distribution such as the $t$ or $F$ distributions.  Ludbrook and
+Dudley argued that the preference for controlling Type I error rates
+in biomedical research is due to the strong desire to avoid introducing
+valueless new therapies.  Neyman \cite{neyman1934two} also first proposed
+using confidence intervals as an alternative to hypothesis testing.
+
+By contrast, Fisher's randomization model \cite{fisher1935design} did
+not involve sampling from a population.  A fixed sample of
+experimental units is divided into groups, for which a test statistic
+is calculated.  The unique sampling distribution corresponding to the
+fixed sample is compiled exactly by permutation.  The population model
+has implications for the outcome of statistical tests on future
+samples, whereas the permutation-based test possesses no such
+guarantees.
 
 Under the randomization model and using the language of triangular
 arrays, Lehmann \cite{lehmann1999elements} proved a weak convergence
@@ -34,14 +56,15 @@ result of the randomization distribution of the $t$-statistic to the
 standard normal distribution, however, there is no known
 Berry--Esseen-type bound for this rate of convergence.
 
-Introduced by Stein \cite{stein1986approximate}, the eponymous
-technique provides a powerful means with which to handle dependencies
-among collections of random variables, a common criticism of classical
-Fourier analytic methods.  In addition, one can easily obtain bounds
-on rates of convergence.  Bentkus and G{\"o}tze
-\cite{bentkus1996berry} first obtained a Berry--Esseen bound for
-Student's statistic in the independent but non-identically distributed
-setting with additional work by Shao \cite{shao2005explicit}.
+Bentkus and G{\"o}tze \cite{bentkus1996berry} first obtained a
+Berry--Esseen bound for the one-sample $t$-statistic under the
+population model.  Up to an unspecified absolute constant, their result coincides
+with the classical Berry--Esseen bound for the mean, given a bound on
+the third moment.  Under this setting, Shao \cite{shao2005explicit}
+followed up with a similar result with a specified constant.  Given
+sampling from a finite population, Bloznelis \cite{bloznelis1999berry}
+also produced a Berry--Esseen bound for the one sample $t$-statistic,
+with additional results from Pinelis \cite{pinelis2011berry}.
 
 We use Stein's method of exchangeable pairs to prove a conservative
 bound of $\mathcal{O}(n^{-1/4})$ on the rate of convergence of the randomization
@@ -63,19 +86,16 @@ for which many limiting results exist.  Logan et al.\
 \cite{logan1973limit} studied $S_n(p)$ for general $p$, and
 Efron \cite{efron1969student} showed that the limiting distributions of
 $T_n$ and $S_n(2)$ coincide and related the $t$-test to its
-non-parametric one-sample counterparts.
+non-parametric, one-sample counterparts.
 
 More generally, self-normalized processes take the form $A_t/B_t$,
 where $B_t$ is a random variable that measures some form of dispersion
 of $A_t$ \cite{de2004self}.  For the one-sample $t$-statistic, $A_t$
 represents the standardized sample mean and $B_t$ the sample standard
-deviation.  Since they are unit free, they are invariant to changes of
+deviation.  Since self-normalized processes are unit free, they are invariant to changes of
 scale.  Importantly, by normalizing $A_t$ by nonrandom $b_t$, we
 obviate the requirement of moment conditions such as in Shao's \cite{shao1997self}
-self-normalized large deviations.
-
-
-
+work on self-normalized large deviations.
 
 \section{Set-up}
 We observe two samples with equal sample size: $\mathcal{S}_1 = \{u_i\}_{i=1}^N$
