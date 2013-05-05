@@ -18,10 +18,10 @@ with the normal distribution as the target, this results in
 central-limit-type theorems.  Traditional results of this type
 typically make use of the complex-valued characteristic function.  For
 an account of the early history and many variations of the Central
-Limit Theorem, see Le Cam \cite{cam1986central}.  Stein introduced a
-groundbreaking approach with a real characterizing equation in order
-more effectively tame various forms of dependence in
-\cite{stein1972bound}.
+Limit Theorem, see Le Cam \cite{cam1986central}.  In
+\cite{stein1972bound}, Stein introduced a groundbreaking approach with
+a real characterizing equation in order to more effectively tame
+various forms of dependence.
 
 He soon refined these initial ideas into his monograph
 \cite{stein1986approximate}, which includes the Poisson approximation
@@ -29,7 +29,7 @@ work of Chen \cite{chen1975poisson}, random graph results of Barbour
 and Eagleson \cite{barbour1985multiple}, and binomial approximation of
 Diaconis \cite{diaconis1977distribution}.  Several flavors of Stein's
 method (e.g. the method of exchangeable pairs) proceed via auxiliary
-randomization.  Other compilations with many instructive applications
+randomization.  Other compilations with many illuminating applications
 include those of Diaconis and Holmes \cite{diaconis2004stein}, Barbour
 and Chen \cite{barbour2005introduction, barbour2005stein}, and
 Chen, Goldstein, and Shao \cite{chen2010normal}.
@@ -51,7 +51,7 @@ applied to the situation where $W$ is the sum of the random diagonal of a matrix
 to prove the HCCLT.  Chen et al.\ \cite{chen2010normal}
 generalize Theorem~\ref{T:stein-theorem} to allow
 for situations in which the regression condition does not hold exactly, and
-we later in addition relax the assumption that the $W$ has unit variance.
+we later in addition relax the assumption that $W$ has unit variance.
 \begin{theorem}[Stein]\label{T:stein-theorem}
   If $W$, $W'$ are mean 0, exchangeable random variables with variance 1
   satisfying the exact regression condition
@@ -107,12 +107,12 @@ footrule \cite{spearman1904proof} \cite{salama1990note}
 \end{equation*}
 where $\pi$ and $\sigma$ are elements of $S_n$, the set of
 permutations of $n$ letters.  Considering $D$ as a metric on $S_n$,
-Diaconis and Graham \cite{diaconis1977spearman} discuss its
-relationship with other common non-parametric measures and derive
-various asymptotic results.  In fact, Spearman's footrule has found
-contemporary applications such as in ranking search queries and microarray
-experiments \cite{sens2011spearman}, where consistency of the top
-$k$ out of $n$ objects is desired.
+Diaconis and Graham \cite{diaconis1977spearman} related it to other
+common non-parametric measures and derived various asymptotic results.
+In fact, Spearman's footrule has found contemporary applications such
+as in ranking search queries and microarray experiments
+\cite{sens2011spearman}, where consistency of the top $k$ out of $n$
+objects is desired.
 
 Theorem~\ref{T:HCCLT} was extended by Motoo \cite{motoo1956hoeffding} and
 also generalizes the work on permutation-based
@@ -127,12 +127,14 @@ universal constant $C$, a sample-size-dependent term
 $\frac{1}{\sqrt{n}}$, and a function of the data $\sqrt{\sum_{i, j =
 1}^{n} a_{ij}^4} + \sqrt{\sum_{i, j = 1}^{n} |a_{ij}|^3}$.  Thus,
 given $C$, we can calculate an explicit bound on the Kolmogorov
-distance.  Consider a sequence of matrices, $a_{ij}^{(n)}$, of
-dimension $n \times n$.  In order to achieve a $\mathcal{O}(n^{-1/2})$
-rate of convergence, we require the function of the data to be
-bounded.  However, this will not typically be the case.
+distance.
 
-Bolthausen \cite{bolthausen1984estimate} was able to prove the following result:
+Consider a sequence of matrices, $a_{ij}^{(n)}$, of dimension $n
+\times n$.  In order to achieve an $\mathcal{O}(n^{-1/2})$ rate of
+convergence, we require that the function of the data be bounded.
+However, this will not typically be the case.
+
+Bolthausen \cite{bolthausen1984estimate} proved the following result:
 \begin{theorem}[Bolthausen]
   Under the conditions of Theorem~\ref{T:HCCLT}, there is an absolute constant
   $K > 0$ such that
@@ -148,7 +150,7 @@ $\sqrt{\sum_{i, j = 1}^{n} |a_{ij}|^3} / \sqrt{n}$ remains bounded.
 von Bahr \cite{bahr1976remainder} and Ho and Chen \cite{ho1978l_p}
 also obtained the same rate under some boundedness conditions
 on random-valued entries of the matrix.  For example, von
-Bahr was able to obtain the following result:
+Bahr obtained the following result:
 \begin{theorem}[von Bahr]
   Let $\{X_{ij}\}_{i, j = 1}^n$ be a square matrix of random variables with
   independent row vectors.
@@ -176,27 +178,12 @@ Bahr was able to obtain the following result:
       \max_i \sum_j \E Y_{ij}^2 / n \tau^2,
       \max_j \sum_i \E Y_{ij}^2 / n \tau^2,
       \max_{i, j} \sum_{i, j} \E |Y_{ij}|^3 / n^2 \tau^3
-    \right ]
+    \right ].
   \end{equation*}
 \end{theorem}
 
 Now, we return to generalizing Theorem~\ref{T:stein-theorem}.
 
-% Sourav got to me and says he doesn't see any problems with your proofs
-% but says that for the written thesis you have to do a better on the
-% bibliography section of the Berry Esseen bounds for self normalized
-% sums which apparently you have not covered carefully enough.
-
-% \section{Exchangeable Pairs}
-% TODO: Add a lot of development for exchangeable pairs.  For now,
-% focusing on generalizing the theorems in ``Normal Approximation by
-% Stein's Method.'' \cite{chen2010normal}
-
-% Theorem 5.5 in ``Normal Approximation by Stein's Method'' concerns
-% variance 1 exchangeable random variables.  Our setting has the
-% variance tending to 1, so we first prove a slight generalization of
-% the theorem.  Large parts of the proof are copied verbatim from the
-% book.
 \section{Generalized Stein's Theorems}
 Here, we treat the situation where the regression condition fails to hold exactly.
 Chen et al.\ \cite{chen2010normal} serves as an excellent reference for results
@@ -234,8 +221,10 @@ Here we generalize Lemma 5.1 from \cite{chen2010normal} to the setting of non-un
   \end{equation*}
 \end{theorem}
 
-The following theorem will allow us to prove a $\mathcal{O}(n^{-1/4})$ rate under
-mild conditions.  Generalization of Theorem 5.5 from \cite{chen2010normal}:
+The following theorem will allow us to prove an $\mathcal{O}(n^{-1/4})$ rate under
+mild conditions.
+
+Here, we generalize Theorem 5.5 from \cite{chen2010normal}:
 \begin{theorem}
   \label{T:main}
   If $W$, $W'$ are mean 0 exchangeable random variables with variance
