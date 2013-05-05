@@ -1,0 +1,61 @@
+\chapter{Introduction}
+
+The two-sample testing problem arises whenever one collects data for
+two distinct groups and wishes to know whether there are meaningful
+differences between such groups: could they have been sampled from the
+same underlying distribution?  Throughout statistical history, many
+two-sample tests have been developed to address a multitude of
+scenarios.  However, there is a dearth of scholarship in the
+heterogeneous data setting, where a single sample is comprised of data
+from different domains.
+
+We develop Jerome Friedman's method of conducting two-sample tests
+by leveraging techniques from regression and classification.  In
+particular, we construct two-sample tests for non-vectorial data by
+way of kernel support vector machines.  We extend these tests to deal
+with heterogeneous data by using multiple kernel learning to construct
+an optimal single kernel as a convex combination of various input
+kernels.  We show that these tests generalize the two-sample permutation
+$t$-test, for which asymptotic normality results are known but rate of
+convergence bounds remain lacking.  Using Stein's method of
+exchangeable pairs, we produce Berry--Esseen-type bounds that allow us
+to quantify our error in approximating the permutation distribution
+with the normal distribution.
+
+Chapter~\ref{C:steins-method} gives an overview of Stein's method,
+with an emphasis on exchangeable pairs.  We review a similar CLT with
+dependence, Hoeffding's Combinatorial CLT, as our proof proceeds in a
+similar fashion.  Ancillary results and long proofs are deferred to
+Appendix~\ref{A:auxiliary-app} and Appendix~\ref{A:steins-method-app},
+respectively.
+
+In Chapter~\ref{C:stein-proof}, we review population- and
+permutation-based inference and prior related work on distributional
+approximations for the $t$-statistic, as well as its connection with
+self-normalized sums.  We produce a conservative bound on rate of
+convergence of the permutation $t$-distribution to the standard normal
+distribution, in addition to a Berry--Esseen-type bound given an
+additional boundedness condition, appealing to some results that are
+proved in Appendix~\ref{A:stein-proof-app}.
+
+Chapter~\ref{C:simulations} is a computational companion to
+Chapter~\ref{C:stein-proof}.  We collate the results from numerous
+computer simulations to experimentally verify the theoretical results
+and inform the development of further theory.  We also describe some
+novel computational procedures in order to effect simulation over a
+wide range of conditions.
+
+We introduce Friedman's idea for two-sample testing in
+Chapter~\ref{C:friedman-test} and apply it using kernel support vector
+machines, developing two-sample tests for situations for which
+kernel functions exist.  We show that these tests generalize the
+permutation $t$-test and compare their performance against an
+alternative, kernel-based test utilizing the maximum mean discrepancy
+statistic in vectorial and non-vectorial settings.
+
+Lastly, in Chapter~\ref{C:MKL}, we construct two-sample tests on
+heterogeneous data using multiple kernel learning to identify the most
+salient discriminating features of the data.  We demonstrate their
+efficacy and informativeness on wine data and are able to discriminate
+between two popular wine varietals by reliably fusing data from
+different domains.
