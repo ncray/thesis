@@ -60,7 +60,7 @@ Bentkus and G{\"o}tze \cite{bentkus1996berry} first obtained a
 Berry--Esseen bound for the one-sample $t$-statistic under the
 population model.  Up to an unspecified absolute constant, their result coincides
 with the classical Berry--Esseen bound for the mean, given a bound on
-the third moment.  Under this setting, Shao \cite{shao2005explicit}
+the third moment.  In this setting, Shao \cite{shao2005explicit}
 followed up with a similar result with a specified constant.  Given
 sampling from a finite population, Bloznelis \cite{bloznelis1999berry}
 also produced a Berry--Esseen bound for the one sample $t$-statistic,
@@ -69,14 +69,14 @@ with additional results from Pinelis \cite{pinelis2011berry}.
 We use Stein's method of exchangeable pairs to prove a conservative
 bound of $\mathcal{O}(n^{-1/4})$ on the rate of convergence of the randomization
 $t$-distribution to the standard normal distribution.  With an
-additional condition on the data, we are able to obtain a
+additional condition on the data, we are able to obtain an
 $\mathcal{O}(n^{-1/2})$ rate.
 
 \section{Self-Normalized Sums}
 Student's one-sample $t$-statistic
 \begin{align*}
   T_n &= \frac{1}{\sqrt{n}} \frac{\sum_{i=1}^n X_i}{\sqrt{\frac{1}{n-1} \sum_{i=1}^n(X_i - \bar{X})^2}} \\
-  &= S_n(2) \sqrt{\frac{n-1}{n-S_n^2(2)}}.
+  &= S_n(2) \sqrt{\frac{n-1}{n-S_n^2(2)}}
 \end{align*}
 is closely related to the self-normalized sum
 \begin{equation*}
