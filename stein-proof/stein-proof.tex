@@ -98,76 +98,83 @@ obviate the requirement of moment conditions such as in Shao's \cite{shao1997sel
 work on self-normalized large deviations.
 
 \section{Set-up}
-We observe two samples with equal sample size: $\mathcal{S}_1 = \{u_i\}_{i=1}^N$
-and $\mathcal{S}_2 = \{u_i\}_{i=N+1}^{2N}$.  Since we consider the $t$-statistic
+We observe two samples of equal size: $\mathcal{S}_1 = \{x_i\}_{i=1}^n$
+and $\mathcal{S}_2 = \{x_i\}_{i=n+1}^{2n}$.  Since we consider the $t$-statistic
 under different permutations, it will be convenient to re-write the
 sample values relative to the null permutation $\pi_0$: $\mathcal{S}_1 =
-\{u_{\pi_0(i)}\}_{i=1}^N$ and $\mathcal{S}_2 = \{u_{\pi_0(i)}\}_{i=N+1}^{2N}$,
-where $\pi_0(i) = i$.  Under the randomization distribution, where
+\{x_{\pi_0(i)}\}_{i=1}^n$ and $\mathcal{S}_2 = \{x_{\pi_0(i)}\}_{i=n+1}^{2n}$,
+where $\pi_0(i) = i$.
+
+Under the randomization distribution, where
 $\Pi$ is a uniformly chosen permutation, Student's two-sample
-$t$-statistic is given by
+$t$-statistic is given by $T_{\Pi} = T_{\Pi}(\{x_{\Pi(i)}\}_{i=1}^n,
+\{x_{\Pi(i)}\}_{i=n+1}^{2n})$.  Suppressing the dependence on the
+data,
 \begin{align*}
-T_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N})
-&= \frac{\bar{u}_{1,\Pi} - \bar{u}_{2,\Pi}}{\sqrt{\frac{\frac{1}{N-1}
-      \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2}{N} + \frac{\frac{1}{N-1}
-      \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}{N}}} \\
-&= \frac{1}{\sqrt{\frac{N}{N-1}}} \frac{\sum_{i=1}^N u_{\Pi(i)} -
-  \sum_{i=N+1}^{2N}u_{\Pi(i)}}{\sqrt{\sum_{i=1}^N(u_{\Pi(i)} -
-    \bar{u}_{1,\Pi})^2 + \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}} \\
-&= \sqrt{\frac{N-1}{N}}\frac{q_\Pi}{d_\Pi},
+T_{\Pi}
+&= \frac{\bar{x}_{1,\Pi} - \bar{x}_{2,\Pi}}{\sqrt{\frac{\frac{1}{n-1}
+      \sum_{i=1}^n(x_{\Pi(i)} - \bar{x}_{1,\Pi})^2}{n} + \frac{\frac{1}{n-1}
+      \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2}{n}}} \\
+&= \frac{1}{\sqrt{\frac{n}{n-1}}} \frac{\sum_{i=1}^n x_{\Pi(i)} -
+  \sum_{i=n+1}^{2n}x_{\Pi(i)}}{\sqrt{\sum_{i=1}^n(x_{\Pi(i)} -
+    \bar{x}_{1,\Pi})^2 + \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2}} \\
+&= \sqrt{\frac{n-1}{n}}\frac{q_\Pi}{d_\Pi},
 \end{align*}
 where
 \begin{align*}
-  q_\Pi &= \left (\sum_{i=1, i\neq I}^N u_{\Pi(i)} + u_{\Pi(I)} -
-    \sum_{i=N+1, i\neq J}^{2N}u_{\Pi(i)} - u_{\Pi(J)}\right ) \\
-  d_\Pi &= \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 +
-    \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2} \\
-  \bar{u}_{1,\Pi} &= \frac{1}{N} \sum_{i=1}^N u_{\Pi(i)} \text{ and }
-  \bar{u}_{2,\Pi} = \frac{1}{N} \sum_{i=N+1}^{2N} u_{\Pi(i)}.
+  q_\Pi &= \left (\sum_{i=1, i\neq I}^n x_{\Pi(i)} + x_{\Pi(I)} -
+    \sum_{i=n+1, i\neq J}^{2n}x_{\Pi(i)} - x_{\Pi(J)}\right ) \\
+  d_\Pi &= \sqrt{\sum_{i=1}^n(x_{\Pi(i)} - \bar{x}_{1,\Pi})^2 +
+    \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2} \\
+  \bar{x}_{1,\Pi} &= \frac{1}{n} \sum_{i=1}^n x_{\Pi(i)} \text{ and }
+  \bar{x}_{2,\Pi} = \frac{1}{n} \sum_{i=n+1}^{2n} x_{\Pi(i)}.
 \end{align*}
 
 In order to perform hypothesis testing, we compute the observed value
-of $T_{\Pi=\pi_0}$ and compare that with the randomization
+of $T_{\Pi=\pi_0}$, which we compare with the randomization
 distribution of $T_{\Pi}$.  We shall create an exchangeable pair
 $(T_{\Pi}, T_{\Pi}')$ by considering a uniformly random transposition
-$(I, J)$.  WLOG, take $I \leq J$.  We apply this transposition to the
-group labels.  Note that if $I, J \in \{1,\ldots,N\}$ or $I, J \in
-\{N+1,\ldots,2N\}$ then $T_{\Pi}' = T_{\Pi}$, where $T_{\Pi}'$ is the
+$(I, J)$.
+
+Without loss of generality, take $I \leq J$.  We apply this transposition to the
+group labels.  Note that if $I, J \in \{1,\ldots,n\}$ or $I, J \in
+\{n+1,\ldots,2n\}$ then $T_{\Pi}' = T_{\Pi}$, where $T_{\Pi}'$ is the
 $t$-statistic under this random transposition.  That is, the
 $t$-statistic is invariant to within-group transpositions: the only
-changes occur when $1 \leq I \leq N$ and $N + 1 \leq J \leq 2N$.  With
-this in mind, let's redefine our transposition to be uniformly at
-random over the $N^2$ cases where $1 \leq I \leq N$ and $N + 1 \leq J
-\leq 2N$. Thus,
+changes occur when $1 \leq I \leq n$ and $n + 1 \leq J \leq 2n$.
+
+With this in mind, let's redefine our transposition to be uniformly at
+random over the $n^2$ cases where $1 \leq I \leq n$ and $n + 1 \leq J
+\leq 2n$. Thus,
 \begin{align*}
-  T'_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N})
-  &= T_{\Pi \circ (I,J)}(\{u_{\Pi \circ (I,J)(i)}\}_{i=1}^N, \{u_{\Pi \circ (I,J)(i)}\}_{i=N+1}^{2N}) \\
-  &= \sqrt{\frac{N-1}{N}}\frac{q'_{\Pi}}{d'_{\Pi}} \\
-  q'_{\Pi} &= \left (\sum_{i=1, i\neq I}^N u_{\Pi(i)} + u_{\Pi(J)} -
-    \sum_{i=N+1, i\neq J}^{2N}u_{\Pi(i)} - u_{\Pi(I)} \right ) \\
-  &= q_{\Pi} - 2u_{\Pi(I)} + 2u_{\Pi(J)} \\
-  d'_{\Pi} &= \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}'_{1, \Pi})^{2} +
-    \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}'_{2, \Pi})^{2}}.
+  T'_{\Pi}(\{x_{\Pi(i)}\}_{i=1}^n, \{x_{\Pi(i)}\}_{i=n+1}^{2n})
+  &= T_{\Pi \circ (I,J)}(\{x_{\Pi \circ (I,J)(i)}\}_{i=1}^n, \{x_{\Pi \circ (I,J)(i)}\}_{i=n+1}^{2n}) \\
+  &= \sqrt{\frac{n-1}{n}}\frac{q'_{\Pi}}{d'_{\Pi}} \\
+  q'_{\Pi} &= \left (\sum_{i=1, i\neq I}^n x_{\Pi(i)} + x_{\Pi(J)} -
+    \sum_{i=n+1, i\neq J}^{2n}x_{\Pi(i)} - x_{\Pi(I)} \right ) \\
+  &= q_{\Pi} - 2x_{\Pi(I)} + 2x_{\Pi(J)} \\
+  d'_{\Pi} &= \sqrt{\sum_{i=1}^n(x_{\Pi(i)} - \bar{x}'_{1, \Pi})^{2} +
+    \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}'_{2, \Pi})^{2}}.
 \end{align*}
 
 \section{Assumptions}
 Recall that the $t$-statistic is invariant up to sign under affine
 transformations, so we can mean-center and scale so that
-$\sum_{i=1}^{2N} u_{i} = 0$ and $\sum_{i=1}^{2N} u_{i}^2 = 2N$.  The
+$\sum_{i=1}^{2n} x_{i} = 0$ and $\sum_{i=1}^{2n} x_{i}^2 = 2n$.  The
 transformation that achieves this centering and scaling is given by
 \begin{equation}
-  u_i \leftarrow \sqrt{\frac{2N}{\sum_{i=1}^{2N} (u_{i} - \bar{u})^2}}(u_{i}-\bar{u}),
+  x_i \leftarrow \sqrt{\frac{2n}{\sum_{i=1}^{2n} (x_{i} - \bar{x})^2}}(x_{i}-\bar{x}),
 \end{equation}
-so we just assume that the $u_{i}$'s have already been transformed.
-This can be seen as a very mild assumption: only $u_i = c$ for all $i$
+so we just assume that the $x_{i}$'s have already been transformed.
+This can be seen as a very mild assumption: only $x_i = c$ for all $i$
 cannot be scaled in this way.
 
 We also assume that the pooled sample standard deviation is non-zero
 for all permutations:
 \begin{equation}
   \label{A:non-zero-std-dev}
-  d_\Pi = \sqrt{\sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 +
-    \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2} > 0
+  d_\Pi = \sqrt{\sum_{i=1}^n(x_{\Pi(i)} - \bar{x}_{1,\Pi})^2 +
+    \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2} > 0
 \end{equation}
 This estimate is zero if and only if there exists a grouping that is
 constant in each group.  The condition also implies that the sample
@@ -175,21 +182,21 @@ mean for any group is strictly less than 1 in absolute value.  In
 fact, this assumption subsumes the former.
 
 The mean-centering assumption implies that
-$\sum_{i=1}^{N} u_{\Pi(i)} = - \sum_{i=N+1}^{2N} u_{\Pi(i)}$
-and hence that $\bar{u}_{1,\Pi} = -\bar{u}_{2,\Pi}$ for all $\Pi$.
+$\sum_{i=1}^{n} x_{\Pi(i)} = - \sum_{i=n+1}^{2n} x_{\Pi(i)}$
+and hence that $\bar{x}_{1,\Pi} = -\bar{x}_{2,\Pi}$ for all $\Pi$.
 
 Here we establish an equality with $d_{\Pi}$ that will prove easier to work with:
 \begin{align*}
-  d_\Pi^2 &=  \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2 +
-  \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2 \\
-  &= \sum_{i=1}^{2N} u_{\Pi(i)}^2 - N \bar{u}_{1,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
-  &= 2N - N \bar{u}_{2,\Pi}^2 - N \bar{u}_{2,\Pi}^2 \\
-  &= 2N(1 - \bar{u}_{2,\Pi}^2)
+  d_\Pi^2 &=  \sum_{i=1}^n(x_{\Pi(i)} - \bar{x}_{1,\Pi})^2 +
+  \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2 \\
+  &= \sum_{i=1}^{2n} x_{\Pi(i)}^2 - n \bar{x}_{1,\Pi}^2 - n \bar{x}_{2,\Pi}^2 \\
+  &= 2n - n \bar{x}_{2,\Pi}^2 - n \bar{x}_{2,\Pi}^2 \\
+  &= 2n(1 - \bar{x}_{2,\Pi}^2)
 \end{align*}
-Since $d_\Pi > 0$, it follows that $|\bar{u}_{2,\Pi}| < 1$.  Define
+Since $d_\Pi > 0$, it follows that $|\bar{x}_{2,\Pi}| < 1$.  Define
 \begin{equation}
   \label{Assumption:B}
-  B = \max_\Pi |\bar{u}_{2,\Pi}| < 1.
+  B = \max_\Pi |\bar{x}_{2,\Pi}| < 1.
 \end{equation}
 
 \section{Preliminaries}
@@ -198,65 +205,65 @@ Here we collect useful bounds and other results.  We include them here rather th
 in Appendix~\ref{A:auxiliary-app} because in Chapter~\ref{C:simulations} we compare
 the theoretical bounds with simulated results.
 
-In order to bound various moments of $\bar{u}_{2,\Pi}$ under the
+In order to bound various moments of $\bar{x}_{2,\Pi}$ under the
 permutation distribution, we use a result of Serfling's
 \cite{serfling1974probability}:
 \begin{proposition}
   Consider sampling without replacement from a finite list of values
-  $u_1, \ldots, u_{2N}$.  Let $u_{\Delta} = \max_i u_{i} - \min_i
-  u_{i}$.
+  $x_1, \ldots, x_{2n}$.  Let $x_{\Delta} := \max_i x_{i} - \min_i
+  x_{i}$.
   Then for $p > 0$,
   \begin{align}
-    \E [\bar{u}_{2,\Pi}^p]
+    \E [\bar{x}_{2,\Pi}^p]
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
-    \left [ \frac{N+1}{2N}u_{\Delta}^2 \right ]^{p/2}
-    (2N)^{-p/2} \nonumber \\
+    \left [ \frac{n+1}{2n}x_{\Delta}^2 \right ]^{p/2}
+    (2n)^{-p/2} \nonumber \\
     &\leq \frac{\Gamma(p/2 + 1)}{2^{p/2 + 1}}
-    \left [ \frac{N+1}{4N}u_{\Delta}^2 \right ]^{p/2}
-    N^{-p/2} \nonumber \\
-    &:= f_{c_1}(p)N^{-p/2} \label{def:serfling}.
+    \left [ \frac{n+1}{4n}x_{\Delta}^2 \right ]^{p/2}
+    n^{-p/2} \nonumber \\
+    &:= f_{c_1}(p)n^{-p/2} \label{def:serfling}.
   \end{align}
 \end{proposition}
 
 By Assumption~\eqref{Assumption:B},
 \begin{equation}
 \label{def:dp}
-  (d_{\Pi})^{-p} = \frac{1}{(2N(1-\bar{u}_{2,\Pi}^2))^{p/2}} \leq \frac{1}{(2N(1-B^2))^{p/2}} :=
-  f_{c_2}(p) N^{-p/2}.
+  (d_{\Pi})^{-p} = \frac{1}{(2n(1-\bar{x}_{2,\Pi}^2))^{p/2}} \leq \frac{1}{(2n(1-B^2))^{p/2}} :=
+  f_{c_2}(p) n^{-p/2}.
 \end{equation}
 
 The transposition $(I, J)$ also affects the denominator of $T_{\Pi}'$, and we need to quantify the
-difference between the denominators of $T_{\Pi}$ and $T_{\Pi}'$.  Letting $\bar{u}_{2,\Pi}'^2$
+difference between the denominators of $T_{\Pi}$ and $T_{\Pi}'$.  Letting $\bar{x}_{2,\Pi}'^2$
 denote the sample mean of the second group after the transposition,
 \begin{align*}
-  \bar{u}_{2,\Pi}'^2 &= \left ( \bar{u}_{2,\Pi}-\frac{1}{N}u_{\Pi(J)}+\frac{1}{N}u_{\Pi(I)} \right )^2 \\
-  &= \bar{u}_{2,\Pi}^2 + 2 \bar{u}_{2,\Pi} \left ( -\frac{1}{N}u_{\Pi(J)} +
-      \frac{1}{N}u_{\Pi(I)} \right ) + \frac{1}{N^2}(u_{\Pi(I)} - u_{\Pi(J)})^2
+  \bar{x}_{2,\Pi}'^2 &= \left ( \bar{x}_{2,\Pi}-\frac{1}{n}x_{\Pi(J)}+\frac{1}{n}x_{\Pi(I)} \right )^2 \\
+  &= \bar{x}_{2,\Pi}^2 + 2 \bar{x}_{2,\Pi} \left ( -\frac{1}{n}x_{\Pi(J)} +
+      \frac{1}{n}x_{\Pi(I)} \right ) + \frac{1}{n^2}(x_{\Pi(I)} - x_{\Pi(J)})^2
 \end{align*}
 We consider the difference
 \begin{align*}
   h_{\Pi} &= d_{\Pi}^2 - d_{\Pi}'^2 \\
-  &= 2N - 2N \bar{u}_{2,\Pi}^2 - 2N + 2N\bar{u}_{2,\Pi}'^2 \\
-  &= 4\bar{u}_{2,\Pi}(u_{\Pi(I)} - u_{\Pi(J)}) + \frac{2}{N}(u_{\Pi(I)} - u_{\Pi(J)})^2
+  &= 2n - 2n \bar{x}_{2,\Pi}^2 - 2n + 2n\bar{x}_{2,\Pi}'^2 \\
+  &= 4\bar{x}_{2,\Pi}(x_{\Pi(I)} - x_{\Pi(J)}) + \frac{2}{n}(x_{\Pi(I)} - x_{\Pi(J)})^2
 \end{align*}
 
 Therefore, by the $c_r$-inequality,
 \begin{align}
-  \E[h_{\Pi}^p] &= \E \left | 4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)}) +
-      \frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \nonumber \\
-  &\leq 2^{p-1} \left ( \E |4\bar{u}_{2,\Pi}(u_{\Pi(I)}-u_{\Pi(J)})|^p
-    + \E \left |\frac{2}{N}(u_{\Pi(I)}-u_{\Pi(J)})^2 \right |^p \right ) \nonumber \\
-  &\leq 2^{p-1}\left [ (4u_{\Delta})^p \E \left | \bar{u}_{2,\Pi} \right |^p
-    + \left ( \frac{2}{N}u_{\Delta}^2 \right )^p \right ] \nonumber \\
-  &\leq 2^{p-1} (4u_{\Delta})^p f_{c_1}(p)N^{-p/2} +
-  2^{p-1}(2u_{\Delta}^2)^pN^{-p} \nonumber \\
-  &:= f_{c_3}(p)N^{-p/2} \label{def:hp}.
+  \E[h_{\Pi}^p] &= \E \left | 4\bar{x}_{2,\Pi}(x_{\Pi(I)}-x_{\Pi(J)}) +
+      \frac{2}{n}(x_{\Pi(I)}-x_{\Pi(J)})^2 \right |^p \nonumber \\
+  &\leq 2^{p-1} \left ( \E |4\bar{x}_{2,\Pi}(x_{\Pi(I)}-x_{\Pi(J)})|^p
+    + \E \left |\frac{2}{n}(x_{\Pi(I)}-x_{\Pi(J)})^2 \right |^p \right ) \nonumber \\
+  &\leq 2^{p-1}\left [ (4x_{\Delta})^p \E \left | \bar{x}_{2,\Pi} \right |^p
+    + \left ( \frac{2}{n}x_{\Delta}^2 \right )^p \right ] \nonumber \\
+  &\leq 2^{p-1} (4x_{\Delta})^p f_{c_1}(p)n^{-p/2} +
+  2^{p-1}(2x_{\Delta}^2)^pn^{-p} \nonumber \\
+  &:= f_{c_3}(p)n^{-p/2} \label{def:hp}.
 \end{align}
 
 Now we establish a bound on the difference $d_{\Pi}-d_{\Pi}'$ via a
-bound on the remainder of a zeroth order Taylor approximation.  Write
+bound on the remainder of a zeroth-order Taylor approximation.  Let
 \begin{equation*}
-  d_{\Pi}' = \sqrt{d_{\Pi}^2-h_{\Pi}} = f(h_{\Pi}) = f(0) + R_0(h_{\Pi}) = d_{\Pi} + R_0(h_{\Pi})
+  d_{\Pi}' = \sqrt{d_{\Pi}^2-h_{\Pi}} = f(h_{\Pi}) = f(0) + R_0(h_{\Pi}) = d_{\Pi} + R_0(h_{\Pi}).
 \end{equation*}
 
 By Taylor's theorem, the remainder of the zeroth-order expansion takes the form
@@ -271,14 +278,14 @@ big relative to the flattening out of the square root function.
 Now
 \begin{equation*}
   |d_{\Pi}-d_{\Pi}'| \leq |R_0(h_{\Pi})| \leq \frac{|h_{\Pi}|}{2\sqrt{d_{\Pi}^2-\xi_L}} \leq
-  \frac{|h_{\Pi}|}{2\sqrt{d_{\Pi}^2-\max(0, h_{\Pi})}}
+  \frac{|h_{\Pi}|}{2\sqrt{d_{\Pi}^2-\max(0, h_{\Pi})}}.
 \end{equation*}
 Recall that $h_{\Pi} = d_{\Pi}^2 - d_{\Pi}'^2$, so
 \begin{equation*}
   d_{\Pi}^2-\max(0, d_{\Pi}^2-d_{\Pi}'^2) =
   \begin{cases}
     d_{\Pi}^2 & \text{if } d_{\Pi}^2-d_{\Pi}'^2 \leq 0 \\
-    d_{\Pi}'^2 & \text{if } d_{\Pi}^2-d_{\Pi}'^2 > 0
+    d_{\Pi}'^2 & \text{if } d_{\Pi}^2-d_{\Pi}'^2 > 0.
   \end{cases}
 \end{equation*}
 Therefore,
@@ -296,21 +303,21 @@ expectation, but not absolutely.  By the $c_r$-inequality,
       \frac{h_{\Pi}}{2d_{\Pi}'} \right |^p \right ) \nonumber \\
   &\leq 2^{-1} \left ( \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}^{-2p}]} +
   \sqrt{\E[h_{\Pi}^{2p}]\E[d_{\Pi}'^{-2p}]} \right ) \nonumber \\
-  &\leq \sqrt{f_{c_3}(2p)N^{-2p/2} f_{c_2}(2p) N^{-2p/2}} \quad \text{ by } \eqref{def:hp}
-  \text{ and } \eqref{def:dp} \nonumber \\
-  &:= f_{c_4}(p) N^{-p} \label{def:ddiffp}.
+  &\leq \sqrt{f_{c_3}(2p)n^{-2p/2} f_{c_2}(2p) n^{-2p/2}} \quad \text{ by } \eqref{def:dp}
+  \text{ and } \eqref{def:hp} \nonumber \\
+  &:= f_{c_4}(p) n^{-p} \label{def:ddiffp}.
 \end{align}
 
 With
 \begin{equation}
   \label{eq:qpi}
-  q_{\Pi} = N\bar{u}_{1,\Pi} - N\bar{u}_{2,\Pi} = -2N\bar{u}_{2,\Pi},
+  q_{\Pi} = n\bar{x}_{1,\Pi} - n\bar{x}_{2,\Pi} = -2n\bar{x}_{2,\Pi},
 \end{equation}
 \eqref{def:serfling}, and noting that $q_{\Pi}$ and $q_{\Pi}'$ are exchangeable,
 \begin{equation}
 \label{def:qp}
-  \E[q_{\Pi}'^p] = \E[q_{\Pi}^p] = \E[(-2N\bar{u}_{2,\Pi})^p]
-  \leq 2^pN^p f_{c_1}(p)N^{-p/2} := f_{c_5}(p).
+  \E[q_{\Pi}'^p] = \E[q_{\Pi}^p] = \E[(-2n\bar{x}_{2,\Pi})^p]
+  \leq 2^pn^p f_{c_1}(p)n^{-p/2} := f_{c_5}(p).
 \end{equation}
 
 \begin{align}
@@ -318,9 +325,9 @@ With
   &\leq \sqrt{\E |q_{\Pi}'|^{2p} \E |d_{\Pi}d_{\Pi}'|^{-2p}} \nonumber \\
   &\leq \sqrt{\E |q_{\Pi}|^{2p} \sqrt{\E |d_{\Pi}|^{-4p} \E |d_{\Pi}'|^{-4p}}} \nonumber \\
   &= \sqrt{\E |q_{\Pi}|^{2p} \E |d_{\Pi}|^{-4p}} \nonumber \\
-  &\leq \sqrt{f_{c_5}(2p) N^{2p/2} f_{c_2}(4p) N^{-4p/2}} \quad \text{ from
-  } \eqref{def:qp} \text{ and } \eqref{def:dp} \nonumber \\
-  &:= f_{c_6}(p) N^{-p/2} \label{def:qpddp}.
+  &\leq \sqrt{f_{c_5}(2p) n^{2p/2} f_{c_2}(4p) n^{-4p/2}} \quad \text{ from
+  } \eqref{def:dp} \text{ and } \eqref{def:qp} \nonumber \\
+  &:= f_{c_6}(p) n^{-p/2} \label{def:qpddp}.
 \end{align}
 
 \section{Proof}
@@ -328,9 +335,9 @@ We proceed to verify the conditions of Theorems~\ref{T:main} and \ref{T:better-r
 $T_{\Pi}$ and $T_{\Pi}'$ are exchangeable by construction:
 \begin{align*}
   P(\Pi = \pi, \Pi' = \pi') &= P(\Pi' = \pi' | \Pi = \pi)P(\Pi = \pi) \\
-  &= \frac{1}{N^2}\mathbbm{1}_{\{\pi'=\pi \circ (i,j), 1\leq i \leq N, N+1 \leq j \leq 2N\}} P(\Pi =
+  &= \frac{1}{n^2}\mathbbm{1}_{\{\pi'=\pi \circ (i,j), 1\leq i \leq n, n+1 \leq j \leq 2n\}} P(\Pi =
   \pi') \\
-  &=\frac{1}{N^2}\mathbbm{1}_{\{\pi=\pi' \circ (i,j), 1\leq i \leq N, N+1 \leq j \leq 2N\}} P(\Pi =
+  &=\frac{1}{n^2}\mathbbm{1}_{\{\pi=\pi' \circ (i,j), 1\leq i \leq n, n+1 \leq j \leq 2n\}} P(\Pi =
   \pi') \\
   &= P(\Pi' = \pi | \Pi = \pi')P(\Pi = \pi') \\
   &= P(\Pi = \pi', \Pi' = \pi)
@@ -339,55 +346,55 @@ $T_{\Pi}$ and $T_{\Pi}'$ are exchangeable by construction:
 Since $(\Pi, \Pi')$ are exchangeable, $(T_{\Pi}, T_{\Pi}') = (T(\Pi), T(\Pi'))$ are exchangeable as
 well.  $T_{\Pi}$, and thus $T_{\Pi}'$ by exchangeability, have mean zero by symmetry.  Let $\pi^*$ identify
 the permutation that reverses the order of the indices after applying the original permutation
-$\pi$.  That is, $\pi^* = (2N, \ldots, 1) \circ \pi$.  Since indices $1$ to $N$ correspond to the
-first group and $N+1$ to $2N$ to the second, $\pi^*$ reverses the groups after $\pi$, so $T_{\pi^*} =
+$\pi$.  That is, $\pi^* = (2n, \ldots, 1) \circ \pi$.  Since indices $1$ to $n$ correspond to the
+first group and $n+1$ to $2n$ to the second, $\pi^*$ reverses the groups after $\pi$, so $T_{\pi^*} =
 -T_{\pi}$.
 \begin{align*}
   P(T_{\Pi} = t) &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi) \\
   &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi^*) \quad \text{by exchangeability} \\
   &= \sum_{\pi^* : T_{\pi^*} = -t} P(\Pi = \pi^*) \quad \text{since } T_{\pi^*} = -T_{\pi} \text{
-    and } \pi \mapsto \pi^* \text{ is bijective} \\
+    and } \pi \to \pi^* \text{ is bijective} \\
   &= P(T_{\Pi} = -t)
 \end{align*}
 
 To show the approximate regression condition, the difference of our exchangeable pair is given by
 \begin{align}
   T_{\Pi}' - T_{\Pi}
-  &= \sqrt{\frac{N-1}{N}}\left (\frac{q_{\Pi}'}{d_{\Pi}'}-\frac{q_{\Pi}}{d_{\Pi}}\right )
+  &= \sqrt{\frac{n-1}{n}}\left (\frac{q_{\Pi}'}{d_{\Pi}'}-\frac{q_{\Pi}}{d_{\Pi}}\right )
   \nonumber \\
-  &= \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\left (q_{\Pi}' - q_{\Pi} +
+  &= \sqrt{\frac{n-1}{n}}\frac{1}{d_{\Pi}}\left (q_{\Pi}' - q_{\Pi} +
     q_{\Pi}' \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\right ) \nonumber \\
-  &= \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\left
-    (2u_{\Pi(J)} - 2u_{\Pi(I)} + q_{\Pi}' \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\right ). \label{def:ttpcubed}
+  &= \sqrt{\frac{n-1}{n}}\frac{1}{d_{\Pi}}\left
+    (2x_{\Pi(J)} - 2x_{\Pi(I)} + q_{\Pi}' \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\right ). \label{def:ttpcubed}
 \end{align}
 Note that
 \begin{align*}
-  \sqrt{\frac{N-1}{N}} \E \left [ \frac{1}{d_{\Pi}} (2u_{\Pi(J)} - 2u_{\Pi(I)}) \middle | \Pi = \pi \right ]
-  &= \sqrt{\frac{N-1}{N}} \frac{2}{d_{\Pi}} \frac{1}{N^2} \sum_{I=1}^N \sum_{I=N+1}^{2N} (u_{\Pi(J)}-u_{\Pi(I)}) \\
-  &= -\frac{2}{N} T_{\Pi}.
+  \sqrt{\frac{n-1}{n}} \E \left [ \frac{1}{d_{\Pi}} (2x_{\Pi(J)} - 2x_{\Pi(I)}) \middle | \Pi = \pi \right ]
+  &= \sqrt{\frac{n-1}{n}} \frac{2}{d_{\Pi}} \frac{1}{n^2} \sum_{I=1}^n \sum_{I=n+1}^{2n} (x_{\Pi(J)}-x_{\Pi(I)}) \\
+  &= -\frac{2}{n} T_{\Pi}.
 \end{align*}
 Therefore,
 \begin{equation*}
-  \sqrt{\frac{N-1}{N}} \E \left [ \frac{1}{d_{\Pi}} (2u_{\Pi(J)} - 2u_{\Pi(I)}) \middle | \Pi = \pi \right ]
-  = \sqrt{\frac{N-1}{N}} \E \left [ \frac{1}{d_{\Pi}} (2u_{\Pi(J)} - 2u_{\Pi(I)}) \middle | T_{\Pi} \right ]
+  \sqrt{\frac{n-1}{n}} \E \left [ \frac{1}{d_{\Pi}} (2x_{\Pi(J)} - 2x_{\Pi(I)}) \middle | \Pi = \pi \right ]
+  = \sqrt{\frac{n-1}{n}} \E \left [ \frac{1}{d_{\Pi}} (2x_{\Pi(J)} - 2x_{\Pi(I)}) \middle | T_{\Pi} \right ]
 \end{equation*}
 and
 \begin{equation*}
-  \lambda = \frac{2}{N}.
+  \lambda = \frac{2}{n}.
 \end{equation*}
 
 \begin{align*}
   \E[T_{\Pi}'-T_{\Pi}|T_{\Pi}]
-  &= - \lambda T_{\Pi} + \sqrt{\frac{N-1}{N}}
+  &= - \lambda T_{\Pi} + \sqrt{\frac{n-1}{n}}
   \E\left [\frac{q_{\Pi}'}{d_{\Pi}} \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \\
-  &= - \lambda \left ( T_{\Pi} - \left ( \frac{N}{2} \right )
-    \sqrt{\frac{N-1}{N}}
+  &= - \lambda \left ( T_{\Pi} - \left ( \frac{n}{2} \right )
+    \sqrt{\frac{n-1}{n}}
     \E\left [\frac{q_{\Pi}'}{d_{\Pi}} \frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'}\middle |T_{\Pi} \right ] \right )
 \end{align*}
 so
 \begin{equation}
   \label{def:Rdef}
-  R_{\Pi} = \left (\frac{N}{2}\right )\sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\E
+  R_{\Pi} = \left (\frac{n}{2}\right )\sqrt{\frac{n-1}{n}}\frac{1}{d_{\Pi}}\E
   \left [q_{\Pi}'\frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'} \middle | T_{\Pi} \right ].
 \end{equation}
 
@@ -418,54 +425,54 @@ term in Theorem~\ref{T:main}, the proofs of which we defer to Appendix~\ref{A:st
 \begin{proposition}
   \label{P:P3}
   $(2\pi)^{-1/4}\sqrt{\frac{\E|T_{\Pi}'-T_{\Pi}|^3}{\lambda}}
-  < (2\pi)^{-1/4} c_9 N^{-1/4}$.
+  < (2\pi)^{-1/4} c_9 n^{-1/4}$.
 \end{proposition}
 
 \begin{proposition}
   \label{P:P2}
   $\frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \leq
-  N^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2N} u_{i}^4}{N^2}}$
+  n^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2n} x_{i}^4}{n^2}}$
 \end{proposition}
 
 \begin{proposition}
   \label{P:P1}
-  $|\E T_{\Pi}^2 -1| \leq c_2 N^{-1}$
+  $|\E T_{\Pi}^2 -1| \leq c_2 n^{-1}$
 \end{proposition}
 
 \begin{proposition}
   \label{P:P5}
   $\E|T_{\Pi}R|
-  \leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2}$.
+  \leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} n^{-1/2}$.
 \end{proposition}
 
 \begin{proposition}
   \label{P:P4}
   $\E|R|
-  \leq \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}$.
+  \leq \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}$.
 \end{proposition}
 
 The bound in Proposition~\ref{P:P3} is suboptimal, as it will only allow us to
 obtain a rate of $\mathcal{O}(n^{-1/4})$.  In Section~\ref{S:better-rate}, we
 introduce an additional condition to improve upon this rate.
 
-Collecting the results of Propositions \ref{P:P1}, \ref{P:P2}, \ref{P:P3},
-\ref{P:P4}, and \ref{P:P5}, we have
+Collecting the results of Propositions \ref{P:P3}, \ref{P:P2}, \ref{P:P1},
+\ref{P:P5}, and \ref{P:P4}, we have
 \begin{equation*}
   \begin{split}
     \sup_{t \in \mathbb{R}} |P(T_{\Pi} \leq t) - \Phi(t)|
     &\leq (2\pi)^{-1/4} \sqrt{\frac{\E |T_{\Pi}'-T_{\Pi}|^3}{\lambda}}
     + \frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \\
     &\quad + |\E T_{\Pi}^2 - 1| + \E |T_{\Pi}R_{\Pi}| + \E |R_{\Pi}| \\
-    &\leq  (2\pi)^{-1/4} c_9 N^{-1/4} +
-    N^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2N} u_{i}^4}{N^2}} + c_2 N^{-1} \\
-    &\quad + \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2} +
-    \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}
+    &\leq  (2\pi)^{-1/4} c_9 n^{-1/4} +
+    n^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2n} x_{i}^4}{n^2}} + c_2 n^{-1} \\
+    &\quad + \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} n^{-1/2} +
+    \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}
   \end{split}
 \end{equation*}
 
 Note that since $\norm{{\bf x}}_4 \leq \norm{{\bf x}}_2$,
 \begin{equation*}
-  \sum_{i=1}^{2N} u_{i}^4 \leq \left ( \sum_{i=1}^{2N} u_{i}^2 \right )^{4/2} = (2N)^2 = 4N^2.
+  \sum_{i=1}^{2n} x_{i}^4 \leq \left ( \sum_{i=1}^{2n} x_{i}^2 \right )^{4/2} = (2n)^2 = 4n^2.
 \end{equation*}
 
 This result is similar to the HCCLT.  Given fixed data, we can obtain an explicit
@@ -478,10 +485,10 @@ Here, we use Theorem~\ref{T:better-rate} to establish a rate of
 $\mathcal{O}(n^{-1/2})$ with the condition that $|T_{\Pi}-T'_{\Pi}| \leq \delta$
 is $\mathcal{O}(n^{-1/2})$.
 
-From Proposition~\ref{P:P1}, $\E T_{\Pi}^2 \leq c_2 N^{-1} + 1$, and
+From Proposition~\ref{P:P1}, $\E T_{\Pi}^2 \leq c_2 n^{-1} + 1$, and
 from Proposition~\ref{P:P4}, $\E|R| \leq
-\frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}$.
-If $\delta < c_{10}N^{-1/2}$ for $N$ sufficiently large, applying
+\frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}$.
+If $\delta < c_{10}n^{-1/2}$ for $n$ sufficiently large, applying
 Theorem~\ref{T:better-rate}, we see
 \begin{equation*}
   \begin{split}
@@ -489,86 +496,85 @@ Theorem~\ref{T:better-rate}, we see
     &\leq \frac{.41 \delta^3}{\lambda} + 3 \delta \left ( \sqrt{\E T_{\Pi}^2} + \E |R| \right )
     + \frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \\
     &\quad + |\E T_{\Pi}^2 - 1| + \E |T_{\Pi} R| + \E |R| \\
-    &\leq .205 c_{10} N^{-1/2} + 3c_{10} N^{-1/2} \left (
-      c_2 N^{-1} + 1 + \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}
+    &\leq .205 c_{10} n^{-1/2} + 3c_{10} n^{-1/2} \left (
+      c_2 n^{-1} + 1 + \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}
       \right ) \\
-    &\quad + N^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2N} u_{i}^4}{N^2}} + c_2 N^{-1} \\
-    &\quad + \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2} +
-    \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}.
+    &\quad + n^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2n} x_{i}^4}{n^2}} + c_2 n^{-1} \\
+    &\quad + \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} n^{-1/2} +
+    \frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}.
   \end{split}
 \end{equation*}
 
 Again, this result is conditional on the data.  We can consider a sequence
-of vectors $\{u_i^{(2N)}\}$, where each $u_i^{(j)}$ is drawn from some distribution $p$.
+of vectors $\{x_i^{(2n)}\}$, where each $x_i^{(j)}$ is drawn from some distribution $p$.
 As long as all data-dependent functions of the bound are ``well-behaved,'' we shall
 have the desired rates of convergence, such as in \cite{bolthausen1984estimate}.
 
 To determine whether $\delta = |T_{\Pi}-T'_{\Pi}|$ is
-$\mathcal{O}(n^{-1/2})$ for reasonable classes of data $\{u_i\}$, recall that
+$\mathcal{O}(n^{-1/2})$ for reasonable classes of data $\{x_i\}$, recall that
 \begin{align*}
-T_{\Pi}(\{u_{\Pi(i)}\}_{i=1}^N, \{u_{\Pi(i)}\}_{i=N+1}^{2N})
-&= \frac{\bar{u}_{1,\Pi} - \bar{u}_{2,\Pi}}{\sqrt{\frac{\frac{1}{N-1}
-      \sum_{i=1}^N(u_{\Pi(i)} - \bar{u}_{1,\Pi})^2}{N} + \frac{\frac{1}{N-1}
-      \sum_{i=N+1}^{2N}(u_{\Pi(i)} - \bar{u}_{2,\Pi})^2}{N}}}. \\
+T_{\Pi}(\{x_{\Pi(i)}\}_{i=1}^n, \{x_{\Pi(i)}\}_{i=n+1}^{2n})
+&= \frac{\bar{x}_{1,\Pi} - \bar{x}_{2,\Pi}}{\sqrt{\frac{\frac{1}{n-1}
+      \sum_{i=1}^n(x_{\Pi(i)} - \bar{x}_{1,\Pi})^2}{n} + \frac{\frac{1}{n-1}
+      \sum_{i=n+1}^{2n}(x_{\Pi(i)} - \bar{x}_{2,\Pi})^2}{n}}}. \\
 \end{align*}
 
 We need to set $\delta = \max_{\pi, i, j} |T_{\pi} - T_{\pi \circ (i, j)}|$
 so that the bound is tight.  This appears to be a daunting
-optimization problem.  There are $(2N)!$ permutations and $N^2$
-possible transpositions $(i, j)$ for each permutation.  Well, because the
-$t$-statistic is invariant to permutations within groups, there are
-$\binom{2N}{N}$ (really, $\binom{2N}{N} / 2$ because of symmetry)
-permutations to consider.
+optimization problem.  There are $(2n)!$ permutations and $n^2$
+possible transpositions $(i, j)$ for each permutation.  Because the
+$t$-statistic is invariant to permutations within groups and due to
+symmetry, there are $\binom{2n}{n} / 2$ permutations to consider.
 
 We have to solve the maximization problem jointly over $T$ and $T'$.  We can
 attempt to first maximize over $T$ and then $T'$.  Note that these sequential
 approaches do not work for general optimization problems.
 
 If we sort the data in ascending order such that the two groups are
-$\{u_{(i)}\}_{i=1}^{N}$ and $\{u_{(i)}\}_{i=N+1}^{2N}$, then it seems like
+$\{x_{(i)}\}_{i=1}^{n}$ and $\{x_{(i)}\}_{i=n+1}^{2n}$, then it seems like
 we will have maximized $|T|$.  The absolute difference between the sample
 means of the two groups is maximized, while the pooled sample standard
-deviation is minimized (is this true? source?).
+deviation is minimized.
 
-The transposition that should then maximize $|T - T'|$ is $(1, 2N)$ since it
+The transposition that should then maximize $|T - T'|$ is $(1, 2n)$ since it
 swaps the most different points, decreasing the difference in sample means and
 increasing the pooled sample standard deviation.
 
 Let $\pi^*$ be the permutation that sorts the data in ascending order
-such that $u_{\pi^*(i)} = u_{(i)}$, where $u_{(i)}$ are the order statistics
-of $\{u_i\}$.  Let $i^* = 1$ and $j^* = 2N$.
+such that $x_{\pi^*(i)} = x_{(i)}$, where $x_{(i)}$ are the order statistics
+of $\{x_i\}$.  Let $i^* = 1$ and $j^* = 2n$.
 
 \begin{conjecture}
   $\delta = \max_{\pi, i, j} |T_{\pi} - T_{\pi \circ (i, j)}|$ is maximized at
   $\pi = \pi^*$, $i = i^*$, and $j = j^*$.
 \end{conjecture}
 
-This conjecture has held true under many simulations.  We can show that when $u_i = i$,
+This conjecture has held true under many simulations.  We can show that when $x_i = i$,
 \begin{equation*}
   \lim_{n \to \infty} \delta \sqrt{n} = 16 \sqrt{6}.
 \end{equation*}
 
-\section{A Different Exchangeable Pair}
-Rather than only consider transpositions that swap one element of the
-first group with one from the second group, we have a few different
-choices.  Let's take the other extreme, where we consider all $(2N)^2$
-transpositions, including null transpositions.  There are $N^2$
-transpositions within each group, for a total of $2N^2$.  Each of
-these does not change the $t$-statistic.  We previously only
-considered the $N^2$ transpositions where $I < J$.  There are another
-$N^2$ with $I > J$.  These transpositions have exactly the same effect
-as the previous group $(I, J) = (J, I)$, and all within-group
-transpositions have no effect.
+% \section{A Different Exchangeable Pair}
+% Rather than only consider transpositions that swap one element of the
+% first group with one from the second group, we have a few different
+% choices.  Let's take the other extreme, where we consider all $(2n)^2$
+% transpositions, including null transpositions.  There are $n^2$
+% transpositions within each group, for a total of $2n^2$.  Each of
+% these does not change the $t$-statistic.  We previously only
+% considered the $n^2$ transpositions where $I < J$.  There are another
+% $n^2$ with $I > J$.  These transpositions have exactly the same effect
+% as the previous group $(I, J) = (J, I)$, and all within-group
+% transpositions have no effect.
 
-The only changes should be to adjust the weights when taking
-conditional expectations (the weights should be $1/2$) and to divide
-$\lambda$ by 2.  The new $\lambda$ is $N^{-1}$.
+% The only changes should be to adjust the weights when taking
+% conditional expectations (the weights should be $1/2$) and to divide
+% $\lambda$ by 2.  The new $\lambda$ is $n^{-1}$.
 
-However, every term involving the conditional expectation also has a
-division by lambda, so any decrease in the c.e. is cancelled out by a
-corresponding decrease in $\lambda$, so there is no change in any of
-the simulations.
+% However, every term involving the conditional expectation also has a
+% division by lambda, so any decrease in the c.e. is cancelled out by a
+% corresponding decrease in $\lambda$, so there is no change in any of
+% the simulations.
 
-It's nice that the calculations are invariant to change in the
-exchangeable pair.  Whether that holds true for more drastic changes
-(e.g. swapping more than 2 elements) is not known.
+% It's nice that the calculations are invariant to change in the
+% exchangeable pair.  Whether that holds true for more drastic changes
+% (e.g. swapping more than 2 elements) is not known.
