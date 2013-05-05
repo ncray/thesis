@@ -65,7 +65,7 @@ system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u
 ## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(n) c(rnorm(n, -1, 1/n), rnorm(n, 1, 1/n)), name = "bad"))
 ## system.time(betterRateDF <- ldply(xbreaks, simBetterBound, .progress = "text", u = function(n) rcauchy(2*n), name = "cauchy"))
 
-ratesPlot <- ggplot(subset(origRateDF, group != "Sum of Bounds"), aes(x = n, y = value, color = group)) +
+ratesPlot <- ggplot(subset(origRateDF, group != "Sum of Bounds"), aes(x = n, y = value, color = group, linetype = group)) +
   geom_line(size = 1.5) + 
   geom_errorbar(aes(ymin = lower, ymax = upper, width = .07), size = 1.5) +
   xlab("$n$") +

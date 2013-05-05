@@ -4,11 +4,11 @@ This chapter is a computational companion to Chapter~\ref{C:stein-proof}.
 
 \section{Preliminaries}
 First, we provide simulations accompanying
-Section~\ref{S:stein-proof-preliminaries}.  We generate i.i.d. samples
-$\{u_i\}_{i=1}^{N} \sim \Normal(-1, 1)$ and
-$\{u_i\}_{i=N+1}^{2N} \sim \Normal(1, 1)$ for exponentially-spaced values of
-$N$.  The $u_i$ are scaled and centered, and for each $N$, we perform
-$10,000$ permutations.
+Section~\ref{S:stein-proof-preliminaries}.  We generate independently
+and identically distributed samples $\{x_i\}_{i=1}^{n} \sim
+\Normal(-1, 1)$ and $\{x_i\}_{i=n+1}^{2n} \sim \Normal(1, 1)$ for
+exponentially-spaced values of $n$.  The $x_i$ are scaled and
+centered, and for each $n$, we perform $10,000$ permutations.
 
 We plot Monte Carlo estimates of the means of each term, scaled by the
 rate of our bound, along with 95\%ile bootstrap confidence intervals
@@ -35,7 +35,7 @@ random among transpositions that switch groups.
   \input{./simulations/img/siderates_2.tex}
   \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
 \end{figure}
-It is possible that the bound of rate $N^{-p/2}$ on
+It is possible that the bound of rate $n^{-p/2}$ on
 $\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
 \clearpage
 
@@ -49,9 +49,9 @@ we get
   \E [T'_{\Pi}| T_{\Pi}] = (1-\lambda) T_{\Pi} - \lambda R_{\Pi}.
 \end{equation*}
 That is, the conditional expectation of $T'_{\Pi}$ on $T_{\Pi}$ is expected to lie near the line
-$(1-\lambda) T_{\Pi}$ with a small perturbation of order $1 / N$ (recall that $\lambda = 2 / N$).
+$(1-\lambda) T_{\Pi}$ with a small perturbation of order $1 / n$ (recall that $\lambda = 2 / n$).
 
-For various values of $N$, we compute 20 permutations that correspond to 20 values of $T_{\Pi}$.
+For various values of $n$, we compute 20 permutations that correspond to 20 values of $T_{\Pi}$.
 For each $T_{\Pi}$, we draw a transposition $(I, J)$ uniformly at random from the space of our
 allowable transpositions, repeating this 50 times, each producing a value of $T'_{\Pi}$
 \begin{figure}[!ht]
@@ -59,14 +59,14 @@ allowable transpositions, repeating this 50 times, each producing a value of $T'
   %lualatex thesis
   \resizebox{12.0cm}{!}{\input{./simulations/img/ARC.tex}}
   %\includegraphics[scale = .75]{./simulations/sim7.png}
-  \caption{Faceted on per-group sample size, $N$.}
+  \caption{Faceted on per-group sample size, $n$.}
 \end{figure}
 
 The approximate regression condition appears to hold visually.
 \clearpage
 
 \section{Main Bounds}
-Here we simulate the main bounds under the same setting as the previous section.
+Here we simulate the main bounds under the same conditions as the previous section.
 \subsection{Failure of Monte Carlo}
 Again, we simulate the conditional expectations of the form $\E[f(T'_{\Pi}, T_{\Pi}) | T_{\Pi}]$
 with 1,000 draws from the uniform distribution on all group-switching transpositions $(I, J)$.
@@ -75,13 +75,13 @@ with 1,000 draws from the uniform distribution on all group-switching transposit
   \centering
   \input{./simulations/img/orig_rate_mc.tex}
   \caption{Log-log plot of values for each term in the bound,
-    simulating the conditional by Monte Carlo.}
+    simulating the conditional expectation using Monte Carlo methods.}
 \end{figure}
-The MC error is too large, and we see some scaled bounds actually increase.
+The Monte Carlo error is too large, and we see some scaled bounds actually increase.
 \clearpage
 
 \subsection{Exact Conditional Expectation Calculations}
-Motivated by the Monte Carlo error in estimating the conditional expectations
+Motivated by the high Monte Carlo error in estimating the conditional expectations
 $\E[f(T'_{\Pi}, T_{\Pi}) | T_{\Pi}]$, we describe an efficient procedure to
 calculate all values $T'$ corresponding to a given $T$ exactly in Section~\ref{S:efficient-updates}.
 We still use Monte Carlo simulations to calculate a subset of all the permutations $\Pi$, otherwise
@@ -90,7 +90,7 @@ the computational cost would be prohibitive for large sample sizes.
   \centering
   \input{./simulations/img/orig_rate.tex}
   \caption{Log-log plot of values for each term in the bound, calculating the conditional
-    expectation exactly ($10N$ permutations each).}
+    expectation exactly ($10n$ permutations each).}
 \end{figure}
 
 Our bounds appear to be of the correct order or slightly conservative in some cases.  The bounds on
@@ -99,23 +99,23 @@ rates are probably lower.
 \clearpage
 
 \subsection{Better Rate}
-All terms except the one involving $\delta^3$ appear to be of or better than the proven rate.
+All terms except the term involving $\delta^3$ appear to be of or better than the proven rate.
 \begin{figure}[!ht]
   \centering
   \input{./simulations/img/better_rate.tex}
   \caption{Log-log plot of values for each term in the bound, calculating the conditional
-    expectation exactly ($10N$ permutations each).}
+    expectation exactly ($10n$ permutations each).}
 \end{figure}
 
-We shall see that $\frac{.41 \delta^3}{\lambda}N^{1/2}$ is bounded in some situations.
+We shall see that $\frac{.41 \delta^3}{\lambda}n^{1/2}$ is bounded in some situations.
 \clearpage
 
-Below, we see a plot of $\frac{.41 \delta^3}{\lambda}N^{1/2}$ on $N$
+Below, we see a plot of $\frac{.41 \delta^3}{\lambda}n^{1/2}$ on $n$
 when $u_i = i$.
 \begin{figure}[!ht]
   \centering
   \input{./simulations/img/delta_plot.tex}
-  \caption{$\frac{.41 \delta^3}{\lambda}N^{1/2}$ on $N$.}
+  \caption{$\frac{.41 \delta^3}{\lambda}n^{1/2}$ on $n$.}
 \end{figure}
 
 Recall that
@@ -126,42 +126,42 @@ Recall that
 \section{Efficient Updates}
 \label{S:efficient-updates}
 Instead of conditioning on the value of $T_{\Pi}$, we condition on the
-observed permutation $\pi$.  For $N$ observations in each group, there
-are $N^2 \: T_{\Pi}'$ values that come from swapping one value in the first
+observed permutation $\pi$.  For $n$ observations in each group, there
+are $n^2 \: T_{\Pi}'$ values that come from swapping one value in the first
 group with one value in the second.  $T_{\Pi}'$ should not differ much from
-$T_{\Pi}$, and calculating the $t$-statistics from scratch is inefficient.
+$T_{\Pi}$, and calculating the $t$-statistics anew is inefficient.
 
 We use an efficient $t$-statistic update rule to easily calculate
 millions of $t$-statistics.  The two sample $t$-statistic is given by
 \begin{equation*}
-  T_{\Pi} = \frac{\bar{x}-\bar{u}}
-  {\sqrt{\frac{2}{n}}\sqrt{\frac{1}{2}(S_X^2+S_U^2)}},
+  T_{\Pi} = \frac{\bar{x}-\bar{y}}
+  {\sqrt{\frac{2}{n}}\sqrt{\frac{1}{2}(S_X^2+S_Y^2)}},
 \end{equation*}
-where $S_X^2=\frac{1}{N-1}(\sum_{i=1}^Nx_i^2-n\bar{x}^2)$.
+where $S_X^2=\frac{1}{n-1}(\sum_{i=1}^nx_i^2-n\bar{x}^2)$.
 
-Let $T_{x_i,u_j}$ be the result of $T'$ by swapping $x_i$ with $u_j$:
+Let $T_{x_i,y_j}$ be the result of $T'$ by swapping $x_i$ with $y_j$:
 \begin{align*}
-  \Delta &\equiv u_j-x_i \\
-  \bar{x}_{x_i,u_j} &= \bar{x}-\frac{1}{N}x_i+\frac{1}{N}u_j =
-  \bar{x}+\frac{\Delta}{N} \\
-  \bar{u}_{x_i,u_j} &= \bar{u}+\frac{1}{N}x_i-\frac{1}{N}u_j =
-  \bar{u}-\frac{\Delta}{N} \\
-  S_{X_{x_i,u_j}}^2 &= \frac{1}{N-1}(\sum_{k=1}^N x_k^2 - x_i^2 +
-  u_j^2) - \frac{N}{N-1}\bar{x}^2_{x_i,u_j} \\
-  S_{U_{x_i,u_j}}^2 &= \frac{1}{N-1}(\sum_{k=1}^N u_k^2 + x_i^2 -
-  u_j^2) - \frac{N}{N-1}\bar{u}^2_{x_i,u_j} \\
-  \bar{x}_{x_i,u_j}^2 &= \bar{x}^2 + \frac{2\Delta}{N}\bar{x} +
-  \frac{\Delta^2}{N} \\
-  \bar{u}_{x_i,u_j}^2 &= \bar{u}^2 - \frac{2\Delta}{N}\bar{u} + \frac{\Delta^2}{N}
+  \Delta &\:= y_j-x_i \\
+  \bar{x}_{x_i,y_j} &= \bar{x}-\frac{1}{n}x_i+\frac{1}{n}y_j =
+  \bar{x}+\frac{\Delta}{n} \\
+  \bar{y}_{x_i,y_j} &= \bar{y}+\frac{1}{n}x_i-\frac{1}{n}y_j =
+  \bar{y}-\frac{\Delta}{n} \\
+  S_{X_{x_i,y_j}}^2 &= \frac{1}{n-1}(\sum_{k=1}^n x_k^2 - x_i^2 +
+  y_j^2) - \frac{n}{n-1}\bar{x}^2_{x_i,y_j} \\
+  S_{Y_{x_i,y_j}}^2 &= \frac{1}{n-1}(\sum_{k=1}^n y_k^2 + x_i^2 -
+  y_j^2) - \frac{n}{n-1}\bar{y}^2_{x_i,y_j} \\
+  \bar{x}_{x_i,y_j}^2 &= \bar{x}^2 + \frac{2\Delta}{n}\bar{x} +
+  \frac{\Delta^2}{n} \\
+  \bar{y}_{x_i,y_j}^2 &= \bar{y}^2 - \frac{2\Delta}{n}\bar{y} + \frac{\Delta^2}{n}
 \end{align*}
 
 Then
 \begin{align*}
-  T_{x_i,u_j} &= \frac{\bar{x}_{x_i,u_j}-\bar{u}_{x_i,u_j}}
-  {\sqrt{\frac{2}{N}}\sqrt{\frac{1}{2}(S_{X_{x_i,u_j}}^2+S_{U_{x_i,u_j}}^2)}}\\
-  &= \frac{\bar{x}-\bar{u}+\frac{2\Delta}{N}}
-  {\sqrt{\frac{2}{N}}\sqrt{\frac{1}{2(N-1)}[\sum_{k=1}^N (x_k^2+u_k^2)
-      -N(\bar{x}^2+\bar{u}^2+\Delta(\frac{2\bar{x}}{n}
-      -\frac{2\bar{u}}{n})+\frac{2}{n^2}\Delta^2)]}}.
+  T_{x_i,y_j} &= \frac{\bar{x}_{x_i,y_j}-\bar{y}_{x_i,y_j}}
+  {\sqrt{\frac{2}{n}}\sqrt{\frac{1}{2}(S_{X_{x_i,y_j}}^2+S_{Y_{x_i,y_j}}^2)}}\\
+  &= \frac{\bar{x}-\bar{y}+\frac{2\Delta}{n}}
+  {\sqrt{\frac{2}{n}}\sqrt{\frac{1}{2(n-1)}[\sum_{k=1}^n (x_k^2+y_k^2)
+      -n(\bar{x}^2+\bar{y}^2+\Delta(\frac{2\bar{x}}{n}
+      -\frac{2\bar{y}}{n})+\frac{2}{n^2}\Delta^2)]}}.
 \end{align*}
-Only the terms involving $\Delta$ need to be recomputed for each of the $N^2$ swaps.
+Only the terms involving $\Delta$ need to be recomputed for each of the $n^2$ swaps.
