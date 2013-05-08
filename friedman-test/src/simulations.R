@@ -142,11 +142,12 @@ powerSim <- function(){
   })
 
   p2 <- ggplot(res2, aes(x = delta, y = value, color = group, linetype = group)) +
-    geom_line() + 
+    geom_line(size = 1.5) + 
       geom_errorbar(aes(ymin = lower, ymax = upper, width = .07)) +
         xlab(expression(Delta)) +
           facet_grid(C~D) +
             ggtitle("Power (Faceted by Dimension and C)")
+  save(res, file = "power_normal.dat")
   myTikz("power_normal.tex", p2)
   myplot(p2, "power_normal.png")
 }

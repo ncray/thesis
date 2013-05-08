@@ -34,51 +34,75 @@ alternatives. That is, as $n,m \to \infty$, the test
 will always reject when $p \neq q$ for any non-zero significance level
 $\alpha$.
 
-There are many two-sample tests in the literature, as
-Table~\ref{tab:twosampletests} illustrates.
+The $t$-test possesses a storied history, with its genesis at Guinness
+Brewery in Dublin \cite{box1987guinness}.  At the time, Guinness made
+a habit of employing the finest chemistry graduates of Oxford and
+Cambridge as brewers and managers, among whom was W.S. Gosset, better
+known as Student.  Gosset, appointed brewer in 1899, became
+Brewer-in-Charge of the Experimental Brewery and was tasked with
+analyzing the results of barley-breeding experiments.  After
+consulting with Karl Pearson, Gosset worked on determining the
+probable error of the mean and tabulated these results for various
+sample sizes.
 
-\begin{table}
-\centering
-%\begin{tabular}{r|c|c|}
-\begin{tabular}{r | p{5cm} | p{5cm} |}
-\multicolumn{1}{r}{}
- & \multicolumn{1}{c}{parametric}
- & \multicolumn{1}{c}{non-parametric} \\
-\cline{2-3}
-univariate & $t$-test & permutation $t$-test; Kolmogorov-Smirnov
-test; Wilcoxon rank-sum test \\
-\cline{2-3}
-multivariate & Hotelling's $T^2$ test & Friedman-Rafsky test \\
-\cline{2-3}
-non-vectorial & Maximum Mean Discrepancy (asymptotic) & Friedman's test (KSVM);
-MMD (distribution-free) \\
-\cline{2-3}
-heterogeneous & & Friedman's test (MKL) \\
-\cline{2-3}
-\end{tabular}
-\caption{Two-sample tests.}
-\label{tab:twosampletests}
-\end{table}
+Gosset successfully analyzed the factors that influenced barley yield
+and quality.  As a result, Guinness purchased as much Danish Archer
+barley seed as possible and allowed Gosset to publish his methodology
+under the pseudonym Student in \cite{student1908probable} and
+\cite{student1908probable2}.
+
+Fisher later developed a non-parametric, permutation-based two-sample
+test \cite{fisher1935design}.  Hotelling
+\cite{hotelling1931generalization} devised a parametric, multivariate
+generalization of the $t$-test.  Friedman and Rafsky
+\cite{friedman1979multivariate} used minimum spanning trees to extend
+the non-parametric Kolmogorov-Smirnov test \cite{smirnoff1939estimation}
+to a multivariate setting.  In Section~\ref{S:MMD}, we describe the
+Maximum Mean Discrepancy test of Gretton et al.\ \cite{gretton19m},
+the first kernel-based two-sample test.
+
+% There are many two-sample tests in the literature, as
+% Table~\ref{tab:twosampletests} illustrates.
+
+% \begin{table}
+% \centering
+% %\begin{tabular}{r|c|c|}
+% \begin{tabular}{r | p{5cm} | p{5cm} |}
+% \multicolumn{1}{r}{}
+%  & \multicolumn{1}{c}{parametric}
+%  & \multicolumn{1}{c}{non-parametric} \\
+% \cline{2-3}
+% univariate & $t$-test & permutation $t$-test; Kolmogorov-Smirnov
+% test; Wilcoxon rank-sum test \\
+% \cline{2-3}
+% multivariate & Hotelling's $T^2$ test & Friedman-Rafsky test \\
+% \cline{2-3}
+% non-vectorial & Maximum Mean Discrepancy (asymptotic) & Friedman's test (KSVM);
+% MMD (distribution-free) \\
+% \cline{2-3}
+% heterogeneous & & Friedman's test (MKL) \\
+% \cline{2-3}
+% \end{tabular}
+% \caption{Two-sample tests.}
+% \label{tab:twosampletests}
+% \end{table}
 
 \section{The Friedman Two-Sample Test}
 Friedman proposed the following approach to the two-sample problem
 \cite{friedman30908multivariate}:
 
-For $\{\mathbf{x}_i\}_1^N$ drawn from $p(\mathbf{x})$ and
-$\{\mathbf{z}_i\}_1^M$ drawn from $q(\mathbf{x})$, we would like to
+For $\{\mathbf{x}_i\}_1^n$ drawn from $p(\mathbf{x})$ and
+$\{\mathbf{x}_i\}_{n+1}^{n+m}$ drawn from $q(\mathbf{x})$, we would like to
 test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
 \begin{enumerate}
-\item Pool the two samples $\{\mathbf{u}_i\}_1^{N+M} =
-  \{\mathbf{x}_i\}_1^{N} \cup \{\mathbf{z}_i\}_1^{M}$ to create a
-  predictor variable training set.
-\item Assign a response value $y_i = 1$ to the observations from the
-  first sample ($1 \leq i \leq N$) and $y_i = -1$ to the observations
-  from the second sample ($N + 1 \leq i \leq N+M)$.
+\item Assign a response value $l_i = 1$ to the observations from the
+  first sample ($1 \leq i \leq n$) and $l_i = -1$ to the observations
+  from the second sample ($n + 1 \leq i \leq n+m)$.
 \item Apply a binary classification learning machine to the training
-  data to produce a scoring function $f(\mathbf{u})$ to score each of
-  the observations $\{s_i = f(\mathbf{u}_i)\}_1^{N+M}$. \label{item:friedman-score}
+  data to produce a scoring function $f(\mathbf{x})$ to score each of
+  the observations $\{s_i = f(\mathbf{x}_i)\}_1^{n+m}$. \label{item:friedman-score}
 \item Calculate a univariate two-sample test statistic $\hat{t} =
-  T(\{s_i\}_1^N,\{s_i\}_{N+1}^{N+M})$.
+  T(\{s_i\}_1^n,\{s_i\}_{n+1}^{n+m})$.
 \item Determine the permutation null distribution of the above
   statistic to yield a p-value.
 \item The test rejects $\mathcal{H}_0$ at significance level $\alpha$
@@ -87,18 +111,18 @@ test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
 
 Note that in Step~\ref{item:friedman-score}, for a given learning
 machine, there can still be some choice in the scoring function
-$f(\mathbf{u})$.
+$f(\mathbf{x})$.
 
-The Friedman Test (FT) is a simple, elegant idea that leverages the
+The Friedman test (FT) is a simple, elegant idea that leverages the
 many advancements made over the past several decades in the fields of
 prediction and classification and applies them to the problem of
 two-sample testing.  In short, as long as there exists a learning
-machine for the problem at hand, the Friedman Test provides a recipe
+machine for the problem at hand, the Friedman test provides a recipe
 for turning that learning machine into a two-sample test.  This
 immediately yields two-sample tests for many kinds of data, including
 all types for which kernels have been defined.
 But there still remains some choice in the scoring
-function $F(\mathbf{u})$.  It must be flexible enough to discriminate
+function $f(\mathbf{x})$.  It must be flexible enough to discriminate
 between the potential distributional differences of the problem at
 hand.  The operating characteristics of the new two-sample test is
 \emph{solely} a function of the paired learning algorithm.  For an
@@ -147,12 +171,12 @@ of the data (e.g. a particular kernel).
 \begin{definition}[Positive Semidefinite Kernel]
 \label{D:kernel}
 A function $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is called a positive
-semidefinite kernel iff it is symmetric ($K(x, x') = K(x', x)$ for any
-$x, x' \in \mathcal{X}$) and positive semidefinite:
+semidefinite kernel iff it is symmetric ($K(\mathbf{x}, \mathbf{x}') = K(\mathbf{x}', \mathbf{x})$ for any
+$\mathbf{x}, \mathbf{x}' \in \mathcal{X}$) and positive semidefinite:
 \begin{equation*}
-  \sum_{i=1}^n\sum_{j=1}^nc_ic_jK(x_i, x_j) \geq 0
+  \sum_{i=1}^n\sum_{j=1}^nc_ic_jK(\mathbf{x}_i, \mathbf{x}_j) \geq 0
 \end{equation*}
-for any $n > 0$, any choice of $n$ objects $x_1, \ldots, x_n \in \mathcal{X}$,
+for any $n > 0$, any choice of $n$ objects $\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathcal{X}$,
 and any $c_1, \ldots, c_n \in \mathbb{R}$.
 \end{definition}
 
@@ -164,7 +188,7 @@ the linear kernel is defined as
 \end{equation*}
 for $\mathbf{x}, \mathbf{x'} \in \mathcal{X}$.
 
-For objects in general sets $\mathcal{X}$, we can define a mapping $\phi$ into a
+For objects a general set $\mathcal{X}$, we can define a mapping $\phi$ into a
 Hilbert space $\mathcal{H}$ for which an inner product exists.  As there are
 many such mappings, one challenge is to choose one that is maximally
 useful in exploiting the structure of the data for the task at hand.  In
@@ -179,9 +203,9 @@ features \cite{scholkopf2004kernel}:
   exists a Hilbert space $\mathcal{H}$ and a feature mapping
   $\phi: \mathcal{X} \to \mathcal{H}$ such that
   \begin{equation*}
-    K(x, x') = \langle \phi(x), \phi(x') \rangle_{\mathcal{H}}
+    K(\mathbf{x}, \mathbf{x}') = \langle \phi(\mathbf{x}), \phi(\mathbf{x}') \rangle_{\mathcal{H}}
   \end{equation*}
-  for any $x, x' \in \mathcal{X}$, where $\langle u, v \rangle_{\mathcal{H}}$
+  for any $\mathbf{x}, \mathbf{x}' \in \mathcal{X}$, where $\langle u, v \rangle_{\mathcal{H}}$
   represents the inner product in $\mathcal{H}$.
 \end{theorem}
 
@@ -216,8 +240,8 @@ problem \cite{scholkopf2002learning} in its primal form:
 \begin{equation}
 \label{eq:l1-svm-primal}
 \begin{aligned}
-& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}, {\boldsymbol \xi} \in \mathbb{R}^m}{\text{minimize}}
-& &\frac{1}{2}\norm{\mathbf{w}}_2^2+C\sum_{i=1}^m \xi_i \\
+& \underset{\mathbf{w} \in \mathcal{H}, b \in \mathbb{R}, {\boldsymbol \xi} \in \mathbb{R}^{n+m}}{\text{minimize}}
+& &\frac{1}{2}\norm{\mathbf{w}}_2^2+C\sum_{i=1}^{n+m} \xi_i \\
 & \text{subject to}
 & & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
 &&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
@@ -244,9 +268,9 @@ predicted class labels, the sample standard deviation is $0$ and hence
 the $t$-statistic is unbounded.
 
 Using, for instance, a logistic link function, $f_2$ has the
-interpretability of being a posterior class probability (if you
-believe in the probability model) and yields no information loss
-(since it is simply an invertible function of the margin).  However,
+interpretability of being a posterior class probability--if one
+believes in the probability model--and yields no information loss
+since it is simply an invertible function of the margin.  However,
 it is typically not a linear function of the margin.
 
 The margin $f_3$ has the advantage of being an affine function of the
@@ -260,7 +284,7 @@ on the scores $\{f_3(x_i)\}$ agrees with that on the raw data
 $\{x_i\}$ depends on $\text{sign}(w)$.  Due to symmetry, in the
 permutation null distribution, $w$ is negative with probability $.5$
 and positive with probability $.5$.  Thus, the permutation null in
-both settings appears to be $t$ (and hence asymptotically normal).
+both settings appears to be $t$ and hence asymptotically normal.
 
 \subsection{Kernelized Form}
 It is advantageous to treat the dual \cite{boyd2004convex} of
@@ -279,22 +303,22 @@ dual optimization problem is given by
 \begin{equation}
 \label{eq:l1-svm-dual}
 \begin{aligned}
-& \underset{{\boldsymbol \alpha} \in \mathbb{R}^m}{\text{minimize}}
-& & \sum_{i=1}^m \alpha_i - \frac{1}{2} \sum_{i,j=1}^m \alpha_i \alpha_j y_i y_j K(\mathbf{x_i}, \mathbf{x_j})  \\
+& \underset{{\boldsymbol \alpha} \in \mathbb{R}^{n+m}}{\text{minimize}}
+& & \sum_{i=1}^{n+m} \alpha_i - \frac{1}{2} \sum_{i,j=1}^{n+m} \alpha_i \alpha_j y_i y_j K(\mathbf{x_i}, \mathbf{x_j})  \\
 & \text{subject to}
 & & 0 \leq \alpha_i \leq C \quad \text{for all } i=1,\ldots,m \\
 & \text{and}
-& & \sum_{i=1}^m \alpha_i y_i = 0.
+& & \sum_{i=1}^{n+m} \alpha_i y_i = 0.
 \end{aligned}
 \end{equation}
 
 The Karush--Kuhn--Tucker (KKT) \cite{kuhn1951nonlinear} conditions for optimality imply that
 \begin{equation*}
-  \mathbf{w} = \sum_{i=1}^m \alpha_i y_i \mathbf{x}_i.
+  \mathbf{w} = \sum_{i=1}^{n+m} \alpha_i y_i \mathbf{x}_i.
 \end{equation*}
 Therefore,
 \begin{equation*}
-  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^m \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b,
+  f(\mathbf{x}) = \mathbf{w}^T\mathbf{x} + b = \sum_{i=1}^{n+m} \alpha_i k(\mathbf{x}, \mathbf{x}_i) + b,
 \end{equation*}
 where $\alpha_i$ are the dual variables.
 
@@ -307,7 +331,7 @@ useful for Chapter~\ref{C:MKL}.  Define the hinge loss function
 Then the following optimization problem is equivalent to Problem~(\ref{eq:l1-svm-primal}):
 \begin{equation}
   \label{eq:hinge-svm}
-  \min_{b \in \mathbb{R}, \mathbf{w} \in \mathcal{H}} \sum_{i=1}^m (1 - y_i(\mathbf{w}^T\mathbf{x}_i + b))_+ +
+  \min_{b \in \mathbb{R}, \mathbf{w} \in \mathcal{H}} \sum_{i=1}^{n+m} (1 - y_i(\mathbf{w}^T\mathbf{x}_i + b))_+ +
   \frac{1}{2C} \norm{\mathbf{w}}_2^2.
 \end{equation}
 
@@ -317,7 +341,7 @@ present a slightly generalized representer theorem from \cite{scholkopf2002learn
 \begin{theorem}[Representer Theorem]
   \label{T:representer}
   Let $\Omega:[0, \infty] \to \mathbb{R}$ be a strictly monotonic increasing function,
-  $\mathcal{X}$ be a set, and $c: (\mathcal{X} \times \mathbb{R}^2)^m \to \mathbb{R} \cup \{\infty\}$
+  $\mathcal{X}$ be a set, and $c: (\mathcal{X} \times \mathbb{R}^2)^{n+m} \to \mathbb{R} \cup \{\infty\}$
   be an arbitrary loss function.  Then each minimizer $f' \in \mathcal{H}$ of the regularized risk
   \begin{equation}
     \label{eq:representer}
@@ -325,7 +349,7 @@ present a slightly generalized representer theorem from \cite{scholkopf2002learn
   \end{equation}
   admits a representation of the form
   \begin{equation*}
-    f'(\mathbf{x}) = \sum_{i=1}^m \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
+    f'(\mathbf{x}) = \sum_{i=1}^{n+m} \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
   \end{equation*}
 \end{theorem}
 Although Problem (\ref{eq:representer}) has a feasible set $\mathcal{H}$
@@ -336,29 +360,29 @@ on the observations $\mathbf{x}_i$.
 We apply Theorem~\ref{T:representer} to Problem~(\ref{eq:hinge-svm}), noting that it holds
 for all fixed $b$, to conclude that
 \begin{equation*}
-  f'(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{i=1}^m \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
+  f'(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{i=1}^{n+m} \alpha'_i K(\mathbf{x}_i, \mathbf{x}).
 \end{equation*}
 Thus, setting $\alpha'_i = y_i \alpha_i$, we again find
 \begin{equation*}
-  f(\mathbf{x}) = f'(\mathbf{x}) + b = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b.
+  f(\mathbf{x}) = f'(\mathbf{x}) + b = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b.
 \end{equation*}
 
 We list the kernelized representations of possible Friedman scoring functions:
 \begin{enumerate}
 \item The predicted class label $f_1(\mathbf{x}_i)
-= \text{sign}(\sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)$.
+= \text{sign}(\sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)$.
 \item An estimate of the posterior class probability, such as by a
 sigmoid (Platt \cite{platt1999probabilistic, lin2007note}) or a
 logistic link function (Wahba \cite{wahba1992multivariate,
 wahba1999support})
-$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)}$.
-\item The margin $f_3(\mathbf{x}_i) = \sum_{i=1}^m y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
+$f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b)}$.
+\item The margin $f_3(\mathbf{x}_i) = \sum_{i=1}^{n+m} y_i \alpha_i K(\mathbf{x}, \mathbf{x}_i) + b$.
 \end{enumerate}
 
 \subsection{Equivalence to the Permutation $t$-test}
 \begin{theorem}
   \label{friedman_equiv}
-  The Friedman Test paired with support vector regression
+  The Friedman test paired with support vector regression
   or support vector classification (using the margin as a score)
   with the appropriate kernel generalizes
   the two-sample permutation $t$-test. In particular, the two procedures are
@@ -367,38 +391,38 @@ $f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i K(\math
 
 \begin{proof}
   \begin{equation*}
-    f(x)=\sum_{i=1}^m y_i \alpha_iK(x_i,x)+b =
-    \left ( \sum_{i=1}^m y_i \alpha_i x_i \right )x+b = wx+b
+    f(x)=\sum_{i=1}^{n+m} y_i \alpha_iK(x_i,x)+b =
+    \left ( \sum_{i=1}^{n+m} y_i \alpha_i x_i \right )x+b = wx+b,
   \end{equation*}
   since we have univariate data and an affine kernel.
   Therefore, the SVM score is simply an affine transformation of the
   data.  Welch's $t$-statistic is given by
   \begin{equation*}
-    T(\{x_i\}_1^N,\{z_i\}_1^M) = \frac{\bar{x}-\bar{z}}{\sqrt{\frac{s_X^2}{N}+\frac{s_z^2}{M}}}
+    T(\{x_i\}_1^n,\{x_i\}_{n+1}^{n+m}) = \frac{\bar{x}-\bar{x}'}{\sqrt{\frac{s_X^2}{n}+\frac{s_{X'}^2}{m}}}
   \end{equation*}
   where
   \begin{equation*}
-    \bar{x}=\frac{1}{N}\sum_{i=1}^N x_i \text{ and }
-    s_X^2= \frac{1}{N-1}\sum_{i=1}^N(x_i-\bar{x})^2.
+    \bar{x}=\frac{1}{n}\sum_{i=1}^n x_i \text{ and }
+    s_X^2= \frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})^2.
   \end{equation*}
   Let $z=f(x)=wx+b$ and note that
   \begin{equation*}
-    \bar{z}=\frac{1}{N}\sum_{i=1}^N z_i = \frac{w}{N}\sum_{i=1}^N x_i
+    \bar{z}=\frac{1}{n}\sum_{i=1}^{n} z_i = \frac{w}{n}\sum_{i=1}^n x_i
     + b = w\bar{x}+b
   \end{equation*}
   and
   \begin{equation*}
-    s_Z^2= \frac{1}{N-1}\sum_{i=1}^N(z_i-\bar{z})^2= \frac{1}{N-1}\sum_{i=1}^N(wx_i+b-w\bar{x}+b)^2=w^2s_X^2.
+    s_Z^2= \frac{1}{n-1}\sum_{i=1}^n(z_i-\bar{z})^2= \frac{1}{n-1}\sum_{i=1}^n(wx_i+b-w\bar{x}+b)^2=w^2s_X^2.
   \end{equation*}
   Therefore,
   \begin{equation*}
-    T(\{f(x_i)\}_1^N,\{f(z_i)\}_1^M) =
-    \frac{w\bar{x}+b-w\bar{z}+b}{|w|\sqrt{\frac{s_X^2}{N}+\frac{s_z^2}{M}}}
-    = \text{sign}(w) T(\{x_i\}_1^N,\{z_i\}_1^M).
+    T(\{f(x_i)\}_1^n,\{f(x_i)\}_{n+1}^{n+m}) =
+    \frac{w\bar{x}+b-w\bar{x}'+b}{|w|\sqrt{\frac{s_{X}^2}{n}+\frac{s_{X'}^2}{m}}}
+    = \text{sign}(w) T(\{x_i\}_1^n,\{x_i\}_{n+1}^{n+m}).
   \end{equation*}
   Since we are interested in two-sided testing, we consider
   \begin{equation*}
-    |T(\{f(x_i)\}_1^N,\{f(z_i)\}_1^M)| = |T(\{x_i\}_1^N,\{z_i\}_1^M)|.
+    |T(\{f(x_i)\}_1^n,\{f(x_i)\}_{n+1}^{n+m})| = |T(\{x_i\}_1^n,\{x_i\}_{n+1}^{n+m})|.
   \end{equation*}
   Thus, the $t$-statistics are identical, and since the permutation
   procedure is the same, the tests are equivalent.
@@ -408,17 +432,17 @@ $f_2(\mathbf{x}_i) = \frac{1}{1 + \text{exp}(-(\sum_{i=1}^m y_i \alpha_i K(\math
   \cite{scholkopf2002learning}:
   \begin{equation*}
     \begin{aligned}
-      & \underset{\mathbf{w}\in\mathcal{H},\mathbf{\xi}^{(*)}\in\mathbb{R}^m,b\in\mathbb{R}}{\text{minimize}}
-      & &\tau(\mathbf{w},\mathbf{\xi}^{(*)})=\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^M(\xi_i+\xi_i^*) \\
+      & \underset{\mathbf{w}\in\mathcal{H},\mathbf{\xi}^{(*)}\in\mathbb{R}^{n+m},b\in\mathbb{R}}{\text{minimize}}
+      & &\tau \left ( \mathbf{w},\mathbf{\xi}^{(*)} \right ) =\frac{1}{2}\norm{\mathbf{w}}^2+C\sum_{i=1}^{n+m}(\xi_i+\xi_i^*) \\
       & \text{subject to}
       & & f(\mathbf{x}_i)-y_i \leq \epsilon +\xi_i\\
       &&& y_i-f(\mathbf{x}_i) \leq \epsilon+\xi_i^* \\
-      &&& \xi_i,\xi_i^*\geq0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
+      &&& \xi_i,\xi_i^*\geq0 \qquad \qquad \quad \text{for all } i=1,\ldots,n+m.
     \end{aligned}
   \end{equation*}
   with solution is given by
   \begin{equation*}
-    f(x)=\sum_{i=1}^m(\alpha_i^*-\alpha_i)K(x_i,x)+b.
+    f(x)=\sum_{i=1}^{n+m}(\alpha_i^*-\alpha_i)K(x_i,x)+b.
   \end{equation*}
 \end{proof}
 
@@ -430,15 +454,15 @@ We have shown that for univariate data, some kernels generalize the
 permutation $t$-test.  Is it possible to characterize all such kernels?
 For what kernels $K$ do we have
 \begin{equation}
-\sum_{i=1}^m y_i \alpha_i K(x, x_i) + b = cx + d?
+\sum_{i=1}^{n+m} y_i \alpha_i K(x, x_i) + b = cx + d?
 \end{equation}
 
 A sufficient condition is for $K(x, x_i) = \langle \Phi(x), \Phi(x_i) \rangle =
 f(x_i) x$.  The linear kernel satisfies this condition with $f(x_i) =
 x_i$.  The RBF kernel $K(x, x_i) = \text{exp}(-\sigma (x-x_i)^2)$ does
-not yield an affine function of the data:
+not yield an affine function of the data, as
 \begin{equation}
-\sum_{i=1}^m y_i \alpha_i \text{exp}(-\sigma (x-x_i)^2) + b
+\sum_{i=1}^{n+m} y_i \alpha_i \text{exp}(-\sigma (x-x_i)^2) + b
 \end{equation}
 cannot be written as $cx + d$.
 
@@ -451,8 +475,9 @@ function. It is typically chosen via cross-validation over a grid
 of choices.
 
 \section{Maximum Mean Discrepancy}
+\label{S:MMD}
 Gretton et al.\ \cite{gretton19m, gretton2010fast, gretton2012kernel,
-  borgwardt2006integrating} introduce a kernel-based approach for
+  borgwardt2006integrating} introduced a kernel-based approach for
 the two-sample problem based on the Maximum Mean Discrepancy (MMD)
 statistic, an integral probability metric.  MMD provides good
 performance in practice, strong theoretical guarantees, and is the
@@ -469,8 +494,8 @@ first two-sample test for comparing distributions over graphs.
   \end{equation*}
   \begin{equation*}
     \text{MMD}[\mathfrak{F},X,Z] := \sup_{f\in
-      \mathfrak{F}}\left (\frac{1}{N}\sum_{i=1}^Nf(x_i) -
-    \frac{1}{M}\sum_{i=1}^M f(z_i) \right ).
+      \mathfrak{F}}\left (\frac{1}{n}\sum_{i=1}^nf(x_i) -
+    \frac{1}{m}\sum_{i=1}^{m} f(z_i) \right ).
   \end{equation*}
 \end{definition}
 
@@ -478,11 +503,11 @@ The function class $\mathfrak{F}$ is typically taken to be the unit ball in a
 reproducing kernel Hilbert space (RKHS), however, well-known metrics
 can be obtained over other function classes.  Although Gretton et
 al.\ provide several distribution-free tests based on MMD theory, we
-instead compare the Friedman Test (FT) against the permutation-based
+instead compare the Friedman test (FT) against the permutation-based
 MMD so as to compare statistic with statistic.  In this way, the
 theory is dissociated from the comparison.  We feel that this is the
 most fair comparison of the two tests because many of the theoretical
-results are inexact.  We also do not have big enough sample sizes in
+results are inexact.  We also do not have large enough sample sizes in
 our real datasets to ensure low error in theoretical approximations.
 Even if we did, the power for the tests would be very nearly one,
 making comparisons on non-simulated data difficult.
@@ -512,14 +537,13 @@ to the results.  It appears that many of the null distributions are
 very close to normal (or, $t(398)$, rather).
 
 The Friedman Statistic null distributions appear to be consistent with
-a standard normal distribution.
-
-In Figure~\ref{fig:c_param} we examine the relationship between the Friedman
-Statistic and the regularization parameter, $C$.  We have proven that in
-the univariate setting with a linear kernel, the statistic is independent of
-$C$.  Empirically, it appears that the for higher dimensional data, $C$ has a
-miniscule effect on the Friedman statistic for the linear kernel.  With an RBF
-kernel (width 1), it appears that $C$ has a small effect.
+a standard normal distribution.  In Figure~\ref{fig:c_param} we
+examine the relationship between the Friedman Statistic and the
+regularization parameter, $C$.  We have proven that in the univariate
+setting with a linear kernel, the statistic is independent of $C$.
+Empirically, it appears that for higher dimensional data, $C$ has
+a minor effect on the Friedman statistic for the linear kernel.
+With an RBF kernel (width 1), it appears that $C$ has a small effect.
 \begin{figure}
   \begin{center}
     \resizebox{14.0cm}{!}{
@@ -547,7 +571,7 @@ FS.rbf: FS with RBF kernel}
 The $T^2$ densities correspond to a
 parametrized family of $F$-distributions.  It is not surprising that the MMD
 linear kernel null distributions shift rightward as a function of
-dimension: the higher dimensionality affords the function in the RKHS
+dimension: the higher dimensionality allows the function in the RKHS
 to better find discrepancies between the two empirical distributions.
 The same rationale holds true for the FS when thinking of separating
 hyperplanes.  Interestingly, there are marked differences between the
@@ -560,8 +584,7 @@ We consider $\{x_i\}_{i=1}^{20} \sim \mathrm{MVN}_d(\mathbf{0},
 \mathbf{I})$ and $\{y_i\}_{i=1}^{20} \sim
 \mathrm{MVN}_d(\Delta \mathbf{1}, \mathbf{I})$ where our
 dimensionality $d \in \{1, 5, 10, 20\}$ and mean difference $\Delta \in
-\{0, .5, \ldots, 1.5\}$ in Figure~\ref{fig:power_normal}.  The width
-parameter in the RBF kernel is fixed at 1.
+\{0, .5, \ldots, 1.5\}$ in Figure~\ref{fig:power_normal}.
 
 \begin{figure}
   \begin{center}
@@ -614,12 +637,14 @@ series "
 For the $k$-spectrum kernel,
 \begin{itemize}
 \item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$.
-\item $\phi(x) = $ the number of length $k$ contiguous subsequences ($k$-mers) in $x$.
+\item $\phi({\bf x}) = $ the number of length $k$ contiguous
+  subsequences ($k$-mers) in ${\bf x}$.
 \item $\mathcal{H} = \mathbb{N}^{|\mathcal{A}|^k}$.
-\item $K_k(x,y) = \langle \phi_k(x), \phi_k(y) \rangle$.
+\item $K_k({\bf x}, {\bf x}') = \langle \phi_k({\bf x}), \phi_k({\bf x}') \rangle$.
 \end{itemize}
 
-Suffix trees allow for efficient kernel calculations, computing $K_k(x, y)$ in
+Suffix trees allow for efficient kernel calculations, computing
+$K_k({\bf x}, {\bf x}')$ in
 $\mathcal{O}(kn)$ time.
 
 We draw samples of various sizes from
@@ -676,7 +701,7 @@ For the polynomial kernel,
 \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$.
 \item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$.
 \item $\mathcal{H} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$.
-\item $K_d(x,y) = (x^T y  + c)^d$ is $\mathcal{O}(n)$.
+\item $K_d({\bf x},{\bf x}') = ({\bf x}^T {\bf x}'  + c)^d$ is $\mathcal{O}(n)$.
 \end{itemize}
 
 \begin{figure}
@@ -685,13 +710,14 @@ For the polynomial kernel,
       \input{friedman-test/img/power_birds.tex}
     }
   \end{center}
-  \caption{p1: linear kernel; p2: inhomogeneous degree 2 polynomial
-    kernel; rbf: radial basis function kernel; Error bars indicate
+  \caption{KMMD: the kernel Maximum Mean Discrepancy test; FS: the
+    Friedman test; Columns indicate the degree of the polynomial
+    kernel; Rows indicate the regularization parameter $C$; Error bars indicate
     95\% bootstrap confidence intervals.}
   \label{fig:power_birds}
 \end{figure}
 
-Again, MMD performs better.  However, the Friedman Test's performance
+Again, MMD performs better.  However, the Friedman test's performance
 certainly improves when considering higher degree polynomials.
 
 % \section{Extensions}
@@ -742,7 +768,7 @@ certainly improves when considering higher degree polynomials.
 % \section{Discussion}
 % We have tested a two-sample testing method of Friedman's
 % \cite{friedman30908multivariate} with a particular choice of learning
-% algorithm---support vector regression.  This Friedman Test can be seen
+% algorithm---support vector regression.  This Friedman test can be seen
 % as a generalization of the celebrated permutation $t$-test, or
 % randomization test.  Without tuning, performance is competitive in
 % some settings with the MMD test.  Simulations suggest that more
