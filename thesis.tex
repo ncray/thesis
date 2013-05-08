@@ -58,6 +58,8 @@
 \thirdreader{Jerome H. Friedman}
 
 \includeonly{
+  acknowledgment,
+  {\thesischapter{introduction}},
   {\thesischapter{steins-method}},
   {\thesischapter{stein-proof}},
   {\thesischapter{simulations}},
@@ -74,20 +76,21 @@
 
 \beforepreface
 
-%\prefacesection{Abstract}
-%\input{abstract}
+\prefacesection{Abstract}
+\input{abstract}
 
-%\include{acknowledgment}
+\include{acknowledgment}
 
-\figurespagefalse
-\tablespagefalse
+%\figurespagefalse
+%\tablespagefalse
 \afterpreface
 
-% \includechapter{steins-method}
+\includechapter{introduction}
+\includechapter{steins-method}
 \includechapter{stein-proof}
-% \includechapter{simulations}
-% \includechapter{friedman-test}
-%\includechapter{MKL}
+\includechapter{simulations}
+\includechapter{friedman-test}
+\includechapter{MKL}
 
 \appendix
 \includechapter{auxiliary-app}

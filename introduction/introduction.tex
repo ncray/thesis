@@ -13,21 +13,23 @@ We develop Jerome Friedman's method of conducting two-sample tests
 by leveraging techniques from regression and classification.  In
 particular, we construct two-sample tests for non-vectorial data by
 way of kernel support vector machines.  We extend these tests to deal
-with heterogeneous data by using multiple kernel learning to construct
+with heterogeneous data by using multiple kernel learning to create
 an optimal single kernel as a convex combination of various input
 kernels.  We show that these tests generalize the two-sample permutation
 $t$-test, for which asymptotic normality results are known but rate of
 convergence bounds remain lacking.  Using Stein's method of
 exchangeable pairs, we produce Berry--Esseen-type bounds that allow us
 to quantify our error in approximating the permutation distribution
-with the normal distribution.
+of this statistic with the normal distribution.
 
 Chapter~\ref{C:steins-method} gives an overview of Stein's method,
 with an emphasis on exchangeable pairs.  We review a similar CLT with
 dependence, Hoeffding's Combinatorial CLT, as our proof proceeds in a
-similar fashion.  Ancillary results and long proofs are deferred to
-Appendix~\ref{A:auxiliary-app} and Appendix~\ref{A:steins-method-app},
-respectively.
+similar fashion.  Ancillary results can be found in
+Appendix~\ref{A:auxiliary-app}, generalizations of previous work on
+Stein's method in Appendix~\ref{A:steins-method-app}, and proofs of
+the main propositions contributing to our rate of convergence bounds
+are in Appendix~\ref{A:stein-proof-app}
 
 In Chapter~\ref{C:stein-proof}, we review population- and
 permutation-based inference and prior related work on distributional

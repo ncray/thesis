@@ -163,7 +163,8 @@ certain classes of algorithms.  There is much literature on kernel methods,
 but one particularly comprehensive treatment is the monograph by Sch{\"o}lkopf
 and Smola \cite{scholkopf2002learning}.
 
-Given $n$ observed datapoints in some general set, $x_1, \ldots, x_n \in \mathcal{X}$,
+Given $n$ observed datapoints in some general set, ${\mathbf x}_1, \ldots,
+{\mathbf x}_n \in \mathcal{X}$,
 kernelized learning algorithms depend only on the pairwise ``similarities'' between
 any two observations by way of the kernel function.  Thus, kernel methods effectively
 decouple the algorithm (e.g. a support vector machine) from the representation
@@ -188,7 +189,7 @@ the linear kernel is defined as
 \end{equation*}
 for $\mathbf{x}, \mathbf{x'} \in \mathcal{X}$.
 
-For objects a general set $\mathcal{X}$, we can define a mapping $\phi$ into a
+For objects in a general set $\mathcal{X}$, we can define a mapping $\phi$ into a
 Hilbert space $\mathcal{H}$ for which an inner product exists.  As there are
 many such mappings, one challenge is to choose one that is maximally
 useful in exploiting the structure of the data for the task at hand.  In
@@ -244,7 +245,7 @@ problem \cite{scholkopf2002learning} in its primal form:
 & &\frac{1}{2}\norm{\mathbf{w}}_2^2+C\sum_{i=1}^{n+m} \xi_i \\
 & \text{subject to}
 & & y_i(\mathbf{w}^t \mathbf{x}_i + b) \geq 1 - \xi_i \\
-&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,m.
+&&& \xi_i \geq 0 \qquad \qquad \quad \text{for all } i=1,\ldots,n+m.
 \end{aligned}
 \end{equation}
 
@@ -306,7 +307,7 @@ dual optimization problem is given by
 & \underset{{\boldsymbol \alpha} \in \mathbb{R}^{n+m}}{\text{minimize}}
 & & \sum_{i=1}^{n+m} \alpha_i - \frac{1}{2} \sum_{i,j=1}^{n+m} \alpha_i \alpha_j y_i y_j K(\mathbf{x_i}, \mathbf{x_j})  \\
 & \text{subject to}
-& & 0 \leq \alpha_i \leq C \quad \text{for all } i=1,\ldots,m \\
+& & 0 \leq \alpha_i \leq C \quad \text{for all } i=1,\ldots,n+m \\
 & \text{and}
 & & \sum_{i=1}^{n+m} \alpha_i y_i = 0.
 \end{aligned}
@@ -345,7 +346,7 @@ present a slightly generalized representer theorem from \cite{scholkopf2002learn
   be an arbitrary loss function.  Then each minimizer $f' \in \mathcal{H}$ of the regularized risk
   \begin{equation}
     \label{eq:representer}
-    c((\mathbf{x_1}, y_1, f'(\mathbf{x_1})), \ldots, (\mathbf{x_m}, y_m, f'(\mathbf{x_m}))) + \Omega(\norm{f'}_{\mathcal{H}})
+    c((\mathbf{x}_1, y_1, f'(\mathbf{x}_1)), \ldots, (\mathbf{x}_{n+m}, y_{n+m}, f'(\mathbf{x}_{n+m}))) + \Omega(\norm{f'}_{\mathcal{H}})
   \end{equation}
   admits a representation of the form
   \begin{equation*}
@@ -354,7 +355,7 @@ present a slightly generalized representer theorem from \cite{scholkopf2002learn
 \end{theorem}
 Although Problem (\ref{eq:representer}) has a feasible set $\mathcal{H}$
 that is possibly infinite dimensional, Theorem~\ref{T:representer} guarantees
-that the solution lies in the span of the $m$ particular kernels centered
+that the solution lies in the span of the $n+m$ particular kernels centered
 on the observations $\mathbf{x}_i$.
 
 We apply Theorem~\ref{T:representer} to Problem~(\ref{eq:hinge-svm}), noting that it holds
@@ -526,7 +527,7 @@ $p$ is the dimensionality of the data and $n, m$ are the sample sizes
 of the two groups.  As its name suggests, the $T^2$-test is a
 generalization of Student's $t$-test, and for $T \sim t(n+m-2)$, we
 have that $T^2 \sim F_{(1, n+m-2)}$.  As a consequence of
-Theorem~\ref{friedman_equiv}, the Friedman Statistic in the univariate
+Theorem~\ref{friedman_equiv}, the Friedman statistic in the univariate
 data, linear kernel setting is equal to the $|T|$.  In Figure~\ref{fig:null_dist} we simulate
 200 standard multivariate normal draws from each class with dimension
 $D \in \{1, 5, 10\}$.  We compare the null distributions of the
@@ -543,7 +544,7 @@ regularization parameter, $C$.  We have proven that in the univariate
 setting with a linear kernel, the statistic is independent of $C$.
 Empirically, it appears that for higher dimensional data, $C$ has
 a minor effect on the Friedman statistic for the linear kernel.
-With an RBF kernel (width 1), it appears that $C$ has a small effect.
+With an RBF kernel with width 1, it appears that $C$ has a small effect.
 \begin{figure}
   \begin{center}
     \resizebox{14.0cm}{!}{
@@ -594,24 +595,23 @@ dimensionality $d \in \{1, 5, 10, 20\}$ and mean difference $\Delta \in
   \end{center}
   \caption{FS: Friedman statistic; KMMD: kernel Maximum Mean
     Discrepancy; T2: Hotelling's $T^2$-statistic; Error bars indicate
-    95\% bootstrap confidence intervals.  The tests perform similarly,
-    and the kernel-based tests use a linear kernel.}
+    95\% bootstrap confidence intervals.}
   \label{fig:power_normal}
 \end{figure}
 
-For FS and MMD, we used the the RBF kernel with a width of 1.  The
+For FS and MMD, we use the the RBF kernel with a width of 1.  The
 methods perform similarly with the exception of the kernel methods
 using the RBF kernel.  This suggests that either a width of 1 is
-ineffective or the RBF kernel is unsuitable for these data (probably the former).
+ineffective or the RBF kernel is unsuitable for these data.
 
 \subsection{String Data}
 \label{twitter_data}
-For a string data comparison, we consider Twitter data and look at the
+For a string data comparison using data from Twitter, we collected the
 latest 1,000 tweets from Barack Obama (@BarackObama) and Sarah Palin
 (@SarahPalinUSA) obtained from the {\bf R} package {\bf twitteR}
-\cite{twitteR}.  We pre-process each tweet by removing all
-hyperlinks and anything that is neither a letter nor a space.
-Finally, we convert all letters to lowercase.  For simplicity, we
+\cite{twitteR}.  We pre-process and transform the tweets
+into an alphabet comprising only lowercase English letters and spaces.
+For simplicity, we
 choose the $k$-spectrum kernel \cite{leslie2002spectrum} with
 $k \in \{1, 2, 3 \}$
 as our kernels for both the FT and MMD.
@@ -637,14 +637,14 @@ series "
 For the $k$-spectrum kernel,
 \begin{itemize}
 \item $\mathcal{X} = $ set of all finite-length sequences from an alphabet $\mathcal{A}$.
-\item $\phi({\bf x}) = $ the number of length $k$ contiguous
-  subsequences ($k$-mers) in ${\bf x}$.
+\item $\phi({\mathbf x}) = $ the number of length $k$ contiguous
+  subsequences ($k$-mers) in ${\mathbf x}$.
 \item $\mathcal{H} = \mathbb{N}^{|\mathcal{A}|^k}$.
-\item $K_k({\bf x}, {\bf x}') = \langle \phi_k({\bf x}), \phi_k({\bf x}') \rangle$.
+\item $K_k({\mathbf x}, {\mathbf x}') = \langle \phi_k({\mathbf x}), \phi_k({\mathbf x}') \rangle$.
 \end{itemize}
 
 Suffix trees allow for efficient kernel calculations, computing
-$K_k({\bf x}, {\bf x}')$ in
+$K_k({\mathbf x}, {\mathbf x}')$ in
 $\mathcal{O}(kn)$ time.
 
 We draw samples of various sizes from
@@ -692,16 +692,16 @@ pigeons from the Caltech 101 Object Categories dataset
 We resize images to a common resolution of $300 \times
 297$ and convert to a vector of 8 bit grayscale values.
 To correct for global differences in illumination and ensure
-that only local patterns would be used for discrimination, we center and
-scale each vector.  Power comparisons can be seen in Figure~\ref{fig:power_birds}.
+that only local patterns would be used for discrimination, we centered and
+scaled each vector.  Power comparisons can be seen in Figure~\ref{fig:power_birds}.
 
 For the polynomial kernel,
 \begin{itemize}
 \item $\mathcal{X} = \mathbb{R}^{n}$.
 \item $\phi_2 ([x_1, x_2]) = [x_1^2,  2x_1x_2,  x_2^2, \sqrt{2c}x_1, \sqrt{2c}x_2, c]$.
-\item $\langle \phi_2({\bf x}), \phi_2({\bf y}) \rangle$ is $\mathcal{O}(n^2)$.
+\item $\langle \phi_2({\mathbf x}), \phi_2({\mathbf x}') \rangle$ is $\mathcal{O}(n^2)$.
 \item $\mathcal{H} = \mathbb{R}^{d'}$, where $d' = \binom{n+d}{d}$.
-\item $K_d({\bf x},{\bf x}') = ({\bf x}^T {\bf x}'  + c)^d$ is $\mathcal{O}(n)$.
+\item $K_d({\mathbf x},{\mathbf x}') = ({\mathbf x}^T {\mathbf x}'  + c)^d$ is $\mathcal{O}(n)$.
 \end{itemize}
 
 \begin{figure}

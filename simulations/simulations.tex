@@ -10,14 +10,17 @@ and identically distributed samples $\{x_i\}_{i=1}^{n} \sim
 exponentially-spaced values of $n$.  The $x_i$ are scaled and
 centered, and for each $n$, we perform $10,000$ permutations.
 
-We plot Monte Carlo estimates of the means of each term, scaled by the
-rate of our bound, along with 95\%ile bootstrap confidence intervals
-for different values of $p \in \{2, 4, 6, 8\}$.
+In Figure~\ref{fig:siderates_1}, we plot Monte Carlo estimates of the
+means of each term, scaled by the rate of our bound, along with
+95\%ile bootstrap confidence intervals for different values of $p \in
+\{2, 4, 6, 8\}$.
 
 \begin{figure}[!ht]
   \centering
   \input{./simulations/img/siderates_1.tex}
-  \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
+  \caption{Log-log plots of values scaled by proven upper bounds of
+    rates, faceted on $p$.}
+  \label{fig:siderates_1}
 \end{figure}
 Due to the flatness of the curves, we conclude that the bounds we have
 proved are of the correct rate.  In addition, we can observe the
@@ -26,14 +29,17 @@ $f_{c_3}(p)$ constant for $\E h_{\Pi}^p$ appears to be an exponential
 function of $p$.
 \clearpage
 
-Here, to compute the corresponding ``prime'' random variables in the
-coupled pair, in each permutation we pick a transposition uniformly at
-random among transpositions that switch groups.
+In Figure~\ref{fig:siderates_2}, to compute the corresponding
+``prime'' random variables in the coupled pair, in each permutation we
+pick a transposition uniformly at random among transpositions that
+switch groups.
 
 \begin{figure}[!ht]
   \centering
   \input{./simulations/img/siderates_2.tex}
-  \caption{Log-log plots of values scaled by proven upper bounds of rates, faceted on $p$.}
+  \caption{Log-log plots of values scaled by proven upper bounds of
+    rates, faceted on $p$.}
+  \label{fig:siderates_2}
 \end{figure}
 It is possible that the bound of rate $n^{-p/2}$ on
 $\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^p \right ]$ is a bit conservative.
@@ -146,10 +152,10 @@ Let $T_{x_i,y_j}$ be the result of $T'$ by swapping $x_i$ with $y_j$:
   \bar{x}+\frac{\Delta}{n} \\
   \bar{y}_{x_i,y_j} &= \bar{y}+\frac{1}{n}x_i-\frac{1}{n}y_j =
   \bar{y}-\frac{\Delta}{n} \\
-  S_{X_{x_i,y_j}}^2 &= \frac{1}{n-1}(\sum_{k=1}^n x_k^2 - x_i^2 +
-  y_j^2) - \frac{n}{n-1}\bar{x}^2_{x_i,y_j} \\
-  S_{Y_{x_i,y_j}}^2 &= \frac{1}{n-1}(\sum_{k=1}^n y_k^2 + x_i^2 -
-  y_j^2) - \frac{n}{n-1}\bar{y}^2_{x_i,y_j} \\
+  S_{X_{x_i,y_j}}^2 &= \frac{1}{n-1} \left (\sum_{k=1}^n x_k^2 - x_i^2 +
+  y_j^2 \right ) - \frac{n}{n-1}\bar{x}^2_{x_i,y_j} \\
+  S_{Y_{x_i,y_j}}^2 &= \frac{1}{n-1} \left (\sum_{k=1}^n y_k^2 + x_i^2 -
+  y_j^2 \right ) - \frac{n}{n-1}\bar{y}^2_{x_i,y_j} \\
   \bar{x}_{x_i,y_j}^2 &= \bar{x}^2 + \frac{2\Delta}{n}\bar{x} +
   \frac{\Delta^2}{n} \\
   \bar{y}_{x_i,y_j}^2 &= \bar{y}^2 - \frac{2\Delta}{n}\bar{y} + \frac{\Delta^2}{n}

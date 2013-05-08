@@ -15,16 +15,16 @@ parameters ${\boldsymbol \theta}$.
 For example, the class of kernel functions on $\mathcal{X}$ is closed under pointwise products
 (also known as Schur products) of kernels,
 \begin{equation*}
-  K(x,x') = (K_1K_2)(x,x')=K_1(x,x')K_2(x,x'),
+  K({\mathbf x},{\mathbf x}') = (K_1K_2)({\mathbf x},{\mathbf x}')=K_1({\mathbf x},{\mathbf x}')K_2({\mathbf x},{\mathbf x}'),
 \end{equation*}
 tensor products of kernels,
 \begin{equation*}
- K(x, x') = (K_1 \otimes  K_2)(x_1,x_2,x_1',x_2')=K_1(x_1,x_1')K_2(x_2,x_2'),
+ K({\mathbf x}, {\mathbf x}') = (K_1 \otimes  K_2)({\mathbf x}_1,{\mathbf x}_2,{\mathbf x}_1',{\mathbf x}_2')=K_1({\mathbf x}_1,{\mathbf x}_1')K_2({\mathbf x}_2,{\mathbf x}_2'),
 \end{equation*}
 and conic combinations of kernels,
 \begin{equation*}
-  K_{{\boldsymbol \theta}}(x, x') = (\theta_1 K_1 + \ldots + \theta_m K_m)(x,x')=
-  \theta_1 K_1(x,x') + \ldots + \theta_m K_m(x,x').
+  K_{{\boldsymbol \theta}}({\mathbf x}, {\mathbf x}') = (\theta_1 K_1 + \ldots + \theta_m K_m)({\mathbf x},{\mathbf x}')=
+  \theta_1 K_1({\mathbf x},{\mathbf x}') + \ldots + \theta_m K_m({\mathbf x},{\mathbf x}').
 \end{equation*}
 
 An unweighted sum of kernels is equivalent to concatenating the individual
@@ -49,8 +49,8 @@ be a tradeoff parameter.
 
 Kloft et al.\ consider linear models of the form
 \begin{equation*}
-  h_{\tilde{w},b,\theta}(x) = \sum_{i=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m (x) \rangle_{\mathcal{H}_m} + b
-  = \langle \tilde{w}, \phi_{\theta}(x) \rangle_{\mathcal{H}} + b,
+  h_{\tilde{w},b,\theta}({\mathbf x}) = \sum_{i=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m ({\mathbf x}) \rangle_{\mathcal{H}_m} + b
+  = \langle \tilde{w}, \phi_{\theta}({\mathbf x}) \rangle_{\mathcal{H}} + b,
 \end{equation*}
 where $\tilde{w} = [\tilde{w}_1^T,\ldots,\tilde{w}_m^T]^T$ and
 $\phi_{\theta} = \sqrt{\theta_1} \phi_1 \times \ldots \times \sqrt{\theta_m} \phi_m$.
@@ -59,7 +59,7 @@ The regularized risk minimization problem is the following:
 \begin{equation}
   \label{eq:mkl-rrm-1}
   \min_{\tilde{w}, b, \theta : \theta \succeq 0} \frac{1}{n} \sum_{i=1}^n L \left (
-  \sum_{m=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+  \sum_{m=1}^M \sqrt{\theta_m} \langle \tilde{w}_m, \phi_m({\mathbf x}_i) \rangle_{\mathcal{H}_m} + b, y_i
   \right) + \frac{\lambda}{2}\sum_{m=1}^M \norm{\tilde{w}_m}_{\mathcal{H}_m}^2 +
   \tilde{\mu} \tilde{\Omega}(\theta),
 \end{equation}
@@ -78,20 +78,20 @@ we get
 \begin{equation}
   \label{eq:mkl-rrm-2}
   \min_{w, b, \theta : \theta \succeq 0} \tilde{C} \sum_{i=1}^n L \left (
-  \sum_{m=1}^M \langle w_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+  \sum_{m=1}^M \langle w_m, \phi_m({\mathbf x}_i) \rangle_{\mathcal{H}_m} + b, y_i
   \right) + \frac{1}{2} \sum_{m=1}^M \frac{\norm{w_m}_{\mathcal{H}_m}^2}{\theta_m} +
   \mu\norm{\theta}_p^2,
 \end{equation}
 where $\frac{t}{0} = 0$ if $t=0$ and $\infty$ otherwise.
 
-Kloft et al.\ prove that the Tikhonov-regularized Problem (\ref{eq:mkl-rrm-2})
+Kloft et al.\ proved that the Tikhonov-regularized Problem (\ref{eq:mkl-rrm-2})
 with two parameters is in fact equivalent to the following Ivanov-regularized
 formulation with one regularization parameter, $C$:
 \begin{equation}
 \label{eq:mkl-ivanov}
 \begin{aligned}
 & \underset{w, b, \theta : \theta \succeq 0}{\text{minimize}}
-& & C \sum_{i=1}^n L \left (\sum_{m=1}^M \langle w_m, \phi_m(x_i) \rangle_{\mathcal{H}_m} + b, y_i
+& & C \sum_{i=1}^n L \left (\sum_{m=1}^M \langle w_m, \phi_m({\mathbf x}_i) \rangle_{\mathcal{H}_m} + b, y_i
 \right) + \frac{1}{2} \sum_{m=1}^M \frac{\norm{w_m}_{\mathcal{H}_m}^2}{\theta_m} \\
 & \text{subject to}
 & & \norm{\theta}_p^2 \leq 1.
@@ -115,13 +115,12 @@ $\mathbf{x}_i$ are drawn independently from the star example from \cite{sonnenbu
 \label{fig:star}
 \end{figure}
 
-The star has a single radius parameter, $r$.  $p_{\mathbb{R}^2}$ takes $r = 4$,
-and $q_{\mathbb{R}^2}$ takes $r > 4$.
-
-Each $s_i$ has independent length $N \sim \text{Pois}(100)$ and is generated via
-a Markov chain.  The start of the sequence is drawn from the stationary distribution
-$[.25, .25, .25, .25]$, and the following $N-1$ elements are drawn according to the transition
-probabilities
+The star has a single radius parameter, $r$.  $p_{\mathbb{R}^2}$ takes
+$r = 4$, and $q_{\mathbb{R}^2}$ takes $r > 4$.  Each $s_i$ has
+independent length $N \sim \text{Pois}(100)$ and is generated via a
+Markov chain.  The start of the sequence is drawn from the stationary
+distribution $[.25, .25, .25, .25]$, and the following $N-1$ elements
+are drawn according to the transition probabilities
 \begin{equation*}
   M(p^{\star}) = \bordermatrix{
     ~ & A & C & T & G \cr
@@ -143,13 +142,13 @@ Kernel normalization can have a large effect on the performance of kernel- and M
 algorithms.  In the regularized regression setting, it is common to standardize variables to have
 mean zero and unit variance so that the results are invariant to differences in
 the unit of measurement.  Normalization plays a similar role in MKL.  For instance,
-the Gaussian RBF kernel has $K(x, x) = 1$.  When considering long strings, it is
+the Gaussian RBF kernel has $K({\mathbf x}, {\mathbf x}) = 1$.  When considering long strings, it is
 common for the $k$-spectrum kernel to take on large values.
 
 We pre-process all kernels used in MKL by ensuring that the vectors in the feature
 space lie on the unit hypersphere:
 \begin{equation*}
-  K_i(x, x') \leftarrow \frac{K_i(x, x')}{\sqrt{K_i(x, x)}\sqrt{K_i(x', x')}}
+  K_i({\mathbf x}, {\mathbf x}') \leftarrow \frac{K_i({\mathbf x}, {\mathbf x}')}{\sqrt{K_i({\mathbf x}, {\mathbf x})}\sqrt{K_i({\mathbf x}', {\mathbf x}')}}
 \end{equation*}
 
 \section{MKL Weights}
@@ -223,8 +222,8 @@ weights versus a priori placing all weight on the best kernel for the job.
       \input{MKL/img/dna_star_power.tex}
     }
   \end{center}
-\caption{The MKL weights in the 1- (upper row) and 2-norm (lower row) cases shift progressively more to
-  the higher-width RBF kernels as we increase the distance between the two stars.}
+\caption{Increasing signal on the vectorial data down the rows and
+  increasing signal on the string data across the x-axis.}
 \label{fig:mkl_power}
 \end{figure}
 
@@ -234,20 +233,33 @@ proportional to the number of permutations in order to conduct meaningful statis
 inference.  Thus, distributional approximations to these discrete, permutation null
 distributions are of great interest.
 
-Here we compare the null distributions over 2000 permutations of the labels in each scenario,
-adjusting the regularization parameter $C \in \{.1, 1, 10\}$.  We report $p$-values
-from the Anderson--Darling test for normality in Figure~\ref{fig:mkl_null}.  Except for
-the situation with the highest emphasis on the loss function ($C=10$), the
-permutation null samples are consistent with the standard normal distribution for all kernels
-and MKL statistics.
+Here we compare the null distributions over 2000 permutations of the
+labels in each scenario, adjusting the regularization parameter $C \in
+\{.1, 1, 10\}$.  We report $p$-values from the Anderson--Darling test
+for normality in Figure~\ref{fig:mkl_null} along with density plots.
+In Figure~\ref{fig:mkl_null_qq}, we display the same data in normal
+$Q$--$Q$ plots.  Except for the situation with the highest emphasis on
+the loss function ($C=10$), the permutation null samples are
+consistent with the standard normal distribution for all kernels and
+MKL statistics.
 \begin{figure}
   \begin{center}
     \resizebox{14.0cm}{!}{
       \input{MKL/img/mkl_null_dist.tex}
     }
   \end{center}
-\caption{Except for $C=10$, permutation null samples are consistent with the standard normal distribution.}
+\caption{Permutation null samples are consistent with the standard normal distribution.}
 \label{fig:mkl_null}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \resizebox{14.0cm}{!}{
+      \input{MKL/img/mkl_null_dist_qq.tex}
+    }
+  \end{center}
+\caption{Permutation null samples are consistent with the standard normal distribution.}
+\label{fig:mkl_null_qq}
 \end{figure}
 
 \section{Approximate Regression Condition}
@@ -274,7 +286,7 @@ Chapters~\ref{C:steins-method} and \ref{C:stein-proof}.
 
 Given a large number of independent kernels, one worry is that our
 learning method may overfit to limited data.  In order to explore this
-possibility, we generate $X \sim \mathcal{MVN}_d({\bf 0}, {\boldsymbol I})$
+possibility, we generate $X \sim \mathcal{N}_d({\mathbf 0}, {\mathbf I})$
 data and associate to each entry $X_i$ a Gaussian RBF kernel of width
 1.  Because the distribution is isotropic, we have $d$ independent
 kernels.  We estimate the randomization distribution over 200
@@ -353,7 +365,7 @@ two varietals, we focus on the set of Pinot Noir and Chardonnay wines.
       \input{MKL/img/wine_weights.tex}
     }
   \end{center}
-\caption{Boxplots of 2-norm MLK weights, in decreasing order of
+\caption{Boxplots of 2-norm MKL weights, in decreasing order of
   highest variable weight for the corresponding model.}
 \label{fig:wine_weights}
 \end{figure}
@@ -428,9 +440,9 @@ this wine example, MKL can effectively exploit additional data types
 for higher discriminatory power.
 
 \section{Future Work}
-We hope to better understand the Friedman Test outside of the
+We hope to better understand the Friedman test outside of the
 univariate data and linear kernel setting.  That is, we would like to
-characterize the kernels for which the Friedman Test generalizes the
+characterize the kernels for which the Friedman test generalizes the
 permutation $t$-test and understand the degree to which this
 relationship holds approximately given higher dimensional data and a
 wide range of kernels.  We further hope to extend the theory of
@@ -441,13 +453,13 @@ would likely incorporate some terms that represent the learning
 algorithm and numbers of independent kernels.
 
 We can also potentially treat various kinds of missing data.
-If we consider entire missing modalities (e.g. one sample is
+If we consider entire missing modalities (e.g., one sample is
 missing some biometric reading), Poh et al.\ \cite{poh2010addressing}
-develop the \emph{neutral point substitution} technique to allow
+developed the \emph{neutral point substitution} technique to allow
 substitution of the missing modality with a new kernel that is
-\emph{unbiased} with regard to the classification at hand.  This
+\emph{unbiased} with regard to the classification at hand.
+Panov et al.\ \cite{panov2011modified} modified the NPS method to allow
+for missing modalities in the test set.  This
 allows for full use of both modalities that are present for all
 samples as well as those that are present only for a subset of the
 samples and effective utilization of all the data in the training set.
-Panov et al.\ \cite{panov2011modified} modify the NPS method to allow
-for missing modalities in the test set.

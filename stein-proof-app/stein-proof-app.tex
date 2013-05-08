@@ -4,96 +4,96 @@
 \begin{proof}
   \begin{align}
     \E T_{\Pi}^2
-    &= \frac{N-1}{N} \E \left [ \left ( \frac{q_\Pi}{d_\Pi} \right )^2 \right ] \\
-    &= \frac{N-1}{N} \E \left [\frac{
-        4 N^2\bar{u}_{2,\Pi}^2}{2N-2N\bar{u}_{2,\Pi}^2} \right ] \quad \text{ from } \eqref{eq:qpi}
+    &= \frac{n-1}{n} \E \left [ \left ( \frac{q_\Pi}{d_\Pi} \right )^2 \right ] \\
+    &= \frac{n-1}{n} \E \left [\frac{
+        4 n^2\bar{x}_{2,\Pi}^2}{2n-2n\bar{x}_{2,\Pi}^2} \right ] \quad \text{ from } \eqref{eq:qpi}
     \nonumber \\
-    &= 2(N-1)\E \left [\frac{
-        \bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2} \right ] \nonumber \\
-    &= 2(N-1) \E g(\bar{u}_{2,\Pi}), \label{def:varT}
+    &= 2(n-1)\E \left [\frac{
+        \bar{x}_{2,\Pi}^2}{1-\bar{x}_{2,\Pi}^2} \right ] \nonumber \\
+    &= 2(n-1) \E g(\bar{x}_{2,\Pi}), \label{def:varT}
   \end{align}
-  where $g(x) = \frac{x^2}{1-x^2}$. Now we proceed to calculate moments of $\bar{u}_{2,\Pi}$.
+  where $g(x) = \frac{x^2}{1-x^2}$. Now we proceed to calculate moments of $\bar{x}_{2,\Pi}$.
 
-  Mean-centering the $u_{i}$ has the effect of mean-centering $\bar{u}_{2,\Pi}$:
+  Mean-centering the $x_{i}$ has the effect of mean-centering $\bar{x}_{2,\Pi}$:
   \begin{equation*}
-    \E \bar{u}_{2,\Pi} =
-    \frac{1}{N} \E \left [ \sum_{i=N+1}^{2N} u_{\Pi(i)} \right ] =
-    \frac{1}{N} \sum_{i=N+1}^{2N} \E u_{\Pi(i)} =
-    \frac{1}{N} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{j=1}^{2N} u_{j} = 0
+    \E \bar{x}_{2,\Pi} =
+    \frac{1}{n} \E \left [ \sum_{i=n+1}^{2n} x_{\Pi(i)} \right ] =
+    \frac{1}{n} \sum_{i=n+1}^{2n} \E x_{\Pi(i)} =
+    \frac{1}{n} \sum_{i=n+1}^{2n} \frac{1}{2n} \sum_{j=1}^{2n} x_{j} = 0
   \end{equation*}
-  Under independence, $\var(\bar{u}_{2,\Pi})$ would be $\frac{1}{N}$ given
+  Under independence, $\var(\bar{x}_{2,\Pi})$ would be $\frac{1}{n}$ given
   the scaling.  However, the negative dependence induced by the
   permutation structure approximately halves this value.
-  The scaling is such that $\var(u_{\Pi(i)}) = 1$.  Under independence and
-  with $i \neq j$, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2$.  Summing only 2 (out of $2N$)
-  values under permutation dependence, $\var(u_{\Pi(i)} + u_{\Pi(j)}) = 2 - \frac{2}{2N-1}$.
+  The scaling is such that $\var(x_{\Pi(i)}) = 1$.  Under independence and
+  with $i \neq j$, $\var(x_{\Pi(i)} + x_{\Pi(j)}) = 2$.  Summing only 2 (out of $2n$)
+  values under permutation dependence, $\var(x_{\Pi(i)} + x_{\Pi(j)}) = 2 - \frac{2}{2n-1}$.
 
   We can't use Serfling's result here because we need more than just an upper bound.
   \begin{align*}
-    \var(\bar{u}_{2,\Pi})
-    &= \frac{1}{N^2} \E \left [\left (\sum_{i=N+1}^{2N}u_{\Pi(i)}\right )^2\right ] \\
-    &= \frac{1}{N^2} \E \left [\sum_{i=N+1}^{2N} u_{\Pi(i)}^2 +
-    \sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq i}^{2N}u_{\Pi(i)}u_{\Pi(j)} \right ] \\
-    &= \frac{1}{N^2} \sum_{i=N+1}^{2N} \frac{1}{2N} \sum_{j=1}^{2N} u_{j}^2
-    + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
-      i}^{2N} \E[u_{\Pi(i)} u_{\Pi(j)}] \\
-    &= \frac{1}{N} + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
-      i}^{2N} \frac{1}{2N}\frac{1}{2N-1}\sum_{k=1}^{2N}
-    \sum_{l=1, l\neq k}^{2N} u_ku_l \\
-    &= \frac{1}{N} + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
-      i}^{2N} \frac{1}{2N}\frac{1}{2N-1} \left (
-    \left (\sum_{k=1}^{2N} u_k \right )^2 - \sum_{k=1}^{2N} u_k^2
+    \var(\bar{x}_{2,\Pi})
+    &= \frac{1}{n^2} \E \left [\left (\sum_{i=n+1}^{2n}x_{\Pi(i)}\right )^2\right ] \\
+    &= \frac{1}{n^2} \E \left [\sum_{i=n+1}^{2n} x_{\Pi(i)}^2 +
+    \sum_{i=n+1}^{2n}\sum_{j=n+1, j\neq i}^{2n}x_{\Pi(i)}x_{\Pi(j)} \right ] \\
+    &= \frac{1}{n^2} \sum_{i=n+1}^{2n} \frac{1}{2n} \sum_{j=1}^{2n} x_{j}^2
+    + \frac{1}{n^2}\sum_{i=n+1}^{2n}\sum_{j=n+1, j\neq
+      i}^{2n} \E[x_{\Pi(i)} x_{\Pi(j)}] \\
+    &= \frac{1}{n} + \frac{1}{n^2}\sum_{i=n+1}^{2n}\sum_{j=n+1, j\neq
+      i}^{2n} \frac{1}{2n}\frac{1}{2n-1}\sum_{k=1}^{2n}
+    \sum_{l=1, l\neq k}^{2n} x_kx_l \\
+    &= \frac{1}{n} + \frac{1}{n^2}\sum_{i=n+1}^{2n}\sum_{j=n+1, j\neq
+      i}^{2n} \frac{1}{2n}\frac{1}{2n-1} \left (
+    \left (\sum_{k=1}^{2n} x_k \right )^2 - \sum_{k=1}^{2n} x_k^2
   \right ) \\
-    &= \frac{1}{N} + \frac{1}{N^2}\sum_{i=N+1}^{2N}\sum_{j=N+1, j\neq
-      i}^{2N} \frac{1}{2N}\frac{1}{2N-1} \left (
-    0^2 - 2N \right ) \\
-    &= \frac{1}{N} + \frac{1}{N}(N^2-N)\left (-\frac{1}{2N-1}\right ) \\
-    &= \frac{2N-1}{N(2N-1)} + \frac{1-N}{N(2N-1)} \\
-    &= \frac{1}{2N-1}
+    &= \frac{1}{n} + \frac{1}{n^2}\sum_{i=n+1}^{2n}\sum_{j=n+1, j\neq
+      i}^{2n} \frac{1}{2n}\frac{1}{2n-1} \left (
+    0^2 - 2n \right ) \\
+    &= \frac{1}{n} + \frac{1}{n}(n^2-n)\left (-\frac{1}{2n-1}\right ) \\
+    &= \frac{2n-1}{n(2n-1)} + \frac{1-n}{n(2n-1)} \\
+    &= \frac{1}{2n-1}
   \end{align*}
 
   Having established the first two moments, we compute the third degree Taylor expansion and bound
-  the error in the approximation. By Taylor's theorem, we expand the function $g(\bar{u}_{2,\Pi}) =
-  \frac{\bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2}$ around $\E[\bar{u}_{2,\Pi}] = 0$:
+  the error in the approximation. By Taylor's theorem, we expand the function $g(\bar{x}_{2,\Pi}) =
+  \frac{\bar{x}_{2,\Pi}^2}{1-\bar{x}_{2,\Pi}^2}$ around $\E[\bar{x}_{2,\Pi}] = 0$:
   \begin{equation*}
-    g(\bar{u}_{2,\Pi}) = \frac{\bar{u}_{2,\Pi}^2}{1-\bar{u}_{2,\Pi}^2} = g(0) + g'(0)
-    \bar{u}_{2,\Pi} + \frac{g''(0)}{2!}\bar{u}_{2,\Pi}^2 +
-    \frac{g^{(3)}(0)}{3!}\bar{u}_{2,\Pi}^3 + R_3(\bar{u}_{2,\Pi}),
+    g(\bar{x}_{2,\Pi}) = \frac{\bar{x}_{2,\Pi}^2}{1-\bar{x}_{2,\Pi}^2} = g(0) + g'(0)
+    \bar{x}_{2,\Pi} + \frac{g''(0)}{2!}\bar{x}_{2,\Pi}^2 +
+    \frac{g^{(3)}(0)}{3!}\bar{x}_{2,\Pi}^3 + R_3(\bar{x}_{2,\Pi}),
   \end{equation*}
-  where $R_3(\bar{u}_{2,\Pi}) = \frac{g^{(4)}(\xi_L)}{4!}\bar{u}_{2,\Pi}^4$, with
-  $\xi_L \in [0, \bar{u}_{2,\Pi}]$.
+  where $R_3(\bar{x}_{2,\Pi}) = \frac{g^{(4)}(\xi_L)}{4!}\bar{x}_{2,\Pi}^4$, with
+  $\xi_L \in [0, \bar{x}_{2,\Pi}]$.
 
   From (\ref{def:varT}) and evaluating the Taylor series, we have
   \begin{equation*}
-    \E g(\bar{u}_{2,\Pi}) = \frac{\E T_{\Pi}^2}{2(N-1)} = \E[\bar{u}_{2,\Pi}^2 + R_3(\bar{u}_{2,\Pi})].
+    \E g(\bar{x}_{2,\Pi}) = \frac{\E T_{\Pi}^2}{2(n-1)} = \E[\bar{x}_{2,\Pi}^2 + R_3(\bar{x}_{2,\Pi})].
   \end{equation*}
   Therefore,
   \begin{align*}
-    \left | \frac{\E T_{\Pi}^2}{2(N-1)} - \E \bar{u}_{2,\Pi}^2 \right |
-    &= \left | \frac{\E T_{\Pi}^2}{2(N-1)} - \frac{1}{2N-1} \right | \\
-    &\leq  \E |R_3(\bar{u}_{2,\Pi})| \\
+    \left | \frac{\E T_{\Pi}^2}{2(n-1)} - \E \bar{x}_{2,\Pi}^2 \right |
+    &= \left | \frac{\E T_{\Pi}^2}{2(n-1)} - \frac{1}{2n-1} \right | \\
+    &\leq  \E |R_3(\bar{x}_{2,\Pi})| \\
     &= \E \left | \frac{24(5\xi_L^4 + 10 \xi_L^2 +
-        1)}{4!(\xi_L-1)^5}\bar{u}_{2,\Pi}^4 \right | \\
-    &\leq \E \left | \frac{24(5\bar{u}_{2,\Pi}^4 + 10 \bar{u}_{2,\Pi}^2 +
-        1)}{4!(\bar{u}_{2,\Pi}-1)^5}\bar{u}_{2,\Pi}^4 \right | \\
-    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} \E \bar{u}_{2,\Pi}^4 \\
-    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} f_{c_1}(4) N^{-2} \quad \text{
+        1)}{4!(\xi_L-1)^5}\bar{x}_{2,\Pi}^4 \right | \\
+    &\leq \E \left | \frac{24(5\bar{x}_{2,\Pi}^4 + 10 \bar{x}_{2,\Pi}^2 +
+        1)}{4!(\bar{x}_{2,\Pi}-1)^5}\bar{x}_{2,\Pi}^4 \right | \\
+    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} \E \bar{x}_{2,\Pi}^4 \\
+    &\leq \frac{5B^4+10B^2+1}{|B-1|^5} f_{c_1}(4) n^{-2} \quad \text{
       by } (\ref{def:serfling}) \\
-    &:= c_1 N^{-2}
+    &:= c_1 n^{-2}
   \end{align*}
 
   \begin{align*}
-    |\E T_{\Pi}^2 - 1| - \frac{1}{2N-1}
-    &\leq \left | \E T_{\Pi}^2 - 1 + \frac{1}{2N-1} \right | \\
-    &= \left | \E T_{\Pi}^2 - \frac{2(N-1)}{2N-1} \right | \\
-    &= 2(N-1) \left | \frac{\E T_{\Pi}^2}{2(N-1)} - \frac{1}{2N-1} \right | \\
-    &\leq c_1 2(N-1)N^{-2}
+    |\E T_{\Pi}^2 - 1| - \frac{1}{2n-1}
+    &\leq \left | \E T_{\Pi}^2 - 1 + \frac{1}{2n-1} \right | \\
+    &= \left | \E T_{\Pi}^2 - \frac{2(n-1)}{2n-1} \right | \\
+    &= 2(n-1) \left | \frac{\E T_{\Pi}^2}{2(n-1)} - \frac{1}{2n-1} \right | \\
+    &\leq c_1 2(n-1)n^{-2}
   \end{align*}
 
   This implies that
   \begin{equation*}
-    |\E T_{\Pi}^2 - 1| \leq \frac{1}{2N-1} + c_1 \frac{2N-2}{N^2} \leq
-    \frac{1 + 2c_1}{N} := c_2 N^{-1}
+    |\E T_{\Pi}^2 - 1| \leq \frac{1}{2n-1} + c_1 \frac{2n-2}{n^2} \leq
+    \frac{1 + 2c_1}{n} := c_2 n^{-1}
   \end{equation*}
 \end{proof}
 
@@ -113,33 +113,33 @@ centered random variables represented by $\tilde{X}, \tilde{Y}$, and $\tilde{Z}$
 
   From \eqref{def:ttpcubed},
   \begin{align*}
-    \var (\E[(T_{\Pi}'-T_{\Pi})^2 | \Pi = \pi]) &= \var \left ( \frac{N-1}{N}\E \left [
-      \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
+    \var (\E[(T_{\Pi}'-T_{\Pi})^2 | \Pi = \pi]) &= \var \left ( \frac{n-1}{n}\E \left [
+      \left ( \frac{2x_{\Pi(J)}-2x_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
         \middle | \Pi = \pi \right ] \right ) \\
     &\leq \var \left ( \E \left [
-      \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
+      \left ( \frac{2x_{\Pi(J)}-2x_{\Pi(I)}}{d_{\Pi}}+T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2
         \middle | \Pi = \pi \right ] \right ) \\
     &\leq 4(\var(X) + \var(Y) + \var(Z))
   \end{align*}
   where
   \begin{align*}
-    X &= \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}} \right )^2
+    X &= \E \left [ \left ( \frac{2x_{\Pi(J)}-2x_{\Pi(I)}}{d_{\Pi}} \right )^2
         \middle | \Pi = \pi \right ] \\
     Y &= \E \left [ \left
           ( T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right )^2 \middle | \Pi = \pi \right ] \\
-    Z &= 2 \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}
+    Z &= 2 \E \left [ \left ( \frac{2x_{\Pi(J)}-2x_{\Pi(I)}}{d_{\Pi}}
          T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right ) \middle | \Pi = \pi \right ]
   \end{align*}
   The $X$ term will dominate, so we can afford to use coarser methods on $Y$ and $Z$.
 
-  The $\E[u_{\Pi(J)}-u_{\Pi(I)} | \Pi = \pi]$ term is common to applications of Stein's method of
+  The $\E[x_{\Pi(J)}-x_{\Pi(I)} | \Pi = \pi]$ term is common to applications of Stein's method of
   exchangeable pairs.  However, there is a complication in the $d_{\Pi}$ random variable in the
   denominator.  Our strategy will be to calculate the two variances separately with some necessary
   additional terms.
 
   First, we prove an intermediate result regarding the variance of a product of random variables
   \begin{equation*}
-    W = (d_{\Pi})^{-2} \text{ and } V = \E [(u_{\Pi(J)} - u_{\Pi(I)})^2 | \Pi = \pi].
+    W = (d_{\Pi})^{-2} \text{ and } V = \E [(x_{\Pi(J)} - x_{\Pi(I)})^2 | \Pi = \pi].
   \end{equation*}
   Then $\var(X) = 4 \var(WV)$ since $d_{\Pi}$ is $\sigma(\Pi)$-measurable and
   \begin{align}
@@ -147,17 +147,17 @@ centered random variables represented by $\tilde{X}, \tilde{Y}$, and $\tilde{Z}$
     \var(WV) &= \var(W(V-\E V) + W \E V) \nonumber \\
     &\leq 2\var(W(V-\E V)) + 2 \var (W \E V) \nonumber \\
     &\leq 2 \E [W^2 (V-\E V)^2] + 2(\E V)^2 \var(W) \nonumber \\
-    &\leq 2(f_{c_2}(2))^2 N^{-2} \var(V) + 2u_{\Delta}^4 \var(W).
+    &\leq 2(f_{c_2}(2))^2 n^{-2} \var(V) + 2x_{\Delta}^4 \var(W).
   \end{align}
 
   \begin{align*}
     \var(W) &= \var ((d_{\Pi})^{-2}) \\
-    &= \var \left ( \frac{1}{2N(1-\bar{u}_{2,\Pi}^2)} \right ) \\
-    &= \frac{1}{4N^2} \left [ \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2}
+    &= \var \left ( \frac{1}{2n(1-\bar{x}_{2,\Pi}^2)} \right ) \\
+    &= \frac{1}{4n^2} \left [ \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2}
         \right )^2 \right ] -
-      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
+      \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2
     \right ] \\
-    &= \frac{1}{4N^2}[\E h(\bar{u}_{2,\Pi}) - (\E \tilde{h}(\bar{u}_{2,\Pi}))^2],
+    &= \frac{1}{4n^2}[\E h(\bar{x}_{2,\Pi}) - (\E \tilde{h}(\bar{x}_{2,\Pi}))^2],
   \end{align*}
   where
   \begin{equation*}
@@ -167,172 +167,172 @@ centered random variables represented by $\tilde{X}, \tilde{Y}$, and $\tilde{Z}$
 
   By Taylor's theorem,
   \begin{equation*}
-    \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ]
-    = 1 + 2 \left ( \frac{1}{2N-1} \right ) + \E R_3(\bar{u}_{2,\Pi}),
+    \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ]
+    = 1 + 2 \left ( \frac{1}{2n-1} \right ) + \E R_3(\bar{x}_{2,\Pi}),
   \end{equation*}
   with
   \begin{equation*}
-    \E |R_3(\bar{u}_{2,\Pi})| \leq \frac{24(35B^4 + 42 B^2 + 3)}{4!(B-1)^6}f_{c_1}(4) N^{-2}
-    := c_4 N^{-2}
+    \E |R_3(\bar{x}_{2,\Pi})| \leq \frac{24(35B^4 + 42 B^2 + 3)}{4!(B-1)^6}f_{c_1}(4) n^{-2}
+    := c_4 n^{-2}
   \end{equation*}
   Re-arranging, we get
   \begin{equation*}
-    \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ]
-      - 1 - \frac{2}{2N-1} \right | \leq c_4 N^{-2}.
+    \left | \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ]
+      - 1 - \frac{2}{2n-1} \right | \leq c_4 n^{-2}.
   \end{equation*}
 
   Applying Taylor's theorem to $\tilde{h}$:
   \begin{equation*}
-    \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ]
-    = 1 + \frac{1}{2N-1} + \E \tilde{R}_3(\bar{u}_{2,\Pi}),
+    \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ]
+    = 1 + \frac{1}{2n-1} + \E \tilde{R}_3(\bar{x}_{2,\Pi}),
   \end{equation*}
   with
   \begin{equation*}
-    \E |\tilde{R}_3(\bar{u}_{2,\Pi})| \leq \frac{24(5B^4 + 10B^2 + 1)}{4!(B-1)^5}f_{c_1}(4) N^{-2}
-    := c_5 N^{-2}
+    \E |\tilde{R}_3(\bar{x}_{2,\Pi})| \leq \frac{24(5B^4 + 10B^2 + 1)}{4!(B-1)^5}f_{c_1}(4) n^{-2}
+    := c_5 n^{-2}
   \end{equation*}
   Squaring, applying the bound, and re-arranging yields
   \begin{equation*}
-    \left | \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
-      - \left ( 1 + \frac{1}{2N-1} \right )^2 \right | \leq
-    2 \left ( 1 + \frac{1}{2N-1} \right ) c_5 N^{-2} + c_5^2 N^{-4}
+    \left | \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2
+      - \left ( 1 + \frac{1}{2n-1} \right )^2 \right | \leq
+    2 \left ( 1 + \frac{1}{2n-1} \right ) c_5 n^{-2} + c_5^2 n^{-4}
   \end{equation*}
 
-  Now we combine bounds to get
+  now we combine bounds to get
   \begin{align*}
-    &\left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] -
-      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2 \right | \\
-    &= \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] -
-      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
-    + \frac{1}{(2N-1)^2} - \frac{1}{(2N-1)^2} \right | \\
-  &\leq \left | \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ] -
-      \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
-      + \frac{1}{(2N-1)^2} \right | + \left | \frac{1}{(2N-1)^2} \right |\\
+    &\left | \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ] -
+      \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2 \right | \\
+    &= \left | \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ] -
+      \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2
+    + \frac{1}{(2n-1)^2} - \frac{1}{(2n-1)^2} \right | \\
+  &\leq \left | \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ] -
+      \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2
+      + \frac{1}{(2n-1)^2} \right | + \left | \frac{1}{(2n-1)^2} \right |\\
     &\leq \left |
-      \E \left [ \left (\frac{1}{1-\bar{u}_{2,\Pi}^2} \right )^2 \right ]
-      - 1 - \frac{2}{2N-1} -
+      \E \left [ \left (\frac{1}{1-\bar{x}_{2,\Pi}^2} \right )^2 \right ]
+      - 1 - \frac{2}{2n-1} -
       \left (
-        \left ( \E \left [ \frac{1}{1-\bar{u}_{2,\Pi}^2} \right ] \right )^2
-        - \left ( 1 + \frac{1}{2N-1} \right )^2
-      \right ) \right | + \left | \frac{1}{(2N-1)^2} \right | \\
-    &\leq c_4 N^{-2}
-    + 2 \left ( 1 + \frac{1}{2N-1} \right ) c_5 N^{-2} + c_5^2 N^{-4}
-    + \left | \frac{1}{(2N-1)^2} \right | \\
-    &\leq (c_4 + 3c_5 + c_5^2 + \frac{1}{4}) N^{-2} \\
-    &:= c_6 N^{-2}
+        \left ( \E \left [ \frac{1}{1-\bar{x}_{2,\Pi}^2} \right ] \right )^2
+        - \left ( 1 + \frac{1}{2n-1} \right )^2
+      \right ) \right | + \left | \frac{1}{(2n-1)^2} \right | \\
+    &\leq c_4 n^{-2}
+    + 2 \left ( 1 + \frac{1}{2n-1} \right ) c_5 n^{-2} + c_5^2 n^{-4}
+    + \left | \frac{1}{(2n-1)^2} \right | \\
+    &\leq (c_4 + 3c_5 + c_5^2 + \frac{1}{4}) n^{-2} \\
+    &:= c_6 n^{-2}
   \end{align*}
-  Therefore, $\var(W) \leq \frac{c_6}{4}N^{-4}$ and
+  Therefore, $\var(W) \leq \frac{c_6}{4}n^{-4}$ and
   \begin{equation*}
-    \var(X) \leq 8(f_{c_2}(2))^2 N^{-2} \var(V) + 8u_{\Delta}^4 \frac{c_6}{4} N^{-4}
+    \var(X) \leq 8(f_{c_2}(2))^2 n^{-2} \var(V) + 8x_{\Delta}^4 \frac{c_6}{4} n^{-4}
   \end{equation*}
   with
   \begin{align*}
-    \var(V) &= \var (\E[(u_{\Pi(J)}-u_{\Pi(I)})^2 | \Pi = \pi]) \\
-    &= \var(\E[u_{\Pi(J)}^2+u_{\Pi(I)}^2-2u_{\Pi(J)}u_{\Pi(I)}| \Pi = \pi]) \\
-    &= \var \left ( \frac{1}{N^2} \sum_{I=1}^{N}\sum_{J=N+1}^{2N}
-    (u_{\pi(J)}^2+u_{\pi(I)}^2-2u_{\pi(J)}u_{\pi(I)}) \right ) \\
-    &= \var \left ( \frac{1}{N^2} \left ( N \sum_{K=1}^{2N}u_K^2 -
-      \sum_{I=1}^{N}\sum_{J=N+1}^{2N}2u_{\pi(J)}u_{\pi(I)} \right ) \right ) \\
-    &= \frac{4}{N^4}
-    \sum_{I=1}^{N}\sum_{J=N+1}^{2N}\sum_{K=1}^{N}\sum_{L=N+1}^{2N}
-    \cov(u_{\pi(I)}u_{\pi(J)},u_{\pi(K)}u_{\pi(L)})
+    \var(V) &= \var (\E[(x_{\Pi(J)}-x_{\Pi(I)})^2 | \Pi = \pi]) \\
+    &= \var(\E[x_{\Pi(J)}^2+x_{\Pi(I)}^2-2x_{\Pi(J)}x_{\Pi(I)}| \Pi = \pi]) \\
+    &= \var \left ( \frac{1}{n^2} \sum_{I=1}^{n}\sum_{J=n+1}^{2n}
+    (x_{\pi(J)}^2+x_{\pi(I)}^2-2x_{\pi(J)}x_{\pi(I)}) \right ) \\
+    &= \var \left ( \frac{1}{n^2} \left ( n \sum_{K=1}^{2n}x_K^2 -
+      \sum_{I=1}^{n}\sum_{J=n+1}^{2n}2x_{\pi(J)}x_{\pi(I)} \right ) \right ) \\
+    &= \frac{4}{n^4}
+    \sum_{I=1}^{n}\sum_{J=n+1}^{2n}\sum_{K=1}^{n}\sum_{L=n+1}^{2n}
+    \cov(x_{\pi(I)}x_{\pi(J)},x_{\pi(K)}x_{\pi(L)})
   \end{align*}
-  since $\sum_{K=1}^{2N}u_K^2 = 2N$ is a constant.  We proceed by calculating
+  since $\sum_{K=1}^{2n}x_K^2 = 2n$ is a constant.  We proceed by calculating
   \begin{equation*}
-    \cov(u_{\pi(I)}u_{\pi(J)},u_{\pi(K)}u_{\pi(L)})
-    = \E[u_{\pi(I)}u_{\pi(J)}u_{\pi(K)}u_{\pi(L)}] - \E[u_{\pi(I)}u_{\pi(J)}]\E[u_{\pi(K)}u_{\pi(L)}].
+    \cov(x_{\pi(I)}x_{\pi(J)},x_{\pi(K)}x_{\pi(L)})
+    = \E[x_{\pi(I)}x_{\pi(J)}x_{\pi(K)}x_{\pi(L)}] - \E[x_{\pi(I)}x_{\pi(J)}]\E[x_{\pi(K)}x_{\pi(L)}].
   \end{equation*}
   The index sets for variables $I$ and $J$ (and $K$ and $L$) are disjoint, so
   \begin{equation*}
-    \E[u_{\pi(I)}u_{\pi(J)}] = \E[u_{\pi(K)}u_{\pi(L)}]
-    = \frac{1}{2N}\frac{1}{2N-1}\sum_{I=1}^{2N} u_{I} \sum_{J=1,J\neq I}^{2N} u_{J} = -\frac{1}{2N-1}
+    \E[x_{\pi(I)}x_{\pi(J)}] = \E[x_{\pi(K)}x_{\pi(L)}]
+    = \frac{1}{2n}\frac{1}{2n-1}\sum_{I=1}^{2n} x_{I} \sum_{J=1,J\neq I}^{2n} x_{J} = -\frac{1}{2n-1}
   \end{equation*}
   for all values of $I, J, K, L$ in the sum.  Therefore,
   \begin{equation*}
-    \E[u_{\pi(I)}u_{\pi(J)}] = \E[u_{\pi(K)}u_{\pi(L)}] = \frac{1}{(2N-1)^2}.
+    \E[x_{\pi(I)}x_{\pi(J)}] = \E[x_{\pi(K)}x_{\pi(L)}] = \frac{1}{(2n-1)^2}.
   \end{equation*}
   However, $K$ could equal $I$ and $L$ could equal $J$, which changes the mass assigned by the
   permutation distribution, necessitating a separate treatment for each case.
 
   Case $I \neq J \neq K \neq L$:
   \begin{align*}
-    &\E[u_{\pi(I)} u_{\pi(J)} u_{\pi(K)} u_{\pi(L)}] \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} \sum_{J=1, J\neq I}^{2N} \sum_{K=1, K \neq I,J}^{2N} \sum_{L=1, L \neq I,J,K}^{2N}
-    u_{I} u_{J} u_{K} u_{L} \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} u_{I} \sum_{J=1, J\neq I}^{2N} u_{J} \sum_{K=1, K \neq
-      I,J}^{2N} u_{K} (-u_{I}-u_{J}-u_{K}) \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} u_{I} \sum_{J=1, J\neq I}^{2N} u_{J}
-    ((-u_{I}-u_{J})(-u_{I}-u_{J})+(u_{I}^2+u_{J}^2-2N)) \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} u_{I} \sum_{J=1, J\neq I}^{2N} u_{J}
-    (2u_{I}^2-2N+2u_{J}^2+2u_{I}u_{J}) \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} u_{I} \left (
-      (2u_{I}^2-2N)(-u_{I})+2\sum_{J=1, J\neq I}^{2N} u_{J}^3+2u_{I}(2N-u_{I}^2)
+    &\E[x_{\pi(I)} x_{\pi(J)} x_{\pi(K)} x_{\pi(L)}] \\
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} \sum_{J=1, J\neq I}^{2n} \sum_{K=1, K \neq I,J}^{2n} \sum_{L=1, L \neq I,J,K}^{2n}
+    x_{I} x_{J} x_{K} x_{L} \\
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} x_{I} \sum_{J=1, J\neq I}^{2n} x_{J} \sum_{K=1, K \neq
+      I,J}^{2n} x_{K} (-x_{I}-x_{J}-x_{K}) \\
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} x_{I} \sum_{J=1, J\neq I}^{2n} x_{J}
+    ((-x_{I}-x_{J})(-x_{I}-x_{J})+(x_{I}^2+x_{J}^2-2n)) \\
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} x_{I} \sum_{J=1, J\neq I}^{2n} x_{J}
+    (2x_{I}^2-2n+2x_{J}^2+2x_{I}x_{J}) \\
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} x_{I} \left (
+      (2x_{I}^2-2n)(-x_{I})+2\sum_{J=1, J\neq I}^{2n} x_{J}^3+2x_{I}(2n-x_{I}^2)
     \right) \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \sum_{I=1}^{2N} u_{I} \left (
-      -4u_{I}^3 + 6Nu_{I} + 2\left (\sum_{J=1}^{2N}u_{J}^3 - u_{I}^3 \right )
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \sum_{I=1}^{2n} x_{I} \left (
+      -4x_{I}^3 + 6nx_{I} + 2\left (\sum_{J=1}^{2n}x_{J}^3 - x_{I}^3 \right )
     \right) \\
-    &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\frac{1}{2N-3}
-    \left ( -6\sum_{I=1}^{2N}u_{I}^4+12N^2 \right )
+    &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\frac{1}{2n-3}
+    \left ( -6\sum_{I=1}^{2n}x_{I}^4+12n^2 \right )
   \end{align*}
-  for $N^2(N-1)^2$ terms in the sum.
+  for $n^2(n-1)^2$ terms in the sum.
 
   Case $I=K$ and $J=L$:
   \begin{align*}
-    \E[u_{\pi(I)}^2 u_{\pi(J)}^2] &= \frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N}
-    \sum_{J=1, J\neq I}^{2N} u_{I}^2 u_{J}^2 \\
-    &= \frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N} u_{I}^2 (2N - u_{I}^2) \\
-    &= \frac{2N}{2N-1}-\frac{1}{2N}\frac{1}{2N-1} \sum_{I=1}^{2N} u_{I}^4
+    \E[x_{\pi(I)}^2 x_{\pi(J)}^2] &= \frac{1}{2n}\frac{1}{2n-1} \sum_{I=1}^{2n}
+    \sum_{J=1, J\neq I}^{2n} x_{I}^2 x_{J}^2 \\
+    &= \frac{1}{2n}\frac{1}{2n-1} \sum_{I=1}^{2n} x_{I}^2 (2n - x_{I}^2) \\
+    &= \frac{2n}{2n-1}-\frac{1}{2n}\frac{1}{2n-1} \sum_{I=1}^{2n} x_{I}^4
   \end{align*}
-  for $N^2$ terms in the sum.
+  for $n^2$ terms in the sum.
 
   Case $I=K, J\neq L$ or $I\neq K, J= L$:
   \begin{align*}
-    \E[u_{\pi(I)}^2 u_{\pi(J)} u_{\pi(K)}] &= \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \sum_{I=1}^{2N}
-    \sum_{J=1, J\neq I}^{2N} \sum_{K=1, K \neq I,J}^{2N} u_{I}^2 u_{J} u_{K} \\
-    &=\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \sum_{I=1}^{2N}
-    \sum_{J=1, J\neq I}^{2N} u_{I}^2 u_{J} (0 - u_{I} - u_{J}) \\
-    &=-\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
-      \sum_{I=1}^{2N} u_{I}^3 \sum_{J=1, J\neq I}^{2N} u_{J} +
-      \sum_{I=1}^{2N} u_{I}^2 \sum_{J=1, J\neq I}^{2N} u_{J}^2
+    \E[x_{\pi(I)}^2 x_{\pi(J)} x_{\pi(K)}] &= \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2} \sum_{I=1}^{2n}
+    \sum_{J=1, J\neq I}^{2n} \sum_{K=1, K \neq I,J}^{2n} x_{I}^2 x_{J} x_{K} \\
+    &=\frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2} \sum_{I=1}^{2n}
+    \sum_{J=1, J\neq I}^{2n} x_{I}^2 x_{J} (0 - x_{I} - x_{J}) \\
+    &=-\frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2} \left(
+      \sum_{I=1}^{2n} x_{I}^3 \sum_{J=1, J\neq I}^{2n} x_{J} +
+      \sum_{I=1}^{2n} x_{I}^2 \sum_{J=1, J\neq I}^{2n} x_{J}^2
     \right ) \\
-    &=-\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
-      \sum_{I=1}^{2N} - u_{I}^4 +
-      \sum_{I=1}^{2N} u_{I}^2 (2N - u_{I}^2)
+    &=-\frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2} \left(
+      \sum_{I=1}^{2n} - x_{I}^4 +
+      \sum_{I=1}^{2n} x_{I}^2 (2n - x_{I}^2)
     \right ) \\
-    &=\frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2} \left(
-      2 \sum_{I=1}^{2N} u_{I}^4 -4N^2 \right )
+    &=\frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2} \left(
+      2 \sum_{I=1}^{2n} x_{I}^4 -4n^2 \right )
   \end{align*}
-  for $2N^2(N-1)$ terms in the sum.
+  for $2n^2(n-1)$ terms in the sum.
 
   Putting it all together, we have
   \begin{align*}
-    &\var (\E[(u_{\Pi(J)}-u_{\Pi(i)})^2] | \Pi = \pi) \\
-    &= \frac{4}{N^4} (N^2(N-1)^2)
-    \left ( \frac{1}{(2N)(2N-1)(2N-2)(2N-3)}
-      \left ( -6\sum_{i=1}^{2N}u_{i}^4 + 12N^2 \right ) - \frac{1}{(2N-1)^2} \right ) \\
-    &+ \frac{4}{N^4} N^2 \left ( \frac{2N}{2N-1} -
-      \frac{1}{2N}\frac{1}{2N-1}\sum_{i=1}^{2N}u_{i}^4 - \frac{1}{(2N-1)^2}
+    &\var (\E[(x_{\Pi(J)}-x_{\Pi(i)})^2] | \Pi = \pi) \\
+    &= \frac{4}{n^4} (n^2(n-1)^2)
+    \left ( \frac{1}{(2n)(2n-1)(2n-2)(2n-3)}
+      \left ( -6\sum_{i=1}^{2n}x_{i}^4 + 12n^2 \right ) - \frac{1}{(2n-1)^2} \right ) \\
+    &+ \frac{4}{n^4} n^2 \left ( \frac{2n}{2n-1} -
+      \frac{1}{2n}\frac{1}{2n-1}\sum_{i=1}^{2n}x_{i}^4 - \frac{1}{(2n-1)^2}
     \right ) \\
-    &+ \frac{4}{N^4} (2N^2(N-1)) \left (
-      \frac{1}{2N}\frac{1}{2N-1}\frac{1}{2N-2}\left (
-        2 \sum_{i=1}^{2N} u_{i}^4 - 4N^2 \right ) - \frac{1}{(2N-1)^2}
+    &+ \frac{4}{n^4} (2n^2(n-1)) \left (
+      \frac{1}{2n}\frac{1}{2n-1}\frac{1}{2n-2}\left (
+        2 \sum_{i=1}^{2n} x_{i}^4 - 4n^2 \right ) - \frac{1}{(2n-1)^2}
     \right ) \\
-    &\leq \frac{48}{4N^2} + \frac{8}{N^2} + \frac{16 \sum_{i=1}^{2N}
-      u_{i}^4}{N^4} \\
-    &= \left ( 20 + 16 \left ( \sum_{i=1}^{2N} u_{i}^4 \right )N^{-2} \right ) N^{-2}
+    &\leq \frac{48}{4n^2} + \frac{8}{n^2} + \frac{16 \sum_{i=1}^{2n}
+      x_{i}^4}{n^4} \\
+    &= \left ( 20 + 16 \left ( \sum_{i=1}^{2n} x_{i}^4 \right )n^{-2} \right ) n^{-2}
   \end{align*}
 
   Therefore,
   \begin{equation*}
-    \var(X) \leq 8(f_{c_2}(2))^2 \left ( 20 + 16 \left ( \sum_{i=1}^{2N} u_{i}^4 \right )N^{-2}
-    \right ) N^{-4}
-    + 8u_{\Delta}^4 \frac{c_6}{4} N^{-4}
+    \var(X) \leq 8(f_{c_2}(2))^2 \left ( 20 + 16 \left ( \sum_{i=1}^{2n} x_{i}^4 \right )n^{-2}
+    \right ) n^{-4}
+    + 8x_{\Delta}^4 \frac{c_6}{4} n^{-4}
   \end{equation*}
 
   Because the latter two terms are much smaller in order, we can apply
@@ -348,35 +348,35 @@ centered random variables represented by $\tilde{X}, \tilde{Y}$, and $\tilde{Z}$
     &\leq \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} (d_{\Pi}-d_{\Pi}') \right )^4 \right ] \\
     &\leq \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^8 \right ]
       \E [(d_{\Pi}-d_{\Pi}')^8]} \\
-    &\leq \sqrt{f_{c_6}(8) N^{-8/2} f_{c_4}(8) N^{-8}} \text{ from }
+    &\leq \sqrt{f_{c_6}(8) n^{-8/2} f_{c_4}(8) n^{-8}} \text{ from }
     (\ref{def:qpddp}),(\ref{def:ddiffp}) \\
-    &= \sqrt{f_{c_6}(8)f_{c_4}(8)}N^{-6} \\
-    &:= c_7 N^{-6}
+    &= \sqrt{f_{c_6}(8)f_{c_4}(8)}n^{-6} \\
+    &:= c_7 n^{-6}
   \end{align*}
 
   And to the third,
   \begin{align*}
-    \var(Z) &= 4 \var \left ( \E \left [ \left ( \frac{2u_{\Pi(J)}-2u_{\Pi(I)}}{d_{\Pi}}
+    \var(Z) &= 4 \var \left ( \E \left [ \left ( \frac{2x_{\Pi(J)}-2x_{\Pi(I)}}{d_{\Pi}}
           T_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}} \right ) \middle | \Pi = \pi \right ] \right ) \\
-    &\leq 16 u_{\Delta}^2 \E \left [ \left ( \frac{1}{d_{\Pi}} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}
+    &\leq 16 x_{\Delta}^2 \E \left [ \left ( \frac{1}{d_{\Pi}} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}
         (d_{\Pi}-d_{\Pi}') \right )^2 \right ] \\
-    &\leq 16 u_{\Delta}^2 f_{c_2}(2) N^{-2/2} \sqrt{\E \left [ \left (
+    &\leq 16 x_{\Delta}^2 f_{c_2}(2) n^{-2/2} \sqrt{\E \left [ \left (
           \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^4 \right ] \E[(d_{\Pi}-d_{\Pi}')^4]
     } \text{ from } (\ref{def:dp}) \\
-    &\leq 16 u_{\Delta}^2 f_{c_2}(2) N^{-1} \sqrt{f_{c_6}(4) N^{-4/2} f_{c_4}(4) N^{-4}}
+    &\leq 16 x_{\Delta}^2 f_{c_2}(2) n^{-1} \sqrt{f_{c_6}(4) n^{-4/2} f_{c_4}(4) n^{-4}}
     \text{ from } (\ref{def:qpddp}),(\ref{def:ddiffp}) \\
-    &\leq 16 u_{\Delta}^2 f_{c_2}(2) (f_{c_6}(4))^{-1/2} (f_{c_4}(4))^{-1/2} N^{-4} \\
-    &:= c_8 N^{-4}
+    &\leq 16 x_{\Delta}^2 f_{c_2}(2) (f_{c_6}(4))^{-1/2} (f_{c_4}(4))^{-1/2} n^{-4} \\
+    &:= c_8 n^{-4}
   \end{align*}
 
   \begin{align*}
     &\frac{1}{2\lambda} \sqrt{\var (\E [(T_{\Pi}'-T_{\Pi})^2|T_{\Pi}])} \\
-    &= N \sqrt{(\var(X) + \var(Y) + \var(Z))} \\
-    &\leq N \sqrt{
-      8(f_{c_2}(2))^2 \left ( 20 + 16 \left ( \sum_{i=1}^{2N} u_{i}^4 \right )N^{-2} \right ) N^{-4}
-      + 8u_{\Delta}^4 \frac{c_6}{4} N^{-4}
-      + c_7 N^{-6} + c_8 N^{-4}} \\
-    &:= N^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2N} u_{i}^4}{N^2}} \\
+    &= n \sqrt{(\var(X) + \var(Y) + \var(Z))} \\
+    &\leq n \sqrt{
+      8(f_{c_2}(2))^2 \left ( 20 + 16 \left ( \sum_{i=1}^{2n} x_{i}^4 \right )n^{-2} \right ) n^{-4}
+      + 8x_{\Delta}^4 \frac{c_6}{4} n^{-4}
+      + c_7 n^{-6} + c_8 n^{-4}} \\
+    &:= n^{-1} c_3\sqrt{20 + 16\frac{\sum_{i=1}^{2n} x_{i}^4}{n^2}} \\
   \end{align*}
 \end{proof}
 
@@ -385,55 +385,55 @@ centered random variables represented by $\tilde{X}, \tilde{Y}$, and $\tilde{Z}$
   The strategy is to break apart the remainder term from the main piece.  From (\ref{def:ttpcubed}),
   \begin{align*}
     \E|T_{\Pi}'-T_{\Pi}|^3
-    &= \left (\frac{N-1}{N}\right )^{3/2}
-    \E \left [d_{\Pi}^{-3} \left |2u_{\Pi(J)}-2u_{\Pi(I)}+q_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}'} \right |^3
+    &= \left (\frac{n-1}{n}\right )^{3/2}
+    \E \left [d_{\Pi}^{-3} \left |2x_{\Pi(J)}-2x_{\Pi(I)}+q_{\Pi}'\frac{d_{\Pi}-d_{\Pi}'}{d_{\Pi}'} \right |^3
     \right ] \\
     &\leq 8 \left (
-      8 u_{\Delta}^3 \E [d_{\Pi}^{-3}] +
+      8 x_{\Delta}^3 \E [d_{\Pi}^{-3}] +
       \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^6 \right ]  \E
         [(d_{\Pi}-d_{\Pi}')^6]} \right ) \\
-    &\leq 64 u_{\Delta}^3 f_{c_2}(3) N^{-3/2} +
-    8 \sqrt{f_{c_6}(6) N^{-6/2} f_{c_4}(6) N^{-6}} \text{ from }
+    &\leq 64 x_{\Delta}^3 f_{c_2}(3) n^{-3/2} +
+    8 \sqrt{f_{c_6}(6) n^{-6/2} f_{c_4}(6) n^{-6}} \text{ from }
     (\ref{def:dp}),(\ref{def:qpddp}),(\ref{def:ddiffp}) \\
-    &\leq \frac{c_9^2}{2} N^{-3/2}
+    &\leq \frac{c_9^2}{2} n^{-3/2}
   \end{align*}
   Therefore,
   \begin{equation*}
     (2\pi)^{-1/4}\sqrt{\frac{\E|T_{\Pi}'-T_{\Pi}|^3}{\lambda}} \leq
-    (2\pi)^{-1/4} c_9 N^{-1/4}.
+    (2\pi)^{-1/4} c_9 n^{-1/4}.
   \end{equation*}
 \end{proof}
 
 \subsection{Proof of Proposition~\ref{P:P4}}
 \begin{proof}
   \begin{align*}
-    \E|R| &= \E \left | \left (\frac{N}{2}\right )
-      \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\E
+    \E|R| &= \E \left | \left (\frac{n}{2}\right )
+      \sqrt{\frac{n-1}{n}}\frac{1}{d_{\Pi}}\E
       \left [q_{\Pi}'\frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'} \middle | T_{\Pi} \right ]\right | \\
-    &\leq \frac{N}{2} \E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
-    &\leq \frac{N}{2} \sqrt{\E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right |^2
+    &\leq \frac{n}{2} \E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
+    &\leq \frac{n}{2} \sqrt{\E \left | \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right |^2
       \E[d_{\Pi}-d_{\Pi}']^2} \\
-    &\leq \frac{N}{2} \sqrt{f_{c_6}(2) N^{-2/2} f_{c_4}(2) N^{-2}}
+    &\leq \frac{n}{2} \sqrt{f_{c_6}(2) n^{-2/2} f_{c_4}(2) n^{-2}}
     \text{ from } (\ref{def:qpddp}), (\ref{def:ddiffp}) \\
-    &=\frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} N^{-1/2}
+    &=\frac{1}{2}\sqrt{f_{c_6}(2)f_{c_4}(2)} n^{-1/2}
   \end{align*}
 \end{proof}
 
 \subsection{Proof of Proposition~\ref{P:P5}}
 \begin{proof}
   \begin{align*}
-    \E|T_{\Pi}R| &= \E \left | T_{\Pi} \left (\frac{N}{2}\right )
-      \sqrt{\frac{N-1}{N}}\frac{1}{d_{\Pi}}\E
+    \E|T_{\Pi}R| &= \E \left | T_{\Pi} \left (\frac{n}{2}\right )
+      \sqrt{\frac{n-1}{n}}\frac{1}{d_{\Pi}}\E
       \left [q_{\Pi}'\frac{(d_{\Pi}-d_{\Pi}')}{d_{\Pi}'} \middle | T_{\Pi} \right ]\right | \\
-    &\leq \frac{N}{2} \E \left |T_{\Pi} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
-    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^2
+    &\leq \frac{n}{2} \E \left |T_{\Pi} \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}(d_{\Pi}-d_{\Pi}') \right | \\
+    &\leq \frac{n}{2} \sqrt{\E T_{\Pi}^2 \E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'} \right )^2
         (d_{\Pi}-d_{\Pi}')^2 \right ] } \\
-    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}
+    &\leq \frac{n}{2} \sqrt{\E T_{\Pi}^2 \sqrt{\E \left [ \left ( \frac{q_{\Pi}'}{d_{\Pi}d_{\Pi}'}
           \right )^4 \right ] \E[(d_{\Pi}-d_{\Pi}')^4] }} \\
-    &\leq \frac{N}{2} \sqrt{\E T_{\Pi}^2 \sqrt{f_{c_6}(4) N^{-4/2} f_{c_4}(4) N^{-4}}}
+    &\leq \frac{n}{2} \sqrt{\E T_{\Pi}^2 \sqrt{f_{c_6}(4) n^{-4/2} f_{c_4}(4) n^{-4}}}
     \text{ from } (\ref{def:qpddp}), (\ref{def:ddiffp}) \\
-    &=\frac{N^{-1/2}}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4}\sqrt{\E T_{\Pi}^2} \\
-    &\leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} N^{-1/2}
+    &=\frac{n^{-1/2}}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4}\sqrt{\E T_{\Pi}^2} \\
+    &\leq \frac{1}{2}(f_{c_6}(4)f_{c_4}(4))^{1/4} \sqrt{2+2c_1} n^{-1/2}
   \end{align*}
-  because $\E T_{\Pi}^2 \leq 1 + \frac{1+2c_1}{N} \leq 2 + 2c_1$.
+  because $\E T_{\Pi}^2 \leq 1 + \frac{1+2c_1}{n} \leq 2 + 2c_1$.
 \end{proof}

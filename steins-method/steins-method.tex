@@ -7,8 +7,7 @@ Kolmogorov distance between the randomization distribution of the $t$-statistic
 and the standard normal distribution.
 
 Due to similarities between this problem and Hoeffding's combinatorial central
-limit theorem (HCCLT), we first review Stein's proof of the HCCLT via the method
-of exchangeable pairs.
+limit theorem (HCCLT), we first review the HCCLT and related results.
 
 \section{Introduction}
 \label{S:steins-method-introduction}
@@ -28,19 +27,19 @@ He soon refined these initial ideas into his monograph
 work of Chen \cite{chen1975poisson}, random graph results of Barbour
 and Eagleson \cite{barbour1985multiple}, and binomial approximation of
 Diaconis \cite{diaconis1977distribution}.  Several flavors of Stein's
-method (e.g. the method of exchangeable pairs) proceed via auxiliary
+method (e.g., the method of exchangeable pairs) proceed via auxiliary
 randomization.  Other compilations with many illuminating applications
 include those of Diaconis and Holmes \cite{diaconis2004stein}, Barbour
 and Chen \cite{barbour2005introduction, barbour2005stein}, and
 Chen, Goldstein, and Shao \cite{chen2010normal}.
 
-It will be instructive to follow the proof of the HCCLT
+It will be instructive to follow the proof of the HCCLT in \cite{stein1986approximate}
 because our proof proceeds in a similar fashion but with the following
 generalizations: an approximate contraction property, less
 cancellation of terms due to separate estimation of various
 denominators, and non-unit variance of the random variable of interest.
-In Appendix~\ref{A:steins-method-app}, we reproduce
-Stein's \cite{stein1986approximate} proof of the HCCLT.
+In Appendix~\ref{A:steins-method-app}, we prove various
+generalizations of theorems in \cite{chen2010normal}.
 We also refer to auxiliary results in Appendix~\ref{A:auxiliary-app}.
 
 \section{Stein's Theorem}
@@ -115,7 +114,7 @@ as in ranking search queries and microarray experiments
 objects is desired.
 
 Theorem~\ref{T:HCCLT} was extended by Motoo \cite{motoo1956hoeffding} and
-also generalizes the work on permutation-based
+also generalizes the work on the permutation-based
 tests of Wald and Wolfowitz \cite{wald1944statistical} and Noether
 \cite{noether1949theorem}.  These results build further on the problem of
 devising exact tests of significance when the underlying probability
@@ -165,7 +164,7 @@ Bahr obtained the following result:
 
   Let $\Pi$ be a uniformly at random permutation, independent of $X_{ij}$, and
   $W = \sum_{i=1}^n X_{i\Pi(i)}$ be the sum of a random diagonal.
-  Then there exists an absolute constant $C$ such that for all $x \in \mathbb{R}$,
+  Then there exists an absolute constant $C$ such that for all $w \in \mathbb{R}$,
   \begin{equation*}
     \left |P \left (\frac{W - \mu_W}{\sigma_W} \leq w \right ) - \Phi(w) \right |
     \leq \frac{C}{\sqrt{n}} \gamma,
