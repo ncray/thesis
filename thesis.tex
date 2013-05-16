@@ -20,6 +20,7 @@
 \usepackage{mathrsfs}
 \usepackage{unicode-math} %to fix lualatex black bug http://tex.stackexchange.com/questions/61952/problem-compiling-some-math-using-lualatex
 %\usepackage{breqn} %because \left and \right can't go on multiple lines
+\usepackage{natbib}
 
 \DeclareGraphicsExtensions{.png,.pdf,.tex}
 
@@ -67,8 +68,8 @@
   {\thesischapter{MKL}},
   {\thesischapter{auxiliary-app}},
   {\thesischapter{steins-method-app}},
-  {\thesischapter{stein-proof-app}},
-  bibliography
+  {\thesischapter{stein-proof-app}}%,
+  %bibliography
 }
 
 
@@ -96,5 +97,6 @@
 \includechapter{auxiliary-app}
 \includechapter{steins-method-app}
 \includechapter{stein-proof-app}
-\include{bibliography}
+\bibliographystyle{plain}
+\bibliography{ncray}
 \end{document}

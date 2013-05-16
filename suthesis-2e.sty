@@ -93,11 +93,24 @@
 % Modified 9/17/2008 by Emma Pease
 %   changed copyright year calculations so September theses are summer
 
+% November 2009 by Emma Pease
+%   changing to use online or hardcopy options for the new online
+%   submission possibility.  
+
+% Modified May 2010 by Emma Pease
+%   added command \onlinesignature which creates a signatue page
+%   for the online version.  This should be the last command before the 
+%   \end{document} 
+
 %%%%%
 %%%%%   PRELIMS
 %%%%%
 
-\typeout{Document Style Option `suthesis' for latex2e <$Date: 9/17/2008 $>.}
+\ProvidesPackage{suthesis-2e}[2010/05/31]
+
+
+
+%%\typeout{Document Style Option `suthesis' for latex2e <$Date: 9/17/2008 $>.}
 \typeout{Note that this tries to fulfill the Stanford Thesis
   requirements but it is unofficial}
 
@@ -106,6 +119,26 @@
 \@ifundefined{chapter}{\@latexerr{The `suthesis' option should be used
 with the `report' document style}{You should probably read the
 suthesis documentation.}}{}
+
+%%%%%
+%%%%%   SETUP DOUBLESPACING
+%%%%%
+
+% include doublespace.sty for some of the stuff below
+
+\RequirePackage{setspace}
+
+% default to hardcopy submission
+\newif\ifonline
+\onlinefalse
+\DeclareOption{online}{\onlinetrue}
+\DeclareOption{hardcopy}{\onlinefalse}
+\ProcessOptions
+
+
+% Use 1.3 times the normal baseline-to-baseline skip
+\setstretch{1.3}
+
 
 %%%%%
 %%%%%   DOCUMENTATION
@@ -195,7 +228,7 @@ The following switches allow for special title pages (not all are current)
         \secondreader{the second reader's name}
         \thirdreader{optional third reader's name}
         \fourthreader{optional fourth reader's name}
-        \setlength{\signaturespace}{.2in} 
+        \setlength{\signaturespace}{.5in} 
                 - default is .5in, can be adjusted to fit all
                 signatures in one page
         \submitdate{month year in which submitted to GPO}
@@ -243,17 +276,6 @@ smaller print.
 
 }
 
-%%%%%
-%%%%%   SETUP DOUBLESPACING
-%%%%%
-
-% include doublespace.sty for some of the stuff below
-
-\RequirePackage{setspace}
-
-
-% Use 1.3 times the normal baseline-to-baseline skip
-\setstretch{1.3}
 
 
 %%%%%
@@ -324,8 +346,13 @@ smaller print.
 \fi
 \newif\ifcopyright \newif\iffigurespage \newif\iftablespage
 \newif\ifthesiscopyright
-\copyrighttrue \figurespagetrue \tablespagetrue
+
+
+\copyrighttrue 
 \thesiscopyrighttrue
+
+\figurespagetrue \tablespagetrue
+
 
 \def\@standardsub{submitted to the department of \uppercase\expandafter{\@dept}\\
                 and the committee on graduate studies}
@@ -423,6 +450,7 @@ AND THE COMMITTEE ON GRADUATE STUDIES}
 
 
 
+
 \newlength{\signaturespace}
 \setlength{\signaturespace}{.5in}
 
@@ -442,9 +470,27 @@ of Doctor of Philosophy.
 \end{minipage}
 \end{flushright}}
 
-\def\signaturepage{%
-        \signature{(\@principaladviser)\quad Principal \advis@r}
-        \vfill
+\long\def\ucgssignature{%
+\begin{flushright}
+\begin{minipage}{5in}
+\parindent=0pt
+\hfill Approved for the University Committee on Graduate Studies
+\par
+\vspace{\signaturespace}
+\hbox to 5in{\hfil\begin{tabular}{@{}l@{}}\vrule width 3in height
+    0.4pt depth 0pt\end{tabular}}
+\end{minipage}
+\end{flushright}}
+
+
+\def\signaturepage{% 
+\ifonline
+\setcounter{page}{0}
+\def\thepage{}
+\thispagestyle{myheadings}
+\markboth{\rm \@author}{\rm \@author}\fi
+\signature{(\@principaladviser)\quad Principal \advis@r}
+  \vfill
 % if second principal advisor
         \if*\@coprincipaladviser \else
         \signature{(\@coprincipaladviser)\quad Principal \advis@r}
@@ -463,20 +509,25 @@ of Doctor of Philosophy.
         \if*\@fourthreader \else 
         \signature{(\@fourthreader)}
         \vfill\fi
-        \begin{flushright}
-        \begin{minipage}{5in}
-        Approved for the University Committee on Graduate Studies.\par
-        \vspace{.5in}
-%        \hbox to 4in{\hfil\shortstack{\vrule width 3in height 0.4pt}}
-        \end{minipage}
-        \end{flushright}}
+\ucgssignature
+}
+
+\def\onlinesignature{
+\cleardoublepage
+\@twosidetrue
+\signaturepage
+}
 
 \def\beforepreface{
         \pagenumbering{roman}
         \pagestyle{plain}
         \titlep
+% online version has no copyright or signature pages but page counter
+% must be incremented
+% signature page should come at end
+        \ifonline\setcounter{page}{4}\else
         \ifcopyright\ifthesiscopyright\thesiscopyrightpage\else\tradcopyrightpage\fi\fi
-        \signaturepage
+        \signaturepage\fi
         \cleardoublepage}
         
 
