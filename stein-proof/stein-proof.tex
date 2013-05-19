@@ -6,16 +6,16 @@ and the standard normal distribution, using
 Theorems~\ref{T:main} and \ref{T:better-rate} of Chapter~\ref{C:steins-method}.
 
 \section{Motivation}
-Motivated by concerns regarding normality
-assumptions in the hypothesis being tested, Fisher
-\cite{fisher1935design} proposed a nonparametric randomization test.
-Also known as a permutation test, Fisher applied this novel test to
-Charles Darwin's \emph{Zea mays} data and noted that the achieved
-significance level was very similar to that observed in the parametric
-test.  Indeed, Diaconis and Holmes \cite{diaconis1994gray} used
-efficient Gray-code-based calculations to show that the randomization
-distribution looked remarkably normal.  For more history on the
-development of randomization procedures, see Zabell
+Motivated by concerns regarding normality assumptions in the
+hypothesis being tested, Fisher \cite{fisher1935design} proposed a
+nonparametric randomization test.  Also known as a permutation test,
+Fisher applied this novel test to Charles Darwin's \emph{Zea mays}
+data and noted that the achieved significance level was very similar
+to that observed in the parametric test.  Indeed, Diaconis and Holmes
+\cite{diaconis1994gray} used efficient Gray-code-based calculations
+and Berry--Esseen bounds to show that the randomization distribution
+is well approximated by a normal distribution.  For more history on
+the development of randomization procedures, see Zabell
 \cite{zabell2008student} or David \cite{david2008beginnings}.
 Diaconis and Lehmann \cite{diaconis2008comment} in their comment on
 Zabell's paper further expanded on some properties of these
@@ -53,7 +53,7 @@ guarantees.
 Under the randomization model and using the language of triangular
 arrays, Lehmann \cite{lehmann1999elements} proved a weak convergence
 result of the randomization distribution of the $t$-statistic to the
-standard normal distribution, however, there is no known
+standard normal distribution, however, at present there is no known
 Berry--Esseen-type bound for this rate of convergence.
 
 Bentkus and G{\"o}tze \cite{bentkus1996berry} first obtained a
@@ -165,8 +165,9 @@ transformation that achieves this centering and scaling is given by
 \begin{equation}
   x_i \leftarrow \sqrt{\frac{2n}{\sum_{i=1}^{2n} (x_{i} - \bar{x})^2}}(x_{i}-\bar{x}),
 \end{equation}
-so we just assume that the $x_{i}$'s have already been transformed.
-This can be seen as a very mild assumption: only $x_i = c$ for all $i$
+where $\leftarrow$ means ``replace by.''  Therefore, we
+just assume that the $x_{i}$'s have already been transformed.  This
+can be seen as a very mild assumption: only $x_i = c$ for all $i$
 cannot be scaled in this way.
 
 We also assume that the pooled sample standard deviation is non-zero
@@ -353,7 +354,7 @@ first group and $n+1$ to $2n$ to the second, $\pi^*$ reverses the groups after $
   P(T_{\Pi} = t) &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi) \\
   &= \sum_{\pi : T_{\pi} = t} P(\Pi = \pi^*) \quad \text{by exchangeability} \\
   &= \sum_{\pi^* : T_{\pi^*} = -t} P(\Pi = \pi^*) \quad \text{since } T_{\pi^*} = -T_{\pi} \text{
-    and } \pi \to \pi^* \text{ is bijective} \\
+    and } \pi |\!\!\to \pi^* \text{ is bijective} \\
   &= P(T_{\Pi} = -t)
 \end{align*}
 

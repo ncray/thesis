@@ -12,7 +12,7 @@ centered, and for each $n$, we perform $10,000$ permutations.
 
 In Figure~\ref{fig:siderates_1}, we plot Monte Carlo estimates of the
 means of each term, scaled by the rate of our bound, along with
-95\%ile bootstrap confidence intervals for different values of $p \in
+95th percentile bootstrap confidence intervals for different values of $p \in
 \{2, 4, 6, 8\}$.
 
 \begin{figure}[!ht]
@@ -113,7 +113,8 @@ All terms except the term involving $\delta^3$ appear to be of or better than th
     expectation exactly ($10n$ permutations each).}
 \end{figure}
 
-We shall see that $\frac{.41 \delta^3}{\lambda}n^{1/2}$ is bounded in some situations.
+Figure~\ref{fig:delta_plot} shows that $\frac{.41 \delta^3}{\lambda}n^{1/2}$
+is in fact bounded in certain settings.
 \clearpage
 
 Below, we see a plot of $\frac{.41 \delta^3}{\lambda}n^{1/2}$ on $n$
@@ -122,12 +123,15 @@ when $u_i = i$.
   \centering
   \input{./simulations/img/delta_plot.tex}
   \caption{$\frac{.41 \delta^3}{\lambda}n^{1/2}$ on $n$.}
+  \label{fig:delta_plot}
 \end{figure}
 
 Recall that
 \begin{equation*}
-  \lim_{n \to \infty} \delta \sqrt{n} = 16 \sqrt{6}.
+  \lim_{n \to \infty} \delta \sqrt{n} = 16 \sqrt{6},
 \end{equation*}
+so the contribution of this term to the bound of Theorem~\ref{T:better-rate}
+is not terribly useful for small $n$.
 
 \section{Efficient Updates}
 \label{S:efficient-updates}

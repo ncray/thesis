@@ -153,15 +153,19 @@ use the target distribution as a basis for inference.  We will gain in
 computational efficiency by only having to compute the test statistic once.
 
 \section{Kernel Methods}
-There exist many two-sample tests for vectorial data $\mathbf{x}_i \in \mathbb{R}^p$.
-Increasingly, data collected for many applications is heterogeneous in nature
-and include non-vectorial components such as text, audio, or graph structures
-for which the mathematical and geometric operations required of many learning
-algorithms are not defined.  Kernel methods allow us to identify a mapping
-of the data from a general set into a Hilbert space in which we can apply
-certain classes of algorithms.  There is much literature on kernel methods,
-but one particularly comprehensive treatment is the monograph by Sch{\"o}lkopf
-and Smola \cite{scholkopf2002learning}.
+There exist many two-sample tests for vectorial data $\mathbf{x}_i \in
+\mathbb{R}^p$.  Increasingly, data collected for many applications is
+heterogeneous in nature and include non-vectorial components such as
+text, audio, or graph structures for which the mathematical and
+geometric operations required of many learning algorithms are not
+defined.  Kernel methods allow us to identify a mapping of the data
+from a general set into a Hilbert space in which we can apply certain
+classes of algorithms.  For instance, Haussler
+\cite{Haussler1999Convolution} developed ways of constructing kernels
+between discrete structures such as strings, trees, and graphs.  There
+is much literature on kernel methods, but one particularly
+comprehensive treatment is the monograph by Sch{\"o}lkopf and Smola
+\cite{scholkopf2002learning}.
 
 Given $n$ observed datapoints in some general set, ${\mathbf x}_1, \ldots,
 {\mathbf x}_n \in \mathcal{X}$,
