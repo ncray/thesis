@@ -113,8 +113,9 @@ as in ranking search queries and microarray experiments
 \cite{sens2011spearman}, where consistency of the top $k$ out of $n$
 objects is desired.
 
-Theorem~\ref{T:HCCLT} was extended by Motoo \cite{motoo1956hoeffding} and
-also generalizes the work on the permutation-based
+Theorem~\ref{T:HCCLT} was extended by Motoo \cite{motoo1956hoeffding}
+and Schneller \cite{MR945112}, generalizing
+the work on the permutation-based
 tests of Wald and Wolfowitz \cite{wald1944statistical} and Noether
 \cite{noether1949theorem}.  These results build further on the problem of
 devising exact tests of significance when the underlying probability
@@ -195,9 +196,12 @@ of this type.
     \label{D:approx-stein-pair}
     \E [W - W' | W] = \lambda (W - R),
   \end{equation}
-  where $R$ is a variable of small order and $\lambda \in (0, 1)$, then we call $(W, W')$ an
+  where $R$ is a random variable and $\lambda \in (0, 1)$, then we call $(W, W')$ an
   approximate Stein pair.
 \end{definition}
+Typically, $R$ must be of ``small order'' for the resulting bounds to
+be meaningful due to a resulting $\E |R|$ term such as in
+Theorems~\ref{T:main} and \ref{T:better-rate}.
 
 Here we generalize Lemma 5.1 from \cite{chen2010normal} to the setting of non-unit variance:
 \begin{theorem}
