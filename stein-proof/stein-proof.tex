@@ -121,6 +121,23 @@ sample values relative to the null permutation $\pi_0$: $\mathcal{S}_1 =
 \{x_{\pi_0(i)}\}_{i=1}^n$ and $\mathcal{S}_2 = \{x_{\pi_0(i)}\}_{i=n+1}^{2n}$,
 where $\pi_0(i) = i$.
 
+The Behrens--Fisher \cite{behrens1928beitrag, fisher1935fiducial} problem concerns the setting
+when $X_1, \ldots, X_n \sim \mathcal{N}(\mu_1, \sigma_1^2)$ and
+$Y_1, \ldots, Y_m \sim \mathcal{N}(\mu_2, \sigma_2^2)$ are
+independent random variables and the problem is to test $\mathcal{H}_A: \mu_1 \neq \mu_2$
+against $\mathcal{H}_0: \mu_1 = \mu_2$ when the variances of the two
+distributions are not assumed to be equal.  Consider the class
+of statistics $u = (\bar{Y} - \bar{X})^2 / (a_1 S_{X}^2 + a_2 S_{Y}^2)$
+, where $\bar{X}$ and $S_{X}^2$ indicate the sample mean of the
+first group and sum of squared differences from such, respectively.
+Let $N = n + m$.  Then when $a_1 = a_2 = N / mn(N-2) $, $u$ reduces to the
+square of Student's $t$ statistic, and to the Behrens--Fisher
+statistic when $A_1 = 1 / m(m-1)$ and $A_2 = 1 / n(n-1)$.  Many
+researchers have made important contributions to the Behrens--Fisher
+problem including Hsu \cite{hsu1938contribution}, Chapman
+\cite{MR0043423}, Prokof'yev and Shishkin \cite{prokof1974successive},
+and Dudewicz and Ahmed \cite{dudewicz1998new, dudewicz1999new}.
+
 Under the randomization distribution, where
 $\Pi$ is a uniformly chosen permutation, Student's two-sample
 $t$-statistic is given by $T_{\Pi} = T_{\Pi}(\{x_{\Pi(i)}\}_{i=1}^n,
