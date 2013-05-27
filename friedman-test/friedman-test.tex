@@ -508,18 +508,20 @@ first two-sample test for comparing distributions over graphs.
   \end{equation*}
   \begin{equation*}
     \text{MMD}[\mathfrak{F},X,Z] := \sup_{f\in
-      \mathfrak{F}}\left (\frac{1}{n}\sum_{i=1}^nf(x_i) -
-    \frac{1}{m}\sum_{i=1}^{m} f(z_i) \right ).
+      \mathfrak{F}}\left (\frac{1}{m}\sum_{i=1}^mf(x_i) -
+    \frac{1}{n}\sum_{i=1}^{n} f(z_i) \right ).
   \end{equation*}
 \end{definition}
 
-An unbiased empirical estimate \cite{gretton2012kernel} estimate of
+An unbiased empirical estimate \cite{gretton2012kernel} of
 the statistic is given by
 \begin{equation*}
-  \text{MMD}^2_u[\mathfrak{F},X,Z] :=
-  \frac{1}{m(m-1)} \sum_{i=1}^m \sum_{j \neq i}^m K(x_i, x_j) +
-  \frac{1}{n(n-1)} \sum_{i=1}^n \sum_{j \neq i}^n K(z_i, z_j) -
-  \frac{2}{mn} \sum_{i=1}^m \sum_{j = 1}^n K(x_i, z_j).
+  \begin{split}
+      \text{MMD}^2_u[\mathfrak{F},X,Z] &:=
+      \frac{1}{m(m-1)} \sum_{i=1}^m \sum_{j \neq i}^m K(x_i, x_j) +
+      \frac{1}{n(n-1)} \sum_{i=1}^n \sum_{j \neq i}^n K(z_i, z_j) \\
+      &\quad - \frac{2}{mn} \sum_{i=1}^m \sum_{j = 1}^n K(x_i, z_j).
+  \end{split}
 \end{equation*}
 
 The function class $\mathfrak{F}$ is typically taken to be the unit ball in a
