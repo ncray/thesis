@@ -4,6 +4,7 @@
      "C:friedman-test"
      "item:friedman-score"
      "D:kernel"
+     "S:SVM-section"
      "eq:l1-svm-primal"
      "eq:l1-svm-dual"
      "eq:hinge-svm"

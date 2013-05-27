@@ -111,7 +111,15 @@ test $\mathcal{H}_A$: $p \neq q$ against $\mathcal{H}_0$: $p = q$.
 
 Note that in Step~\ref{item:friedman-score}, for a given learning
 machine, there can still be some choice in the scoring function
-$f(\mathbf{x})$.
+$f(\mathbf{x})$.  In Section~\ref{S:SVM-section}, we shall consider
+the merits of different scoring functions $f$ producing
+correspondingly different scores $s_i$.  Although Friedman suggested
+using the $t$-statistic, other statistics are valid as well such as
+the Kolmogorov--Smirnov statistic \cite{KolmogorovAN1933, MR0025109}.
+Given that the $t$-statistic has no power to detect differences in
+variance, sensitivity to such a change must come from the score
+mapping $f$.  For instance, the mapping $f(x) = x^2$ would imbue the
+$t$-statistic with the power to detect variance shifts.
 
 The Friedman test (FT) is a simple, elegant idea that leverages the
 many advancements made over the past several decades in the fields of
@@ -219,6 +227,7 @@ nonvectorial spaces $\mathcal{X}$, kernels $K$, feature mappings $\phi$, and
 Hilbert spaces $\mathcal{H}$.
 
 \section{Support Vector Machines}
+\label{S:SVM-section}
 A Support Vector Machine (SVM) \cite{cortes1995support} is a supervised learning
 technique that seeks to find a hyperplane that maximizes the margin between
 points of different classes.  In the case that there exists no separating
@@ -503,6 +512,15 @@ first two-sample test for comparing distributions over graphs.
     \frac{1}{m}\sum_{i=1}^{m} f(z_i) \right ).
   \end{equation*}
 \end{definition}
+
+An unbiased empirical estimate \cite{gretton2012kernel} estimate of
+the statistic is given by
+\begin{equation*}
+  \text{MMD}^2_u[\mathfrak{F},X,Z] :=
+  \frac{1}{m(m-1)} \sum_{i=1}^m \sum_{j \neq i}^m K(x_i, x_j) +
+  \frac{1}{n(n-1)} \sum_{i=1}^n \sum_{j \neq i}^n K(z_i, z_j) -
+  \frac{2}{mn} \sum_{i=1}^m \sum_{j = 1}^n K(x_i, z_j).
+\end{equation*}
 
 The function class $\mathfrak{F}$ is typically taken to be the unit ball in a
 reproducing kernel Hilbert space (RKHS), however, well-known metrics
